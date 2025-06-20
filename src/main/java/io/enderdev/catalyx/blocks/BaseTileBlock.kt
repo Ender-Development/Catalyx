@@ -25,7 +25,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry
  */
 open class BaseTileBlock(val settings: CatalyxSettings, name: String, var tileClass: Class<out TileEntity>, val guiID: Int) : BaseBlock(settings, name), ITileEntityProvider {
 	init {
-		GameRegistry.registerTileEntity(tileClass, ResourceLocation(Reference.MODID, name))
+		GameRegistry.registerTileEntity(tileClass, ResourceLocation(settings.modId, name))
 	}
 
 	override fun createNewTileEntity(worldIn: World, meta: Int): TileEntity = tileClass.newInstance()
