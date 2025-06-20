@@ -1,8 +1,12 @@
 # <img src="src/main/resources/assets/catalyx/textures/logo.png" alt="Catalyx" height="42" width="42"> Catalyx
 
-Catalyx is a [Kotlin](https://www.curseforge.com/minecraft/mc-mods/forgelin-continuous) library for shared machine code between [Alchemistry Redux](https://github.com/Ender-Development/Alchemistry) and [Re-Emerging Technology](https://github.com/Ender-Development/Re-Emerging-Technology).
+Catalyx is a [Kotlin](https://www.curseforge.com/minecraft/mc-mods/forgelin-continuous) library for shared machine code between [Alchemistry Redox](https://github.com/Ender-Development/Alchemistry) and [Re-Emerging Technology](https://github.com/Ender-Development/Re-Emerging-Technology).
 
 <a href="https://www.akliz.net/enderman"><img src="https://github.com/Ender-Development/PatchouliBooks/raw/master/banner.png" align="center"/></a>
+
+## Dependencies
+
+![badge](https://img.shields.io/badge/required-Forgelin--Continuous-gray?style=flat-square&labelColor=red&link=https://www.curseforge.com/minecraft/mc-mods/forgelin-continuous)
 
 ## [Ender-Development](https://github.com/Ender-Development)
 
