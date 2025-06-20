@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.util.ResourceLocation
 
 abstract class AbstractButton(val buttonId: Int, val x: Int, val y: Int) : GuiButton(buttonId, x, y, 16, 16, "") {
-	open val textureLocation = ResourceLocation(Reference.MODID, "textures/gui/container/template_redox.png")
+	open val textureLocation = ResourceLocation(Reference.MODID, "textures/gui/container/gui.png")
 
 	override fun drawButton(mc: Minecraft, mouseX: Int, mouseY: Int, partialTicks: Float) {
 		if(!visible)

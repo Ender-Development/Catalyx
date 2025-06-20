@@ -21,14 +21,13 @@ import net.minecraft.inventory.Container
 import net.minecraft.util.ResourceLocation
 
 abstract class BaseGui<T>(container: Container, val tile: T, guiName: String) : GuiContainer(container) where T : BaseMachineTile<*>, T : IGuiTile {
-
-	open val textureLocation = ResourceLocation(Reference.MODID, "textures/gui/container/${guiName}_gui_redox.png")
+	abstract val textureLocation: ResourceLocation
 
 	val displayData = mutableListOf<CapabilityDisplayWrapper>()
 
 	open var powerBarX = 0
 	open var powerBarY = 0
-	open val powerBarTexture = ResourceLocation(Reference.MODID, "textures/gui/container/template_redox.png")
+	open val powerBarTexture = ResourceLocation(Reference.MODID, "textures/gui/container/gui.png")
 
 	open val displayNameOffset = 8
 	open val displayName = "tile.$guiName.name".translate()
