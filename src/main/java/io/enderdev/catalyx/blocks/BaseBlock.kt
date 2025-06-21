@@ -1,7 +1,7 @@
 package io.enderdev.catalyx.blocks
 
-import io.enderdev.catalyx.CatalyxRegistry
 import io.enderdev.catalyx.CatalyxSettings
+import io.enderdev.catalyx.items.IItemProvider
 import net.minecraft.block.Block
 import net.minecraft.block.material.Material
 import net.minecraft.item.Item
@@ -12,26 +12,32 @@ import net.minecraftforge.event.RegistryEvent
 /**
  * A base Catalyx Block
  */
-open class BaseBlock(settings: CatalyxSettings, name: String, material: Material = Material.ROCK) : Block(material) {
+open class BaseBlock(settings: CatalyxSettings, name: String, material: Material = Material.ROCK) : Block(material), IBlockProvider, IItemProvider {
 	init {
-		CatalyxRegistry.blocks.add(this)
 		translationKey = name
 		registryName = ResourceLocation(settings.modId, name)
 		blockHardness = 3f
 		creativeTab = settings.creativeTab
+		settings.blocks(this)
 	}
 
 	/**
-	 * Called within Catalyx
+	 * You need to call this yourself, like
+	 * ```kt
+	 * catalyxSettings.blocks.forEach { it.registerBlocks(event) }
+	 * ```
 	 */
-	open fun registerBlock(event: RegistryEvent.Register<Block>) {
+	override fun registerBlock(event: RegistryEvent.Register<Block>) {
 		event.registry.register(this)
 	}
 
 	/**
-	 * Called within Catalyx
+	 * You need to call this yourself, like
+	 * ```kt
+	 * catalyxSettings.items.forEach { it.registerItem(event) }
+	 * ```
 	 */
-	open fun registerItemBlock(event: RegistryEvent.Register<Item>) {
+	override fun registerItem(event: RegistryEvent.Register<Item>) {
 		event.registry.register(ItemBlock(this).setRegistryName(registryName))
 	}
 

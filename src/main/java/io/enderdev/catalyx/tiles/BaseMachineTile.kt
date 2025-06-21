@@ -6,14 +6,13 @@ import io.enderdev.catalyx.client.button.RedstoneButton
 import io.enderdev.catalyx.tiles.helper.IButtonTile
 import io.enderdev.catalyx.tiles.helper.IGuiTile
 import io.enderdev.catalyx.tiles.helper.IItemTile
-import net.minecraft.item.crafting.IRecipe
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.ITickable
 
 /**
  * A base Catalyx TileEntity with functions allowing you to create custom machines efficiently
  */
-abstract class BaseMachineTile<T : IRecipe>(settings: CatalyxSettings) : BaseTile(settings), ITickable, IGuiTile, IItemTile, IButtonTile {
+abstract class BaseMachineTile<T>(settings: CatalyxSettings) : BaseTile(settings), ITickable, IGuiTile, IItemTile, IButtonTile {
 	abstract val recipeTime: Int
 	abstract val energyPerTick: Int
 

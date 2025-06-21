@@ -20,7 +20,7 @@ import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.inventory.Container
 import net.minecraft.util.ResourceLocation
 
-abstract class BaseGui<T>(container: Container, val tile: T, guiName: String) : GuiContainer(container) where T : BaseMachineTile<*>, T : IGuiTile {
+abstract class BaseGui<T>(container: Container, val tile: T, val guiName: String) : GuiContainer(container) where T : BaseMachineTile<*>, T : IGuiTile {
 	abstract val textureLocation: ResourceLocation
 
 	val displayData = mutableListOf<CapabilityDisplayWrapper>()
@@ -122,6 +122,7 @@ abstract class BaseGui<T>(container: Container, val tile: T, guiName: String) : 
 
 	override fun drawGuiContainerBackgroundLayer(partialTicks: Float, mouseX: Int, mouseY: Int) {
 		GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f)
+		println(textureLocation)
 		this.mc.textureManager.bindTexture(this.textureLocation)
 
 		this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize)
