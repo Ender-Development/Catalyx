@@ -44,21 +44,6 @@ class ButtonPacket() : IMessage {
 				tile.handleButtonPress(message.id)
 			else // Received a ButtonPacket for a BlockPos which doesn't have a TileEntity that extends IButtonTile ;p
 				Catalyx.logger.error("Received a ButtonPacket for a block which doesn't have a tile entity that can handle button presses")
-
-			// TODO: rewrite
-			//if(tile is AbstractMachine<*> && message.pause) {
-			//	tile.isPaused = !(tile.isPaused)
-			//}
-			//if(tile is AbstractMachine<*> && message.redstone) {
-			//	tile.needsPower = !(tile.needsPower)
-			//}
-			//if(tile is TileChemicalCombiner && message.lock) {
-			//	tile.recipeIsLocked = !(tile.recipeIsLocked)
-			//	if(!tile.recipeIsLocked) tile.currentRecipe = null
-			//}
-			//if(tile is TileFusionController && message.single) {
-			//	tile.singleMode = !(tile.singleMode)
-			//}
 		}
 	}
 }

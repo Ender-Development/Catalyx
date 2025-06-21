@@ -122,7 +122,6 @@ abstract class BaseGui<T>(container: Container, val tile: T, val guiName: String
 
 	override fun drawGuiContainerBackgroundLayer(partialTicks: Float, mouseX: Int, mouseY: Int) {
 		GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f)
-		println(textureLocation)
 		this.mc.textureManager.bindTexture(this.textureLocation)
 
 		this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize)
