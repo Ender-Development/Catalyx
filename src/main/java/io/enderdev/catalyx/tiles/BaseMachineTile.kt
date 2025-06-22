@@ -96,5 +96,6 @@ abstract class BaseMachineTile<T>(settings: CatalyxSettings) : BaseTile(settings
 			isPaused = !isPaused
 		else if(id == RedstoneButton.buttonId)
 			needsRedstonePower = !needsRedstonePower
+		markDirtyGUI()
 	}
 }
