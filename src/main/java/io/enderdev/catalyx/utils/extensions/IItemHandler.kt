@@ -20,6 +20,21 @@ fun IItemHandler.tryInsertInto(otherHandler: IItemHandler): Boolean {
 	return false
 }
 
+/** This function *will* modify the ItemStack passed in! */
+fun IItemHandler.tryInsert(stack: ItemStack): ItemStack {
+	for(i in 0..<slots) {
+		val inserted = insertItem(i, stack, true)
+		if(inserted.isEmpty || inserted.count < stack.count) {
+			insertItem(i, stack, false)
+			if(inserted.isEmpty)
+				return inserted
+			else
+				stack.shrink(inserted.count)
+		}
+	}
+	return stack
+}
+
 fun IItemHandler.toStackList(): List<ItemStack> {
 	return (0..<slots).map {
 		val stack = this[it]
