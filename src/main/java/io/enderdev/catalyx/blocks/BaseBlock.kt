@@ -14,8 +14,8 @@ import net.minecraftforge.event.RegistryEvent
  */
 open class BaseBlock(settings: CatalyxSettings, name: String, material: Material = Material.ROCK) : Block(material), IBlockProvider, IItemProvider {
 	init {
-		translationKey = name
 		registryName = ResourceLocation(settings.modId, name)
+		translationKey = "$registryName"
 		blockHardness = 3f
 		creativeTab = settings.creativeTab
 		settings.blocks(this)
