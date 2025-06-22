@@ -33,6 +33,31 @@ open class TileStackHandler(size: Int, val tile: BaseTile) : ItemStackHandler() 
 		}
 	}
 
+	/** Try to forcibly add/insert an item into this TSH.
+	 *  This method *will* modify the ItemStack! */
+	fun insert(stack: ItemStack): ItemStack {
+		if(stack.isEmpty)
+			return stack
+
+		for(slot in 0..<slots) {
+			val slotItem = this[slot]
+			if(slotItem.isEmpty) {
+				setStackInSlot(slot, stack)
+				return ItemStack.EMPTY
+			}
+			if(slotItem.item === stack.item) {
+				val increaseBy = stack.count.coerceAtMost(slotItem.maxStackSize - slotItem.count)
+				if(increaseBy > 0) {
+					incrementSlot(slot, increaseBy)
+					stack.shrink(increaseBy)
+					if(stack.count <= 0 || stack.isEmpty)
+						return ItemStack.EMPTY
+				}
+			}
+		}
+		return stack
+	}
+
 	fun decrementSlot(slot: Int, amount: Int) {
 		val temp = this[slot]
 		if(temp.isEmpty) return
