@@ -30,7 +30,7 @@ abstract class BaseGui<T>(container: Container, val tile: T, val guiName: String
 	open val powerBarTexture = ResourceLocation(Reference.MODID, "textures/gui/container/gui.png")
 
 	open val displayNameOffset = 8
-	open val displayName = "tile.$guiName.name".translate()
+	open val displayName: String = tile.blockType.localizedName
 
 	lateinit var pauseButton: PauseButton
 	lateinit var redstoneButton: RedstoneButton
