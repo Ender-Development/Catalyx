@@ -19,6 +19,7 @@ import net.minecraft.client.gui.inventory.GuiContainer
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.inventory.Container
 import net.minecraft.util.ResourceLocation
+import scala.tools.nsc.typechecker.Tags
 
 abstract class BaseGui<T>(container: Container, val tile: T, val guiName: String) : GuiContainer(container) where T : BaseMachineTile<*>, T : IGuiTile {
 	abstract val textureLocation: ResourceLocation
@@ -51,15 +52,15 @@ abstract class BaseGui<T>(container: Container, val tile: T, val guiName: String
 	open fun renderTooltips(mouseX: Int, mouseY: Int) {
 		if(isHovered(pauseButton.x, pauseButton.y, 16, 16, mouseX, mouseY)) {
 			if(tile.isPaused)
-				this.drawHoveringText(listOf("tooltip.paused".translate()), mouseX, mouseY)
+				this.drawHoveringText(listOf("tooltip.${Reference.MODID}.paused".translate()), mouseX, mouseY)
 			else
-				this.drawHoveringText(listOf("tooltip.running".translate()), mouseX, mouseY)
+				this.drawHoveringText(listOf("tooltip.${Reference.MODID}.running".translate()), mouseX, mouseY)
 		}
 		if(isHovered(redstoneButton.x, redstoneButton.y, 16, 16, mouseX, mouseY)) {
 			if(tile.needsRedstonePower)
-				this.drawHoveringText(listOf("tooltip.redstone_high".translate()), mouseX, mouseY)
+				this.drawHoveringText(listOf("tooltip.${Reference.MODID}.redstone_high".translate()), mouseX, mouseY)
 			else
-				this.drawHoveringText(listOf("tooltip.redstone_low".translate()), mouseX, mouseY)
+				this.drawHoveringText(listOf("tooltip.${Reference.MODID}.redstone_low".translate()), mouseX, mouseY)
 		}
 	}
 
