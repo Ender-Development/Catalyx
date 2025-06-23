@@ -10,7 +10,6 @@ import io.enderdev.catalyx.client.gui.wrappers.CapabilityFluidDisplayWrapper
 import io.enderdev.catalyx.network.ButtonPacket
 import io.enderdev.catalyx.network.PacketHandler
 import io.enderdev.catalyx.tiles.BaseMachineTile
-import io.enderdev.catalyx.tiles.helper.IGuiTile
 import io.enderdev.catalyx.utils.RenderUtils
 import io.enderdev.catalyx.utils.extensions.get
 import io.enderdev.catalyx.utils.extensions.translate
@@ -19,9 +18,8 @@ import net.minecraft.client.gui.inventory.GuiContainer
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.inventory.Container
 import net.minecraft.util.ResourceLocation
-import scala.tools.nsc.typechecker.Tags
 
-abstract class BaseGui<T>(container: Container, val tile: T, val guiName: String) : GuiContainer(container) where T : BaseMachineTile<*>, T : IGuiTile {
+abstract class BaseGui(container: Container, open val tile: BaseMachineTile<*>) : GuiContainer(container) {
 	abstract val textureLocation: ResourceLocation
 
 	val displayData = mutableListOf<CapabilityDisplayWrapper>()

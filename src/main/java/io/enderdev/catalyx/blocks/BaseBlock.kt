@@ -1,6 +1,7 @@
 package io.enderdev.catalyx.blocks
 
 import io.enderdev.catalyx.CatalyxSettings
+import io.enderdev.catalyx.IBothProvider
 import io.enderdev.catalyx.items.IItemProvider
 import net.minecraft.block.Block
 import net.minecraft.block.material.Material
@@ -12,7 +13,7 @@ import net.minecraftforge.event.RegistryEvent
 /**
  * A base Catalyx Block
  */
-open class BaseBlock(settings: CatalyxSettings, name: String, material: Material = Material.ROCK) : Block(material), IBlockProvider, IItemProvider {
+open class BaseBlock(settings: CatalyxSettings, name: String, material: Material = Material.ROCK) : Block(material), IBothProvider {
 	init {
 		registryName = ResourceLocation(settings.modId, name)
 		translationKey = "$registryName"

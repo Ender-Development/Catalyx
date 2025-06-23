@@ -1,5 +1,6 @@
 package io.enderdev.catalyx.client.container
 
+import io.enderdev.catalyx.tiles.BaseMachineTile
 import io.enderdev.catalyx.tiles.BaseTile
 import io.enderdev.catalyx.tiles.helper.IGuiTile
 import net.minecraft.entity.player.EntityPlayer
@@ -10,7 +11,7 @@ import net.minecraft.item.ItemStack
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.SlotItemHandler
 
-abstract class BaseContainer<T>(playerInv: IInventory, open val tile: T) : Container() where T : IGuiTile, T : BaseTile {
+abstract class BaseContainer(playerInv: IInventory, open val tile: BaseMachineTile<*>) : Container() {
 	init {
 		addOwnSlots()
 		addPlayerSlots(playerInv)

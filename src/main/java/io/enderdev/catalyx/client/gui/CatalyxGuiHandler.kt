@@ -9,11 +9,11 @@ import net.minecraft.world.World
 import net.minecraftforge.fml.common.network.IGuiHandler
 
 class CatalyxGuiHandler : IGuiHandler {
-	private val containers = mutableListOf<Class<out BaseContainer<*>>>()
-	private val guis = mutableListOf<Class<out BaseGui<*>>>()
+	private val containers = mutableListOf<Class<out BaseContainer>>()
+	private val guis = mutableListOf<Class<out BaseGui>>()
 	private val tileEntities = mutableListOf<Class<out BaseTile>>()
 
-	fun <T : BaseTile, C : BaseContainer<out T>, G : BaseGui<out T>> registerId(container: Class<out C>, gui: Class<out G>, te: Class<out T>): Int {
+	fun registerId(container: Class<out BaseContainer>, gui: Class<out BaseGui>, te: Class<out BaseTile>): Int {
 		containers.add(container)
 		guis.add(gui)
 		tileEntities.add(te)
