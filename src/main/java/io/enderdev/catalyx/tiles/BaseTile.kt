@@ -46,7 +46,7 @@ abstract class BaseTile(val settings: CatalyxSettings) : TileEntity() {
 	open val automationInvHandler: CombinedInvWrapper
 		get() = CombinedInvWrapper(automationInput, automationOutput)
 
-	fun canInteractWith(player: EntityPlayer) = !isInvalid && player.getDistanceSq(pos.add(.5, .5, .5)) <= 64
+	open fun canInteractWith(player: EntityPlayer) = !isInvalid && player.getDistanceSq(pos.add(.5, .5, .5)) <= 64
 
 	override fun shouldRefresh(world: World, pos: BlockPos, oldState: IBlockState, newState: IBlockState): Boolean {
 		return oldState.block != newState.block
@@ -81,13 +81,13 @@ abstract class BaseTile(val settings: CatalyxSettings) : TileEntity() {
 
 	override fun onDataPacket(net: NetworkManager, pkt: SPacketUpdateTileEntity) = readFromNBT(pkt.nbtCompound)
 
-	fun markDirtyClient() {
+	open fun markDirtyClient() {
 		markDirty()
 		val state = world.getBlockState(getPos())
 		world.notifyBlockUpdate(getPos(), state, state, 3)
 	}
 
-	fun markDirtyClientEvery(ticks: Int) {
+	open fun markDirtyClientEvery(ticks: Int) {
 		dirtyTicks++
 		if(dirtyTicks >= ticks) {
 			markDirtyClient()
@@ -95,7 +95,7 @@ abstract class BaseTile(val settings: CatalyxSettings) : TileEntity() {
 		}
 	}
 
-	fun markDirtyEvery(ticks: Int) {
+	open fun markDirtyEvery(ticks: Int) {
 		dirtyTicks++
 		if(dirtyTicks >= ticks) {
 			markDirty()
@@ -103,7 +103,7 @@ abstract class BaseTile(val settings: CatalyxSettings) : TileEntity() {
 		}
 	}
 
-	fun markDirtyGUI() {
+	open fun markDirtyGUI() {
 		markDirty()
 		world?.let {
 			val state = world.getBlockState(getPos())
@@ -111,7 +111,7 @@ abstract class BaseTile(val settings: CatalyxSettings) : TileEntity() {
 		}
 	}
 
-	fun markDirtyGUIEvery(ticks: Int) {
+	open fun markDirtyGUIEvery(ticks: Int) {
 		dirtyTicks++
 		if(dirtyTicks >= ticks) {
 			markDirtyGUI()
