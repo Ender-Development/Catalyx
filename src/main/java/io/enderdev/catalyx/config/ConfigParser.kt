@@ -1,5 +1,6 @@
 package io.enderdev.catalyx.config
 
+import io.enderdev.catalyx.config.ConfigParser.ConfigItemStack.Companion.IGNORE_META
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
@@ -11,11 +12,14 @@ import net.minecraftforge.fml.common.Loader
  * including those with additional values.
  */
 object ConfigParser {
-
-	open class ConfigItem {
+	open class ConfigItemStack {
+		companion object {
+			internal const val IGNORE_META = -1
+		}
 		protected var modid: String? = null
-		protected var item: String? = null
-		protected var meta: Int = -1
+		protected var itemid: String? = null
+		protected var item: Item? = null
+		protected var meta: Int = IGNORE_META
 
 		/*
 		 * Default constructor for ConfigItem.
@@ -37,54 +41,62 @@ object ConfigParser {
 			validateConfigItem()
 		}
 
-		open fun compare(obj: Any?): Boolean {
-			return when(obj) {
-				is ItemStack -> {
-					if(meta == -1) {
-						obj.isItemEqualIgnoreDurability(this.toItemStack())
-					} else {
-						obj.isItemEqual(this.toItemStack())
-					}
-				}
-				is ConfigItem -> {
-					this.modid == obj.modid && this.item == obj.item && this.meta == obj.meta
-				}
-				else -> super.equals(obj)
+		open fun compare(other: Any?) =
+			when(other) {
+				is ItemStack ->
+					if(meta == IGNORE_META)
+						other.isItemEqualIgnoreDurability(toItemStack())
+					else
+						other.isItemEqual(toItemStack())
+				is ConfigItemStack -> modid == other.modid && itemid == other.itemid && meta == other.meta
+				else -> super.equals(other)
 			}
-		}
 
-		open fun toItemStack(): ItemStack {
-			val item = Item.getByNameOrId(ResourceLocation(modid!!, item!!).toString()) ?: throw NullPointerException("Item not found: $modid:$item")
-			return ItemStack(item, 1, meta)
-		}
+		open fun toItemStack() =
+			ItemStack(item ?: throw NullPointerException("Item not found: $modid:$itemid"), 1, meta)
 
 		protected fun parseConfigString(configString: String) {
 			val parts = configString.split(":")
-			when(parts.size) {
-				3 -> {
-					modid = parts[0]
-					item = parts[1]
-					meta = parts[2].toInt()
-				}
-				2 -> {
-					modid = parts[0]
-					item = parts[1]
-					meta = -1
-				}
-				else -> throw IllegalArgumentException("Invalid config string format: $configString")
-			}
+			if(parts.size != 2 && parts.size != 3)
+				throw IllegalArgumentException("Invalid config string format: $configString")
+
+			modid = parts[0]
+			itemid = parts[1]
+			if(parts.size == 3)
+				meta = parts[2].toInt()
+
+			item = Item.getByNameOrId("$modid:$itemid") // check this in validateConfigItem?
 		}
 
 		protected fun validateConfigItem() {
-			if(modid == null || item == null) {
+			if(modid == null || itemid == null)
 				throw IllegalArgumentException("Mod ID and item name cannot be null")
-			}
-			if(!Loader.isModLoaded(modid)) {
+
+			if(!Loader.isModLoaded(modid))
 				throw IllegalArgumentException("Mod ID is not loaded: $modid")
-			}
-			if(meta < 0 && meta != -1) {
+
+			if(meta < IGNORE_META)
 				throw IllegalArgumentException("Meta value cannot be negative")
-			}
+		}
+	}
+
+	/**
+	 *  Constructor that takes a configuration string in the format "modid:item:meta;value".
+	 *
+	 *  @param configString The configuration string to parse.
+	 *  @param parser The parser with which the value should be parsed to produce the expected value
+	 */
+	open class ConfigItemStackWith<T>(configString: String, parser: (String) -> T) : ConfigItemStack() {
+		val value: T
+
+		init {
+			val parts = configString.split(';', ',')
+			if(parts.size != 2)
+				throw IllegalArgumentException("Invalid config string format: $configString")
+
+			parseConfigString(parts[0])
+			validateConfigItem()
+			value = parser(parts[1])
 		}
 	}
 
@@ -93,59 +105,20 @@ object ConfigParser {
 	 *
 	 *  @param configString The configuration string to parse.
 	 */
-	class ConfigItemWithFloat(configString: String) : ConfigItem() {
-		val value: Float
-
-		init {
-			val parts = configString.split(";")
-			if(parts.size == 2) {
-				parseConfigString(parts[0])
-				value = parts[1].toFloat()
-			} else {
-				throw IllegalArgumentException("Invalid config string format: $configString")
-			}
-			validateConfigItem()
-		}
-	}
+	class ConfigItemStackWithFloat(configString: String) : ConfigItemStackWith<Float>(configString, String::toFloat)
 
 	/**
 	 *  Constructor that takes a configuration string in the format "modid:item:meta;value".
 	 *
 	 *  @param configString The configuration string to parse.
 	 */
-	class ConfigItemWithInt(configString: String) : ConfigItem() {
-		val value: Int
-
-		init {
-			val parts = configString.split(";")
-			if(parts.size == 2) {
-				parseConfigString(parts[0])
-				value = parts[1].toInt()
-			} else {
-				throw IllegalArgumentException("Invalid config string format: $configString")
-			}
-			validateConfigItem()
-		}
-	}
+	class ConfigItemStackWithInt(configString: String) : ConfigItemStackWith<Int>(configString, String::toInt)
 
 	/**
 	 *  Constructor that takes a configuration string in the format "modid:item:meta;value".
 	 *
 	 *  @param configString The configuration string to parse.
 	 */
-	class ConfigItemWithBoolean(configString: String) : ConfigItem() {
-		val value: Boolean
-
-		init {
-			val parts = configString.split(";")
-			if(parts.size == 2) {
-				parseConfigString(parts[0])
-				value = parts[1].toBoolean()
-			} else {
-				throw IllegalArgumentException("Invalid config string format: $configString")
-			}
-			validateConfigItem()
-		}
-	}
+	class ConfigItemStackWithBoolean(configString: String) : ConfigItemStackWith<Boolean>(configString, String::toBoolean)
 }
 

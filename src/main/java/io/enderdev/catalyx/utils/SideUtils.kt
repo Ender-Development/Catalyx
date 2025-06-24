@@ -6,15 +6,15 @@ import net.minecraftforge.fml.common.FMLCommonHandler
  * Utility object for checking the current side (client or server).
  */
 object SideUtils {
-	fun isClient(): Boolean {
-		return FMLCommonHandler.instance().effectiveSide.isClient
-	}
+	private val handler = FMLCommonHandler.instance()
 
-	fun isServer(): Boolean {
-		return FMLCommonHandler.instance().effectiveSide.isServer
-	}
+	// TODO - do these ever change? if not, just set the variables instead of using a getter function
+	val isClient: Boolean
+		get() = handler.effectiveSide.isClient
 
-	fun isDedicatedServer(): Boolean {
-		return FMLCommonHandler.instance().side.isServer
-	}
+	val isServer: Boolean
+		get() = handler.effectiveSide.isServer
+
+	val isDedicatedServer: Boolean
+		get() = handler.side.isServer
 }
