@@ -30,7 +30,7 @@ fun String.toStack(quantity: Int = 1, meta: Int = 0): ItemStack {
 		ItemStack.EMPTY
 }
 
-fun String.toIngredient(quantity: Int = 1, meta: Int = 0): Ingredient = Ingredient.fromStacks(toStack(quantity, meta))
+fun String.toIngredient(meta: Int = 0): Ingredient = Ingredient.fromStacks(toStack(meta = meta))
 
 fun String.toDict(prefix: String) = "$prefix${replaceFirstChar(Char::uppercaseChar)}"
 

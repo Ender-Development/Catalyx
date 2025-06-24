@@ -31,6 +31,7 @@ abstract class BaseGui(container: Container, open val tile: BaseMachineTile<*>) 
 	open val displayNameOffset = 8
 	open val displayName: String = tile.blockType.localizedName
 
+	open val buttonSide = ButtonSide.RIGHT
 	lateinit var pauseButton: PauseButton
 	lateinit var redstoneButton: RedstoneButton
 
@@ -41,10 +42,10 @@ abstract class BaseGui(container: Container, open val tile: BaseMachineTile<*>) 
 
 	override fun initGui() {
 		super.initGui()
-		pauseButton = PauseButton(this.guiLeft + 175 - 20, this.guiTop + displayNameOffset - 4)
-		this.buttonList.add(pauseButton)
-		redstoneButton = RedstoneButton(this.guiLeft + 175 - 38, this.guiTop + displayNameOffset - 4)
-		this.buttonList.add(redstoneButton)
+		pauseButton = PauseButton(guiLeft + (if(buttonSide == ButtonSide.RIGHT) tile.guiWidth - 16 else 0) + 4 * buttonSide.xMult, guiTop + (displayNameOffset shr 1))
+		buttonList.add(pauseButton)
+		redstoneButton = RedstoneButton(pauseButton.x + 18 * buttonSide.xMult, pauseButton.y)
+		buttonList.add(redstoneButton)
 	}
 
 	open fun renderTooltips(mouseX: Int, mouseY: Int) {
