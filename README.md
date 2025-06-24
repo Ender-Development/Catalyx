@@ -1,6 +1,6 @@
 # <img src="src/main/resources/assets/catalyx/textures/logo.png" alt="Catalyx" height="42" width="42"> Catalyx
 
-Catalyx is a [Kotlin](https://www.curseforge.com/minecraft/mc-mods/forgelin-continuous) library for shared machine code between [Alchemistry Redox](https://github.com/Ender-Development/Alchemistry) and [Re-Emerging Technology](https://github.com/Ender-Development/Re-Emerging-Technology).
+Catalyx is a library mod written in [Kotlin](https://www.curseforge.com/minecraft/mc-mods/forgelin-continuous) for shared code between [Alchemistry Redox](https://github.com/Ender-Development/Alchemistry), [Re-Emerging Technology](https://github.com/Ender-Development/Re-Emerging-Technology) and possible future mods made by us.
 
 <a href="https://www.akliz.net/enderman"><img src="https://github.com/Ender-Development/PatchouliBooks/raw/master/banner.png" align="center"/></a>
 
@@ -22,7 +22,7 @@ You can contact us on our [Discord](https://discord.gg/JF7x2vG).
 
 Feel free to contribute to the project. We are always happy about pull requests.
 If you want to help us, you can find potential tasks in
-the [issue tracker](https://github.com/Ender-Development/Re-Emerging-Technology/issues).
+the [issue tracker](https://github.com/Ender-Development/Catalyx/issues).
 Of course, you can also create new issues if you find a bug or have a suggestion for a new feature.
 Should you have any questions, feel free to ask us on [Discord](https://discord.gg/JF7x2vG).
 
