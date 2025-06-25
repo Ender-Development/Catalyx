@@ -1,19 +1,20 @@
 package io.enderdev.catalyx.client.gui
 
-import io.enderdev.catalyx.client.container.BaseContainer
-import io.enderdev.catalyx.tiles.BaseTile
+import net.minecraft.client.gui.inventory.GuiContainer
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.inventory.Container
 import net.minecraft.inventory.IInventory
+import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.fml.common.network.IGuiHandler
 
 class CatalyxGuiHandler : IGuiHandler {
-	private val containers = mutableListOf<Class<out BaseContainer>>()
-	private val guis = mutableListOf<Class<out BaseGui>>()
-	private val tileEntities = mutableListOf<Class<out BaseTile>>()
+	private val containers = mutableListOf<Class<out Container>>()
+	private val guis = mutableListOf<Class<out GuiContainer>>()
+	private val tileEntities = mutableListOf<Class<out TileEntity>>()
 
-	fun registerId(container: Class<out BaseContainer>, gui: Class<out BaseGui>, te: Class<out BaseTile>): Int {
+	fun registerId(container: Class<out Container>, gui: Class<out GuiContainer>, te: Class<out TileEntity>): Int {
 		containers.add(container)
 		guis.add(gui)
 		tileEntities.add(te)

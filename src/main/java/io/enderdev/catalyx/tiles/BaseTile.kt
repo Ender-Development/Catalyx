@@ -1,6 +1,7 @@
 package io.enderdev.catalyx.tiles
 
 import io.enderdev.catalyx.CatalyxSettings
+import io.enderdev.catalyx.client.container.BaseContainer
 import io.enderdev.catalyx.tiles.helper.*
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
@@ -28,10 +29,10 @@ import net.minecraftforge.items.wrapper.CombinedInvWrapper
 /**
  * A base TileEntity in Catalyx, implementing separate input and output inventories; saving/loading from NBT; energy, fluid and item capability handling
  */
-abstract class BaseTile(val settings: CatalyxSettings) : TileEntity() {
+abstract class BaseTile(val settings: CatalyxSettings) : TileEntity(), BaseContainer.IBaseContainerCompat {
 	var inputSlots = 0
 	var outputSlots = 0
-	open val SIZE
+	override val SIZE
 		get() = inventory.slots
 	var dirtyTicks = 0
 
@@ -46,7 +47,7 @@ abstract class BaseTile(val settings: CatalyxSettings) : TileEntity() {
 	open val automationInvHandler: CombinedInvWrapper
 		get() = CombinedInvWrapper(automationInput, automationOutput)
 
-	open fun canInteractWith(player: EntityPlayer) = !isInvalid && player.getDistanceSq(pos.add(.5, .5, .5)) <= 64
+	override fun canInteractWith(player: EntityPlayer) = !isInvalid && player.getDistanceSq(pos.add(.5, .5, .5)) <= 64
 
 	override fun shouldRefresh(world: World, pos: BlockPos, oldState: IBlockState, newState: IBlockState): Boolean {
 		return oldState.block != newState.block

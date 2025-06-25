@@ -3,6 +3,7 @@ package io.enderdev.catalyx.tiles
 import io.enderdev.catalyx.CatalyxSettings
 import io.enderdev.catalyx.client.button.PauseButton
 import io.enderdev.catalyx.client.button.RedstoneButton
+import io.enderdev.catalyx.client.gui.BaseGuiTyped
 import io.enderdev.catalyx.tiles.helper.IButtonTile
 import io.enderdev.catalyx.tiles.helper.IGuiTile
 import io.enderdev.catalyx.tiles.helper.IItemTile
@@ -12,13 +13,13 @@ import net.minecraft.util.ITickable
 /**
  * A base Catalyx TileEntity with functions allowing you to create custom machines efficiently
  */
-abstract class BaseMachineTile<T>(settings: CatalyxSettings) : BaseTile(settings), ITickable, IGuiTile, IItemTile, IButtonTile {
+abstract class BaseMachineTile<T>(settings: CatalyxSettings) : BaseTile(settings), ITickable, IGuiTile, IItemTile, IButtonTile, BaseGuiTyped.IDefaultButtonVariables {
 	abstract val recipeTime: Int
 	abstract val energyPerTick: Int
 
 	var progressTicks = 0
-	var isPaused = false
-	var needsRedstonePower = false
+	override var isPaused = false
+	override var needsRedstonePower = false
 	var currentRecipe: T? = null
 
 	/**

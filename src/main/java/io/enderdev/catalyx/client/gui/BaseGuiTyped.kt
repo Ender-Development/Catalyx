@@ -10,6 +10,8 @@ import io.enderdev.catalyx.client.gui.wrappers.CapabilityFluidDisplayWrapper
 import io.enderdev.catalyx.network.ButtonPacket
 import io.enderdev.catalyx.network.PacketHandler
 import io.enderdev.catalyx.tiles.BaseMachineTile
+import io.enderdev.catalyx.tiles.BaseTile
+import io.enderdev.catalyx.tiles.helper.IGuiTile
 import io.enderdev.catalyx.utils.RenderUtils
 import io.enderdev.catalyx.utils.extensions.get
 import io.enderdev.catalyx.utils.extensions.translate
@@ -19,7 +21,7 @@ import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.inventory.Container
 import net.minecraft.util.ResourceLocation
 
-abstract class BaseGui(container: Container, open val tile: BaseMachineTile<*>) : GuiContainer(container) {
+abstract class BaseGuiTyped<T>(container: Container, open val tile: T) : GuiContainer(container) where T : IGuiTile, T : BaseTile, T : BaseGuiTyped.IDefaultButtonVariables {
 	abstract val textureLocation: ResourceLocation
 
 	val displayData = mutableListOf<CapabilityDisplayWrapper>()
@@ -153,18 +155,25 @@ abstract class BaseGui(container: Container, open val tile: BaseMachineTile<*>) 
 		}
 	}
 
-	fun drawProgressBar(x: Int, y: Int, u: Int, v: Int, w: Int, h: Int) {
-		mc.textureManager.bindTexture(textureLocation)
-		val i = (width - xSize) shr 1
-		val j = (height - ySize) shr 1
-		if(tile.recipeTime == 0 && !tile.input[0].isEmpty) {
-			drawTexturedModalRect(x + i, y + j, u, v, w, h)
-		} else if(tile.progressTicks > 0) {
-			val k = getBarScaled(w, tile.progressTicks, tile.recipeTime)
-			drawTexturedModalRect(x + i, y + j, u, v, k, h)
-		}
-	}
-
 	fun isHovered(x: Int, y: Int, width: Int, height: Int, mouseX: Int, mouseY: Int) =
 		mouseX >= x && mouseX < x + width && mouseY >= y && mouseY < y + height
+
+	interface IDefaultButtonVariables {
+		var isPaused: Boolean
+		var needsRedstonePower: Boolean
+	}
+
+	abstract class BaseGui(container: Container, override val tile: BaseMachineTile<*>) : BaseGuiTyped<BaseMachineTile<*>>(container, tile) {
+		fun drawProgressBar(x: Int, y: Int, u: Int, v: Int, w: Int, h: Int) {
+			mc.textureManager.bindTexture(textureLocation)
+			val i = (width - xSize) shr 1
+			val j = (height - ySize) shr 1
+			if(tile.recipeTime == 0 && !tile.input[0].isEmpty) {
+				drawTexturedModalRect(x + i, y + j, u, v, w, h)
+			} else if(tile.progressTicks > 0) {
+				val k = getBarScaled(w, tile.progressTicks, tile.recipeTime)
+				drawTexturedModalRect(x + i, y + j, u, v, k, h)
+			}
+		}
+	}
 }
