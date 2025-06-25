@@ -1,33 +1,54 @@
 package io.enderdev.catalyx.network
 
 import io.enderdev.catalyx.Catalyx
+import io.enderdev.catalyx.client.button.AbstractButton
 import io.enderdev.catalyx.tiles.helper.IButtonTile
 import io.netty.buffer.ByteBuf
+import io.netty.buffer.Unpooled
 import net.minecraft.util.math.BlockPos
 import net.minecraftforge.fml.common.FMLCommonHandler
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext
+import java.nio.charset.Charset
 
 class ButtonPacket() : IMessage {
 	private lateinit var blockPos: BlockPos
-	private var id = 0
+	private lateinit var buttonClass: Class<out AbstractButton>
+	private var x: Int = 0
+	private var y: Int = 0
+	private lateinit var extraData: ByteBuf
 
 	override fun fromBytes(buf: ByteBuf) {
-		this.blockPos = BlockPos(buf.readInt(), buf.readInt(), buf.readInt())
-		this.id = buf.readInt()
+		blockPos = BlockPos(buf.readInt(), buf.readInt(), buf.readInt())
+		x = buf.readInt()
+		y = buf.readInt()
+		val clazz = Class.forName(buf.readCharSequence(buf.readInt(), Charsets.UTF_8).toString())
+		@Suppress("UNCHECKED_CAST")
+		if(AbstractButton::class.java.isAssignableFrom(clazz))
+			buttonClass = clazz as Class<out AbstractButton>
+		extraData = buf.readBytes(buf.readInt())
 	}
 
 	override fun toBytes(buf: ByteBuf) {
 		buf.writeInt(blockPos.x)
 		buf.writeInt(blockPos.y)
 		buf.writeInt(blockPos.z)
-		buf.writeInt(id)
+		buf.writeInt(x)
+		buf.writeInt(y)
+		buf.writeInt(buttonClass.name.length)
+		buf.writeCharSequence(buttonClass.name, Charsets.UTF_8)
+		buf.writeInt(extraData.readableBytes())
+		buf.writeBytes(extraData)
 	}
 
-	constructor(pos: BlockPos, id: Int) : this() {
+	constructor(pos: BlockPos, button: AbstractButton) : this() {
 		this.blockPos = pos
-		this.id = id
+		this.buttonClass = button::class.java
+		x = button.x
+		y = button.y
+		extraData = Unpooled.buffer()
+		button.writeExtraData(extraData)
 	}
 
 	class Handler : IMessageHandler<ButtonPacket, IMessage> {
@@ -40,9 +61,11 @@ class ButtonPacket() : IMessage {
 			val playerEntity = ctx.serverHandler.player
 			val tile = playerEntity.world.getTileEntity(message.blockPos)
 
-			if(tile is IButtonTile)
-				tile.handleButtonPress(message.id)
-			else // Received a ButtonPacket for a BlockPos which doesn't have a TileEntity that extends IButtonTile ;p
+			if(tile is IButtonTile) {
+				val instance = message.buttonClass.getDeclaredConstructor(Int::class.java, Int::class.java).newInstance(message.x, message.y)
+				instance.readExtraData(message.extraData)
+				tile.handleButtonPress(instance)
+			} else // Received a ButtonPacket for a BlockPos which doesn't have a TileEntity that extends IButtonTile ;p
 				Catalyx.logger.error("Received a ButtonPacket for a block which doesn't have a tile entity that can handle button presses")
 		}
 	}

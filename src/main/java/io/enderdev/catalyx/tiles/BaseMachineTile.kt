@@ -1,6 +1,7 @@
 package io.enderdev.catalyx.tiles
 
 import io.enderdev.catalyx.CatalyxSettings
+import io.enderdev.catalyx.client.button.AbstractButton
 import io.enderdev.catalyx.client.button.PauseButton
 import io.enderdev.catalyx.client.button.RedstoneButton
 import io.enderdev.catalyx.client.gui.BaseGuiTyped
@@ -92,10 +93,10 @@ abstract class BaseMachineTile<T>(settings: CatalyxSettings) : BaseTile(settings
 		progressTicks = compound.getInteger("ProgressTicks")
 	}
 
-	override fun handleButtonPress(id: Int) {
-		if(id == PauseButton.buttonId)
+	override fun handleButtonPress(button: AbstractButton) {
+		if(button is PauseButton)
 			isPaused = !isPaused
-		else if(id == RedstoneButton.buttonId)
+		else if(button is RedstoneButton)
 			needsRedstonePower = !needsRedstonePower
 		markDirtyGUI()
 	}

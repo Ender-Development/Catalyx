@@ -3,11 +3,7 @@ package io.enderdev.catalyx.client.button
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.GlStateManager
 
-class RedstoneButton(x: Int, y: Int) : AbstractButton(buttonId, x, y) {
-	companion object {
-		val buttonId = CatalyxButtons.nextId()
-	}
-
+class RedstoneButton(x: Int, y: Int) : AbstractButton(x, y) {
 	enum class State {
 		ON, OFF
 	}
