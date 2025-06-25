@@ -4,9 +4,7 @@ import net.minecraftforge.energy.IEnergyStorage
 import java.text.NumberFormat
 import java.util.*
 
-open class CapabilityEnergyDisplayWrapper(x: Int, y: Int, width: Int, height: Int, val energyStorage: () -> IEnergyStorage) :
-	CapabilityDisplayWrapper(x, y, width, height) {
-
+open class CapabilityEnergyDisplayWrapper(x: Int, y: Int, width: Int, height: Int, val energyStorage: () -> IEnergyStorage) : CapabilityDisplayWrapper(x, y, width, height) {
 	override fun getStored() = energyStorage().energyStored
 	override fun getCapacity() = energyStorage().maxEnergyStored
 
