@@ -21,7 +21,7 @@ import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.inventory.Container
 import net.minecraft.util.ResourceLocation
 
-abstract class BaseGuiTyped<T>(container: Container, open val tile: T) : GuiContainer(container) where T : IGuiTile, T : BaseTile, T : BaseGuiTyped.IDefaultButtonVariables {
+abstract class BaseGuiTyped<T>(container: Container, val tileEntity: T) : GuiContainer(container) where T : IGuiTile, T : BaseTile, T : BaseGuiTyped.IDefaultButtonVariables {
 	abstract val textureLocation: ResourceLocation
 
 	val displayData = mutableListOf<CapabilityDisplayWrapper>()
@@ -31,20 +31,20 @@ abstract class BaseGuiTyped<T>(container: Container, open val tile: T) : GuiCont
 	open val powerBarTexture = ResourceLocation(Reference.MODID, "textures/gui/container/gui.png")
 
 	open val displayNameOffset = 8
-	open val displayName: String = tile.blockType.localizedName
+	open val displayName: String = tileEntity.blockType.localizedName
 
 	open val buttonSide = ButtonSide.RIGHT
 	lateinit var pauseButton: PauseButton
 	lateinit var redstoneButton: RedstoneButton
 
 	init {
-		xSize = tile.guiWidth
-		ySize = tile.guiHeight
+		xSize = tileEntity.guiWidth
+		ySize = tileEntity.guiHeight
 	}
 
 	override fun initGui() {
 		super.initGui()
-		pauseButton = PauseButton(guiLeft + (if(buttonSide == ButtonSide.RIGHT) tile.guiWidth - 16 else 0) + 4 * buttonSide.xMult, guiTop + (displayNameOffset shr 1))
+		pauseButton = PauseButton(guiLeft + (if(buttonSide == ButtonSide.RIGHT) tileEntity.guiWidth - 16 else 0) + 4 * buttonSide.xMult, guiTop + (displayNameOffset shr 1))
 		buttonList.add(pauseButton)
 		redstoneButton = RedstoneButton(pauseButton.x + 18 * buttonSide.xMult, pauseButton.y)
 		buttonList.add(redstoneButton)
@@ -52,13 +52,13 @@ abstract class BaseGuiTyped<T>(container: Container, open val tile: T) : GuiCont
 
 	open fun renderTooltips(mouseX: Int, mouseY: Int) {
 		if(isHovered(pauseButton.x, pauseButton.y, 16, 16, mouseX, mouseY)) {
-			if(tile.isPaused)
+			if(tileEntity.isPaused)
 				this.drawHoveringText(listOf("tooltip.${Reference.MODID}.paused".translate()), mouseX, mouseY)
 			else
 				this.drawHoveringText(listOf("tooltip.${Reference.MODID}.running".translate()), mouseX, mouseY)
 		}
 		if(isHovered(redstoneButton.x, redstoneButton.y, 16, 16, mouseX, mouseY)) {
-			if(tile.needsRedstonePower)
+			if(tileEntity.needsRedstonePower)
 				this.drawHoveringText(listOf("tooltip.${Reference.MODID}.redstone_high".translate()), mouseX, mouseY)
 			else
 				this.drawHoveringText(listOf("tooltip.${Reference.MODID}.redstone_low".translate()), mouseX, mouseY)
@@ -104,7 +104,7 @@ abstract class BaseGuiTyped<T>(container: Container, open val tile: T) : GuiCont
 
 	override fun actionPerformed(button: GuiButton) {
 		if(button is AbstractButton)
-			PacketHandler.channel.sendToServer(ButtonPacket(tile.pos, button.buttonId))
+			PacketHandler.channel.sendToServer(ButtonPacket(tileEntity.pos, button))
 	}
 
 	fun drawFluidTank(wrapper: CapabilityFluidDisplayWrapper, i: Int, j: Int, width: Int = 16, height: Int = 70) {
@@ -139,10 +139,10 @@ abstract class BaseGuiTyped<T>(container: Container, open val tile: T) : GuiCont
 	}
 
 	override fun drawGuiContainerForegroundLayer(mouseX: Int, mouseY: Int) {
-		if(tile.isPaused) pauseButton.isPaused = PauseButton.State.PAUSED
+		if(tileEntity.isPaused) pauseButton.isPaused = PauseButton.State.PAUSED
 		else pauseButton.isPaused = PauseButton.State.RUNNING
 
-		if(tile.needsRedstonePower) redstoneButton.needsPower = RedstoneButton.State.ON
+		if(tileEntity.needsRedstonePower) redstoneButton.needsPower = RedstoneButton.State.ON
 		else redstoneButton.needsPower = RedstoneButton.State.OFF
 
 		if(this.displayName.isNotEmpty()) {
@@ -162,18 +162,18 @@ abstract class BaseGuiTyped<T>(container: Container, open val tile: T) : GuiCont
 		var isPaused: Boolean
 		var needsRedstonePower: Boolean
 	}
+}
 
-	abstract class BaseGui(container: Container, override val tile: BaseMachineTile<*>) : BaseGuiTyped<BaseMachineTile<*>>(container, tile) {
-		fun drawProgressBar(x: Int, y: Int, u: Int, v: Int, w: Int, h: Int) {
-			mc.textureManager.bindTexture(textureLocation)
-			val i = (width - xSize) shr 1
-			val j = (height - ySize) shr 1
-			if(tile.recipeTime == 0 && !tile.input[0].isEmpty) {
-				drawTexturedModalRect(x + i, y + j, u, v, w, h)
-			} else if(tile.progressTicks > 0) {
-				val k = getBarScaled(w, tile.progressTicks, tile.recipeTime)
-				drawTexturedModalRect(x + i, y + j, u, v, k, h)
-			}
+abstract class BaseGui(container: Container, tileEntity: BaseMachineTile<*>) : BaseGuiTyped<BaseMachineTile<*>>(container, tileEntity) {
+	fun drawProgressBar(x: Int, y: Int, u: Int, v: Int, w: Int, h: Int) {
+		mc.textureManager.bindTexture(textureLocation)
+		val i = (width - xSize) shr 1
+		val j = (height - ySize) shr 1
+		if(tileEntity.recipeTime == 0 && !tileEntity.input[0].isEmpty) {
+			drawTexturedModalRect(x + i, y + j, u, v, w, h)
+		} else if(tileEntity.progressTicks > 0) {
+			val k = getBarScaled(w, tileEntity.progressTicks, tileEntity.recipeTime)
+			drawTexturedModalRect(x + i, y + j, u, v, k, h)
 		}
 	}
 }

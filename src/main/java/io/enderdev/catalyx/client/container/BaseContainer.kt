@@ -9,13 +9,10 @@ import net.minecraft.item.ItemStack
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.SlotItemHandler
 
-abstract class BaseContainer(playerInv: IInventory, open val tile: IBaseContainerCompat) : Container() {
+abstract class BaseContainer(playerInv: IInventory, val tileEntity: IBaseContainerCompat) : Container() {
 	init {
-		addOwnSlots()
 		addPlayerSlots(playerInv)
 	}
-
-	abstract fun addOwnSlots()
 
 	fun addSlotArray(x: Int, y: Int, rows: Int, columns: Int, handler: IItemHandler) {
 		var index = 0
@@ -28,19 +25,19 @@ abstract class BaseContainer(playerInv: IInventory, open val tile: IBaseContaine
 		for(row in 0..2) {
 			for(col in 0..8) {
 				val x = 8 + col * 18
-				val y = row * 18 + tile.guiHeight - 82
+				val y = row * 18 + tileEntity.guiHeight - 82
 				this.addSlotToContainer(Slot(playerInventory, col + row * 9 + 9, x, y))
 			}
 		}
 
 		for(row in 0..8) {
 			val x = 8 + row * 18
-			val y = tile.guiHeight - 24
+			val y = tileEntity.guiHeight - 24
 			this.addSlotToContainer(Slot(playerInventory, row, x, y))
 		}
 	}
 
-	override fun canInteractWith(player: EntityPlayer): Boolean = tile.canInteractWith(player)
+	override fun canInteractWith(player: EntityPlayer): Boolean = tileEntity.canInteractWith(player)
 
 	override fun transferStackInSlot(player: EntityPlayer, index: Int): ItemStack {
 		var itemstack = ItemStack.EMPTY
@@ -49,11 +46,11 @@ abstract class BaseContainer(playerInv: IInventory, open val tile: IBaseContaine
 			val itemstack1 = slot.stack
 			itemstack = itemstack1.copy()
 
-			if(index < tile.SIZE) {
-				if(!this.mergeItemStack(itemstack1, tile.SIZE, this.inventorySlots.size, true)) {
+			if(index < tileEntity.SIZE) {
+				if(!this.mergeItemStack(itemstack1, tileEntity.SIZE, this.inventorySlots.size, true)) {
 					return ItemStack.EMPTY
 				}
-			} else if(!this.mergeItemStack(itemstack1, 0, tile.SIZE, false)) return ItemStack.EMPTY
+			} else if(!this.mergeItemStack(itemstack1, 0, tileEntity.SIZE, false)) return ItemStack.EMPTY
 
 			if(itemstack1.count <= 0) slot.putStack(ItemStack.EMPTY)
 			else slot.onSlotChanged()
