@@ -52,6 +52,11 @@ abstract class BaseMachineTile<T>(settings: CatalyxSettings) : BaseTile(settings
 	abstract fun shouldProcess(): Boolean
 
 	/**
+	 * Check if the recipe progress should reset if shouldProcess() is false
+	 */
+	open fun shouldResetProgress() = true
+
+	/**
 	 * Called every tick when the machine is idle.
 	 * Used for updating the recipe, etc.
 	 */
@@ -67,8 +72,13 @@ abstract class BaseMachineTile<T>(settings: CatalyxSettings) : BaseTile(settings
 			return
 		}
 		onIdleTick()
-		if(currentRecipe == null || !shouldProcess()) {
+		if(currentRecipe == null) {
 			progressTicks = 0
+			return
+		}
+		if(!shouldProcess()) {
+			if(shouldResetProgress())
+				progressTicks = 0
 			return
 		}
 		onWorkTick()
