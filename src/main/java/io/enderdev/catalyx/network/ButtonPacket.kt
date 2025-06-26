@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext
-import java.nio.charset.Charset
+import kotlin.jvm.java
 
 class ButtonPacket() : IMessage {
 	private lateinit var blockPos: BlockPos
@@ -23,10 +23,16 @@ class ButtonPacket() : IMessage {
 		blockPos = BlockPos(buf.readInt(), buf.readInt(), buf.readInt())
 		x = buf.readInt()
 		y = buf.readInt()
-		val clazz = Class.forName(buf.readCharSequence(buf.readInt(), Charsets.UTF_8).toString())
+		val className = buf.readCharSequence(buf.readInt(), Charsets.UTF_8).toString()
+		if(!AbstractButton.buttonClasses.contains(className)) {
+			Catalyx.logger.error("Received illegal class name '${className}' in ButtonPacket")
+			// we'll crash from a lateinit not being initialised later anyways so might as well
+			throw IllegalArgumentException()
+		}
+		val `class` = Class.forName(className)
 		@Suppress("UNCHECKED_CAST")
-		if(AbstractButton::class.java.isAssignableFrom(clazz))
-			buttonClass = clazz as Class<out AbstractButton>
+		if(AbstractButton::class.java.isAssignableFrom(`class`)) // this should be guaranteed but check just in case
+			buttonClass = `class` as Class<out AbstractButton>
 		extraData = buf.readBytes(buf.readInt())
 	}
 

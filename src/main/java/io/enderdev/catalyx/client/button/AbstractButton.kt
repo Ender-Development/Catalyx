@@ -10,6 +10,10 @@ import net.minecraft.util.ResourceLocation
 abstract class AbstractButton(x: Int, y: Int) : GuiButton(CatalyxButtons.nextId(), x, y, 16, 16, "") {
 	open val textureLocation = ResourceLocation(Reference.MODID, "textures/gui/container/gui.png")
 
+	init {
+		buttonClasses.add(this::class.java.name)
+	}
+
 	override fun drawButton(mc: Minecraft, mouseX: Int, mouseY: Int, partialTicks: Float) {
 		if(!visible)
 			return
@@ -25,4 +29,8 @@ abstract class AbstractButton(x: Int, y: Int) : GuiButton(CatalyxButtons.nextId(
 
 	open fun writeExtraData(buf: ByteBuf) {}
 	open fun readExtraData(buf: ByteBuf) {}
+
+	internal companion object {
+		val buttonClasses = hashSetOf<String>()
+	}
 }
