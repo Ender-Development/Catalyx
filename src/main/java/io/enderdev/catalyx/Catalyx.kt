@@ -33,6 +33,7 @@ object Catalyx {
 	}
 
 	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
 	fun renderWorldLast(event: RenderWorldLastEvent) {
 		BlockHighlighter.eventHandler(event)
 	}
