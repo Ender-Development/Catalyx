@@ -1,5 +1,6 @@
 package io.enderdev.catalyx.client.gui
 
+import io.enderdev.catalyx.utils.SideUtils
 import net.minecraft.client.gui.inventory.GuiContainer
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.Container
@@ -8,16 +9,18 @@ import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.fml.common.network.IGuiHandler
+import net.minecraftforge.fml.relauncher.SideOnly
 
 class CatalyxGuiHandler : IGuiHandler {
 	private val containers = mutableListOf<Class<out Container>>()
 	private val guis = mutableListOf<Class<out GuiContainer>>()
 	private val tileEntities = mutableListOf<Class<out TileEntity>>()
 
-	fun registerId(container: Class<out Container>, gui: Class<out GuiContainer>, te: Class<out TileEntity>): Int {
-		containers.add(container)
-		guis.add(gui)
+	fun registerId(te: Class<out TileEntity>, container: Class<out Container>, gui: () -> Class<out GuiContainer>): Int {
 		tileEntities.add(te)
+		containers.add(container)
+		if(SideUtils.isClient)
+			guis.add(gui())
 		return tileEntities.size - 1
 	}
 
