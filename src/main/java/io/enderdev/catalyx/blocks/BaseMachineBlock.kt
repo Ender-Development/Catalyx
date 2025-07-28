@@ -2,7 +2,6 @@ package io.enderdev.catalyx.blocks
 
 import io.enderdev.catalyx.CatalyxSettings
 import net.minecraft.block.state.IBlockState
-import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos

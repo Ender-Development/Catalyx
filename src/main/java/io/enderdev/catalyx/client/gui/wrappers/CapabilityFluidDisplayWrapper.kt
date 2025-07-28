@@ -2,7 +2,7 @@ package io.enderdev.catalyx.client.gui.wrappers
 
 import net.minecraftforge.fluids.IFluidTank
 import java.text.NumberFormat
-import java.util.Locale
+import java.util.*
 
 open class CapabilityFluidDisplayWrapper(x: Int, y: Int, width: Int, height: Int, val fluidTank: () -> IFluidTank) : CapabilityDisplayWrapper(x, y, width, height) {
 	override fun getCapacity() = fluidTank().capacity

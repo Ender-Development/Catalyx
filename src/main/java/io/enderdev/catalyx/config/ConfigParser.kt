@@ -1,9 +1,7 @@
 package io.enderdev.catalyx.config
 
-import io.enderdev.catalyx.config.ConfigParser.ConfigItemStack.Companion.IGNORE_META
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
-import net.minecraft.util.ResourceLocation
 import net.minecraftforge.fml.common.Loader
 
 /**

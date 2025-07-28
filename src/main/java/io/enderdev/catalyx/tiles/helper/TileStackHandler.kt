@@ -1,9 +1,9 @@
 package io.enderdev.catalyx.tiles.helper
 
+import io.enderdev.catalyx.tiles.BaseTile
 import io.enderdev.catalyx.tiles.BaseTile.Companion.ITEM_CAP
 import io.enderdev.catalyx.utils.extensions.get
 import io.enderdev.catalyx.utils.extensions.tryInsertInto
-import io.enderdev.catalyx.tiles.BaseTile
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.items.ItemStackHandler

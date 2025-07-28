@@ -9,7 +9,6 @@ import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.fml.common.network.IGuiHandler
-import net.minecraftforge.fml.relauncher.SideOnly
 
 class CatalyxGuiHandler : IGuiHandler {
 	private val containers = mutableListOf<Class<out Container>>()

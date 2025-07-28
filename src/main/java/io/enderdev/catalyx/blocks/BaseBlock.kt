@@ -2,7 +2,6 @@ package io.enderdev.catalyx.blocks
 
 import io.enderdev.catalyx.CatalyxSettings
 import io.enderdev.catalyx.IBothProvider
-import io.enderdev.catalyx.items.IItemProvider
 import net.minecraft.block.Block
 import net.minecraft.block.material.Material
 import net.minecraft.item.Item

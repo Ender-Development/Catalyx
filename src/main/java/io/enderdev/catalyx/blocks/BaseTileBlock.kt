@@ -1,7 +1,6 @@
 package io.enderdev.catalyx.blocks
 
 import io.enderdev.catalyx.CatalyxSettings
-import io.enderdev.catalyx.Reference
 import io.enderdev.catalyx.tiles.BaseTile
 import net.minecraft.block.ITileEntityProvider
 import net.minecraft.block.state.IBlockState

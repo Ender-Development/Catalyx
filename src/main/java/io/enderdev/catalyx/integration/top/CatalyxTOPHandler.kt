@@ -4,11 +4,7 @@ import io.enderdev.catalyx.Reference
 import io.enderdev.catalyx.tiles.helper.IFluidTile
 import io.enderdev.catalyx.utils.extensions.getRealColor
 import mcjty.theoneprobe.TheOneProbe
-import mcjty.theoneprobe.api.IProbeHitData
-import mcjty.theoneprobe.api.IProbeInfo
-import mcjty.theoneprobe.api.IProbeInfoProvider
-import mcjty.theoneprobe.api.NumberFormat
-import mcjty.theoneprobe.api.ProbeMode
+import mcjty.theoneprobe.api.*
 import mcjty.theoneprobe.apiimpl.styles.ProgressStyle
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer

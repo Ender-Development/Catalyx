@@ -12,9 +12,6 @@ import net.minecraftforge.fluids.Fluid
 import net.minecraftforge.fluids.FluidStack
 import net.minecraftforge.fluids.FluidTank
 import org.lwjgl.opengl.GL11
-import kotlin.let
-import kotlin.ranges.coerceAtMost
-import kotlin.ranges.coerceIn
 
 object RenderUtils {
 	val BLOCK_TEX: ResourceLocation = TextureMap.LOCATION_BLOCKS_TEXTURE
