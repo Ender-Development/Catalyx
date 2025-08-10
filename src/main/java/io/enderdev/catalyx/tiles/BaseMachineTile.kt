@@ -82,8 +82,8 @@ abstract class BaseMachineTile<T>(settings: CatalyxSettings) : BaseTile(settings
 			return
 		}
 		onWorkTick()
-		if(progressTicks++ == recipeTime) {
-			progressTicks = 0
+		if(progressTicks++ >= recipeTime) {
+			progressTicks -= recipeTime
 			onProcessComplete()
 		}
 	}
