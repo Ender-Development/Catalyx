@@ -124,7 +124,6 @@ abstract class BaseTile(val settings: CatalyxSettings) : TileEntity(), BaseConta
 		super.readFromNBT(compound)
 		if(this is IEnergyTile) {
 			val energyStored = compound.getInteger("EnergyStored")
-			energyStorage = EnergyStorage(energyCapacity())
 			energyStorage.receiveEnergy(energyStored, false)
 		}
 		if(this is IItemTile) {
