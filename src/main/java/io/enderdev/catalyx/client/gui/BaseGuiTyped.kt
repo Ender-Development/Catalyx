@@ -1,9 +1,9 @@
 package io.enderdev.catalyx.client.gui
 
 import io.enderdev.catalyx.Reference
-import io.enderdev.catalyx.client.button.AbstractButton
-import io.enderdev.catalyx.client.button.PauseButton
-import io.enderdev.catalyx.client.button.RedstoneButton
+import io.enderdev.catalyx.client.button.AbstractButtonWrapper
+import io.enderdev.catalyx.client.button.PauseButtonWrapper
+import io.enderdev.catalyx.client.button.RedstoneButtonWrapper
 import io.enderdev.catalyx.client.gui.wrappers.CapabilityDisplayWrapper
 import io.enderdev.catalyx.client.gui.wrappers.CapabilityEnergyDisplayWrapper
 import io.enderdev.catalyx.client.gui.wrappers.CapabilityFluidDisplayWrapper
@@ -34,8 +34,8 @@ abstract class BaseGuiTyped<T>(container: Container, val tileEntity: T) : GuiCon
 	open val displayName: String = tileEntity.blockType.localizedName
 
 	open val buttonSide = ButtonSide.RIGHT
-	lateinit var pauseButton: PauseButton
-	lateinit var redstoneButton: RedstoneButton
+	lateinit var pauseButton: PauseButtonWrapper
+	lateinit var redstoneButton: RedstoneButtonWrapper
 
 	init {
 		xSize = tileEntity.guiWidth
@@ -44,10 +44,10 @@ abstract class BaseGuiTyped<T>(container: Container, val tileEntity: T) : GuiCon
 
 	override fun initGui() {
 		super.initGui()
-		pauseButton = PauseButton(guiLeft + (if(buttonSide == ButtonSide.RIGHT) tileEntity.guiWidth - 16 else 0) + 4 * buttonSide.xMult, guiTop + (displayNameOffset shr 1))
-		buttonList.add(pauseButton)
-		redstoneButton = RedstoneButton(pauseButton.x + 18 * buttonSide.xMult, pauseButton.y)
-		buttonList.add(redstoneButton)
+		pauseButton = PauseButtonWrapper(guiLeft + (if(buttonSide == ButtonSide.RIGHT) tileEntity.guiWidth - 16 else 0) + 4 * buttonSide.xMult, guiTop + (displayNameOffset shr 1))
+		buttonList.add(pauseButton.button)
+		redstoneButton = RedstoneButtonWrapper(pauseButton.x + 18 * buttonSide.xMult, pauseButton.y)
+		buttonList.add(redstoneButton.button)
 	}
 
 	open fun renderTooltips(mouseX: Int, mouseY: Int) {
@@ -103,8 +103,8 @@ abstract class BaseGuiTyped<T>(container: Container, val tileEntity: T) : GuiCon
 	}
 
 	override fun actionPerformed(button: GuiButton) {
-		if(button is AbstractButton)
-			PacketHandler.channel.sendToServer(ButtonPacket(tileEntity.pos, button))
+		if(button is AbstractButtonWrapper.WrappedGuiButton)
+			PacketHandler.channel.sendToServer(ButtonPacket(tileEntity.pos, button.wrapper))
 	}
 
 	fun drawFluidTank(wrapper: CapabilityFluidDisplayWrapper, i: Int, j: Int, width: Int = 16, height: Int = 70) {
@@ -139,11 +139,11 @@ abstract class BaseGuiTyped<T>(container: Container, val tileEntity: T) : GuiCon
 	}
 
 	override fun drawGuiContainerForegroundLayer(mouseX: Int, mouseY: Int) {
-		if(tileEntity.isPaused) pauseButton.isPaused = PauseButton.State.PAUSED
-		else pauseButton.isPaused = PauseButton.State.RUNNING
+		if(tileEntity.isPaused) pauseButton.isPaused = PauseButtonWrapper.State.PAUSED
+		else pauseButton.isPaused = PauseButtonWrapper.State.RUNNING
 
-		if(tileEntity.needsRedstonePower) redstoneButton.needsPower = RedstoneButton.State.ON
-		else redstoneButton.needsPower = RedstoneButton.State.OFF
+		if(tileEntity.needsRedstonePower) redstoneButton.needsPower = RedstoneButtonWrapper.State.ON
+		else redstoneButton.needsPower = RedstoneButtonWrapper.State.OFF
 
 		if(this.displayName.isNotEmpty()) {
 			this.fontRenderer.drawString(

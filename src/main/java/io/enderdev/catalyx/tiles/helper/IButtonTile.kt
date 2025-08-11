@@ -1,7 +1,7 @@
 package io.enderdev.catalyx.tiles.helper
 
-import io.enderdev.catalyx.client.button.AbstractButton
+import io.enderdev.catalyx.client.button.AbstractButtonWrapper
 
 interface IButtonTile {
-	fun handleButtonPress(button: AbstractButton)
+	fun handleButtonPress(button: AbstractButtonWrapper)
 }
