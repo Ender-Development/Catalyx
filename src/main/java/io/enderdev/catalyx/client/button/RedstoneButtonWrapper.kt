@@ -16,10 +16,4 @@ class RedstoneButtonWrapper(x: Int, y: Int) : AbstractButtonWrapper(x, y) {
 		GlStateManager.color(1f, 1f, 1f)
 		drawTexturedModalRect(this.x, this.y, 64, if(needsPower == State.ON) 16 else 0, 16, 16)
 	} }
-
-	companion object {
-		init {
-			registerWrapper(this::class.java)
-		}
-	}
 }

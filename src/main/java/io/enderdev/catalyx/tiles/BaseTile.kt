@@ -1,7 +1,11 @@
 package io.enderdev.catalyx.tiles
 
 import io.enderdev.catalyx.CatalyxSettings
+import io.enderdev.catalyx.client.button.AbstractButtonWrapper
+import io.enderdev.catalyx.client.button.PauseButtonWrapper
+import io.enderdev.catalyx.client.button.RedstoneButtonWrapper
 import io.enderdev.catalyx.client.container.BaseContainer
+import io.enderdev.catalyx.client.gui.BaseGuiTyped
 import io.enderdev.catalyx.tiles.helper.*
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
@@ -124,6 +128,7 @@ abstract class BaseTile(val settings: CatalyxSettings) : TileEntity(), BaseConta
 		super.readFromNBT(compound)
 		if(this is IEnergyTile) {
 			val energyStored = compound.getInteger("EnergyStored")
+			energyStorage.extractEnergy(Int.MAX_VALUE, false)
 			energyStorage.receiveEnergy(energyStored, false)
 		}
 		if(this is IItemTile) {
@@ -197,6 +202,14 @@ abstract class BaseTile(val settings: CatalyxSettings) : TileEntity(), BaseConta
 				ITEM_CAP -> if(this is IItemTile) return ITEM_CAP.cast<T>(automationInvHandler)
 			}
 			super.getCapability(capability, facing)
+		}
+	}
+
+	init {
+		// these classes don't get loaded on server-side by default, make sure they're registered instead of kicking the problem down to the mod creators
+		if(this is BaseGuiTyped.IDefaultButtonVariables) {
+			AbstractButtonWrapper.registerWrapper(PauseButtonWrapper::class.java)
+			AbstractButtonWrapper.registerWrapper(RedstoneButtonWrapper::class.java)
 		}
 	}
 

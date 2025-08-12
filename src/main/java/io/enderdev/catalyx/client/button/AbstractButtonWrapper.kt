@@ -13,6 +13,7 @@ import kotlin.jvm.java
 
 abstract class AbstractButtonWrapper(x: Int, y: Int, width: Int = 16, height: Int = 16) {
 	open val textureLocation = ResourceLocation(Reference.MODID, "textures/gui/container/gui.png")
+	open val drawDefaultHoverOverlay = true
 
 	@SideOnly(Side.CLIENT)
 	class WrappedGuiButton(x: Int, y: Int, width: Int, height: Int, val wrapper: AbstractButtonWrapper) : GuiButton(-142, x, y, width, height, "") {
@@ -22,13 +23,17 @@ abstract class AbstractButtonWrapper(x: Int, y: Int, width: Int = 16, height: In
 
 			wrapper.drawButton()(this, mc, mouseX, mouseY, partialTicks)
 
+			if(!wrapper.drawDefaultHoverOverlay)
+				return
+
 			hovered = mouseX >= x && mouseX < x + width && mouseY >= y && mouseY < y + height
 			if(!hovered)
 				return
 
 			mc.textureManager.bindTexture(wrapper.textureLocation)
 			GlStateManager.color(1f, 1f, 1f)
-			drawModalRectWithCustomSizedTexture(x, y, 48f, 48f, 16, 16, width.toFloat(), height.toFloat())
+			// +1/-1 to account for the border and only highlight the contents
+			drawRect(x + 1, y + 1, x + width - 1, y + height - 1, 0x64ffffff)
 		}
 	}
 

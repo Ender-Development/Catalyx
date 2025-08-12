@@ -28,9 +28,11 @@ class ButtonPacket() : IMessage {
 		height = buf.readInt()
 		val className = buf.readCharSequence(buf.readInt(), Charsets.UTF_8).toString()
 		if(!AbstractButtonWrapper.buttonWrappers.contains(className)) {
-			Catalyx.logger.error("Received illegal class name '${className}' in ButtonPacket")
+			// this is needed to prevent potential security risks from people being able to send custom packets and potentially loading any class they want
+			val error = "Received illegal class name '$className' in ButtonPacket"
+			Catalyx.logger.error(error)
 			// we'll crash from a lateinit not being initialised later anyways so might as well
-			throw IllegalArgumentException()
+			throw IllegalArgumentException(error)
 		}
 		val `class` = Class.forName(className)
 		@Suppress("UNCHECKED_CAST")
@@ -75,7 +77,22 @@ class ButtonPacket() : IMessage {
 			val tile = playerEntity.world.getTileEntity(message.blockPos)
 
 			if(tile is IButtonTile) {
-				val instance = message.wrapperClass.getDeclaredConstructor(Int::class.java, Int::class.java, Int::class.java, Int::class.java).newInstance(message.x, message.y, message.width, message.height)
+				val instance = message.wrapperClass.let {
+					try {
+						it.getDeclaredConstructor(Int::class.java, Int::class.java, Int::class.java, Int::class.java).newInstance(message.x, message.y, message.width, message.height)
+					} catch(_: NoSuchMethodException) {
+						try {
+							it.getDeclaredConstructor(Int::class.java, Int::class.java).newInstance(message.x, message.y)
+						} catch(_: NoSuchMethodException) {
+							try {
+								it.getDeclaredConstructor().newInstance()
+							} catch(e: NoSuchMethodException) {
+								Catalyx.logger.error("No suitable constructor for class ${message.wrapperClass} found, tried (Int, Int, Int, Int)(x, y, w, h); (Int, Int)(x, y); ()")
+								throw e
+							}
+						}
+					}
+				}
 				instance.readExtraData(message.extraData)
 				tile.handleButtonPress(instance)
 			} else // Received a ButtonPacket for a BlockPos which doesn't have a TileEntity that extends IButtonTile ;p

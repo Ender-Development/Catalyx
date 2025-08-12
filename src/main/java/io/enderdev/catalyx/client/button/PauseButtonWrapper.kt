@@ -16,10 +16,4 @@ class PauseButtonWrapper(x: Int, y: Int) : AbstractButtonWrapper(x, y) {
 		GlStateManager.color(1f, 1f, 1f)
 		drawTexturedModalRect(this.x, this.y, 48, if(isPaused == State.PAUSED) 16 else 0, 16, 16)
 	} }
-
-	companion object {
-		init {
-			registerWrapper(this::class.java)
-		}
-	}
 }
