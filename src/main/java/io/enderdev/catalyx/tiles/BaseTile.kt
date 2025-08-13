@@ -19,6 +19,8 @@ import net.minecraft.util.EnumHand
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
+import net.minecraftforge.common.model.animation.CapabilityAnimation
+import net.minecraftforge.common.model.animation.IAnimationStateMachine
 import net.minecraftforge.energy.CapabilityEnergy
 import net.minecraftforge.energy.EnergyStorage
 import net.minecraftforge.energy.IEnergyStorage
@@ -154,7 +156,7 @@ abstract class BaseTile(val settings: CatalyxSettings) : TileEntity(), BaseConta
 	): Boolean {
 		if(this is IFluidTile) {
 			val heldItem = player.getHeldItem(hand)
-			if(heldItem.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, facing)) {
+			if(heldItem.hasCapability(FLUID_CAP, facing)) {
 				val didInteract = FluidUtil.interactWithFluidHandler(player, hand, world, pos, facing)
 				markDirty()
 				return didInteract
@@ -180,6 +182,7 @@ abstract class BaseTile(val settings: CatalyxSettings) : TileEntity(), BaseConta
 				ENERGY_CAP -> return this is IEnergyTile
 				FLUID_CAP -> return this is IFluidTile
 				ITEM_CAP -> return this is IItemTile
+				ANIMATION_CAP -> return this is IAnimatedTile
 			}
 			super.hasCapability(capability, facing)
 		}
@@ -200,6 +203,7 @@ abstract class BaseTile(val settings: CatalyxSettings) : TileEntity(), BaseConta
 				ENERGY_CAP -> if(this is IEnergyTile) return ENERGY_CAP.cast<T>((this as IEnergyTile).energyStorage)
 				FLUID_CAP -> if(this is IFluidTile) return FLUID_CAP.cast<T>(fluidTanks)
 				ITEM_CAP -> if(this is IItemTile) return ITEM_CAP.cast<T>(automationInvHandler)
+				ANIMATION_CAP -> if(this is IAnimatedTile) return ANIMATION_CAP.cast<T>(asm)
 			}
 			super.getCapability(capability, facing)
 		}
@@ -217,5 +221,6 @@ abstract class BaseTile(val settings: CatalyxSettings) : TileEntity(), BaseConta
 		val ENERGY_CAP: Capability<IEnergyStorage> = CapabilityEnergy.ENERGY
 		val ITEM_CAP: Capability<IItemHandler> = CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
 		val FLUID_CAP: Capability<IFluidHandler> = CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY
+		val ANIMATION_CAP: Capability<IAnimationStateMachine> = CapabilityAnimation.ANIMATION_CAPABILITY
 	}
 }

@@ -24,17 +24,12 @@ object CatalyxTOPHandler {
 					return
 
 				if(tile is IFluidTile)
-					tile.fluidTanks?.let {
-						it.tankProperties.forEach { tank ->
-							val contents = tank.contents
-							if(contents == null)
-								info.progress(0, tank.capacity)
-							else {
-								val colour = contents.getRealColor()
-								val altColour = Color(colour).darker().rgb
-								// TODO for myself - finish this later
-								info.progress((contents.amount / 1000.0).roundToInt(), tank.capacity / 1000, ProgressStyle().filledColor(colour).alternateFilledColor(altColour).borderColor(0).numberFormat(NumberFormat.COMPACT).suffix(" mB ${contents.fluid.name.replaceFirstChar(Char::uppercase)}"))
-							}
+					tile.fluidTanks.tankProperties.forEach { tank ->
+						val contents = tank.contents
+						if(contents != null && contents.amount > 0) {
+							val colour = contents.getRealColor()
+							val altColour = Color(colour).darker().rgb
+							info.progress(contents.amount, tank.capacity, ProgressStyle().filledColor(colour).alternateFilledColor(altColour).numberFormat(NumberFormat.COMMAS).borderColor(0).suffix(" mB ${contents.fluid.name.replaceFirstChar(Char::uppercase)}"))
 						}
 					}
 			}

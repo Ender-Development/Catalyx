@@ -14,7 +14,7 @@ internal typealias Items = (item: IItemProvider) -> Unit
  */
 class CatalyxSettings {
 	/**
-	 * Your mod's id
+	 * Your mod's mod id
 	 */
 	val modId: String
 
@@ -24,7 +24,7 @@ class CatalyxSettings {
 	val creativeTab: CreativeTabs
 
 	/**
-	 * Your mod's main class; example - new CatalyxSettings(Tags.MOD_ID, Alchemistry.creativeTab, Alchemistry, true)
+	 * Your mod's main class
 	 */
 	val mod: Any
 
@@ -34,12 +34,12 @@ class CatalyxSettings {
 	val enableItemCapability: Boolean
 
 	/**
-	 * whatever the fuck this is, I've changed this field like 5 times by now
+	 * A function that takes in every instantiated block (meant for adding to a main `blocks` array for easier registration)
 	 */
 	val blocks: Blocks
 
 	/**
-	 * whatever the fuck this is, I've changed this field like 5 times by now
+	 * A function that takes in every instantiated item (meant for adding to a main `items` array for easier registration)
 	 */
 	val items: Items
 

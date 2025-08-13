@@ -12,7 +12,7 @@ import net.minecraftforge.fml.relauncher.SideOnly
 import org.lwjgl.opengl.GL11
 
 /**
- * A Catalyx helper class allowing you to highlight a block in 3D space
+ * A helper class allowing you to highlight a block in 3D space
  */
 @SideOnly(Side.CLIENT)
 object BlockHighlighter {
