@@ -12,6 +12,7 @@ import io.enderdev.catalyx.network.PacketHandler
 import io.enderdev.catalyx.tiles.BaseMachineTile
 import io.enderdev.catalyx.tiles.BaseTile
 import io.enderdev.catalyx.tiles.helper.IGuiTile
+import io.enderdev.catalyx.utils.RenderAlignment
 import io.enderdev.catalyx.utils.RenderUtils
 import io.enderdev.catalyx.utils.extensions.get
 import io.enderdev.catalyx.utils.extensions.translate
@@ -32,8 +33,9 @@ abstract class BaseGuiTyped<T>(container: Container, val tileEntity: T) : GuiCon
 
 	open val displayNameOffset = 8
 	open val displayName: String = tileEntity.blockType.localizedName
+	open val displayNameAlignment = RenderAlignment(RenderAlignment.Alignment.TOP_MIDDLE)
 
-	open val buttonSide = ButtonSide.RIGHT
+	open val buttonAlignment = RenderAlignment(RenderAlignment.Alignment.TOP_RIGHT)
 	lateinit var pauseButton: PauseButtonWrapper
 	lateinit var redstoneButton: RedstoneButtonWrapper
 
@@ -44,10 +46,19 @@ abstract class BaseGuiTyped<T>(container: Container, val tileEntity: T) : GuiCon
 
 	override fun initGui() {
 		super.initGui()
-		pauseButton = PauseButtonWrapper(guiLeft + (if(buttonSide == ButtonSide.RIGHT) tileEntity.guiWidth - 16 else 0) + 4 * buttonSide.xMult, guiTop + (displayNameOffset shr 1))
-		buttonList.add(pauseButton.button)
-		redstoneButton = RedstoneButtonWrapper(pauseButton.x + 18 * buttonSide.xMult, pauseButton.y)
+		val (x, y) = buttonAlignment.getXY(0, xSize, 0, ySize, 16 + 2 + 16, 16, 4, 4).let {
+			// because the alignment here gets calculated for the entire gui height, and we have no way of checking which part of the GUI is the machine vs the inventory
+			// thus the theoretical (for example) "bottom-left" is actually middle-left, but with a Y offset of 2 pixels up in the default rmt/alchem machines
+			// hilarious honestly
+			if(buttonAlignment.vertical == RenderAlignment.Vertical.MIDDLE)
+				it.first to it.second - 2
+			else
+				it
+		}
+		redstoneButton = RedstoneButtonWrapper(guiLeft + x, guiTop + y)
 		buttonList.add(redstoneButton.button)
+		pauseButton = PauseButtonWrapper(redstoneButton.x + 16 + 2, redstoneButton.y)
+		buttonList.add(pauseButton.button)
 	}
 
 	open fun renderTooltips(mouseX: Int, mouseY: Int) {
@@ -145,13 +156,9 @@ abstract class BaseGuiTyped<T>(container: Container, val tileEntity: T) : GuiCon
 		if(tileEntity.needsRedstonePower) redstoneButton.needsPower = RedstoneButtonWrapper.State.ON
 		else redstoneButton.needsPower = RedstoneButtonWrapper.State.OFF
 
-		if(this.displayName.isNotEmpty()) {
-			this.fontRenderer.drawString(
-				this.displayName,
-				this.xSize / 2 - this.fontRenderer.getStringWidth(this.displayName) / 2,
-				displayNameOffset,
-				4210752 // that's the default minecraft container color
-			)
+		if(displayName.isNotEmpty()) {
+			val (x, y) = displayNameAlignment.getXY(0, xSize, 0, ySize, fontRenderer.getStringWidth(displayName), fontRenderer.FONT_HEIGHT, displayNameOffset, displayNameOffset)
+			fontRenderer.drawString(displayName, x, y, 4210752)
 		}
 	}
 
