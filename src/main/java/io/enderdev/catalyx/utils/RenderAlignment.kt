@@ -2,8 +2,6 @@
 
 package io.enderdev.catalyx.utils
 
-import scala.inline
-
 class RenderAlignment(val vertical: Vertical, val horizontal: Horizontal) {
 	enum class Vertical {
 		TOP, MIDDLE, BOTTOM;

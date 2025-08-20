@@ -10,7 +10,6 @@ import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.world.World
 import java.awt.Color
-import kotlin.math.roundToInt
 
 object CatalyxTOPHandler {
 	internal fun init() {

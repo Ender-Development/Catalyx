@@ -9,7 +9,6 @@ import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
-import kotlin.jvm.java
 
 /**
  * Wrapper class for stateful buttons sent from client-side to server-side

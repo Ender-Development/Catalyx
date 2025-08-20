@@ -22,7 +22,6 @@ import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.model.animation.CapabilityAnimation
 import net.minecraftforge.common.model.animation.IAnimationStateMachine
 import net.minecraftforge.energy.CapabilityEnergy
-import net.minecraftforge.energy.EnergyStorage
 import net.minecraftforge.energy.IEnergyStorage
 import net.minecraftforge.fluids.FluidUtil
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler
