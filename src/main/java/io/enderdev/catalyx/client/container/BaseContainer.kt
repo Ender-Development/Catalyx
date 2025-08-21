@@ -39,23 +39,33 @@ abstract class BaseContainer(playerInv: IInventory, val tileEntity: IBaseContain
 
 	override fun canInteractWith(player: EntityPlayer): Boolean = tileEntity.canInteractWith(player)
 
+	private companion object {
+		const val PLAYER_INVENTORY_SIZE = 36
+		const val PLAYER_INVENTORY_LAST_INDEX = PLAYER_INVENTORY_SIZE - 1
+	}
+
+	// slot indexes are currently [...player inventory (PLAYER_INVENTORY_SIZE)][...container slots (tileEntity.SIZE)]
 	override fun transferStackInSlot(player: EntityPlayer, index: Int): ItemStack {
-		var itemstack = ItemStack.EMPTY
-		val slot = this.inventorySlots[index]
-		if(slot != null && slot.hasStack) {
-			val itemstack1 = slot.stack
-			itemstack = itemstack1.copy()
+		val slot = inventorySlots[index]
+		if(slot == null || !slot.hasStack)
+			return ItemStack.EMPTY
 
-			if(index < tileEntity.SIZE) {
-				if(!this.mergeItemStack(itemstack1, tileEntity.SIZE, this.inventorySlots.size, true)) {
-					return ItemStack.EMPTY
-				}
-			} else if(!this.mergeItemStack(itemstack1, 0, tileEntity.SIZE, false)) return ItemStack.EMPTY
+		val stack = slot.stack
 
-			if(itemstack1.count <= 0) slot.putStack(ItemStack.EMPTY)
-			else slot.onSlotChanged()
-		}
-		return itemstack
+		// transfer TE Container -> Player Inventory
+		if(index > PLAYER_INVENTORY_LAST_INDEX && index <= PLAYER_INVENTORY_LAST_INDEX + tileEntity.SIZE) {
+			if(!mergeItemStack(stack, 0, PLAYER_INVENTORY_SIZE, false))
+				return ItemStack.EMPTY
+		// transfer Player Inventory -> TE Container
+		} else if(!mergeItemStack(stack, PLAYER_INVENTORY_SIZE, PLAYER_INVENTORY_LAST_INDEX + tileEntity.SIZE, true))
+			return ItemStack.EMPTY
+
+		if(stack.count <= 0)
+			slot.putStack(ItemStack.EMPTY)
+		else
+			slot.onSlotChanged()
+
+		return stack
 	}
 
 	interface IBaseContainerCompat : IGuiTile {
