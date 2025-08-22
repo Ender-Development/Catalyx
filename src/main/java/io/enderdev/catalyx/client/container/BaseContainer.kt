@@ -57,7 +57,7 @@ abstract class BaseContainer(playerInv: IInventory, val tileEntity: IBaseContain
 			if(!mergeItemStack(stack, 0, PLAYER_INVENTORY_SIZE, false))
 				return ItemStack.EMPTY
 		// transfer Player Inventory -> TE Container
-		} else if(!mergeItemStack(stack, PLAYER_INVENTORY_SIZE, PLAYER_INVENTORY_LAST_INDEX + tileEntity.SIZE, true))
+		} else if(!mergeItemStack(stack, PLAYER_INVENTORY_SIZE, PLAYER_INVENTORY_LAST_INDEX + tileEntity.SIZE, false))
 			return ItemStack.EMPTY
 
 		if(stack.count <= 0)
