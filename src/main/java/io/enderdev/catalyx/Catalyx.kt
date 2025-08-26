@@ -1,9 +1,11 @@
 package io.enderdev.catalyx
 
-import io.enderdev.catalyx.client.BlockHighlighter
+import io.enderdev.catalyx.client.AreaHighlighter
 import io.enderdev.catalyx.integration.top.CatalyxTOPHandler
 import io.enderdev.catalyx.network.PacketHandler
+import io.enderdev.catalyx.test.TestEventHandler
 import net.minecraftforge.client.event.RenderWorldLastEvent
+import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.common.Loader
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.Mod.EventHandler
@@ -43,6 +45,6 @@ object Catalyx {
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	fun renderWorldLast(event: RenderWorldLastEvent) {
-		BlockHighlighter.eventHandler(event)
+		AreaHighlighter.eventHandlers.forEach { it(event) }
 	}
 }
