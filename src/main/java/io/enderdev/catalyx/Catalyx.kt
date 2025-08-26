@@ -40,6 +40,13 @@ object Catalyx {
 	fun init(e: FMLInitializationEvent) {
 		if(Loader.isModLoaded("theoneprobe"))
 			CatalyxTOPHandler.init()
+
+		// similar approach to FML's CoreModManager#L208
+		try {
+			ClassLoader.getSystemClassLoader().loadClass("net.minecraft.world.World")
+			logger.info("Catalyx: Detected dev environment, adding some testing features")
+			MinecraftForge.EVENT_BUS.register(TestEventHandler.instance)
+		} catch(_: Exception) {}
 	}
 
 	@SubscribeEvent
