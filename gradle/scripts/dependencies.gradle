@@ -74,6 +74,14 @@ dependencies {
 
 	implementation('io.github.chaosunity.forgelin:Forgelin-Continuous:' + project.forgelin_continuous_version) { transitive = false }
 
+	implementation("CraftTweaker2:CraftTweaker2-API:" + project.crafttweaker_version)
+    implementation("CraftTweaker2:ZenScript:" + project.crafttweaker_version)
+    implementation("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-" + project.crafttweaker_version)
+
+	implementation("com.cleanroommc:groovyscript:" + project.groovyscript_version) { transitive = false }
+
+	implementation("mezz:jei:" + project.hei_version)
+
 	implementation rfg.deobf("curse.maven:the-one-probe-community-edition-885670:6432803")
 
 	// implementation 'com.cleanroommc:configanytime:3.0'
