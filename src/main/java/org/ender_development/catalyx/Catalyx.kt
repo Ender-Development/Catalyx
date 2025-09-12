@@ -15,6 +15,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import org.apache.logging.log4j.Logger
+import kotlin.random.Random
 
 @Mod(
 	modid = Reference.MODID,
@@ -27,6 +28,11 @@ import org.apache.logging.log4j.Logger
 @Mod.EventBusSubscriber(modid = Reference.MODID)
 object Catalyx {
 	const val DEPENDENCIES = "required-after:forgelin_continuous@[${Reference.KOTLIN_VERSION},);"
+
+	/**
+	 * The random number generator used throughout the mod.
+	 */
+	val RANDOM = Random(System.currentTimeMillis())
 
 	internal lateinit var logger: Logger
 
