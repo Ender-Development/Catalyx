@@ -1,5 +1,8 @@
 package org.ender_development.catalyx.utils
 
+import net.minecraft.client.entity.EntityPlayerSP
+import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraftforge.fml.common.FMLCommonHandler
 
 /**
@@ -8,13 +11,18 @@ import net.minecraftforge.fml.common.FMLCommonHandler
 object SideUtils {
 	private val handler = FMLCommonHandler.instance()
 
-	// TODO - do these ever change? if not, just set the variables instead of using a getter function
-	val isClient: Boolean
-		get() = handler.effectiveSide.isClient
+	val isClient: Boolean = handler.effectiveSide.isClient
+	val isServer: Boolean = handler.effectiveSide.isServer
+	val isDedicatedClient: Boolean = handler.side.isClient
+	val isDedicatedServer: Boolean = handler.side.isServer
 
-	val isServer: Boolean
-		get() = handler.effectiveSide.isServer
+	fun isClient(player: EntityPlayer?): Boolean {
+		if (player == null) throw NullPointerException("Can't get the side of a null player!")
+		return if (player.world == null) player is EntityPlayerSP else player.world.isRemote
+	}
 
-	val isDedicatedServer: Boolean
-		get() = handler.side.isServer
+	fun isServer(player: EntityPlayer?): Boolean {
+		if (player == null) throw NullPointerException("Can't get the side of a null player!")
+		return if (player.world == null) player is EntityPlayerMP else !player.world.isRemote
+	}
 }
