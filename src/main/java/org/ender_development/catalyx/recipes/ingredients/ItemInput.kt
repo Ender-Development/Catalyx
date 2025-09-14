@@ -67,21 +67,21 @@ class ItemInput : RecipeInput {
 	override fun getInputStacks(): List<ItemStack>? = inputStacks
 
 	override fun acceptsStack(input: ItemStack?): Boolean {
-		if (input == null || input.isEmpty) return false
+		if(input == null || input.isEmpty) return false
 		val itemList = this.itemList
 		val inputItem = input.item
 		itemList.forEach { metaList ->
-			if (metaList.item == inputItem) {
+			if(metaList.item == inputItem) {
 				val tagLists = metaList.metaToTagList
 				tagLists.forEach { tagList ->
-					if (tagList.meta == input.metadata) {
+					if(tagList.meta == input.metadata) {
 						val inputNBT = input.tagCompound
-						if (nbtMatcher != null) {
+						if(nbtMatcher != null) {
 							return nbtMatcher!!.evaluate(input, nbtCondition)
 						} else {
 							val tagMaps = tagList.tagToStack
 							tagMaps.forEach { tagMapping ->
-								if ((inputNBT == null && tagMapping.tag == null) || (inputNBT != null && inputNBT == tagMapping.tag)) return tagMapping.stack.areCapsCompatible(input)
+								if((inputNBT == null && tagMapping.tag == null) || (inputNBT != null && inputNBT == tagMapping.tag)) return tagMapping.stack.areCapsCompatible(input)
 							}
 						}
 					}
@@ -96,44 +96,44 @@ class ItemInput : RecipeInput {
 		inputStacks?.forEach {
 			hash = 31 * hash + it.item.hashCode()
 			hash = 31 * hash + it.metadata
-			if (it.hasTagCompound() && it.tagCompound != null && nbtMatcher == null) {
+			if(it.hasTagCompound() && it.tagCompound != null && nbtMatcher == null) {
 				hash = 31 * hash + it.tagCompound.hashCode()
 			}
 		}
 		hash = 31 * hash + amount
-		hash = 31 * hash + if (isConsumable) 1 else 0
+		hash = 31 * hash + if(isConsumable) 1 else 0
 		hash = 31 * hash + (nbtMatcher?.hashCode() ?: 0)
 		hash = 31 * hash + (nbtCondition?.hashCode() ?: 0)
 		return hash
 	}
 
 	override fun equals(other: Any?): Boolean {
-		if (this === other) return true
-		if (other !is ItemInput) return false
+		if(this === other) return true
+		if(other !is ItemInput) return false
 		val that = other as ItemInput?
 
-		if (this.amount != that!!.amount || this.isConsumable != other.isConsumable) return false
-		if (Objects.equals(this.nbtMatcher, that.nbtMatcher)) return false
-		if (Objects.equals(this.nbtCondition, that.nbtCondition)) return false
+		if(this.amount != that!!.amount || this.isConsumable != other.isConsumable) return false
+		if(Objects.equals(this.nbtMatcher, that.nbtMatcher)) return false
+		if(Objects.equals(this.nbtCondition, that.nbtCondition)) return false
 
-		if (this.inputStacks!!.size != that.inputStacks!!.size) return false
-		for (i in this.inputStacks!!.indices) {
-			if (!ItemStack.areItemStacksEqual(this.inputStacks!![i], that.inputStacks!![i])) return false
+		if(this.inputStacks!!.size != that.inputStacks!!.size) return false
+		for(i in this.inputStacks!!.indices) {
+			if(!ItemStack.areItemStacksEqual(this.inputStacks!![i], that.inputStacks!![i])) return false
 		}
 		return true
 	}
 
 	override fun equalsIgnoreAmount(input: RecipeInput): Boolean {
-		if (this === input) return true
-		if (input !is ItemInput) return false
+		if(this === input) return true
+		if(input !is ItemInput) return false
 		val that = input as ItemInput?
 
-		if (Objects.equals(this.nbtMatcher, that?.nbtMatcher)) return false
-		if (Objects.equals(this.nbtCondition, that?.nbtCondition)) return false
+		if(Objects.equals(this.nbtMatcher, that?.nbtMatcher)) return false
+		if(Objects.equals(this.nbtCondition, that?.nbtCondition)) return false
 
-		if (this.inputStacks!!.size != that?.inputStacks!!.size) return false
-		for (i in this.inputStacks!!.indices) {
-			if (!ItemStack.areItemStacksEqual(this.inputStacks!![i], that.inputStacks!![i])) return false
+		if(this.inputStacks!!.size != that?.inputStacks!!.size) return false
+		for(i in this.inputStacks!!.indices) {
+			if(!ItemStack.areItemStacksEqual(this.inputStacks!![i], that.inputStacks!![i])) return false
 		}
 		return true
 	}

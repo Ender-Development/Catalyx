@@ -1,8 +1,7 @@
 package org.ender_development.catalyx.recipes.ingredients.nbt
 
 import net.minecraft.nbt.NBTBase
-import org.ender_development.catalyx.Catalyx
-import java.util.Objects
+import java.util.*
 
 class NBTListCondition : NBTCondition {
 	companion object {

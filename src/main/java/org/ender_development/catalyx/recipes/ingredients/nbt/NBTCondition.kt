@@ -1,7 +1,7 @@
 package org.ender_development.catalyx.recipes.ingredients.nbt
 
 import org.ender_development.catalyx.Catalyx
-import java.util.Objects
+import java.util.*
 
 open class NBTCondition {
 	companion object {

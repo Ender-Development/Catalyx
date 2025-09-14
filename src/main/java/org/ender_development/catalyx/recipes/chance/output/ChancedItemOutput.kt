@@ -19,5 +19,6 @@ class ChancedItemOutput(ingredient: ItemStack, chance: Int, boost: Int) : Boosta
 	override fun copy() =
 		ChancedItemOutput(ingredient.copy(), chance, boost)
 
-	override fun toString(): String = "ChancedItemOutput{ingredient=ItemStack{item=${ingredient.item.registryName}, count=${ingredient.count}, meta=${ingredient.itemDamage}}, chance=$chance, boost=$boost}"
+	override fun toString() =
+		"ChancedItemOutput{ingredient=ItemStack{item=${ingredient.item.registryName}, count=${ingredient.count}, meta=${ingredient.itemDamage}}, chance=$chance, boost=$boost}"
 }

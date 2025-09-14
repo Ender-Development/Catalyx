@@ -2,9 +2,9 @@ package org.ender_development.catalyx.recipes.chance.output
 
 import org.ender_development.catalyx.recipes.chance.boost.IBoostFunction
 
-class ChancedOutputList<I, T: ChancedOutput<I>>(val chancedOutputLogic: IChancedOutputLogic, val chancedElements: List<T>) {
+class ChancedOutputList<I, T : ChancedOutput<I>>(val chancedOutputLogic: IChancedOutputLogic, val chancedElements: List<T>) {
 	companion object {
-		fun <I, T: ChancedOutput<I>> empty(): ChancedOutputList<I, T> =
+		fun <I, T : ChancedOutput<I>> empty(): ChancedOutputList<I, T> =
 			ChancedOutputList(IChancedOutputLogic.NONE, emptyList())
 	}
 

@@ -4,7 +4,7 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectMap
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 
-class TagToStack: Object2ObjectMap.Entry<NBTTagCompound, ItemStack> {
+class TagToStack : Object2ObjectMap.Entry<NBTTagCompound, ItemStack> {
 	internal var tag: NBTTagCompound?
 	internal var stack: ItemStack
 

@@ -2,7 +2,6 @@ package org.ender_development.catalyx.recipes.ingredients.nbt
 
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.nbt.NBTTagLongArray
 import net.minecraftforge.fluids.FluidStack
 import org.ender_development.catalyx.utils.extensions.getLongArray
 

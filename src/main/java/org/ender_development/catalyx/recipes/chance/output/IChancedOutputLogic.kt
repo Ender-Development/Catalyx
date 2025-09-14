@@ -1,10 +1,8 @@
 package org.ender_development.catalyx.recipes.chance.output
 
-import com.google.common.collect.ImmutableList
 import org.ender_development.catalyx.Catalyx.RANDOM
 import org.ender_development.catalyx.Reference
 import org.ender_development.catalyx.recipes.chance.boost.IBoostFunction
-import org.ender_development.catalyx.recipes.chance.output.IChancedOutputLogic.Companion.passesChance
 
 interface IChancedOutputLogic {
 	companion object {
@@ -72,8 +70,8 @@ interface IChancedOutputLogic {
 	object AND : IChancedOutputLogic {
 		override fun <I, T : ChancedOutput<I>> roll(chancedEntries: List<T>, boostFunction: IBoostFunction, baseTier: Int, machineTier: Int) =
 			if(chancedEntries.all {
-				passesChance(getChance(it, boostFunction, baseTier, machineTier))
-			})
+					passesChance(getChance(it, boostFunction, baseTier, machineTier))
+				})
 				chancedEntries
 			else
 				null

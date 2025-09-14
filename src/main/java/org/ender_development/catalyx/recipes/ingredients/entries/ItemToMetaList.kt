@@ -6,7 +6,7 @@ import it.unimi.dsi.fastutil.objects.ObjectLists
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 
-class ItemToMetaList: Object2ObjectMap.Entry<Item, List<MetaToTagList>> {
+class ItemToMetaList : Object2ObjectMap.Entry<Item, List<MetaToTagList>> {
 	internal var item: Item
 	internal var metaToTagList: List<MetaToTagList>
 
@@ -16,7 +16,7 @@ class ItemToMetaList: Object2ObjectMap.Entry<Item, List<MetaToTagList>> {
 	}
 
 	fun addStackToLists(stack: ItemStack) {
-		if (metaToTagList is ObjectLists.Singleton) {
+		if(metaToTagList is ObjectLists.Singleton) {
 			metaToTagList = ObjectArrayList(metaToTagList)
 		}
 		(metaToTagList as ObjectArrayList).add(MetaToTagList(stack))
