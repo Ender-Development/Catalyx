@@ -77,19 +77,19 @@ abstract class RecipeInput {
 	open fun getInputStacks(): List<ItemStack>? =
 		null
 
-	fun getInputFluidStacks(): List<FluidStack>? =
+	open fun getInputFluidStack(): FluidStack? =
 		null
 
-	fun isOreDict() =
+	open fun isOreDict() =
 		false
 
-	fun getOreDict() =
+	open fun getOreDict() =
 		-1
 
 	open fun acceptsStack(stack: ItemStack?) =
 		false
 
-	fun acceptsFluid(stack: FluidStack?) =
+	open fun acceptsFluid(stack: FluidStack?) =
 		false
 
 	protected abstract fun computeHash(): Int
