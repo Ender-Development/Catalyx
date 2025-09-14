@@ -7,10 +7,11 @@ open class NBTCondition {
 	companion object {
 		val ANY = NBTCondition()
 
-		fun create(tagType: TagType, nbtKey: String, value: Any?): NBTCondition {
-			if (tagType == TagType.LIST) throw IllegalArgumentException("Use ListNBTCondition::create instead of NBTCondition::create")
-			return NBTCondition(tagType, nbtKey, value)
-		}
+		fun create(tagType: TagType, nbtKey: String, value: Any?) =
+			if(tagType == TagType.LIST)
+				throw IllegalArgumentException("Use NBTListCondition::create instead of NBTCondition::create")
+			else
+				NBTCondition(tagType, nbtKey, value)
 	}
 
 	internal val tagType: TagType?
@@ -22,19 +23,16 @@ open class NBTCondition {
 		this.tagType = tagType
 		this.nbtKey = nbtKey
 		this.value = value
-		if (tagType == null || nbtKey == null || value == null) Catalyx.logger.error("Creating NBTCondition with null values: tagType=$tagType, nbtKey=$nbtKey, value=$value", Throwable())
+		if(tagType == null || nbtKey == null || value == null)
+			Catalyx.logger.error("Creating NBTCondition with null values: tagType=$tagType, nbtKey=$nbtKey, value=$value", Throwable())
 	}
 
-	override fun toString(): String = "$nbtKey: $value"
+	override fun toString() =
+		"$nbtKey: $value"
 
-	override fun hashCode(): Int = Objects.hash(tagType, nbtKey, value)
+	override fun hashCode() =
+		Objects.hash(tagType, nbtKey, value)
 
-	override fun equals(other: Any?): Boolean {
-		if (this === other) return true
-		if (other is NBTCondition) {
-			val o = other as NBTCondition?
-			return o != null && tagType == o.tagType && nbtKey.equals(o.nbtKey) && value == o.value
-		}
-		return false
-	}
+	override fun equals(other: Any?) =
+		this === other || (other is NBTCondition && tagType == other.tagType && nbtKey.equals(other.nbtKey) && value == other.value)
 }

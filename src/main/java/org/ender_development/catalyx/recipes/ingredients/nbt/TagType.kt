@@ -1,6 +1,6 @@
 package org.ender_development.catalyx.recipes.ingredients.nbt
 
-enum class TagType {
+enum class TagType(val typeId: Int) {
 	BOOLEAN(1),
     BYTE(1),
     SHORT(2),
@@ -17,15 +17,10 @@ enum class TagType {
     NUMBER(99);
 
 	companion object {
-		fun isNumeric(tagType: TagType) = when(tagType) {
-			BOOLEAN, BYTE, SHORT, INT, LONG, FLOAT, DOUBLE, NUMBER -> true
-			else -> false
-		}
-	}
-
-	val typeId: Int
-
-	constructor(typeId: Int) {
-		this.typeId = typeId
+		fun isNumeric(tagType: TagType) =
+			when(tagType) {
+				BOOLEAN, BYTE, SHORT, INT, LONG, FLOAT, DOUBLE, NUMBER -> true
+				else -> false
+			}
 	}
 }
