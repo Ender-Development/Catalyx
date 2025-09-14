@@ -4,14 +4,14 @@ import com.google.common.collect.ImmutableList
 import org.ender_development.catalyx.Catalyx.RANDOM
 import org.ender_development.catalyx.Reference
 import org.ender_development.catalyx.recipes.chance.boost.IBoostFunction
+import org.ender_development.catalyx.recipes.chance.output.IChancedOutputLogic.Companion.passesChance
 
 interface IChancedOutputLogic {
 	companion object {
 		/**
 		 * Represents 100.00% chance.
-		 * @return The maximum chance value.
 		 */
-		fun getMaxChance(): Int = 10000
+		const val MAX_CHANCE = 10000
 
 		/**
 		 * Gets the chance of an output, applying any boosts if applicable.
@@ -22,12 +22,11 @@ interface IChancedOutputLogic {
 		 * @param machineTier The tier of the machine.
 		 * @return The chance of the output, after applying any boosts.
 		 */
-		fun getChance(output: ChancedOutput<*>, boostFunction: IBoostFunction, recipeTier: Int, machineTier: Int): Int {
-			if(output is BoostableChancedOutput<*>) {
-				return boostFunction.getBoostedChance(output, recipeTier, machineTier)
-			}
-			return output.getChance()
-		}
+		fun getChance(output: ChancedOutput<*>, boostFunction: IBoostFunction, recipeTier: Int, machineTier: Int) =
+			if(output is BoostableChancedOutput<*>)
+				boostFunction.getBoostedChance(output, recipeTier, machineTier)
+			else
+				output.chance
 
 		/**
 		 * Determines if an output passes its chance check.
@@ -35,75 +34,73 @@ interface IChancedOutputLogic {
 		 * @param chance The chance to check against.
 		 * @return True if the output passes the chance check, false otherwise.
 		 */
-		fun passesChance(chance: Int): Boolean = chance > 0 && chance >= RANDOM.nextInt(getMaxChance())
+		fun passesChance(chance: Int) =
+			chance > 0 && chance >= RANDOM.nextInt(MAX_CHANCE)
 	}
 
 	/**
 	 * An output logic that always returns null, meaning no outputs are produced.
 	 */
-	object NONE: IChancedOutputLogic {
-			override fun <I, T : ChancedOutput<I>> roll(chancedEntries: List<T>, boostFunction: IBoostFunction, baseTier: Int, machineTier: Int): List<T>? = null
+	object NONE : IChancedOutputLogic {
+		override fun <I, T : ChancedOutput<I>> roll(chancedEntries: List<T>, boostFunction: IBoostFunction, baseTier: Int, machineTier: Int) =
+			null
 
-			override fun getTranslationKey(): String = "${Reference.MODID}.chance_logic.none"
+		override val translationKey = "${Reference.MODID}.chance_logic.none"
 
-			override fun toString(): String = "ChancedOutputLogic{type=NONE}"
-		}
+		override fun toString() =
+			"ChancedOutputLogic{type=NONE}"
+	}
 
 	/**
 	 * An output logic that rolls each entry independently, returning all that pass their chance checks.
 	 */
-	object OR: IChancedOutputLogic {
-			override fun <I, T : ChancedOutput<I>> roll(chancedEntries: List<T>, boostFunction: IBoostFunction, baseTier: Int, machineTier: Int): List<T>? {
-				var builder: ImmutableList.Builder<T>? = null
-				chancedEntries.forEach {
-					if (passesChance(getChance(it, boostFunction, baseTier, machineTier))) {
-						if (builder == null) builder = ImmutableList.builder()
-						builder!!.add(it)
-					}
-				}
-				return builder?.build()
+	object OR : IChancedOutputLogic {
+		override fun <I, T : ChancedOutput<I>> roll(chancedEntries: List<T>, boostFunction: IBoostFunction, baseTier: Int, machineTier: Int) =
+			chancedEntries.filter {
+				passesChance(getChance(it, boostFunction, baseTier, machineTier))
 			}
 
-			override fun getTranslationKey(): String = "${Reference.MODID}.chance_logic.or"
+		override val translationKey = "${Reference.MODID}.chance_logic.or"
 
-			override fun toString(): String = "ChancedOutputLogic{type=OR}"
-		}
+		override fun toString() =
+			"ChancedOutputLogic{type=OR}"
+	}
 
 	/**
 	 * An output logic that requires all entries to pass their chance checks, returning all if they do, or null if any fail.
 	 */
-	object AND: IChancedOutputLogic {
-			override fun <I, T : ChancedOutput<I>> roll(chancedEntries: List<T>, boostFunction: IBoostFunction, baseTier: Int, machineTier: Int): List<T>? {
-				chancedEntries.forEach {
-					if (!passesChance(getChance(it, boostFunction, baseTier, machineTier))) {
-						return null
-					}
-				}
-				return ImmutableList.copyOf(chancedEntries)
-			}
+	object AND : IChancedOutputLogic {
+		override fun <I, T : ChancedOutput<I>> roll(chancedEntries: List<T>, boostFunction: IBoostFunction, baseTier: Int, machineTier: Int) =
+			if(chancedEntries.all {
+				passesChance(getChance(it, boostFunction, baseTier, machineTier))
+			})
+				chancedEntries
+			else
+				null
 
-			override fun getTranslationKey(): String = "${Reference.MODID}.chance_logic.and"
+		override val translationKey = "${Reference.MODID}.chance_logic.and"
 
-			override fun toString(): String = "ChancedOutputLogic{type=AND}"
-		}
+		override fun toString() =
+			"ChancedOutputLogic{type=AND}"
+	}
 
 	/**
 	 * An output logic that returns the first entry that passes its chance check, or null if none do.
 	 */
-	object XOR: IChancedOutputLogic {
-			override fun <I, T : ChancedOutput<I>> roll(chancedEntries: List<T>, boostFunction: IBoostFunction, baseTier: Int, machineTier: Int): List<T>? {
-				chancedEntries.forEach {
-					if (passesChance(getChance(it, boostFunction, baseTier, machineTier))) {
-						return ImmutableList.of(it)
-					}
-				}
-				return null
+	object FIRST : IChancedOutputLogic {
+		override fun <I, T : ChancedOutput<I>> roll(chancedEntries: List<T>, boostFunction: IBoostFunction, baseTier: Int, machineTier: Int) =
+			chancedEntries.firstNotNullOfOrNull {
+				if(passesChance(getChance(it, boostFunction, baseTier, machineTier)))
+					listOf(it)
+				else
+					null
 			}
 
-			override fun getTranslationKey(): String = "${Reference.MODID}.chance_logic.xor"
+		override val translationKey = "${Reference.MODID}.chance_logic.first"
 
-			override fun toString(): String = "ChancedOutputLogic{type=XOR}"
-		}
+		override fun toString() =
+			"ChancedOutputLogic{type=FIRST}"
+	}
 
 	/**
 	 * Rolls the given chanced entries using the specified boost function and tiers.
@@ -115,5 +112,5 @@ interface IChancedOutputLogic {
 	 */
 	fun <I, T : ChancedOutput<I>> roll(chancedEntries: List<T>, boostFunction: IBoostFunction, baseTier: Int, machineTier: Int): List<T>?
 
-	fun getTranslationKey(): String
+	val translationKey: String
 }

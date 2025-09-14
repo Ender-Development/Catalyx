@@ -6,16 +6,18 @@ import org.ender_development.catalyx.utils.NetworkUtils
 
 class ChancedItemOutput(ingredient: ItemStack, chance: Int, boost: Int) : BoostableChancedOutput<ItemStack>(ingredient, chance, boost) {
 	companion object {
-		fun fromBuffer(buffer: PacketBuffer): ChancedItemOutput = ChancedItemOutput(NetworkUtils.readItemStack(buffer), buffer.readVarInt(), buffer.readVarInt())
+		fun fromBuffer(buffer: PacketBuffer) =
+			ChancedItemOutput(NetworkUtils.readItemStack(buffer), buffer.readVarInt(), buffer.readVarInt())
 
 		fun toBuffer(buffer: PacketBuffer, output: ChancedItemOutput) {
-			NetworkUtils.writeItemStack(buffer, output.getIngredient())
-			buffer.writeVarInt(output.getChance())
-			buffer.writeVarInt(output.getBoost())
+			NetworkUtils.writeItemStack(buffer, output.ingredient)
+			buffer.writeVarInt(output.chance)
+			buffer.writeVarInt(output.boost)
 		}
 	}
 
-	override fun copy(): ChancedItemOutput = ChancedItemOutput(getIngredient().copy(), getChance(), getBoost())
+	override fun copy() =
+		ChancedItemOutput(ingredient.copy(), chance, boost)
 
-	override fun toString(): String = "ChancedItemOutput{ingredient=ItemStack{item=${getIngredient().item.registryName}, count=${getIngredient().count}, meta=${getIngredient().itemDamage}}, chance=${getChance()}, boost=${getBoost()}}"
+	override fun toString(): String = "ChancedItemOutput{ingredient=ItemStack{item=${ingredient.item.registryName}, count=${ingredient.count}, meta=${ingredient.itemDamage}}, chance=$chance, boost=$boost}"
 }

@@ -2,24 +2,11 @@ package org.ender_development.catalyx.recipes.chance.output
 
 import org.ender_development.catalyx.recipes.chance.boost.IBoostFunction
 
-class ChancedOutputList<I, T: ChancedOutput<I>> {
-	private val chancedOutputLogic: IChancedOutputLogic
-	private val chancedElements: List<T>
-
-	constructor(chancedOutputLogic: IChancedOutputLogic, chancedElements: List<T>) {
-		this.chancedOutputLogic = chancedOutputLogic
-		this.chancedElements = chancedElements
-	}
-
+class ChancedOutputList<I, T: ChancedOutput<I>>(val chancedOutputLogic: IChancedOutputLogic, val chancedElements: List<T>) {
 	companion object {
-		fun <I, T: ChancedOutput<I>> empty(): ChancedOutputList<I, T> {
-			return ChancedOutputList(IChancedOutputLogic.NONE, emptyList())
-		}
+		fun <I, T: ChancedOutput<I>> empty(): ChancedOutputList<I, T> =
+			ChancedOutputList(IChancedOutputLogic.NONE, emptyList())
 	}
-
-	fun getChancedElements(): List<T> = chancedElements
-
-	fun getChancedOutputLogic(): IChancedOutputLogic = chancedOutputLogic
 
 	/**
 	 * Rolls the chanced output list using the provided boost function, recipe tier, and machine tier.
@@ -29,7 +16,9 @@ class ChancedOutputList<I, T: ChancedOutput<I>> {
 	 * @param machineTier The tier of the machine processing the recipe.
 	 * @return A list of rolled ingredients of type T.
 	 */
-	fun roll(boostFunction: IBoostFunction, recipeTier: Int, machineTier: Int): List<T>? = chancedOutputLogic.roll(getChancedElements(), boostFunction, recipeTier, machineTier)
+	fun roll(boostFunction: IBoostFunction, recipeTier: Int, machineTier: Int) =
+		chancedOutputLogic.roll(chancedElements, boostFunction, recipeTier, machineTier)
 
-	override fun toString(): String = chancedElements.toString()
+	override fun toString() =
+		chancedElements.toString()
 }

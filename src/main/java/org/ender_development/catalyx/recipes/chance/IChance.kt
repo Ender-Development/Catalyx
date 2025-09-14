@@ -7,18 +7,14 @@ package org.ender_development.catalyx.recipes.chance
  */
 interface IChance<T> {
 	/**
-	 * Gets the ingredient associated with this chance object.
-	 *
-	 * @return The ingredient of type T.
+	 * The ingredient associated with this chance object.
 	 */
-	fun getIngredient(): T
+	val ingredient: T
 
 	/**
-	 * Gets the chance value associated with the ingredient.
-	 *
-	 * @return The chance value as an integer.
+	 * The chance value associated with the ingredient.
 	 */
-	fun getChance(): Int
+	val chance: Int
 
 	/**
 	 * Creates a copy of this chance object.

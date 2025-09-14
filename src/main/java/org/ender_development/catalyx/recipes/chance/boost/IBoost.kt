@@ -9,9 +9,7 @@ import org.ender_development.catalyx.recipes.chance.IChance
  */
 interface IBoost<T> : IChance<T> {
 	/**
-	 * Gets the boost value associated with the ingredient.
-	 *
-	 * @return The boost value as an integer.
+	 * The boost value associated with the ingredient.
 	 */
-	fun getBoost(): Int
+	val boost: Int
 }

@@ -19,7 +19,7 @@ fun interface IBoostFunction {
 	 * Predefined boost function that applies no boost.
 	 */
 	val NONE: IBoostFunction
-		get() = IBoostFunction { entry, recipeTier, machineTier -> entry.getChance() }
+		get() = IBoostFunction { entry, recipeTier, machineTier -> entry.chance }
 
 	/**
 	 * Predefined boost function that applies a boost based on the difference between machine tier and recipe
@@ -28,6 +28,6 @@ fun interface IBoostFunction {
 	 */
 	val TIER: IBoostFunction
 		get() = IBoostFunction { entry, recipeTier, machineTier ->
-			entry.getChance() + (entry.getBoost() * (machineTier - recipeTier).coerceAtLeast(0))
+			entry.chance + (entry.boost * (machineTier - recipeTier).coerceAtLeast(0))
 		}
 }

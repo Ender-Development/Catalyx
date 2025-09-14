@@ -1,9 +1,5 @@
 package org.ender_development.catalyx
 
-import org.ender_development.catalyx.client.AreaHighlighter
-import org.ender_development.catalyx.integration.top.CatalyxTOPHandler
-import org.ender_development.catalyx.network.PacketHandler
-import org.ender_development.catalyx.test.TestEventHandler
 import net.minecraftforge.client.event.RenderWorldLastEvent
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.common.Loader
@@ -15,6 +11,10 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import org.apache.logging.log4j.Logger
+import org.ender_development.catalyx.client.AreaHighlighter
+import org.ender_development.catalyx.integration.top.CatalyxTOPHandler
+import org.ender_development.catalyx.network.PacketHandler
+import org.ender_development.catalyx.test.TestEventHandler
 import kotlin.random.Random
 
 @Mod(

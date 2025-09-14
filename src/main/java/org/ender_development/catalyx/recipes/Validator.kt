@@ -14,5 +14,5 @@ class Validator {
 
 	fun listMessages(): List<String> = errorMessages.toList()
 
-	fun logMessages() = errorMessages.forEach { Catalyx.logger.error(it) }
+	fun logMessages() = errorMessages.forEach(Catalyx.logger::error)
 }
