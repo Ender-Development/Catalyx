@@ -53,7 +53,7 @@ class ItemInput : RecipeInput {
 
 	constructor(stack: ItemStack) : this(listOf(stack), stack.count)
 	constructor(stack: ItemStack, amount: Int) : this(listOf(stack), amount)
-	constructor(input: RecipeInput) : this(input.getInputStacks(), input.getAmount())
+	constructor(input: RecipeInput) : this(input.getInputStacks(), input.amount)
 	constructor(input: RecipeInput, amount: Int) : this(input.getInputStacks(), amount)
 
 	override fun copy(): ItemInput {

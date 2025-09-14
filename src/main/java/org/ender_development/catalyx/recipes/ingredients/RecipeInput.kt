@@ -17,24 +17,26 @@ abstract class RecipeInput {
 		}
 	}
 
-	protected var amount: Int = 1
+	var amount: Int = 1
+		protected set
 	protected var isConsumable: Boolean = true
 	var nbtMatcher: IMatcher? = null
 	var nbtCondition: NBTCondition? = null
 
-	private var cached: Boolean = false
+	var cached: Boolean = false
+		private set
 	private var hash: Int = 0
 
 	protected var hashCached: Boolean = false
 
-	fun getAmount() = amount
-	fun isCached() = cached
-	fun setCached() { cached = true }
+	fun setCached() {
+		cached = true
+	}
 
 	protected abstract fun copy(): RecipeInput
 
 	fun withAmount(amount: Int): RecipeInput {
-		if (getAmount() == amount) return this
+		if (this.amount == amount) return this
 		this.amount = amount
 		cached = false
 		return this
