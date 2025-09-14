@@ -29,7 +29,7 @@ repositories {
 		url = 'https://maven.blamejared.com/'
 	}
 	maven {
-		url = 'https://repo.kord.dev/snapshots'
+		url = 'https://repo.spongepowered.org/maven/'
 	}
 	mavenLocal() // Must be last for caching to work
 }
