@@ -2,18 +2,45 @@ package org.ender_development.catalyx.recipes.ingredients
 
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.nbt.NBTTagList
+import net.minecraftforge.common.util.Constants
 import net.minecraftforge.fluids.FluidStack
+import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.recipes.ingredients.nbt.IMatcher
 import org.ender_development.catalyx.recipes.ingredients.nbt.NBTCondition
 
 abstract class RecipeInput {
 	companion object {
 		fun writeToNBT(input: RecipeInput): NBTTagCompound {
-			TODO()
+			val tag = NBTTagCompound()
+			when(input) {
+				is ItemInput -> {
+					val stackList = NBTTagList()
+					input.getInputStacks()?.forEach { stackList.appendTag(it.serializeNBT()) }
+					tag.setTag("stacks", stackList)
+				}
+				is OreInput -> tag.setInteger("ore", input.getOreDict())
+				is FluidInput -> tag.setTag("fluid", input.getInputFluidStack().writeToNBT(NBTTagCompound()))
+			}
+			tag.setInteger("amount", input.amount)
+			return tag
 		}
 
-		fun readFromNBT(tag: NBTTagCompound): RecipeInput {
-			TODO()
+		fun readFromNBT(tag: NBTTagCompound): RecipeInput? {
+			val amount = tag.getInteger("amount")
+			return if(tag.hasKey("stacks")) {
+				val tagList = tag.getTagList("stacks", Constants.NBT.TAG_COMPOUND)
+				val stacks = List(tagList.tagCount()) { ItemStack(tagList.getCompoundTagAt(it)) }
+				ItemInput(stacks, amount)
+			} else if(tag.hasKey("ore")) {
+				OreInput(tag.getInteger("ore"), amount)
+			} else if(tag.hasKey("fluid")) {
+				val fluidStack = FluidStack.loadFluidStackFromNBT(tag.getCompoundTag("fluid"))
+				FluidInput(fluidStack!!, amount)
+			} else {
+				Catalyx.logger.warn("Unable to read tag: $tag")
+				null
+			}
 		}
 	}
 

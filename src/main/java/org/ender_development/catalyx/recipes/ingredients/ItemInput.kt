@@ -26,10 +26,10 @@ class ItemInput : RecipeInput {
 			var addedStack = false
 			if(it.isEmpty) return@forEach
 			itemList.forEach { item ->
-				if(item.key == it.item) {
-					val metaList: List<MetaToTagList> = item.value
+				if(item.item == it.item) {
+					val metaList: List<MetaToTagList> = item.metaToTagList
 					metaList.forEach { meta ->
-						if(meta.intKey == it.metadata) {
+						if(meta.meta == it.metadata) {
 							meta.addStackToList(it)
 							addedStack = true
 							return@forEach
