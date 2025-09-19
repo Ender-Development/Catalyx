@@ -15,6 +15,7 @@ import org.ender_development.catalyx.client.AreaHighlighter
 import org.ender_development.catalyx.integration.top.CatalyxTOPHandler
 import org.ender_development.catalyx.network.PacketHandler
 import org.ender_development.catalyx.test.TestEventHandler
+import org.ender_development.catalyx.utils.DevUtils
 import kotlin.random.Random
 
 @Mod(
@@ -47,12 +48,10 @@ object Catalyx {
 		if(Loader.isModLoaded("theoneprobe"))
 			CatalyxTOPHandler.init()
 
-		// similar approach to FML's CoreModManager#L208
-		try {
-			ClassLoader.getSystemClassLoader().loadClass("net.minecraft.world.World")
-			logger.info("Catalyx: Detected dev environment, adding some testing features")
-			MinecraftForge.EVENT_BUS.register(TestEventHandler.instance)
-		} catch(_: Exception) {}
+		if(DevUtils.isDeobfuscated) {
+			logger.info("Catalyx: Detected deobfuscated environment, adding some testing features")
+			MinecraftForge.EVENT_BUS.register(TestEventHandler)
+		}
 	}
 
 	@SubscribeEvent

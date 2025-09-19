@@ -6,12 +6,7 @@ import net.minecraft.util.text.TextComponentString
 import net.minecraftforge.client.event.ClientChatEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 
-class TestEventHandler {
-	companion object {
-		val instance = TestEventHandler()
-	}
-	private constructor()
-
+internal object TestEventHandler {
 	val areaHighlighter = AreaHighlighter()
 
 	@SubscribeEvent
