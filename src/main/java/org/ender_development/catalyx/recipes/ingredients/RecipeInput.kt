@@ -28,18 +28,18 @@ abstract class RecipeInput {
 
 		fun readFromNBT(tag: NBTTagCompound): RecipeInput? {
 			val amount = tag.getInteger("amount")
-			return if(tag.hasKey("stacks")) {
-				val tagList = tag.getTagList("stacks", Constants.NBT.TAG_COMPOUND)
-				val stacks = List(tagList.tagCount()) { ItemStack(tagList.getCompoundTagAt(it)) }
-				ItemInput(stacks, amount)
-			} else if(tag.hasKey("ore")) {
-				OreInput(tag.getInteger("ore"), amount)
-			} else if(tag.hasKey("fluid")) {
-				val fluidStack = FluidStack.loadFluidStackFromNBT(tag.getCompoundTag("fluid"))
-				FluidInput(fluidStack!!, amount)
-			} else {
-				Catalyx.logger.warn("Unable to read tag: $tag")
-				null
+			return when {
+				tag.hasKey("stacks") -> {
+					val tagList = tag.getTagList("stacks", Constants.NBT.TAG_COMPOUND)
+					val stacks = List(tagList.tagCount()) { ItemStack(tagList.getCompoundTagAt(it)) }
+					ItemInput(stacks, amount)
+				}
+				tag.hasKey("ore") -> OreInput(tag.getInteger("ore"), amount)
+				tag.hasKey("fluid") -> FluidInput(FluidStack.loadFluidStackFromNBT(tag.getCompoundTag("fluid"))!!, amount)
+				else -> {
+					Catalyx.logger.warn("Unable to read tag: $tag")
+					null
+				}
 			}
 		}
 	}
