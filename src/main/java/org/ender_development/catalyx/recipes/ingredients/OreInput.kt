@@ -9,17 +9,18 @@ import java.util.stream.Collectors
 class OreInput : RecipeInput {
 	companion object {
 		var STANDARD: Short = 0
+			private set
 
 		/**
 		 * Forces a refresh on every OreInput stack cache
 		 * Used for compat with CraftTweaker and GroovyScript
 		 */
-		@ApiStatus.Internal
-		fun refreshStackCache() = STANDARD++
+		internal fun refreshStackCache() =
+			STANDARD++
 	}
 
 	private var currentStandard: Short = 0
-	private var ore: Int
+	private val ore: Int
 	private var inputStacks: List<ItemStack>? = null
 
 	constructor(oreDict: String, amount: Int) {
@@ -50,11 +51,11 @@ class OreInput : RecipeInput {
 		// Used in GroovyScript Reload, and upon Load Complete to fix unreliable behaviour with CT and GS scripts.
 		if(inputStacks != null || currentStandard != STANDARD) {
 			currentStandard = STANDARD
-			inputStacks = (OreDictionary.getOres(OreDictionary.getOreName(ore))).stream().map {
-				val copy = it.copy()
-				copy.count = amount
-				copy
-			}.collect(Collectors.toList<ItemStack>())
+			inputStacks = OreDictionary.getOres(OreDictionary.getOreName(ore)).map {
+				it.copy().also { copy ->
+					copy.count = amount
+				}
+			}
 		}
 		return inputStacks
 	}
@@ -66,34 +67,28 @@ class OreInput : RecipeInput {
 		ore
 
 	override fun acceptsStack(stack: ItemStack?): Boolean {
-		if(stack == null || stack.isEmpty) return false
-		getInputStacks()?.forEach {
-			if(OreDictionary.itemMatches(it, stack, false))
-				return nbtMatcher?.evaluate(stack, nbtCondition) == true
+		if(stack == null || stack.isEmpty)
+			return false
+
+		nbtMatcher?.let { matcher ->
+			getInputStacks()?.forEach {
+				if(OreDictionary.itemMatches(it, stack, false))
+					return matcher.evaluate(stack, nbtCondition)
+			}
 		}
+
 		return false
 	}
 
 	override fun computeHash(): Int =
 		Objects.hash(amount, ore, isConsumable, nbtMatcher, nbtCondition)
 
-	override fun equals(other: Any?): Boolean {
-		if(this == other) return true
-		if(other !is OreInput) return false
-		if(this.amount != other.amount || this.isConsumable != other.isConsumable) return false
-		if(!Objects.equals(this.nbtMatcher, other.nbtMatcher)) return false
-		if(!Objects.equals(this.nbtCondition, other.nbtCondition)) return false
-		return ore == other.ore
-	}
+	override fun equals(other: Any?) =
+		this === other || (other is OreInput && amount == other.amount && isConsumable == other.isConsumable && nbtMatcher == other.nbtMatcher && nbtCondition == other.nbtCondition && ore == other.ore)
 
-	override fun equalsIgnoreAmount(input: RecipeInput): Boolean {
-		if(this == input) return true
-		if(input !is OreInput) return false
-		if(!Objects.equals(this.nbtMatcher, input.nbtMatcher)) return false
-		if(!Objects.equals(this.nbtCondition, input.nbtCondition)) return false
-		return ore == input.ore
-	}
+	override fun equalsIgnoreAmount(input: RecipeInput) =
+		this === input || (input is OreInput && nbtMatcher == input.nbtMatcher && nbtCondition == input.nbtCondition && ore == input.ore)
 
-	override fun toString(): String =
+	override fun toString() =
 		"${amount}x${OreDictionary.getOreName(ore)}"
 }
