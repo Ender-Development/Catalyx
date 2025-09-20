@@ -15,19 +15,21 @@ fun interface IBoostFunction {
 	 */
 	fun getBoostedChance(entry: IBoost<*>, recipeTier: Int, machineTier: Int): Int
 
-	/**
-	 * Predefined boost function that applies no boost.
-	 */
-	val NONE: IBoostFunction
-		get() = IBoostFunction { entry, recipeTier, machineTier -> entry.chance }
+	companion object {
+		/**
+		 * Predefined boost function that applies no boost.
+		 */
+		val NONE: IBoostFunction
+			get() = IBoostFunction { entry, recipeTier, machineTier -> entry.chance }
 
-	/**
-	 * Predefined boost function that applies a boost based on the difference between machine tier and recipe
-	 * tier. The boost is only applied if the machine tier is greater than the recipe tier.
-	 * The boost is calculated as: `chance + (boost * (machineTier - recipeTier))`
-	 */
-	val TIER: IBoostFunction
-		get() = IBoostFunction { entry, recipeTier, machineTier ->
-			entry.chance + (entry.boost * (machineTier - recipeTier).coerceAtLeast(0))
-		}
+		/**
+		 * Predefined boost function that applies a boost based on the difference between machine tier and recipe
+		 * tier. The boost is only applied if the machine tier is greater than the recipe tier.
+		 * The boost is calculated as: `chance + (boost * (machineTier - recipeTier))`
+		 */
+		val TIER: IBoostFunction
+			get() = IBoostFunction { entry, recipeTier, machineTier ->
+				entry.chance + (entry.boost * (machineTier - recipeTier).coerceAtLeast(0))
+			}
+	}
 }
