@@ -1,8 +1,5 @@
 package org.ender_development.catalyx.recipes.maps
 
-import java.util.*
-import java.util.function.Consumer
-
 abstract class Either<L, R> private constructor() {
 	companion object {
 		fun <L, R> left(value: L): Either<L, R> =
@@ -16,9 +13,9 @@ abstract class Either<L, R> private constructor() {
 
 	abstract fun <T> map(l: (L) -> T, r: (R) -> T): T
 
-	abstract fun ifLeft(consumer: Consumer<in L>): Either<L, R>
+	abstract fun ifLeft(consumer: (left: L) -> Unit): Either<L, R>
 
-	abstract fun ifRight(consumer: Consumer<in R>): Either<L, R>
+	abstract fun ifRight(consumer: (right: R) -> Unit): Either<L, R>
 
 	abstract fun left(): L?
 
@@ -52,12 +49,12 @@ abstract class Either<L, R> private constructor() {
 		override fun <T> map(l: (L) -> T, r: (R) -> T): T =
 			l(value)
 
-		override fun ifLeft(consumer: Consumer<in L>): Either<L, R> {
-			consumer.accept(value)
+		override fun ifLeft(consumer: (left: L) -> Unit): Either<L, R> {
+			consumer(value)
 			return this
 		}
 
-		override fun ifRight(consumer: Consumer<in R>): Either<L, R> =
+		override fun ifRight(consumer: (right: R) -> Unit): Either<L, R> =
 			this
 
 		override fun left(): L? =
@@ -66,18 +63,14 @@ abstract class Either<L, R> private constructor() {
 		override fun right(): R? =
 			null
 
-		override fun toString(): String =
-			"Left[$value]"
+		override fun toString() =
+			"Either.Left[$value]"
 
-		override fun equals(other: Any?): Boolean {
-			if(this === other) return true
-			if(other == null || javaClass != other.javaClass) return false
-			val left: Left<*, *> = other as Left<*, *>
-			return Objects.equals(value, left.value)
-		}
+		override fun equals(other: Any?) =
+			this === other || (other is Left<*, *> && value == other.value)
 
-		override fun hashCode(): Int =
-			Objects.hash(value)
+		override fun hashCode() =
+			value.hashCode()
 	}
 
 	private class Right<L, R>(val value: R) : Either<L, R>() {
@@ -87,11 +80,11 @@ abstract class Either<L, R> private constructor() {
 		override fun <T> map(l: (L) -> T, r: (R) -> T): T =
 			r(value)
 
-		override fun ifLeft(consumer: Consumer<in L>): Either<L, R> =
+		override fun ifLeft(consumer: (left: L) -> Unit): Either<L, R> =
 			this
 
-		override fun ifRight(consumer: Consumer<in R>): Either<L, R> {
-			consumer.accept(value)
+		override fun ifRight(consumer: (right: R) -> Unit): Either<L, R> {
+			consumer(value)
 			return this
 		}
 
@@ -101,19 +94,13 @@ abstract class Either<L, R> private constructor() {
 		override fun right(): R? =
 			value
 
-		override fun toString(): String {
-			return "Right[$value]"
-		}
+		override fun toString() =
+			"Either.Right[$value]"
 
-		override fun equals(other: Any?): Boolean {
-			if(this === other) return true
-			if(other == null || javaClass != other.javaClass) return false
-			val right: Right<*, *> = other as Right<*, *>
-			return Objects.equals(value, right.value)
-		}
+		override fun equals(other: Any?) =
+			this === other || (other is Right<*, *> && value == other.value)
 
-		override fun hashCode(): Int {
-			return Objects.hash(value)
-		}
+		override fun hashCode() =
+			value.hashCode()
 	}
 }

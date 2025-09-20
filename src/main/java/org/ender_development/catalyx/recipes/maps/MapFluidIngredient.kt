@@ -17,27 +17,15 @@ class MapFluidIngredient : AbstractMapIngredient {
 		this.tag = fluidStack.tag
 	}
 
-	override fun hash(): Int {
-		// the Fluid registered to the fluidName on game load might not be the same Fluid after loading the world, but
-		// will still have the same fluidName.
-		val hash = 31 + fluid.name.hashCode()
-		if(tag != null) {
-			return 31 * hash + tag.hashCode()
-		}
-		return hash
-	}
+	// the Fluid registered to the fluidName on game load might not be the same Fluid after loading the world,
+	// but will still have the same fluidName.
+	override fun hash() =
+		Objects.hash(fluid.name, tag)
 
-	override fun equals(other: Any?): Boolean {
-		if(super.equals(other)) {
-			val other = other as MapFluidIngredient
-			// the Fluid registered to the fluidName on game load might not be the same Fluid after loading the world,
-			// but will still have the same fluidName.
-			if(this.fluid.name == other.fluid.name) {
-				return Objects.equals(tag, other.tag)
-			}
-		}
-		return false
-	}
+	// the Fluid registered to the fluidName on game load might not be the same Fluid after loading the world,
+	// but will still have the same fluidName.
+	override fun equals(other: Any?) =
+		this === other || (other is MapFluidIngredient && fluid.name == other.fluid.name && tag == other.tag)
 
 	override fun toString(): String =
 		"MapFluidIngredient{{fluid=${fluid.name}} {tag=$tag}"

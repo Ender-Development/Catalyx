@@ -1,8 +1,6 @@
 package org.ender_development.catalyx.recipes.maps
 
 abstract class AbstractMapIngredient protected constructor() {
-	protected val objClass: Class<out AbstractMapIngredient?> = javaClass
-
 	private var hash = 0
 	private var hashed = false
 
@@ -20,13 +18,8 @@ abstract class AbstractMapIngredient protected constructor() {
 		this.hashed = false
 	}
 
-	override fun equals(other: Any?): Boolean {
-		if(this === other) return true
-		if(other is AbstractMapIngredient) {
-			return this.objClass == other.objClass
-		}
-		return false
-	}
+	override fun equals(other: Any?) =
+		this === other || (other != null && this::class.java === other::class.java)
 
-	open val isSpecialIngredient: Boolean = false
+	open val isSpecialIngredient = false
 }
