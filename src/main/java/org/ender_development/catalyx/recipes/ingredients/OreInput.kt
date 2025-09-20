@@ -2,9 +2,7 @@ package org.ender_development.catalyx.recipes.ingredients
 
 import net.minecraft.item.ItemStack
 import net.minecraftforge.oredict.OreDictionary
-import org.jetbrains.annotations.ApiStatus
 import java.util.*
-import java.util.stream.Collectors
 
 class OreInput : RecipeInput {
 	companion object {

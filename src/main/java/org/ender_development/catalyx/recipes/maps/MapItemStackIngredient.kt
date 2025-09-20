@@ -4,7 +4,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import org.ender_development.catalyx.recipes.ingredients.RecipeInput
-import java.util.Objects
+import java.util.*
 
 open class MapItemStackIngredient : AbstractMapIngredient {
 	val stack: ItemStack
