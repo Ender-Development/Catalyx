@@ -1,14 +1,18 @@
 package org.ender_development.catalyx.items
 
+import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import org.ender_development.catalyx.CatalyxSettings
 import net.minecraft.item.Item
 import net.minecraft.util.ResourceLocation
+import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.event.RegistryEvent
+import net.minecraftforge.fml.relauncher.SideOnly
+import org.ender_development.catalyx.items.IItemProvider
 
 /**
  * A base Catalyx item
  */
-open class BaseItem(settings: CatalyxSettings, name: String) : Item(), IItemProvider {
+open class BaseItem(settings: CatalyxSettings, val name: String) : Item(), IItemProvider {
 	init {
 		registryName = ResourceLocation(settings.modId, name)
 		translationKey = "$registryName"
@@ -19,15 +23,11 @@ open class BaseItem(settings: CatalyxSettings, name: String) : Item(), IItemProv
 	/**
 	 * You need to call this yourself, like
 	 * ```kt
-	 * catalyxSettings.items.forEach { it.registerItem(event) }
+	 * YourModItems.items.forEach { it.registerItem(event) }
 	 * ```
 	 */
 	override fun registerItem(event: RegistryEvent.Register<Item>) {
 		event.registry.register(this)
+		ModelLoader.setCustomModelResourceLocation(this, 0, ModelResourceLocation(registryName!!, "inventory"))
 	}
-
-	//@SideOnly(Side.CLIENT)
-	//open fun registerModel() {
-	//	ModelLoader.setCustomModelResourceLocation(this, 0, ModelResourceLocation(registryName!!, "inventory"))
-	//}
 }
