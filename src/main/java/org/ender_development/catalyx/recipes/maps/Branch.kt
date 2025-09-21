@@ -1,61 +1,50 @@
 package org.ender_development.catalyx.recipes.maps
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
-import org.ender_development.catalyx.recipes.Recipe
-import java.util.stream.Stream
+//import org.ender_development.catalyx.recipes.Recipe
 
 class Branch {
-
 	// Keys on this have *(should)* unique hashcodes.
 	private var nodes: Map<AbstractMapIngredient, Either<Recipe, Branch>>? = null
 	// Keys on this have collisions, and must be differentiated by equality.
 	private var specialNodes: Map<AbstractMapIngredient, Either<Recipe, Branch>>? = null
 
-	fun getRecipes(filterHidden: Boolean): Stream<Recipe> {
-		var stream: Stream<Recipe>? = null
+	fun getRecipes(filterHidden: Boolean): Iterable<Recipe> {
+		if(nodes == null && specialNodes == null)
+			return emptyList()
 
-		nodes?.let { it ->
-			stream = it.values.stream()
-				.flatMap { either -> either.map({ Stream.of(it) }, { right -> right.getRecipes(filterHidden) }) }
-		}
+		val stream: MutableList<Recipe> = mutableListOf()
 
-		specialNodes?.let { it ->
-			stream = if(stream == null) {
-				it.values.stream()
-					.flatMap { either -> either.map({ Stream.of(it) }, { right -> right.getRecipes(filterHidden) }) }
-			} else {
-				Stream.concat(
-					stream,
-					it.values.stream()
-						.flatMap { either -> either.map({ Stream.of(it) }, { right -> right.getRecipes(filterHidden) }) }
-				)
+		nodes?.let {
+			it.values.forEach {
+				it.map({ stream.add(it) }, { stream.addAll(it.getRecipes(filterHidden)) })
 			}
 		}
 
-		return stream?.let {
-			if(filterHidden) {
-				it.filter { recipe -> !recipe.hidden }
-			} else {
-				it
+		specialNodes?.let {
+			it.values.forEach {
+				it.map({ stream.add(it) }, { stream.addAll(it.getRecipes(filterHidden)) })
 			}
-		} ?: Stream.empty()
-	}
-
-	fun isEmptyBranch(): Boolean =
-		(nodes == null || nodes!!.isEmpty()) && (specialNodes == null || specialNodes!!.isEmpty())
-
-	fun getNodes(): Map<AbstractMapIngredient, Either<Recipe, Branch>> {
-		if(nodes == null) {
-			nodes = Object2ObjectOpenHashMap()
 		}
-		return nodes!!
+
+		if(filterHidden)
+			stream.removeIf { it.hidden }
+
+		return stream
 	}
 
-	fun getSpecialNodes(): Map<AbstractMapIngredient, Either<Recipe, Branch>> {
-		if(specialNodes == null) {
-			specialNodes = Object2ObjectOpenHashMap()
+	val empty: Boolean
+		get() = nodes?.isEmpty() != false && specialNodes?.isEmpty() != false
+
+	fun getNodes(): Map<AbstractMapIngredient, Either<Recipe, Branch>> =
+		nodes ?: Object2ObjectOpenHashMap<AbstractMapIngredient, Either<Recipe, Branch>>().also {
+			nodes = it
 		}
-		return specialNodes!!
-	}
+
+	fun getSpecialNodes(): Map<AbstractMapIngredient, Either<Recipe, Branch>> =
+		specialNodes ?: Object2ObjectOpenHashMap<AbstractMapIngredient, Either<Recipe, Branch>>().also {
+			specialNodes = it
+		}
 }
 
+class Recipe(val hidden: Boolean)

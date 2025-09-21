@@ -6,9 +6,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.util.NonNullList
 import net.minecraftforge.oredict.OreDictionary
 import org.ender_development.catalyx.recipes.ingredients.entries.ItemToMetaList
-import org.ender_development.catalyx.recipes.ingredients.entries.MetaToTagList
 import java.util.*
-import java.util.stream.Collectors
 
 class ItemInput : RecipeInput {
 	private var inputStacks: List<ItemStack>? = null
@@ -18,37 +16,39 @@ class ItemInput : RecipeInput {
 		this.amount = amount
 		val lst: NonNullList<ItemStack> = NonNullList.create()
 		stack?.forEach {
-			if(it.metadata == OreDictionary.WILDCARD_VALUE) {
+			if(it.metadata == OreDictionary.WILDCARD_VALUE)
 				it.item.getSubItems(CreativeTabs.SEARCH, lst)
-			} else lst.add(it)
+			else
+				lst.add(it)
 		}
-		lst.forEach {
-			var addedStack = false
-			if(it.isEmpty) return@forEach
-			itemList.forEach { item ->
-				if(item.item == it.item) {
-					val metaList: List<MetaToTagList> = item.metaToTagList
+
+		lst.forEach main@{
+			if(it.isEmpty)
+				return@main
+
+			itemList.forEach outer@{ item ->
+				if(item.item === it.item) {
+					val metaList = item.metaToTagList
 					metaList.forEach { meta ->
 						if(meta.meta == it.metadata) {
 							meta.addStackToList(it)
-							addedStack = true
-							return@forEach
+							return@main
 						}
 					}
-					if(addedStack) return@forEach
+
 					item.addStackToLists(it)
-					addedStack = true
-					return@forEach
+					return@main
 				}
 			}
-			if(addedStack) return@forEach
+
 			itemList.add(ItemToMetaList(it))
 		}
-		inputStacks = lst.stream().map {
-			val copy = it.copy()
-			copy.count = amount
-			copy
-		}.collect(Collectors.toList())
+
+		inputStacks = lst.map {
+			it.copy().also { copy ->
+				copy.count = amount
+			}
+		}
 	}
 
 	constructor(stack: ItemStack) : this(listOf(stack), stack.count)
@@ -57,32 +57,34 @@ class ItemInput : RecipeInput {
 	constructor(input: RecipeInput, amount: Int) : this(input.getInputStacks(), amount)
 
 	override fun copy(): ItemInput {
-		val copy = ItemInput(this.inputStacks, this.amount)
-		copy.isConsumable = this.isConsumable
-		copy.nbtMatcher = this.nbtMatcher
-		copy.nbtCondition = this.nbtCondition
+		val copy = ItemInput(inputStacks, amount)
+		copy.isConsumable = isConsumable
+		copy.nbtMatcher = nbtMatcher
+		copy.nbtCondition = nbtCondition
 		return copy
 	}
 
-	override fun getInputStacks(): List<ItemStack>? = inputStacks
+	override fun getInputStacks(): List<ItemStack>? =
+		inputStacks
 
-	override fun acceptsStack(input: ItemStack?): Boolean {
-		if(input == null || input.isEmpty) return false
-		val itemList = this.itemList
-		val inputItem = input.item
+	override fun acceptsStack(stack: ItemStack?): Boolean {
+		if(stack == null || stack.isEmpty)
+			return false
+
 		itemList.forEach { metaList ->
-			if(metaList.item == inputItem) {
+			if(metaList.item === stack.item) {
 				val tagLists = metaList.metaToTagList
 				tagLists.forEach { tagList ->
-					if(tagList.meta == input.metadata) {
-						val inputNBT = input.tagCompound
-						if(nbtMatcher != null) {
-							return nbtMatcher!!.evaluate(input, nbtCondition)
-						} else {
-							val tagMaps = tagList.tagToStack
-							tagMaps.forEach { tagMapping ->
-								if((inputNBT == null && tagMapping.tag == null) || (inputNBT != null && inputNBT == tagMapping.tag)) return tagMapping.stack.areCapsCompatible(input)
-							}
+					if(tagList.meta == stack.metadata) {
+						val inputNBT = stack.tagCompound
+
+						nbtMatcher?.let {
+							return it.evaluate(stack, nbtCondition)
+						}
+
+						tagList.tagToStack.forEach { tagMapping ->
+							if(inputNBT == tagMapping.tag)
+								return tagMapping.stack.areCapsCompatible(stack)
 						}
 					}
 				}
@@ -100,53 +102,25 @@ class ItemInput : RecipeInput {
 				hash = 31 * hash + it.tagCompound.hashCode()
 			}
 		}
-		hash = 31 * hash + amount
-		hash = 31 * hash + if(isConsumable) 1 else 0
-		hash = 31 * hash + (nbtMatcher?.hashCode() ?: 0)
-		hash = 31 * hash + (nbtCondition?.hashCode() ?: 0)
-		return hash
+		return 31 * hash + Objects.hash(amount, isConsumable, nbtMatcher, nbtCondition)
 	}
 
-	override fun equals(other: Any?): Boolean {
-		if(this === other) return true
-		if(other !is ItemInput) return false
-		val that = other as ItemInput?
+	override fun equals(other: Any?) =
+		this === other || (other is ItemInput && amount == other.amount && isConsumable == other.isConsumable && nbtMatcher == other.nbtMatcher && nbtCondition == other.nbtCondition && inputStacks?.size == other.inputStacks?.size && inputStacks?.mapIndexed { idx, el -> !ItemStack.areItemStacksEqual(el, other.inputStacks!![idx]) }?.any() != true)
 
-		if(this.amount != that!!.amount || this.isConsumable != other.isConsumable) return false
-		if(Objects.equals(this.nbtMatcher, that.nbtMatcher)) return false
-		if(Objects.equals(this.nbtCondition, that.nbtCondition)) return false
+	// roz: shouldn't this use areStacksEqualIgnoreQuantity
+	override fun equalsIgnoreAmount(input: RecipeInput) =
+		this === input || (input is ItemInput && nbtMatcher == input.nbtMatcher && nbtCondition == input.nbtCondition && inputStacks?.size == input.inputStacks?.size && inputStacks?.mapIndexed { idx, el -> !ItemStack.areItemStacksEqual(el, input.inputStacks!![idx]) }?.any() != true)
 
-		if(this.inputStacks!!.size != that.inputStacks!!.size) return false
-		for(i in this.inputStacks!!.indices) {
-			if(!ItemStack.areItemStacksEqual(this.inputStacks!![i], that.inputStacks!![i])) return false
-		}
-		return true
-	}
-
-	override fun equalsIgnoreAmount(input: RecipeInput): Boolean {
-		if(this === input) return true
-		if(input !is ItemInput) return false
-		val that = input as ItemInput?
-
-		if(Objects.equals(this.nbtMatcher, that?.nbtMatcher)) return false
-		if(Objects.equals(this.nbtCondition, that?.nbtCondition)) return false
-
-		if(this.inputStacks!!.size != that?.inputStacks!!.size) return false
-		for(i in this.inputStacks!!.indices) {
-			if(!ItemStack.areItemStacksEqual(this.inputStacks!![i], that.inputStacks!![i])) return false
-		}
-		return true
-	}
-
-	override fun toString(): String {
-		return when(inputStacks?.size) {
-			0 -> "${amount}x[]"
+	override fun toString() =
+		when(inputStacks?.size) {
+			0, null -> "${amount}x[]"
 			1 -> "${amount}x${toStringWithoutQuantity(this.inputStacks!![0])}"
-			else -> "${amount}x[${this.inputStacks!!.stream().map { toStringWithoutQuantity(it) }.collect(Collectors.joining("|"))}]"
+			else -> "${amount}x[${inputStacks!!.joinToString("|") { toStringWithoutQuantity(it) }}]"
 		}
-	}
 
 	companion object {
-		private fun toStringWithoutQuantity(stack: ItemStack): String = "${stack.item.translationKey}@${stack.itemDamage}"
+		private fun toStringWithoutQuantity(stack: ItemStack) =
+			"${stack.item.translationKey}@${stack.itemDamage}"
 	}
 }

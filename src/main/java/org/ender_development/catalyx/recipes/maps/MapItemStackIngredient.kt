@@ -10,7 +10,7 @@ open class MapItemStackIngredient : AbstractMapIngredient {
 	val stack: ItemStack
 	val meta: Int
 	val tag: NBTTagCompound?
-	val recipeInput: RecipeInput?
+	var recipeInput: RecipeInput?
 
 	constructor(stack: ItemStack, meta: Int, tag: NBTTagCompound?) {
 		this.stack = stack

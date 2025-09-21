@@ -8,11 +8,15 @@ class Validator {
 	val isValid: Boolean
 		get() = errorMessages.isEmpty()
 
-	fun error(message: String) = errorMessages.add(message)
+	val message: String
+		get() = errorMessages.joinToString("\n")
 
-	fun getMessage(): String = errorMessages.joinToString("\n")
+	fun error(message: String) =
+		errorMessages.add(message)
 
-	fun listMessages(): List<String> = errorMessages.toList()
+	fun listMessages() =
+		errorMessages.toList()
 
-	fun logMessages() = errorMessages.forEach(Catalyx.logger::error)
+	fun logMessages() =
+		errorMessages.forEach(Catalyx.logger::error)
 }

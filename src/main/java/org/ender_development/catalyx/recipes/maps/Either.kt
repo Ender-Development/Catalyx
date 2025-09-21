@@ -9,7 +9,7 @@ abstract class Either<L, R> private constructor() {
 			Right(value)
 	}
 
-	abstract fun <C, D> mapBoth(f1: (L) -> C, f2: (R) -> D): Either<C, D>
+	abstract fun <C, D> mapBoth(l: (L) -> C, r: (R) -> D): Either<C, D>
 
 	abstract fun <T> map(l: (L) -> T, r: (R) -> T): T
 
@@ -17,9 +17,9 @@ abstract class Either<L, R> private constructor() {
 
 	abstract fun ifRight(consumer: (right: R) -> Unit): Either<L, R>
 
-	abstract fun left(): L?
+	abstract val left: L?
 
-	abstract fun right(): R?
+	abstract val right: R?
 
 	fun <T> mapLeft(l: (L) -> T): Either<T, R> =
 		map({ left(l(it)) }, { right(it) })
@@ -43,8 +43,8 @@ abstract class Either<L, R> private constructor() {
 		map(function) { right(it) }
 
 	private class Left<L, R>(val value: L) : Either<L, R>() {
-		override fun <C, D> mapBoth(f1: (L) -> C, f2: (R) -> D): Either<C, D> =
-			Left(f1(value))
+		override fun <C, D> mapBoth(l: (L) -> C, r: (R) -> D): Either<C, D> =
+			Left(l(value))
 
 		override fun <T> map(l: (L) -> T, r: (R) -> T): T =
 			l(value)
@@ -57,11 +57,9 @@ abstract class Either<L, R> private constructor() {
 		override fun ifRight(consumer: (right: R) -> Unit): Either<L, R> =
 			this
 
-		override fun left(): L? =
-			value
+		override val left: L? = value
 
-		override fun right(): R? =
-			null
+		override val right: R? = null
 
 		override fun toString() =
 			"Either.Left[$value]"
@@ -74,8 +72,8 @@ abstract class Either<L, R> private constructor() {
 	}
 
 	private class Right<L, R>(val value: R) : Either<L, R>() {
-		override fun <C, D> mapBoth(f1: (L) -> C, f2: (R) -> D): Either<C, D> =
-			Right(f2(value))
+		override fun <C, D> mapBoth(l: (L) -> C, r: (R) -> D): Either<C, D> =
+			Right(r(value))
 
 		override fun <T> map(l: (L) -> T, r: (R) -> T): T =
 			r(value)
@@ -88,11 +86,9 @@ abstract class Either<L, R> private constructor() {
 			return this
 		}
 
-		override fun left(): L? =
-			null
+		override val left: L? = null
 
-		override fun right(): R? =
-			value
+		override val right: R? = value
 
 		override fun toString() =
 			"Either.Right[$value]"
