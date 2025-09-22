@@ -7,7 +7,7 @@ import org.ender_development.catalyx.recipes.chance.output.ChancedItemOutput
 import org.ender_development.catalyx.recipes.chance.output.IChancedOutputLogic
 import org.ender_development.catalyx.recipes.ingredients.RecipeInput
 
-class RecipeBuilder<R: RecipeBuilder<R>> {
+class RecipeBuilder<R : RecipeBuilder<R>> {
 	lateinit var recipeMap: RecipeMap<R>
 
 	var inputs: MutableList<RecipeInput?>
@@ -37,8 +37,8 @@ class RecipeBuilder<R: RecipeBuilder<R>> {
 		this.chancedFluidOutputs = ArrayList<ChancedFluidOutput?>()
 	}
 
-	constructor(recipe: Recipe, recipeMap: RecipeMap<R>?) {
-		this.recipeMap = recipeMap!!
+	constructor(recipe: Recipe, recipeMap: RecipeMap<R>) {
+		this.recipeMap = recipeMap
 		this.inputs = recipe.inputs.toMutableList()
 		this.outputs = recipe.outputs.toMutableList()
 		this.chancedOutputs = recipe.chancedOutputs.chancedElements.toMutableList()

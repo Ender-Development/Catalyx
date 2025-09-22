@@ -17,11 +17,10 @@ class Validator {
 	val message: String
 		get() = errorMessages.joinToString("\n")
 
+	val messages: List<String> = errorMessages // typecast down to prevent modification
+
 	fun error(message: String) =
 		errorMessages.add(message)
-
-	fun listMessages() =
-		errorMessages.toList()
 
 	fun logMessages() =
 		errorMessages.forEach(Catalyx.logger::error)

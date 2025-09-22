@@ -8,10 +8,11 @@ import org.ender_development.catalyx.integration.groovyscript.VirtualizedRecipeM
 import org.ender_development.catalyx.recipes.chance.boost.IBoostFunction
 import org.ender_development.catalyx.recipes.maps.AbstractMapIngredient
 import org.ender_development.catalyx.recipes.maps.Branch
+import org.ender_development.catalyx.utils.Delegates
 import java.lang.ref.WeakReference
 import java.util.*
 
-class RecipeMap<R: RecipeBuilder<R>> {
+class RecipeMap<R : RecipeBuilder<R>> {
 	companion object {
 		internal val RECIPE_MAP_REGISTRY = Object2ReferenceOpenHashMap<String, RecipeMap<*>>()
 		internal val RECIPE_DURATION_THEN_ENERGY = Comparator<Recipe>.comparingInt(Recipe::hashCode)
@@ -29,7 +30,7 @@ class RecipeMap<R: RecipeBuilder<R>> {
 
 	private val recipeBuilderSample: R
 	private val primaryRecipeCategory: RecipeCategory
-	private val grsVirtualizedRecipeMap: Any?
+	private var grsVirtualizedRecipeMap: VirtualizedRecipeMap by Delegates.onlyIfLoaded("groovyscript")
 	private val lockup = Branch()
 
 	var chanceBoostFunction = DEFAULT_CHANCE_FUNCTION
@@ -60,20 +61,18 @@ class RecipeMap<R: RecipeBuilder<R>> {
 		this.maxFluidInputs = maxFluidInputs
 		this.maxOutputs = maxOutputs
 		this.maxFluidOutputs = maxFluidOutputs
-		this.primaryRecipeCategory = RecipeCategory.create(
-			Reference.MODID, unlocalizedName, getTranslationKey(),
-			this
-		)
+		translationKey = "recipemap.$unlocalizedName.name"
+		// roz: shouldn't this modid be the caller's modid instead of ours?
+		primaryRecipeCategory = RecipeCategory.create(Reference.MODID, unlocalizedName, translationKey, this)
 
 		defaultRecipeBuilder.recipeMap = this
 		defaultRecipeBuilder.category = primaryRecipeCategory
-		this.recipeBuilderSample = defaultRecipeBuilder
+		recipeBuilderSample = defaultRecipeBuilder
 		RECIPE_MAP_REGISTRY[unlocalizedName] = this
 
-		this.grsVirtualizedRecipeMap = if(Catalyx.GROOVYSCRIPT) VirtualizedRecipeMap(this) else null
+		if(Catalyx.GROOVYSCRIPT)
+			grsVirtualizedRecipeMap = VirtualizedRecipeMap(this)
 	}
 
-	fun getTranslationKey(): String {
-		return "recipemap.$unlocalizedName.name"
-	}
+	val translationKey: String
 }

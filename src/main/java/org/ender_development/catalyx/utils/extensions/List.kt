@@ -10,8 +10,10 @@ fun List<ItemStack>.containsItem(stack: ItemStack, strict: Boolean = false): Boo
 
 fun <T> List<T>.toImmutable(): ImmutableList<T> = ImmutableList.copyOf(this)
 
+@JvmName("copyOfIS")
 fun List<ItemStack>.copyOf(): List<ItemStack> =
 	map { if(it.isEmpty) ItemStack.EMPTY else it.copy() }
 
+@JvmName("copyOfFS")
 fun List<FluidStack>.copyOf(): List<FluidStack> =
 	map { it.copy() }

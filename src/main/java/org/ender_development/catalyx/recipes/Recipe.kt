@@ -11,10 +11,10 @@ import org.ender_development.catalyx.recipes.ingredients.RecipeInput
 import org.ender_development.catalyx.recipes.ingredients.RecipeInputCache
 
 class Recipe(
-	var inputs: List<RecipeInput>,
+	inputs: List<RecipeInput?>,
 	val outputs: List<ItemStack>,
 	val chancedOutputs: ChancedOutputList<ItemStack, ChancedItemOutput>,
-	var fluidInputs: List<RecipeInput>,
+	fluidInputs: List<RecipeInput?>,
 	val fluidOutputs: List<FluidStack>,
 	val chancedFluidOutput: ChancedOutputList<FluidStack, ChancedFluidOutput>,
 	val duration: Int,
@@ -22,10 +22,8 @@ class Recipe(
 	val hidden: Boolean,
 	val recipeCategory: RecipeCategory
 ) {
-	init {
-		inputs = RecipeInputCache.deduplicateInputs(inputs)
-		fluidInputs = RecipeInputCache.deduplicateInputs(fluidInputs)
-	}
+	val inputs = RecipeInputCache.deduplicateInputs(inputs)
+	val fluidInputs = RecipeInputCache.deduplicateInputs(fluidInputs)
 
 	companion object {
 		/**
@@ -39,8 +37,8 @@ class Recipe(
 		 */
 		fun trimRecipeOutput(currentRecipe: Recipe, recipeMap: RecipeMap<*>, itemTrimLimit: Int, fluidTrimLimit: Int): Recipe {
 			// Fast return early if no trimming desired
-			if (itemTrimLimit == -1 && fluidTrimLimit == -1)
-				return currentRecipe;
+			if(itemTrimLimit == -1 && fluidTrimLimit == -1)
+				return currentRecipe
 			val currentRecipe = currentRecipe.copy()
 			val builder = RecipeBuilder(currentRecipe, recipeMap)
 			TODO("Builder Stuff that needs to be implemented")
@@ -56,7 +54,8 @@ class Recipe(
 		}
 	}
 
-	fun copy(): Recipe = Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs, chancedFluidOutput, duration, energyPerTick, hidden, recipeCategory)
+	fun copy() =
+		Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs, chancedFluidOutput, duration, energyPerTick, hidden, recipeCategory)
 
 	/**
 	 * Returns all outputs from the recipe.
@@ -73,25 +72,24 @@ class Recipe(
 		val outputs = outputs.toMutableList()
 		val boostFunction = recipeMap.chanceBoostFunction
 		val chancedOutputList = chancedOutputs.roll(boostFunction, recipeTier, machineTier)
+
 		val resultChanced = mutableListOf<ItemStack>()
 		chancedOutputList?.forEach {
-			var stackToAdd = it.ingredient.copy()
+			val stackToAdd = it.ingredient.copy()
 			resultChanced.forEach { stackInList ->
 				val insertable = stackInList.maxStackSize - stackInList.count
 				if(insertable > 0 && ItemHandlerHelper.canItemStacksStack(stackInList, stackToAdd)) {
-					if (insertable >= stackToAdd.count) {
-						stackInList.grow(stackToAdd.count)
-						stackToAdd = ItemStack.EMPTY
+					val insert = stackToAdd.count.coerceAtMost(insertable)
+					stackInList.grow(insert)
+					stackToAdd.shrink(insert)
+					if(stackToAdd.isEmpty)
 						return@forEach
-					} else {
-						stackInList.grow(insertable)
-						stackToAdd.shrink(insertable)
-					}
 				}
 			}
-			if (!stackToAdd.isEmpty)
+			if(!stackToAdd.isEmpty)
 				resultChanced.add(stackToAdd)
 		} ?: return outputs
+
 		outputs.addAll(resultChanced)
 		return outputs
 	}
@@ -114,18 +112,18 @@ class Recipe(
 
 		val resultChanced = mutableListOf<FluidStack>()
 		chancedOutputList?.forEach {
-			var stackToAdd = it.ingredient.copy()
-			resultChanced.forEach { stackInList ->
-				val insertable = stackInList.amount
-				if(insertable > 0 && stackInList.fluid == stackToAdd.fluid) {
-					stackInList.amount += insertable
-					stackToAdd = null
-					return@forEach
-				}
-			}
-			if (stackToAdd != null)
-				resultChanced.add(stackToAdd)
+			val stackToAdd = it.ingredient
+			if(resultChanced.any { stackInList ->
+					val insertable = stackInList.amount
+					if(insertable > 0 && stackInList.fluid === stackToAdd.fluid) {
+						stackInList.amount += insertable
+						true
+					}
+					false
+				})
+				resultChanced.add(stackToAdd.copy())
 		} ?: return outputs
+
 		outputs.addAll(resultChanced)
 		return outputs
 	}
@@ -159,43 +157,34 @@ class Recipe(
 	 *
 	 * @return A List of ItemStack outputs from the recipe, including all chanced outputs
 	 */
-	fun getAllItemOutputs() : List<ItemStack> {
-		val recipeOutputs = outputs.toMutableList()
-		chancedOutputs.chancedElements.forEach {
-			recipeOutputs.add(it.ingredient.copy())
-		}
-		return recipeOutputs
-	}
+	fun getAllItemOutputs() =
+		// the plus() operator fun for iterables/collections is cursed and I don't know if I want to keep this code like this or revert it to what Ender wrote
+		outputs + chancedOutputs.chancedElements.map { it.ingredient.copy() }
 
 	/**
 	 * Returns a list of every possible FluidStack output from a recipe, including all possible chanced outputs.
 	 *
 	 * @return A List of FluidStack outputs from the recipe, including all chanced outputs
 	 */
-	fun getAllFluidOutputs(): List<FluidStack> {
-		val recipeOutputs = fluidOutputs.toMutableList()
-		chancedFluidOutput.chancedElements.forEach {
-			recipeOutputs.add(it.ingredient.copy())
-		}
-		return recipeOutputs
-	}
+	fun getAllFluidOutputs() =
+		fluidOutputs + chancedFluidOutput.chancedElements.map { it.ingredient.copy() }
 
 	fun hasValidInputsForDisplay(): Boolean {
 		inputs.forEach {
 			if(it.isOreDict())
-				if (OreDictionary.getOres(OreDictionary.getOreName(it.getOreDict())).any { s -> !s.isEmpty })
+				if(OreDictionary.getOres(OreDictionary.getOreName(it.getOreDict())).any { s -> !s.isEmpty })
 					return true
-			else if(it.getInputStacks()?.any { s -> !s.isEmpty } ?: false)
-				return true
+				else if(it.getInputStacks()?.any { s -> !s.isEmpty } == true)
+					return true
 		}
-		fluidInputs.forEach {
-			if(it.getInputFluidStack() != null && it.getInputFluidStack()!!.amount > 0)
-				return true
+		return fluidInputs.any {
+			it.getInputFluidStack()?.let {
+				it.amount > 0
+			} != false
 		}
-		return false
 	}
 
 	fun hasInputFluid(fluid: FluidStack): Boolean =
-		fluidInputs.any { it.getInputFluidStack()?.fluid === fluid.fluid && it.getInputFluidStack()?.isFluidEqual(fluid) == true }
+		fluidInputs.any { it.getInputFluidStack()?.isFluidEqual(fluid) == true }
 }
 

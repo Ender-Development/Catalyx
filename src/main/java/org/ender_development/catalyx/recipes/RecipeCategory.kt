@@ -9,14 +9,17 @@ class RecipeCategory {
 	private val uniqueID: String
 	private val translationKey: String
 	private val recipeMap: RecipeMap<*>
-	private lateinit var icon: Any
+	/**
+	 * The icon can be an [net.minecraft.item.ItemStack] or any other format supported by JEI.
+	 */
+	lateinit var jeiIcon: Any
 
 	private constructor(modid: String, name: String, translationKey: String, recipeMap: RecipeMap<*>) {
 		this.modid = modid
 		this.name = name
-		this.uniqueID = "${this.modid}.${this.name}"
 		this.translationKey = translationKey
 		this.recipeMap = recipeMap
+		uniqueID = "$modid.$name"
 	}
 
 	companion object {
@@ -32,7 +35,7 @@ class RecipeCategory {
 		 * @return the new category
 		 */
 		fun create(modid: String, categoryName: String, translationKey: String, recipeMap: RecipeMap<*>): RecipeCategory =
-			categories.computeIfAbsent(categoryName) { _: Any? -> RecipeCategory(modid, categoryName, translationKey, recipeMap) }
+			categories.computeIfAbsent(categoryName) { RecipeCategory(modid, categoryName, translationKey, recipeMap) }
 
 		/**
 		 * @param categoryName the name of the category
@@ -48,26 +51,10 @@ class RecipeCategory {
 			Collections.unmodifiableCollection(categories.values)
 	}
 
-	/**
-	 * The icon can be an [net.minecraft.item.ItemStack] or any other format supported by JEI.
-	 *
-	 * @param icon the icon to use as a JEI category
-	 * @return this
-	 */
-	fun jeiIcon(icon: Any?): RecipeCategory {
-		this.icon = icon!!
-		return this
-	}
+	override fun equals(other: Any?) =
+		this === other || (other is RecipeCategory && uniqueID == other.uniqueID)
 
-	override fun equals(other: Any?): Boolean {
-		if(this === other) return true
-		if(other == null || javaClass != other.javaClass) return false
-
-		val that = other as RecipeCategory
-		return uniqueID == that.uniqueID
-	}
-
-	override fun hashCode(): Int =
+	override fun hashCode() =
 		uniqueID.hashCode()
 
 	override fun toString(): String =
