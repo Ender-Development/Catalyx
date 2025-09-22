@@ -5,6 +5,12 @@ import org.ender_development.catalyx.Catalyx
 class Validator {
 	private val errorMessages = mutableListOf<String>()
 
+	val status: ValidationStatus
+		get() = when {
+			errorMessages.isEmpty() -> ValidationStatus.VALID
+			else -> ValidationStatus.INVALID
+		}
+
 	val isValid: Boolean
 		get() = errorMessages.isEmpty()
 
@@ -19,4 +25,8 @@ class Validator {
 
 	fun logMessages() =
 		errorMessages.forEach(Catalyx.logger::error)
+}
+
+enum class ValidationStatus {
+	VALID, INVALID, WARNING
 }

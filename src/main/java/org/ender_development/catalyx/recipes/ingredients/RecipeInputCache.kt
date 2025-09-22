@@ -72,14 +72,14 @@ object RecipeInputCache {
 	 * @param inputs list of ingredient instances to be deduplicated
 	 * @return List of deduplicated instances, or `inputs` if the cache is disabled
 	 */
-	fun deduplicateInputs(inputs: MutableList<RecipeInput?>): MutableList<RecipeInput?> {
+	fun deduplicateInputs(inputs: List<RecipeInput?>): List<RecipeInput> {
 		if(!cacheEnabled)
-			return inputs
+			return inputs.filterNotNull()
 
 		if(inputs.isEmpty())
 			return mutableListOf()
 
-		return MutableList(inputs.size) { deduplicate(inputs[it]!!) }
+		return MutableList(inputs.size) { deduplicate(inputs[it]!!) }.filterNotNull()
 	}
 
 	/**

@@ -32,12 +32,15 @@ import kotlin.random.Random
 )
 @Mod.EventBusSubscriber(modid = Reference.MODID)
 object Catalyx {
-	const val DEPENDENCIES = "required-after:forgelin_continuous@[${Reference.KOTLIN_VERSION},);"
+	const val DEPENDENCIES = "required-after:forgelin_continuous@[${Reference.KOTLIN_VERSION},);after:groovyscript@[${Reference.GROOVYSCRIPT_VERSION},);"
 
 	/**
 	 * The random number generator used throughout the mod.
 	 */
 	internal val RANDOM = Random(System.nanoTime())
+
+	internal val GROOVYSCRIPT = Loader.isModLoaded("groovyscript")
+	internal val CRAFTTWEAKER = Loader.isModLoaded("crafttweaker")
 
 	internal lateinit var logger: Logger
 	internal val ownSettings = CatalyxSettings(Reference.MODID, CreativeTabs.MISC, Catalyx, true, {  }, { CatalyxModItems.items.add(it) } )
