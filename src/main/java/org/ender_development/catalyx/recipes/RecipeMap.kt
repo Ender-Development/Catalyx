@@ -15,7 +15,10 @@ import java.util.*
 class RecipeMap<R : RecipeBuilder<R>> {
 	companion object {
 		internal val RECIPE_MAP_REGISTRY = Object2ReferenceOpenHashMap<String, RecipeMap<*>>()
-		internal val RECIPE_DURATION_THEN_ENERGY = Comparator<Recipe>.comparingInt(Recipe::hashCode)
+		internal val RECIPE_DURATION_THEN_ENERGY = Comparator<Recipe>
+			.comparingInt(Recipe::duration)
+			.thenComparingLong(Recipe::energyPerTick)
+			.thenComparingInt(Recipe::hashCode)
 		internal val INGREDIENT_ROOT = WeakHashMap<AbstractMapIngredient, WeakReference<AbstractMapIngredient>>()
 		internal var foundInvalidRecipe = false
 
@@ -63,6 +66,7 @@ class RecipeMap<R : RecipeBuilder<R>> {
 		this.maxFluidOutputs = maxFluidOutputs
 		translationKey = "recipemap.$unlocalizedName.name"
 		// roz: shouldn't this modid be the caller's modid instead of ours?
+		// TODO: add modid parameter to constructor
 		primaryRecipeCategory = RecipeCategory.create(Reference.MODID, unlocalizedName, translationKey, this)
 
 		defaultRecipeBuilder.recipeMap = this
