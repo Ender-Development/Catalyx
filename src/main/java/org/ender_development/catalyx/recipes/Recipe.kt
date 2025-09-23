@@ -7,6 +7,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 import net.minecraftforge.items.ItemHandlerHelper
 import net.minecraftforge.oredict.OreDictionary
+import org.ender_development.catalyx.items.CatalyxModItems.items
 import org.ender_development.catalyx.recipes.chance.output.ChancedFluidOutput
 import org.ender_development.catalyx.recipes.chance.output.ChancedItemOutput
 import org.ender_development.catalyx.recipes.chance.output.ChancedOutputList
@@ -82,25 +83,14 @@ class Recipe(
 	fun copy() =
 		Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs, chancedFluidOutput, duration, energyPerTick, hidden, recipeCategory)
 
-	override fun equals(other: Any?): Boolean {
-		if(this === other) return true
-		if(other == null || this::class != other::class) return false
-		return hasSameInputs(other as Recipe) && hasSameFluidInputs(other)
-	}
+	override fun equals(other: Any?) =
+		this === other || (other is Recipe && hasSameInputs(other) && hasSameFluidInputs(other))
 
-	override fun toString(): String = StringBuilder()
-		.append("inputs", inputs)
-		.append("outputs", outputs)
-		.append("chancedOutputs", chancedOutputs)
-		.append("fluidInputs", fluidInputs)
-		.append("fluidOutputs", fluidOutputs)
-		.append("chancedFluidOutputs", chancedFluidOutput)
-		.append("duration", duration)
-		.append("energyPerTick", energyPerTick)
-		.append("hidden", hidden)
-		.toString()
+	override fun toString() =
+		"Recipe{inputs=$inputs; outputs=$outputs; chancedOutputs=$chancedOutputs; fluidInputs=$fluidInputs; fluidOutputs=$fluidOutputs; chancedFluidOutput=$chancedFluidOutput; duration=$duration; energyPerTick=$energyPerTick; hidden=$hidden}"
 
-	override fun hashCode(): Int = hashCode
+	override fun hashCode() =
+		hashCode
 
 	private fun makeHashCode(): Int {
 		var hash = 31 * hashItemList(inputs)
@@ -110,19 +100,39 @@ class Recipe(
 
 	private fun hasSameInputs(other: Recipe): Boolean {
 		val otherStackList = ObjectArrayList<ItemStack>(other.inputs.size)
-		other.inputs.forEach { otherStackList.addAll(it.getInputStacks()!!) }
-		if(!matchesItems(otherStackList).first) return false
+
+		other.inputs.forEach {
+			otherStackList.addAll(it.getInputStacks()!!)
+		}
+
+		if(!matchesItems(otherStackList).first)
+			return false
+
 		val thisStackList = ObjectArrayList<ItemStack>(inputs.size)
-		inputs.forEach { thisStackList.addAll(it.getInputStacks()!!) }
+
+		inputs.forEach {
+			thisStackList.addAll(it.getInputStacks()!!)
+		}
+
 		return other.matchesItems(thisStackList).first
 	}
 
 	private fun hasSameFluidInputs(other: Recipe): Boolean {
 		val otherFluidList = ObjectArrayList<FluidStack>(other.fluidInputs.size)
-		other.fluidInputs.forEach { otherFluidList.add(it.getInputFluidStack()!!) }
-		if(!matchesFluids(otherFluidList).first) return false
+
+		other.fluidInputs.forEach {
+			otherFluidList.add(it.getInputFluidStack()!!)
+		}
+
+		if(!matchesFluids(otherFluidList).first)
+			return false
+
 		val thisFluidList = ObjectArrayList<FluidStack>(fluidInputs.size)
-		fluidInputs.forEach { thisFluidList.add(it.getInputFluidStack()!!) }
+
+		fluidInputs.forEach {
+			thisFluidList.add(it.getInputFluidStack()!!)
+		}
+
 		return other.matchesFluids(thisFluidList).first
 	}
 
@@ -131,24 +141,31 @@ class Recipe(
 		var indexed = 0
 		this.inputs.forEach {
 			var ingredientAmount = it.amount
-			for(i in 0..inputs.size) {
+			for(i in inputs.indices) {
 				val inputStack = inputs[i]
 				if(i == indexed) {
-					indexed++
-					itemAmountInSlot[i] = if(inputStack == null || inputStack.isEmpty) 0 else inputStack.count
+					++indexed
+					itemAmountInSlot[i] = if(inputStack?.isEmpty != false) 0 else inputStack.count
 				}
-				if(inputStack == null || inputStack.isEmpty || !it.acceptsStack(inputStack))
+
+				if(inputStack?.isEmpty != false || !it.acceptsStack(inputStack))
 					continue
+
 				val itemAmountToConsume = itemAmountInSlot[i].coerceAtMost(ingredientAmount)
 				ingredientAmount -= itemAmountToConsume
-				if(!it.isNonConsumable()) itemAmountInSlot[i] -= itemAmountToConsume
-				if(ingredientAmount == 0) break
+
+				if(!it.isNonConsumable())
+					itemAmountInSlot[i] -= itemAmountToConsume
+
+				if(ingredientAmount == 0)
+					break
 			}
-			if(ingredientAmount > 0) return Pair(false, itemAmountInSlot)
+			if(ingredientAmount > 0)
+				return false to itemAmountInSlot
 		}
 		val returnItemAmountInSlot = IntArray(indexed)
 		System.arraycopy(itemAmountInSlot, 0, returnItemAmountInSlot, 0, indexed)
-		return Pair(true, returnItemAmountInSlot)
+		return true to returnItemAmountInSlot
 	}
 
 	private fun matchesFluids(inputs: List<FluidStack?>): Pair<Boolean, IntArray> {
@@ -156,24 +173,31 @@ class Recipe(
 		var indexed = 0
 		fluidInputs.forEach {
 			var fluidAmount = it.amount
-			for(i in 0..inputs.size) {
+			for(i in inputs.indices) {
 				val tankFluid = inputs[i]
 				if(i == indexed) {
-					indexed++
+					++indexed
 					fluidAmountInTank[i] = tankFluid?.amount ?: 0
 				}
+
 				if(tankFluid == null || !it.acceptsFluid(tankFluid))
 					continue
+
 				val fluidAmountToConsume = fluidAmountInTank[i].coerceAtMost(fluidAmount)
 				fluidAmount -= fluidAmountToConsume
-				if(!it.isNonConsumable()) fluidAmountInTank[i] -= fluidAmountToConsume
-				if(fluidAmount == 0) break
+
+				if(!it.isNonConsumable())
+					fluidAmountInTank[i] -= fluidAmountToConsume
+
+				if(fluidAmount == 0)
+					break
 			}
-			if(fluidAmount > 0) return Pair(false, fluidAmountInTank)
+			if(fluidAmount > 0)
+				return false to fluidAmountInTank
 		}
 		val returnFluidAmountInTank = IntArray(indexed)
 		System.arraycopy(fluidAmountInTank, 0, returnFluidAmountInTank, 0, indexed)
-		return Pair(true, returnFluidAmountInTank)
+		return true to returnFluidAmountInTank
 	}
 
 	/**
@@ -249,7 +273,7 @@ class Recipe(
 
 	/**
 	 * Returns the maximum possible recipe outputs from a recipe, divided into regular and chanced outputs
-	 * Takes into account any specific output limiters, ie macerator slots, to trim down the output list
+	 * Takes into account any specific output limiters, i.e. macerator slots, to trim down the output list
 	 * Trims from chanced outputs first, then regular outputs
 	 *
 	 * @param outputLimit The limit on the number of outputs, -1 for disabled.
@@ -260,26 +284,29 @@ class Recipe(
 		var chancedOutputs = chancedOutputs.chancedElements.toMutableList()
 		when {
 			// No limiting
-			outputLimit == -1 -> outputs.addAll(this.outputs.copyOf())
+			outputLimit == -1 -> outputs.addAll(this.outputs)
+
 			// If just the regular outputs would satisfy the outputLimit
 			this.outputs.size >= outputLimit -> {
-				// sublist doesn't create a new list, so copyOf() is needed to make a new list
-				outputs.addAll(this.outputs.copyOf().subList(0, outputLimit.coerceAtMost(this.outputs.size)))
+				outputs.addAll(this.outputs.subList(0, this.outputs.size.coerceAtMost(outputLimit)))
 				chancedOutputs.clear()
 			}
+
 			// If the regular outputs and chanced outputs are required to satisfy the outputLimit
 			!this.outputs.isEmpty() && this.outputs.size + chancedOutputs.size >= outputLimit -> {
-				outputs.addAll(this.outputs.copyOf())
+				outputs.addAll(this.outputs)
 				val remainingSpace = outputLimit - this.outputs.size
-				chancedOutputs = chancedOutputs.subList(0, remainingSpace.coerceAtMost(chancedOutputs.size))
+				chancedOutputs = chancedOutputs.subList(0, chancedOutputs.size.coerceAtMost(remainingSpace))
 			}
+
 			// There are only chanced outputs to satisfy the outputLimit
-			this.outputs.isEmpty() -> chancedOutputs = chancedOutputs.subList(0, outputLimit.coerceAtMost(chancedOutputs.size))
+			this.outputs.isEmpty() -> chancedOutputs = chancedOutputs.subList(0, chancedOutputs.size.coerceAtMost(outputLimit))
+
 			// The number of outputs + chanced outputs is lower than the trim number, so just add everything
 			// Chanced outputs are taken care of in the original copy
-			else -> outputs.addAll(this.outputs.copyOf())
+			else -> outputs.addAll(this.outputs)
 		}
-		return Pair(outputs, chancedOutputs)
+		return outputs.copyOf() to chancedOutputs
 	}
 
 	/**
@@ -295,26 +322,29 @@ class Recipe(
 		var chancedOutputs = chancedFluidOutput.chancedElements.toMutableList()
 		when {
 			// No limiting
-			outputLimit == -1 -> outputs.addAll(fluidOutputs.copyOf())
+			outputLimit == -1 -> outputs.addAll(fluidOutputs)
+
 			// If just the regular outputs would satisfy the outputLimit
 			fluidOutputs.size >= outputLimit -> {
-				// sublist doesn't create a new list, so copyOf() is needed to make a new list
-				outputs.addAll(fluidOutputs.copyOf().subList(0, outputLimit.coerceAtMost(fluidOutputs.size)))
+				outputs.addAll(fluidOutputs.subList(0, fluidOutputs.size.coerceAtMost(outputLimit)))
 				chancedOutputs.clear()
 			}
+
 			// If the regular outputs and chanced outputs are required to satisfy the outputLimit
 			!fluidOutputs.isEmpty() && fluidOutputs.size + chancedOutputs.size >= outputLimit -> {
-				outputs.addAll(fluidOutputs.copyOf())
+				outputs.addAll(fluidOutputs)
 				val remainingSpace = outputLimit - fluidOutputs.size
-				chancedOutputs = chancedOutputs.subList(0, remainingSpace.coerceAtMost(chancedOutputs.size))
+				chancedOutputs = chancedOutputs.subList(0, chancedOutputs.size.coerceAtMost(remainingSpace))
 			}
+
 			// There are only chanced outputs to satisfy the outputLimit
-			fluidOutputs.isEmpty() -> chancedOutputs = chancedOutputs.subList(0, outputLimit.coerceAtMost(chancedOutputs.size))
+			fluidOutputs.isEmpty() -> chancedOutputs = chancedOutputs.subList(0, chancedOutputs.size.coerceAtMost(outputLimit))
+
 			// The number of outputs + chanced outputs is lower than the trim number, so just add everything
 			// Chanced outputs are taken care of in the original copy
-			else -> outputs.addAll(fluidOutputs.copyOf())
+			else -> outputs.addAll(fluidOutputs)
 		}
-		return Pair(outputs, chancedOutputs)
+		return outputs.copyOf() to chancedOutputs
 	}
 
 	/**
@@ -342,8 +372,8 @@ class Recipe(
 				else if(it.getInputStacks()?.any { s -> !s.isEmpty } == true)
 					return true
 		}
-		return fluidInputs.any { input ->
-			input.getInputFluidStack()?.let {
+		return fluidInputs.any {
+			it.getInputFluidStack()?.let {
 				it.amount > 0
 			} != false
 		}
@@ -363,25 +393,40 @@ class Recipe(
 	fun matches(consumeIfSuccessful: Boolean, inputs: MutableList<ItemStack?>, fluidInputs: MutableList<FluidStack?>): Boolean {
 		if(inputs.isEmpty() && fluidInputs.isEmpty())
 			return false
-		val fluids = matchesFluids(fluidInputs)
-		if (!fluids.first) return false
-		val items = matchesItems(inputs)
-		if (!items.first) return false
-		if(consumeIfSuccessful) {
-			val fluidAmountInTank = fluids.second
-			fluidInputs.forEachIndexed { index, fluidStack ->
-				val fluidAmount = fluidAmountInTank[index]
-				if(fluidStack == null || fluidStack.amount == fluidAmount) return@forEachIndexed
-				fluidStack.amount = fluidAmount
-				if (fluidStack.amount == 0) fluidInputs[index] = null
-			}
-			val itemAmountInSlot = items.second
-			inputs.forEachIndexed { index, itemStack ->
-				val itemAmount = itemAmountInSlot[index]
-				if(itemStack == null || itemStack.isEmpty || itemStack.count == itemAmount) return@forEachIndexed
-				itemStack.count = itemAmount
-			}
+
+		val (fluidsMatch, fluidAmountInTank) = matchesFluids(fluidInputs)
+		if(!fluidsMatch)
+			return false
+
+		val (itemsMatch, itemAmountInSlot) = matchesItems(inputs)
+		if(!itemsMatch)
+			return false
+
+		if(!consumeIfSuccessful)
+			return true
+
+		// roz: these loops are pointless? we alrways return `true` no matter what happens here.
+		fluidInputs.forEachIndexed { index, fluidStack ->
+			val fluidAmount = fluidAmountInTank[index]
+			if(fluidStack == null || fluidStack.amount == fluidAmount)
+				return@forEachIndexed
+
+			fluidStack.amount = fluidAmount
+
+			if(fluidStack.amount == 0)
+				fluidInputs[index] = null
 		}
+
+		inputs.forEachIndexed { index, itemStack ->
+			val itemAmount = itemAmountInSlot[index]
+			if(itemStack?.isEmpty != false || itemStack.count == itemAmount)
+				return@forEachIndexed
+
+			itemStack.count = itemAmount
+
+			// if(itemStack.count == 0), analogous to fluidInputs?
+		}
+
 		return true
 	}
 

@@ -67,6 +67,7 @@ class RecipeMap<R : RecipeBuilder<R>> {
 		translationKey = "recipemap.$unlocalizedName.name"
 		// roz: shouldn't this modid be the caller's modid instead of ours?
 		// TODO: add modid parameter to constructor
+		// roz: we had a tool for that, is was called [CatalyxSettings]
 		primaryRecipeCategory = RecipeCategory.create(Reference.MODID, unlocalizedName, translationKey, this)
 
 		defaultRecipeBuilder.recipeMap = this

@@ -5,144 +5,99 @@ import net.minecraft.item.ItemStack
 import java.util.*
 
 /**
- * A configurable generator of hashing strategies, allowing for consideration of select properties of ItemStacks when
+ * A configurable generator of hashing strategies, allowing for consideration of select properties of [ItemStack]s when
  * considering equality.
  */
 interface IItemStackHash : Hash.Strategy<ItemStack> {
 	companion object {
 		/**
-		 * @return a builder object for producing a custom ItemStackHashStrategy.
+		 * @return a new [Builder] object for producing a custom [IItemStackHash] instance.
 		 */
 		val builder: Builder
-			get() = Builder()
+			inline get() = Builder()
 
 		/**
-		 * Generates an ItemStackHash configured to compare every aspect of ItemStacks.
+		 * Generates an [IItemStackHash] instance configured to compare every aspect of ItemStacks.
 		 *
-		 * @return the ItemStackHashStrategy as described above.
+		 * @return a new [IItemStackHash] instance as described above.
 		 */
 		val comparingAll: IItemStackHash
-			get() = builder
-				.compareItem()
-				.compareMeta()
-				.compareDamage()
-				.compareNBT()
-				.compareCount()
-				.build()
+			inline get() = builder.apply {
+				item = true
+				meta = true
+				damage = true
+				nbt = true
+				amount = true
+			}.build()
 
 		/**
-		 * Generates an ItemStackHash configured to compare every aspect of ItemStacks except the number
-		 * of items in the stack.
+		 * Generates an [IItemStackHash] instance configured to compare every aspect of ItemStacks except the quantity and meta.
 		 *
-		 * @return the ItemStackHashStrategy as described above.
+		 * @return a new [IItemStackHash] instance as described above.
 		 */
 		val comparingAllButCount: IItemStackHash
-			get() = builder
-				.compareItem()
-				.compareDamage()
-				.compareNBT()
-				.build()
+			inline get() = builder.apply {
+				item = true
+				damage = true
+				nbt = true
+			}.build()
 
 		/**
-		 * Generates an ItemStackHash configured to compare Item type and metadata only.
+		 * Generates an [IItemStackHash] instance configured to compare Item type and metadata only.
 		 *
-		 * @return the ItemStackHashStrategy as described above.
+		 * @return a new [IItemStackHash] instance as described above.
 		 */
 		val comparingItemDamageCount: IItemStackHash
-			get() = builder
-				.compareItem()
-				.compareDamage()
-				.compareCount()
-				.build()
+			inline get() = builder.apply {
+				item = true
+				damage = true
+				amount = true
+			}.build()
 	}
 
 	/**
 	 * Builder pattern class for generating customized ItemStackHashStrategy
 	 */
 	class Builder {
-		private var item = false
-		private var meta = false
-		private var damage = false
-		private var nbt = false
-		private var count = false
+		/** Whether the Item type should be considered for equality. */
+		var item = false
+		/** Whether the Item metadata (damage value) should be considered for equality. */
+		var meta = false
+		/** Whether the Item damage value should be considered for equality. */
+		var damage = false
+		/** Whether the Item NBT data should be considered for equality. */
+		var nbt = false
+		/** Whether the Item's amount (count/quantity) should be considered for equality. */
+		var amount = false
 
 		/**
-		 * Defines whether the Item type should be considered for equality.
-		 *
-		 * @param choice `true` to consider this property, `false` to ignore it.
-		 * @return `this`
-		 */
-		fun compareItem(choice: Boolean = true): Builder {
-			item = choice
-			return this
-		}
-
-		/**
-		 * Defines whether the Item metadata (damage value) should be considered for equality.
-		 *
-		 * @param choice `true` to consider this property, `false` to ignore it.
-		 * @return `this`
-		 */
-		fun compareMeta(choice: Boolean = true): Builder {
-			meta = choice
-			return this
-		}
-
-		/**
-		 * Defines whether the Item damage value should be considered for equality.
-		 *
-		 * @param choice `true` to consider this property, `false` to ignore it.
-		 * @return `this`
-		 */
-		fun compareDamage(choice: Boolean = true): Builder {
-			damage = choice
-			return this
-		}
-
-		/**
-		 * Defines whether the Item NBT data should be considered for equality.
-		 *
-		 * @param choice `true` to consider this property, `false` to ignore it.
-		 * @return `this`
-		 */
-		fun compareNBT(choice: Boolean = true): Builder {
-			nbt = choice
-			return this
-		}
-
-		/**
-		 * Defines whether stack size should be considered for equality.
-		 *
-		 * @param choice `true` to consider this property, `false` to ignore it.
-		 * @return `this`
-		 */
-		fun compareCount(choice: Boolean = true): Builder {
-			count = choice
-			return this
-		}
-
-		/**
-		 * @return the ItemStackHashStrategy as configured by "compare" methods.
+		 * @return a new [IItemStackHash] instance as configured
 		 */
 		fun build(): IItemStackHash = object : IItemStackHash {
 			override fun equals(a: ItemStack?, b: ItemStack?): Boolean {
-				if(a == null || a.isEmpty) return b == null || b.isEmpty
-				if(b == null || b.isEmpty) return false
-				return (!item || a.item == b.item) &&
+				if(a?.isEmpty != false)
+					return b?.isEmpty != false
+
+				if(b?.isEmpty != false)
+					return false
+
+				return (!item || a.item === b.item) &&
 						(!meta || a.metadata == b.metadata) &&
 						(!damage || a.itemDamage == b.itemDamage) &&
-						(!nbt || Objects.equals(a.tagCompound, b.tagCompound)) &&
-						(!count || a.count == b.count)
+						(!nbt || a.tagCompound == b.tagCompound) &&
+						(!amount || a.count == b.count)
 			}
 
 			override fun hashCode(stack: ItemStack?): Int {
-				if(stack == null || stack.isEmpty) return 0
+				if(stack == null || stack.isEmpty)
+					return 0
+
 				return Objects.hash(
 					if(item) stack.item else null,
 					if(meta) stack.metadata else null,
 					if(damage) stack.itemDamage else null,
 					if(nbt) stack.tagCompound else null,
-					if(count) stack.count else null
+					if(amount) stack.count else null
 				)
 			}
 		}

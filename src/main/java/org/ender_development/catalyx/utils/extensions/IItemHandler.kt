@@ -3,7 +3,8 @@ package org.ender_development.catalyx.utils.extensions
 import net.minecraft.item.ItemStack
 import net.minecraftforge.items.IItemHandler
 
-operator fun IItemHandler.get(idx: Int) = getStackInSlot(idx)
+operator fun IItemHandler.get(idx: Int) =
+	getStackInSlot(idx)
 
 fun IItemHandler.tryInsertInto(otherHandler: IItemHandler): Boolean {
 	for(i in 0..<otherHandler.slots) {
