@@ -372,8 +372,8 @@ class Recipe(
 				else if(it.getInputStacks()?.any { s -> !s.isEmpty } == true)
 					return true
 		}
-		return fluidInputs.any {
-			it.getInputFluidStack()?.let {
+		return fluidInputs.any { input ->
+			input.getInputFluidStack()?.let {
 				it.amount > 0
 			} != false
 		}
