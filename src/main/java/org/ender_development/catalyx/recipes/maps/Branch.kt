@@ -1,7 +1,7 @@
 package org.ender_development.catalyx.recipes.maps
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
-//import org.ender_development.catalyx.recipes.Recipe
+import org.ender_development.catalyx.recipes.Recipe
 
 class Branch {
 	// Keys on this have *(should)* unique hashcodes.
@@ -46,5 +46,3 @@ class Branch {
 			specialNodes = it
 		}
 }
-
-class Recipe(val hidden: Boolean)

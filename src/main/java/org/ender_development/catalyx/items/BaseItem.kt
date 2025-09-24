@@ -1,13 +1,11 @@
 package org.ender_development.catalyx.items
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
-import org.ender_development.catalyx.CatalyxSettings
 import net.minecraft.item.Item
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.event.RegistryEvent
-import net.minecraftforge.fml.relauncher.SideOnly
-import org.ender_development.catalyx.items.IItemProvider
+import org.ender_development.catalyx.CatalyxSettings
 
 /**
  * A base Catalyx item
