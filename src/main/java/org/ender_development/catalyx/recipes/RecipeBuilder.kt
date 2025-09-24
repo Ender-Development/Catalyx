@@ -26,7 +26,7 @@ class RecipeBuilder<R : RecipeBuilder<R>> {
 	var hidden: Boolean = false
 	var category: RecipeCategory? = null
 	var parallel: Int = 0
-	var recipeStatus: ValidationStatus? = ValidationStatus.VALID
+	var recipeStatus: Validator.ValidationStatus? = Validator.ValidationStatus.VALID
 
 	private constructor() {
 		this.inputs = ArrayList<RecipeInput?>()
