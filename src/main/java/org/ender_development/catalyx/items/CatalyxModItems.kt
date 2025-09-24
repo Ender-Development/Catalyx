@@ -9,7 +9,7 @@ object CatalyxModItems {
 	val copyPasteTool = CopyPasteTool()
 
 	fun registerItems(ev: RegistryEvent.Register<Item>) {
-		println(items.joinToString { it.toString() })
+		println(items.joinToString { it.toString() }) // TODO remove for publication
 		items.forEach { it.registerItem(ev) }
 	}
 }

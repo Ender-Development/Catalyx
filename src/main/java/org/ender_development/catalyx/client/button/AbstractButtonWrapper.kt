@@ -103,7 +103,7 @@ abstract class AbstractButtonWrapper(x: Int, y: Int, width: Int = 16, height: In
 
 		/** Explicitly register wrapper, use if you cannot guarantee there's gonna be an instance created on server-side */
 		fun registerWrapper(wrapper: Class<*>) {
-			buttonWrappers.add(wrapper.name.removeSuffix("\$Companion"))
+			buttonWrappers.add(wrapper.name.removeSuffix($$"$Companion"))
 		}
 	}
 }

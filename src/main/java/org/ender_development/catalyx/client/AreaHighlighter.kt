@@ -118,7 +118,7 @@ class AreaHighlighter {
 		val eventHandlers = hashSetOf<(RenderWorldLastEvent) -> Unit>()
 	}
 
-	internal fun eventHandler(event: RenderWorldLastEvent) {
+	private fun eventHandler(event: RenderWorldLastEvent) {
 		if(!shown)
 			return hide()
 

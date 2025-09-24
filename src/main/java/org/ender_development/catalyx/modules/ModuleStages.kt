@@ -5,8 +5,8 @@ package org.ender_development.catalyx.modules
  * Also includes early module stages.
  */
 enum class ModuleStage {
-	C_SETUP,  // Initializing Module Containers
-	M_SETUP,  // Initializing Modules
+	CONTAINER_SETUP,  // Initializing Module Containers
+	MODULE_SETUP,  // Initializing Modules
 	CONSTRUCTION,  // MC Construction stage
 	PRE_INIT,  // MC PreInitialization stage
 	INIT,  // MC Initialization stage

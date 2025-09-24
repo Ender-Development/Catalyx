@@ -6,8 +6,8 @@ import net.minecraft.creativetab.CreativeTabs
 
 interface IBothProvider : IItemProvider, IBlockProvider
 
-internal typealias Blocks = (block: IBothProvider) -> Unit
-internal typealias Items = (item: IItemProvider) -> Unit
+private typealias Blocks = (block: IBothProvider) -> Unit
+private typealias Items = (item: IItemProvider) -> Unit
 
 /**
  * Helper class that contains mod-specific data to pass into Catalyx constructors
@@ -53,15 +53,26 @@ class CatalyxSettings {
 	}
 
 	/** Create a new CatalyxSettings instance with a different mod id */
-	fun modId(newModId: String) = CatalyxSettings(newModId, creativeTab, mod, enableItemCapability, blocks, items)
+	fun modId(newModId: String) =
+		CatalyxSettings(newModId, creativeTab, mod, enableItemCapability, blocks, items)
+
 	/** Create a new CatalyxSettings instance with a different creative tab */
-	fun creativeTab(newCreativeTab: CreativeTabs) = CatalyxSettings(modId, newCreativeTab, mod, enableItemCapability, blocks, items)
+	fun creativeTab(newCreativeTab: CreativeTabs) =
+		CatalyxSettings(modId, newCreativeTab, mod, enableItemCapability, blocks, items)
+
 	/** Create a new CatalyxSettings instance with a different mod */
-	fun mod(newMod: Any) = CatalyxSettings(modId, creativeTab, newMod, enableItemCapability, blocks, items)
+	fun mod(newMod: Any) =
+		CatalyxSettings(modId, creativeTab, newMod, enableItemCapability, blocks, items)
+
 	/** Create a new CatalyxSettings instance with a different item capability setting */
-	fun enableItemCapability(newEnableItemCapability: Boolean) = CatalyxSettings(modId, creativeTab, mod, newEnableItemCapability, blocks, items)
+	fun enableItemCapability(newEnableItemCapability: Boolean) =
+		CatalyxSettings(modId, creativeTab, mod, newEnableItemCapability, blocks, items)
+
 	/** Create a new CatalyxSettings instance with a different block function */
-	fun blocks(newBlocks: Blocks) = CatalyxSettings(modId, creativeTab, mod, enableItemCapability, newBlocks, items)
+	fun blocks(newBlocks: Blocks) =
+		CatalyxSettings(modId, creativeTab, mod, enableItemCapability, newBlocks, items)
+
 	/** Create a new CatalyxSettings instance with a different item function */
-	fun items(newItems: Items) = CatalyxSettings(modId, creativeTab, mod, enableItemCapability, blocks, newItems)
+	fun items(newItems: Items) =
+		CatalyxSettings(modId, creativeTab, mod, enableItemCapability, blocks, newItems)
 }

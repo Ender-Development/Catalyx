@@ -21,14 +21,15 @@ class MetaToTagList : Int2ObjectMap.Entry<List<TagToStack>> {
 		(tagToStack as ObjectArrayList).add(TagToStack(stack))
 	}
 
-	override fun getIntKey(): Int = meta
+	override fun getIntKey() =
+		meta
 
 	override fun setValue(newValue: List<TagToStack>): List<TagToStack> {
 		tagToStack = newValue
 		return tagToStack
 	}
 
-	@Deprecated("Use getIntKey() instead", ReplaceWith("getIntKey()"))
+	@Deprecated("Use getIntKey() instead", ReplaceWith("getIntKey()")) // roz: why?
 	override val key: Int
 		get() = meta
 

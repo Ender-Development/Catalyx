@@ -29,7 +29,7 @@ class CatalyxGuiHandler : IGuiHandler {
 	override fun getClientGuiElement(id: Int, player: EntityPlayer?, world: World?, x: Int, y: Int, z: Int) =
 		getSidedGuiElement(guis, id, player, world, x, y, z)
 
-	internal fun <T> getSidedGuiElement(sidedList: MutableList<Class<out T>>, id: Int, player: EntityPlayer?, world: World?, x: Int, y: Int, z: Int): Any? {
+	private fun <T> getSidedGuiElement(sidedList: MutableList<Class<out T>>, id: Int, player: EntityPlayer?, world: World?, x: Int, y: Int, z: Int): Any? {
 		if(player == null || world == null)
 			return null
 

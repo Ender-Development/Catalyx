@@ -6,7 +6,7 @@ import net.minecraft.item.ItemBlock
 import net.minecraft.item.ItemStack
 import net.minecraft.world.World
 
-internal typealias ITooltipProvider = (stack: ItemStack, world: World?, flag: ITooltipFlag) -> Iterable<String>
+private typealias ITooltipProvider = (stack: ItemStack, world: World?, flag: ITooltipFlag) -> Iterable<String>
 
 /**
  * Use this class the same way as ItemBlock (i.e. you still need to set registryName)
