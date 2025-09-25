@@ -20,7 +20,7 @@ object NetworkUtils {
 		try {
 			buffer.readItemStack()
 		} catch(e: IOException) {
-			Catalyx.logger.catching(e)
+			Catalyx.LOGGER.catching(e)
 			ItemStack.EMPTY
 		}
 
@@ -38,7 +38,7 @@ object NetworkUtils {
 			else
 				FluidStack.loadFluidStackFromNBT(buffer.readCompoundTag())
 		} catch (e: IOException) {
-			Catalyx.logger.catching(e)
+			Catalyx.LOGGER.catching(e)
 			null
 		}
 }
