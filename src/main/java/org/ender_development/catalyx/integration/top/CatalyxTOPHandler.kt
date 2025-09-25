@@ -1,16 +1,17 @@
 package org.ender_development.catalyx.integration.top
 
-import org.ender_development.catalyx.Reference
-import org.ender_development.catalyx.tiles.helper.IFluidTile
-import org.ender_development.catalyx.utils.extensions.getRealColor
 import mcjty.theoneprobe.TheOneProbe
 import mcjty.theoneprobe.api.*
 import mcjty.theoneprobe.apiimpl.styles.ProgressStyle
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.world.World
+import org.ender_development.catalyx.Reference
+import org.ender_development.catalyx.tiles.helper.IFluidTile
+import org.ender_development.catalyx.utils.extensions.getRealColor
 import java.awt.Color
 
+@Deprecated("We gonna switch to ModuleTheOneProbe eventually")
 object CatalyxTOPHandler {
 	internal fun init() {
 		val top = TheOneProbe.theOneProbeImp
