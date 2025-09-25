@@ -1,11 +1,11 @@
 package org.ender_development.catalyx.animation
 
 import com.google.common.collect.ImmutableMap
-import org.ender_development.catalyx.utils.SideUtils
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.model.ModelLoaderRegistry
 import net.minecraftforge.common.animation.ITimeValue
 import net.minecraftforge.common.model.animation.IAnimationStateMachine
+import org.ender_development.catalyx.utils.SideUtils
 
 class NoopAnimationStateMachine() : IAnimationStateMachine {
 	companion object {

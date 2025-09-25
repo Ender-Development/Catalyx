@@ -14,6 +14,7 @@ object ConfigParser {
 		companion object {
 			internal const val IGNORE_META = -1
 		}
+
 		protected var modid: String? = null
 		protected var itemid: String? = null
 		protected var item: Item? = null

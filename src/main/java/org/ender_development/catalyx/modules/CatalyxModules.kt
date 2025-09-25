@@ -3,7 +3,7 @@ package org.ender_development.catalyx.modules
 import org.ender_development.catalyx.Reference
 import org.ender_development.catalyx.integration.Mods
 
-object CatalyxModules: IModuleContainer {
+object CatalyxModules : IModuleContainer {
 	override val id = Reference.MODID
 
 	const val MODULE_CORE = "core"

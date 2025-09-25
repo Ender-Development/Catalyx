@@ -39,7 +39,7 @@ open class MapItemStackIngredient : AbstractMapIngredient {
 		Objects.hash(stack.item, meta, tag)
 
 	override fun toString(): String =
-		"MapItemStackIngredient{item=${stack.item.getRegistryName()}} {meta=$meta} {tag=$tag}"
+		"MapItemStackIngredient{item=${stack.item.registryName}} {meta=$meta} {tag=$tag}"
 
 	companion object {
 		fun from(r: RecipeInput): MutableList<AbstractMapIngredient?> {

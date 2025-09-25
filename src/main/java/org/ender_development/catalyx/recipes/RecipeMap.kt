@@ -3,7 +3,6 @@ package org.ender_development.catalyx.recipes
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.objects.Object2ReferenceOpenHashMap
 import net.minecraft.util.SoundEvent
-import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.CatalyxSettings
 import org.ender_development.catalyx.integration.Mods
 import org.ender_development.catalyx.integration.groovyscript.VirtualizedRecipeMap

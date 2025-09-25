@@ -11,7 +11,7 @@ import org.ender_development.catalyx.modules.CatalyxModules
 
 @Optional.Interface(modid = Mods.GROOVYSCRIPT, iface = "com.cleanroommc.groovyscript.api.GroovyPlugin", striprefs = true)
 @CatalyxModule(moduleID = CatalyxModules.MODULE_GRS, containerID = Reference.MODID, modDependencies = [Mods.GROOVYSCRIPT], name = "Catalyx GroovyScript Integration Module", description = "Adds integration with GroovyScript")
-class ModuleGroovyScript: IntegrationSubmodule(), GroovyPlugin {
+class ModuleGroovyScript : IntegrationSubmodule(), GroovyPlugin {
 	companion object {
 		private lateinit var modSupportContainer: GroovyContainer<*>
 	}

@@ -1,6 +1,5 @@
 package org.ender_development.catalyx.blocks
 
-import org.ender_development.catalyx.CatalyxSettings
 import net.minecraft.block.state.IBlockState
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
@@ -8,6 +7,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 import net.minecraftforge.items.CapabilityItemHandler
+import org.ender_development.catalyx.CatalyxSettings
 import kotlin.math.roundToInt
 
 /**

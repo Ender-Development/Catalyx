@@ -7,7 +7,7 @@ import org.ender_development.catalyx.modules.CatalyxModule
 import org.ender_development.catalyx.modules.CatalyxModules
 
 @CatalyxModule(moduleID = CatalyxModules.MODULE_TEST, containerID = Reference.MODID, name = "Test Module", description = "A module for testing purposes. Will only work in a development environment.", testModule = true)
-class TestModule: BaseCatalyxModule() {
+class TestModule : BaseCatalyxModule() {
 	override val eventBusSubscribers: List<Class<*>> = listOf(TestEventHandler::class.java)
 
 	override fun preInit(event: FMLPreInitializationEvent) =

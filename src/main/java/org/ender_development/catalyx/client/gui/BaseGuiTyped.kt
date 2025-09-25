@@ -1,5 +1,10 @@
 package org.ender_development.catalyx.client.gui
 
+import net.minecraft.client.gui.GuiButton
+import net.minecraft.client.gui.inventory.GuiContainer
+import net.minecraft.client.renderer.GlStateManager
+import net.minecraft.inventory.Container
+import net.minecraft.util.ResourceLocation
 import org.ender_development.catalyx.Reference
 import org.ender_development.catalyx.client.button.AbstractButtonWrapper
 import org.ender_development.catalyx.client.button.PauseButtonWrapper
@@ -16,11 +21,6 @@ import org.ender_development.catalyx.utils.RenderAlignment
 import org.ender_development.catalyx.utils.RenderUtils
 import org.ender_development.catalyx.utils.extensions.get
 import org.ender_development.catalyx.utils.extensions.translate
-import net.minecraft.client.gui.GuiButton
-import net.minecraft.client.gui.inventory.GuiContainer
-import net.minecraft.client.renderer.GlStateManager
-import net.minecraft.inventory.Container
-import net.minecraft.util.ResourceLocation
 
 abstract class BaseGuiTyped<T>(container: Container, val tileEntity: T) : GuiContainer(container) where T : IGuiTile, T : BaseTile, T : BaseGuiTyped.IDefaultButtonVariables {
 	abstract val textureLocation: ResourceLocation

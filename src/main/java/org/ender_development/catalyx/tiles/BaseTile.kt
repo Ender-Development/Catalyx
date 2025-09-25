@@ -1,12 +1,5 @@
 package org.ender_development.catalyx.tiles
 
-import org.ender_development.catalyx.CatalyxSettings
-import org.ender_development.catalyx.client.button.AbstractButtonWrapper
-import org.ender_development.catalyx.client.button.PauseButtonWrapper
-import org.ender_development.catalyx.client.button.RedstoneButtonWrapper
-import org.ender_development.catalyx.client.container.BaseContainer
-import org.ender_development.catalyx.client.gui.BaseGuiTyped
-import org.ender_development.catalyx.tiles.helper.*
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
@@ -30,6 +23,13 @@ import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 import net.minecraftforge.items.wrapper.CombinedInvWrapper
+import org.ender_development.catalyx.CatalyxSettings
+import org.ender_development.catalyx.client.button.AbstractButtonWrapper
+import org.ender_development.catalyx.client.button.PauseButtonWrapper
+import org.ender_development.catalyx.client.button.RedstoneButtonWrapper
+import org.ender_development.catalyx.client.container.BaseContainer
+import org.ender_development.catalyx.client.gui.BaseGuiTyped
+import org.ender_development.catalyx.tiles.helper.*
 
 /**
  * A base TileEntity in Catalyx, implementing separate input and output inventories; saving/loading from NBT; energy, fluid and item capability handling

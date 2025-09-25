@@ -1,6 +1,5 @@
 package org.ender_development.catalyx.client.container
 
-import org.ender_development.catalyx.tiles.helper.IGuiTile
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.Container
 import net.minecraft.inventory.IInventory
@@ -8,6 +7,7 @@ import net.minecraft.inventory.Slot
 import net.minecraft.item.ItemStack
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.SlotItemHandler
+import org.ender_development.catalyx.tiles.helper.IGuiTile
 
 abstract class BaseContainer(playerInv: IInventory, val tileEntity: IBaseContainerCompat) : Container() {
 	init {

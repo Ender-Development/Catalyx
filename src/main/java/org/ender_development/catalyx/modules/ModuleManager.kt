@@ -11,7 +11,6 @@ import net.minecraftforge.fml.common.discovery.ASMDataTable
 import net.minecraftforge.fml.common.event.*
 import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.Reference
-import org.ender_development.catalyx.modules.ModuleManager.configDirectory
 import org.ender_development.catalyx.utils.DevUtils
 import java.io.File
 import java.lang.reflect.InvocationTargetException

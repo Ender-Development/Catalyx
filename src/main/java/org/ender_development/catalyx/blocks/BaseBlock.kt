@@ -1,7 +1,5 @@
 package org.ender_development.catalyx.blocks
 
-import org.ender_development.catalyx.CatalyxSettings
-import org.ender_development.catalyx.IBothProvider
 import net.minecraft.block.Block
 import net.minecraft.block.material.Material
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
@@ -10,6 +8,8 @@ import net.minecraft.item.ItemBlock
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.event.RegistryEvent
+import org.ender_development.catalyx.CatalyxSettings
+import org.ender_development.catalyx.IBothProvider
 
 /**
  * A base Catalyx Block

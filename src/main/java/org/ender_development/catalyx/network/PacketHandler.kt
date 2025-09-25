@@ -1,9 +1,9 @@
 package org.ender_development.catalyx.network
 
-import org.ender_development.catalyx.Reference
 import net.minecraftforge.fml.common.network.NetworkRegistry
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper
 import net.minecraftforge.fml.relauncher.Side
+import org.ender_development.catalyx.Reference
 
 object PacketHandler {
 	lateinit var channel: SimpleNetworkWrapper

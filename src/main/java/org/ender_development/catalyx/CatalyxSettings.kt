@@ -1,8 +1,8 @@
 package org.ender_development.catalyx
 
+import net.minecraft.creativetab.CreativeTabs
 import org.ender_development.catalyx.blocks.IBlockProvider
 import org.ender_development.catalyx.items.IItemProvider
-import net.minecraft.creativetab.CreativeTabs
 
 interface IBothProvider : IItemProvider, IBlockProvider
 

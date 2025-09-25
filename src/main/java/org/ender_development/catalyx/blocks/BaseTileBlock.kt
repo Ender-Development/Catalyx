@@ -1,7 +1,5 @@
 package org.ender_development.catalyx.blocks
 
-import org.ender_development.catalyx.CatalyxSettings
-import org.ender_development.catalyx.tiles.BaseTile
 import net.minecraft.block.ITileEntityProvider
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.EntityLivingBase
@@ -18,6 +16,8 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 import net.minecraftforge.fml.common.registry.GameRegistry
+import org.ender_development.catalyx.CatalyxSettings
+import org.ender_development.catalyx.tiles.BaseTile
 
 /**
  * A Catalyx Block interacting with a TileEntity and a GUI
