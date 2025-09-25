@@ -11,6 +11,9 @@ fun List<ItemStack>.containsItem(stack: ItemStack, strict: Boolean = false) =
 fun <T> List<T>.toImmutableList(): ImmutableList<T> =
 	ImmutableList.copyOf(this)
 
+fun <T> List<T>.toSingletonList(): List<T> =
+	ImmutableList.copyOf(this.subList(0, 1))
+
 @JvmName("copyOfIS")
 fun List<ItemStack>.copyOf() =
 	map {
