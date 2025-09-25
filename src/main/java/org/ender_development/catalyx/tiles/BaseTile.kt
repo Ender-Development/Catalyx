@@ -52,11 +52,11 @@ abstract class BaseTile(val settings: CatalyxSettings) : TileEntity(), BaseConta
 	open val automationInvHandler: CombinedInvWrapper
 		get() = CombinedInvWrapper(automationInput, automationOutput)
 
-	override fun canInteractWith(player: EntityPlayer) = !isInvalid && player.getDistanceSq(pos.add(.5, .5, .5)) <= 64
+	override fun canInteractWith(player: EntityPlayer) =
+		!isInvalid && player.getDistanceSq(pos.add(.5, .5, .5)) <= 64
 
-	override fun shouldRefresh(world: World, pos: BlockPos, oldState: IBlockState, newState: IBlockState): Boolean {
-		return oldState.block != newState.block
-	}
+	override fun shouldRefresh(world: World, pos: BlockPos, oldState: IBlockState, newState: IBlockState) =
+		oldState.block !== newState.block
 
 	fun initInventoryCapability(inputSlots: Int, outputSlots: Int) {
 		this.inputSlots = inputSlots
@@ -81,11 +81,14 @@ abstract class BaseTile(val settings: CatalyxSettings) : TileEntity(), BaseConta
 		input = TileStackHandler(inputSlots, this)
 	}
 
-	override fun getUpdateTag() = writeToNBT(NBTTagCompound())
+	override fun getUpdateTag() =
+		writeToNBT(NBTTagCompound())
 
-	override fun getUpdatePacket() = SPacketUpdateTileEntity(pos, 0, updateTag)
+	override fun getUpdatePacket() =
+		SPacketUpdateTileEntity(pos, 0, updateTag)
 
-	override fun onDataPacket(net: NetworkManager, pkt: SPacketUpdateTileEntity) = readFromNBT(pkt.nbtCompound)
+	override fun onDataPacket(net: NetworkManager, pkt: SPacketUpdateTileEntity) =
+		readFromNBT(pkt.nbtCompound)
 
 	open fun markDirtyClient() {
 		markDirty()

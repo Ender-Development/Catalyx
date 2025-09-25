@@ -23,3 +23,6 @@ fun List<ItemStack>.copyOf() =
 @JvmName("copyOfFS")
 fun List<FluidStack>.copyOf() =
 	map { it.copy() }
+
+inline fun <T, R> List<T>.mapUnique(transform: (T) -> R) =
+	mapTo(hashSetOf(), transform)

@@ -17,20 +17,22 @@ class RenderAlignment(val vertical: Vertical, val horizontal: Horizontal) {
 		BOTTOM_LEFT, BOTTOM_MIDDLE, BOTTOM_RIGHT;
 
 		// only reason these are not just properties like `enum class Alignment(val vertical: Vertical, val horizontal: Horizontal)` is because it's prettier
-		fun getVertical() = when(this) {
-			TOP_LEFT, TOP_MIDDLE, TOP_RIGHT -> Vertical.TOP
-			MIDDLE_LEFT, MIDDLE_MIDDLE, MIDDLE_RIGHT -> Vertical.MIDDLE
-			BOTTOM_LEFT, BOTTOM_MIDDLE, BOTTOM_RIGHT -> Vertical.BOTTOM
-		}
+		val vertical: Vertical
+			get() = when(this) {
+				TOP_LEFT, TOP_MIDDLE, TOP_RIGHT -> Vertical.TOP
+				MIDDLE_LEFT, MIDDLE_MIDDLE, MIDDLE_RIGHT -> Vertical.MIDDLE
+				BOTTOM_LEFT, BOTTOM_MIDDLE, BOTTOM_RIGHT -> Vertical.BOTTOM
+			}
 
-		fun getHorizontal() = when(this) {
-			TOP_LEFT, MIDDLE_LEFT, BOTTOM_LEFT -> Horizontal.LEFT
-			TOP_MIDDLE, MIDDLE_MIDDLE, BOTTOM_MIDDLE -> Horizontal.MIDDLE
-			TOP_RIGHT, MIDDLE_RIGHT, BOTTOM_RIGHT -> Horizontal.RIGHT
-		}
+		val horizontal: Horizontal
+			get() = when(this) {
+				TOP_LEFT, MIDDLE_LEFT, BOTTOM_LEFT -> Horizontal.LEFT
+				TOP_MIDDLE, MIDDLE_MIDDLE, BOTTOM_MIDDLE -> Horizontal.MIDDLE
+				TOP_RIGHT, MIDDLE_RIGHT, BOTTOM_RIGHT -> Horizontal.RIGHT
+			}
 	}
 
-	constructor(alignment: Alignment) : this(alignment.getVertical(), alignment.getHorizontal())
+	constructor(alignment: Alignment) : this(alignment.vertical, alignment.horizontal)
 
 	fun getX(left: Int, right: Int, width: Int, leftOffset: Int, rightOffset: Int) =
 		when(horizontal) {

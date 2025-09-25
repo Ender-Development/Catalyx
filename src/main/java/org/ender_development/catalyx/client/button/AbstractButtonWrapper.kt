@@ -12,15 +12,18 @@ import net.minecraftforge.fml.relauncher.SideOnly
 
 /**
  * Wrapper class for stateful buttons sent from client-side to server-side
+ *
  * When creating a wrapper
- * - if your button/wrapper has any state that will need to be sent to the server-side, read it in readExtraData and write it in writeExtraData (x, y, width, height are automatically sent)
- * - make sure your button has a constructor that takes (x, y, width, height); (x, y); or (), as that's how your class will be instantiated on server-side (see ButtonPacket)
+ * - if your button/wrapper has any state that will need to be sent to the server-side, read it in [readExtraData] and write it in [writeExtraData] ([x], [y], [width], [height] are automatically sent)
+ * - make sure your button has a constructor that takes ([x], [y], [width], [height]); ([x], [y]); or (), as that's how your class will be instantiated on server-side (see [org.ender_development.catalyx.network.ButtonPacket])
+ *
  * On client-side in GUIs
- * - add a button to the buttonList by instantiating this class and doing buttonList.add([...].button)
- * - override actionPerformed and use AbstractButtonWrapper#getWrapper to identify/get buttons and their wrappers, if need be
- * On server-side in TEs that extend IButtonTile
- * - implement IButtonTile#handleButtonPress and handle your button from there
- * - if you cannot guarantee this class will be instantiated before any button clicks are received, call AbstractButtonWrapper#registerWrapper (ideally in your TE init {} block)
+ * - add a button to the buttonList by instantiating this class and doing [net.minecraft.client.gui.GuiScreen.buttonList].add(instance.[button])
+ * - override [net.minecraft.client.gui.GuiScreen.actionPerformed] and use [getWrapper] to identify/get buttons and their wrappers, if need be
+ *
+ * On server-side in TEs that extend [org.ender_development.catalyx.tiles.helper.IButtonTile]
+ * - implement [org.ender_development.catalyx.tiles.helper.IButtonTile.handleButtonPress] and handle your button from there
+ * - if you cannot guarantee this class will be instantiated before any button clicks are received, call [registerWrapper] (ideally in your TE init {} block, see [org.ender_development.catalyx.tiles.BaseTile] for an example)
  */
 abstract class AbstractButtonWrapper(x: Int, y: Int, width: Int = 16, height: Int = 16) {
 	open val textureLocation = ResourceLocation(Reference.MODID, "textures/gui/container/gui.png")

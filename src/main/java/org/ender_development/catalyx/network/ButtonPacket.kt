@@ -68,7 +68,9 @@ class ButtonPacket() : IMessage {
 
 	class Handler : IMessageHandler<ButtonPacket, IMessage> {
 		override fun onMessage(message: ButtonPacket, ctx: MessageContext): IMessage? {
-			FMLCommonHandler.instance().getWorldThread(ctx.netHandler).addScheduledTask { handle(message, ctx) }
+			FMLCommonHandler.instance().getWorldThread(ctx.netHandler).addScheduledTask {
+				handle(message, ctx)
+			}
 			return null
 		}
 
@@ -76,27 +78,29 @@ class ButtonPacket() : IMessage {
 			val playerEntity = ctx.serverHandler.player
 			val tile = playerEntity.world.getTileEntity(message.blockPos)
 
-			if(tile is IButtonTile) {
-				val instance = message.wrapperClass.let {
+			if(tile !is IButtonTile) {
+				// Received a ButtonPacket for a BlockPos which doesn't have a TileEntity that extends IButtonTile ;p
+				Catalyx.logger.error("Received a ButtonPacket for a block which doesn't have a tile entity that can handle button presses")
+				return
+			}
+			val instance = message.wrapperClass.let {
+				try {
+					it.getDeclaredConstructor(Int::class.java, Int::class.java, Int::class.java, Int::class.java).newInstance(message.x, message.y, message.width, message.height)
+				} catch(_: NoSuchMethodException) {
 					try {
-						it.getDeclaredConstructor(Int::class.java, Int::class.java, Int::class.java, Int::class.java).newInstance(message.x, message.y, message.width, message.height)
+						it.getDeclaredConstructor(Int::class.java, Int::class.java).newInstance(message.x, message.y)
 					} catch(_: NoSuchMethodException) {
 						try {
-							it.getDeclaredConstructor(Int::class.java, Int::class.java).newInstance(message.x, message.y)
-						} catch(_: NoSuchMethodException) {
-							try {
-								it.getDeclaredConstructor().newInstance()
-							} catch(e: NoSuchMethodException) {
-								Catalyx.logger.error("No suitable constructor for class ${message.wrapperClass} found, tried (Int, Int, Int, Int)(x, y, w, h); (Int, Int)(x, y); ()")
-								throw e
-							}
+							it.getDeclaredConstructor().newInstance()
+						} catch(e: NoSuchMethodException) {
+							Catalyx.logger.error("No suitable constructor for class ${message.wrapperClass} found, tried (Int, Int, Int, Int)(x, y, w, h); (Int, Int)(x, y); ()")
+							throw e
 						}
 					}
 				}
-				instance.readExtraData(message.extraData)
-				tile.handleButtonPress(instance)
-			} else // Received a ButtonPacket for a BlockPos which doesn't have a TileEntity that extends IButtonTile ;p
-				Catalyx.logger.error("Received a ButtonPacket for a block which doesn't have a tile entity that can handle button presses")
+			}
+			instance.readExtraData(message.extraData)
+			tile.handleButtonPress(instance)
 		}
 	}
 }
