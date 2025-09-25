@@ -1,8 +1,5 @@
 package org.ender_development.catalyx.network
 
-import org.ender_development.catalyx.Catalyx
-import org.ender_development.catalyx.client.button.AbstractButtonWrapper
-import org.ender_development.catalyx.tiles.helper.IButtonTile
 import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
 import net.minecraft.util.math.BlockPos
@@ -10,6 +7,9 @@ import net.minecraftforge.fml.common.FMLCommonHandler
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext
+import org.ender_development.catalyx.Catalyx
+import org.ender_development.catalyx.client.button.AbstractButtonWrapper
+import org.ender_development.catalyx.tiles.helper.IButtonTile
 
 class ButtonPacket() : IMessage {
 	private lateinit var blockPos: BlockPos
@@ -30,7 +30,7 @@ class ButtonPacket() : IMessage {
 		if(!AbstractButtonWrapper.buttonWrappers.contains(className)) {
 			// this is needed to prevent potential security risks from people being able to send custom packets and potentially loading any class they want
 			val error = "Received illegal class name '$className' in ButtonPacket"
-			Catalyx.logger.error(error)
+			Catalyx.LOGGER.error(error)
 			// we'll crash from a lateinit not being initialised later anyways so might as well
 			throw IllegalArgumentException(error)
 		}
@@ -68,9 +68,7 @@ class ButtonPacket() : IMessage {
 
 	class Handler : IMessageHandler<ButtonPacket, IMessage> {
 		override fun onMessage(message: ButtonPacket, ctx: MessageContext): IMessage? {
-			FMLCommonHandler.instance().getWorldThread(ctx.netHandler).addScheduledTask {
-				handle(message, ctx)
-			}
+			FMLCommonHandler.instance().getWorldThread(ctx.netHandler).addScheduledTask { handle(message, ctx) }
 			return null
 		}
 
@@ -78,29 +76,27 @@ class ButtonPacket() : IMessage {
 			val playerEntity = ctx.serverHandler.player
 			val tile = playerEntity.world.getTileEntity(message.blockPos)
 
-			if(tile !is IButtonTile) {
-				// Received a ButtonPacket for a BlockPos which doesn't have a TileEntity that extends IButtonTile ;p
-				Catalyx.logger.error("Received a ButtonPacket for a block which doesn't have a tile entity that can handle button presses")
-				return
-			}
-			val instance = message.wrapperClass.let {
-				try {
-					it.getDeclaredConstructor(Int::class.java, Int::class.java, Int::class.java, Int::class.java).newInstance(message.x, message.y, message.width, message.height)
-				} catch(_: NoSuchMethodException) {
+			if(tile is IButtonTile) {
+				val instance = message.wrapperClass.let {
 					try {
-						it.getDeclaredConstructor(Int::class.java, Int::class.java).newInstance(message.x, message.y)
+						it.getDeclaredConstructor(Int::class.java, Int::class.java, Int::class.java, Int::class.java).newInstance(message.x, message.y, message.width, message.height)
 					} catch(_: NoSuchMethodException) {
 						try {
-							it.getDeclaredConstructor().newInstance()
-						} catch(e: NoSuchMethodException) {
-							Catalyx.logger.error("No suitable constructor for class ${message.wrapperClass} found, tried (Int, Int, Int, Int)(x, y, w, h); (Int, Int)(x, y); ()")
-							throw e
+							it.getDeclaredConstructor(Int::class.java, Int::class.java).newInstance(message.x, message.y)
+						} catch(_: NoSuchMethodException) {
+							try {
+								it.getDeclaredConstructor().newInstance()
+							} catch(e: NoSuchMethodException) {
+								Catalyx.LOGGER.error("No suitable constructor for class ${message.wrapperClass} found, tried (Int, Int, Int, Int)(x, y, w, h); (Int, Int)(x, y); ()")
+								throw e
+							}
 						}
 					}
 				}
-			}
-			instance.readExtraData(message.extraData)
-			tile.handleButtonPress(instance)
+				instance.readExtraData(message.extraData)
+				tile.handleButtonPress(instance)
+			} else // Received a ButtonPacket for a BlockPos which doesn't have a TileEntity that extends IButtonTile ;p
+				Catalyx.LOGGER.error("Received a ButtonPacket for a block which doesn't have a tile entity that can handle button presses")
 		}
 	}
 }

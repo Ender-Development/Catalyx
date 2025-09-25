@@ -1,8 +1,8 @@
 package org.ender_development.catalyx.config
 
-import org.ender_development.catalyx.Catalyx
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
+import org.ender_development.catalyx.Catalyx
 
 class ConfigHandler<T : ConfigParser.ConfigItemStack>(configData: Iterable<String>, parser: (String) -> T) {
 	private val configItems = mutableListOf<T>()
@@ -11,7 +11,7 @@ class ConfigHandler<T : ConfigParser.ConfigItemStack>(configData: Iterable<Strin
 		try {
 			configItems.addAll(configData.map(parser))
 		} catch(e: Exception) {
-			Catalyx.logger.error("Error parsing config data", e)
+			Catalyx.LOGGER.error("Error parsing config data", e)
 		}
 	}
 
