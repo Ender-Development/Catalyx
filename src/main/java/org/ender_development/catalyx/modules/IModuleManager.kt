@@ -9,14 +9,16 @@ interface IModuleManager {
 		isModuleEnabled(ResourceLocation(containerID, moduleID))
 
 	fun isModuleEnabled(moduleID: String) =
-		isModuleEnabled(ResourceLocation(Reference.MODID,moduleID))
+		isModuleEnabled(ResourceLocation(Reference.MODID, moduleID))
 
 	fun isModuleEnabled(id: ResourceLocation): Boolean
 	fun registerContainer(container: IModuleContainer?)
-	fun passedStage(stage: ModuleStage): Boolean
 
 	val loadedContainer: IModuleContainer?
 	val moduleStage: ModuleStage
+
+	fun passedStage(stage: ModuleStage) =
+		moduleStage.ordinal > stage.ordinal
 
 	fun construction(event: FMLConstructionEvent)
 	fun preInit(event: FMLPreInitializationEvent)

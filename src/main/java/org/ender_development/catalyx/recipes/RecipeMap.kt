@@ -5,8 +5,10 @@ import it.unimi.dsi.fastutil.objects.Object2ReferenceOpenHashMap
 import net.minecraft.util.SoundEvent
 import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.CatalyxSettings
+import org.ender_development.catalyx.integration.Mods
 import org.ender_development.catalyx.integration.groovyscript.VirtualizedRecipeMap
 import org.ender_development.catalyx.modules.CatalyxModules
+import org.ender_development.catalyx.modules.ModuleManager
 import org.ender_development.catalyx.recipes.chance.boost.IBoostFunction
 import org.ender_development.catalyx.recipes.maps.AbstractMapIngredient
 import org.ender_development.catalyx.recipes.maps.Branch
@@ -47,7 +49,7 @@ class RecipeMap<R : RecipeBuilder<R>> {
 
 	private val recipeBuilderSample: R
 	private val primaryRecipeCategory: RecipeCategory
-	private var grsVirtualizedRecipeMap: VirtualizedRecipeMap by Delegates.onlyIfLoaded("groovyscript")
+	private var grsVirtualizedRecipeMap: VirtualizedRecipeMap by Delegates.onlyIfLoaded(Mods.GROOVYSCRIPT)
 	private val lockup = Branch()
 
 	var chanceBoostFunction = DEFAULT_CHANCE_FUNCTION
@@ -88,9 +90,7 @@ class RecipeMap<R : RecipeBuilder<R>> {
 		recipeBuilderSample = defaultRecipeBuilder
 		RECIPE_MAP_REGISTRY[unlocalizedName] = this
 
-		if(Catalyx.moduleManager.isModuleEnabled(CatalyxModules.MODULE_GRS))
+		if(ModuleManager.isModuleEnabled(CatalyxModules.MODULE_GRS))
 			grsVirtualizedRecipeMap = VirtualizedRecipeMap(this)
 	}
-
-
 }

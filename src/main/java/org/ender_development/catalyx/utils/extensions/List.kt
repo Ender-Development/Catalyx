@@ -1,6 +1,7 @@
 package org.ender_development.catalyx.utils.extensions
 
 import com.google.common.collect.ImmutableList
+import it.unimi.dsi.fastutil.objects.ObjectLists
 import net.minecraft.item.ItemStack
 import net.minecraftforge.fluids.FluidStack
 import net.minecraftforge.oredict.OreDictionary
@@ -12,7 +13,7 @@ fun <T> List<T>.toImmutableList(): ImmutableList<T> =
 	ImmutableList.copyOf(this)
 
 fun <T> List<T>.toSingletonList(): List<T> =
-	ImmutableList.copyOf(this.subList(0, 1))
+	ObjectLists.singleton(this[0])
 
 @JvmName("copyOfIS")
 fun List<ItemStack>.copyOf() =

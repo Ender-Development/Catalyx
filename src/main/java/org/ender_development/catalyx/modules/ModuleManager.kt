@@ -11,119 +11,108 @@ import net.minecraftforge.fml.common.discovery.ASMDataTable
 import net.minecraftforge.fml.common.event.*
 import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.Reference
-import org.ender_development.catalyx.modules.ModuleManager.Companion.configDirectory
+import org.ender_development.catalyx.modules.ModuleManager.configDirectory
 import org.ender_development.catalyx.utils.DevUtils
 import java.io.File
 import java.lang.reflect.InvocationTargetException
 import java.util.*
 
-class ModuleManager : IModuleManager {
-	companion object {
-		var configDirectory: File? = null
-		val instance = ModuleManager()
-		const val MODULE_CFG_FILE_NAME = "modules.cfg"
-		const val MODULE_CFG_CATEGORY_NAME = "modules"
+object ModuleManager : IModuleManager {
+	var configDirectory: File? = null
+	const val MODULE_CFG_FILE_NAME = "modules.cfg"
+	const val MODULE_CFG_CATEGORY_NAME = "modules"
 
-		/**
-		 * @param modules the list of modules possibly containing a Core Module
-		 * @return the first found Core Module found
-		 */
-		private fun getCoreModule(modules: Iterable<ICatalyxModule>): ICatalyxModule? =
-			modules.firstOrNull { it::class.java.getAnnotation(CatalyxModule::class.java).coreModule }
+	/**
+	 * @param modules the list of modules possibly containing a Core Module
+	 * @return the first found Core Module found
+	 */
+	private fun getCoreModule(modules: Iterable<ICatalyxModule>): ICatalyxModule? =
+		modules.firstOrNull { it::class.java.getAnnotation(CatalyxModule::class.java).coreModule }
 
-		/**
-		 * @param module the module to get the container ID for
-		 * @return the container ID
-		 */
-		private fun getContainerID(module: ICatalyxModule) =
-			module::class.java.getAnnotation(CatalyxModule::class.java).containerID
+	/**
+	 * @return the [CatalyxModule] annotation for this [ICatalyxModule]
+	 */
+	private val ICatalyxModule.annotation
+		inline get() = this::class.java.getAnnotation(CatalyxModule::class.java)
 
-		/**
-		 * @param module the module to get the module ID for
-		 * @return the module ID
-		 */
-		private fun getModuleID(module: ICatalyxModule) =
-			module::class.java.getAnnotation(CatalyxModule::class.java).moduleID
+	/**
+	 * @return the container ID
+	 */
+	private val ICatalyxModule.containerID: String
+		inline get() = annotation.containerID
 
-		/**
-		 * @param asmDataTable the ASM Data Table containing the module data
-		 * @return all ICatalyxModule instances in sorted order by Container and Module ID
-		 */
-		private fun getInstances(asmDataTable: ASMDataTable): List<ICatalyxModule> {
-			val instances = ArrayList<ICatalyxModule>()
-			asmDataTable.getAll(CatalyxModule::class.java.canonicalName).forEach {
-				val moduleID = it.annotationInfo["moduleID"] as String
-				val modDependencies = it.annotationInfo["modDependencies"]
-					?.let { dependencies -> (dependencies as ArrayList<*>).filterIsInstance<String>() }
-					?: run {
-						Catalyx.LOGGER.debug("Module $moduleID is missing modDependencies annotation property. Assuming no mod dependencies.")
-						emptyList()
-					}
-				if(modDependencies.isEmpty() || modDependencies.all { dep -> Loader.isModLoaded(dep) }) {
-					try {
-						val clazz = Class.forName(it.className)
-						if(ICatalyxModule::class.java.isAssignableFrom(clazz)) {
-							instances.add(clazz.getConstructor().newInstance() as ICatalyxModule)
-						} else Catalyx.LOGGER.error("Module of class ${it.className} with id $moduleID is not an instance of ICatalyxModule")
-					} catch(e: Exception) {
-						when(e) {
-							is ClassNotFoundException,
-							is IllegalAccessException,
-							is InstantiationException,
-							is NoSuchMethodException,
-							is InvocationTargetException -> Catalyx.LOGGER.error("Could not initialize module $moduleID", e)
-							else -> throw e
-						}
-					}
-				} else Catalyx.LOGGER.info("Module $moduleID is missing at least one of mod dependencies: ${modDependencies.joinToString(", ")}. Skipping...")
-			}
-			return instances.sortedWith(compareBy({ getContainerID(it) }, { getModuleID(it) }))
-		}
+	/**
+	 * @return the module ID
+	 */
+	private val ICatalyxModule.moduleID: String
+		inline get() = annotation.moduleID
 
-		/**
-		 * @param asmDataTable the ASM Data Table containing the module data
-		 * @return a map of Container ID to list of associated modules sorted by Module ID
-		 */
-		private fun getModules(asmDataTable: ASMDataTable): Map<String, MutableList<ICatalyxModule>> {
-			val modules = Object2ReferenceLinkedOpenHashMap<String, MutableList<ICatalyxModule>>()
-			getInstances(asmDataTable).forEach {
-				val module = it::class.java.getAnnotation(CatalyxModule::class.java)
-				modules.computeIfAbsent(module.containerID) { _ -> ArrayList() }.add(it)
-			}
-			return modules
-		}
-
-		/**
-		 * @param module the module to get the comment for
-		 * @return the comment for the module's configuration
-		 */
-		private fun getComment(module: ICatalyxModule): String {
-			val annotation = module::class.java.getAnnotation(CatalyxModule::class.java)
-			val dependencies = module.dependencyUids
-			var comment = annotation.description
-			if(!dependencies.isEmpty()) {
-				val iterator = dependencies.iterator()
-				val sb = StringBuilder(comment)
-				sb.append("\nModule Dependencies: [ ").append(iterator.next())
-				while(iterator.hasNext()) {
-					sb.append(", ").append(iterator.next())
+	/**
+	 * @param asmDataTable the ASM Data Table containing the module data
+	 * @return all ICatalyxModule instances in sorted order by Container and Module ID
+	 */
+	private fun getInstances(asmDataTable: ASMDataTable): List<ICatalyxModule> {
+		val instances = mutableListOf<ICatalyxModule>()
+		asmDataTable.getAll(CatalyxModule::class.java.canonicalName).forEach {
+			val moduleID = it.annotationInfo["moduleID"] as String
+			val modDependencies = it.annotationInfo["modDependencies"]
+				?.let { dependencies -> (dependencies as List<*>).filterIsInstance<String>() }
+				?: run {
+					Catalyx.LOGGER.debug("Module $moduleID is missing modDependencies annotation property. Assuming no mod dependencies.")
+					emptyList()
 				}
-				sb.append(" ]")
-				comment = sb.toString()
-			}
-			val modDependencies = annotation.modDependencies
-			if(!modDependencies.isEmpty()) {
-				val iterator = modDependencies.iterator()
-				val sb = StringBuilder(comment)
-				sb.append("\nMod Dependencies: [ ").append(iterator.next())
-				while(iterator.hasNext()) {
-					sb.append(", ").append(iterator.next())
+
+			if(modDependencies.all { dep -> Loader.isModLoaded(dep) }) {
+				try {
+					val clazz = Class.forName(it.className)
+					if(ICatalyxModule::class.java.isAssignableFrom(clazz))
+						instances.add(clazz.getConstructor().newInstance() as ICatalyxModule)
+					else
+						Catalyx.LOGGER.error("Module of class ${it.className} with id $moduleID is not an instance of ICatalyxModule")
+				} catch(e: Exception) {
+					when(e) {
+						is ClassNotFoundException,
+						is IllegalAccessException,
+						is InstantiationException,
+						is NoSuchMethodException,
+						is InvocationTargetException -> Catalyx.LOGGER.error("Could not initialize module $moduleID", e)
+						else -> throw e
+					}
 				}
-				sb.append(" ]")
-				comment = sb.toString()
-			}
-			return comment
+			} else
+				Catalyx.LOGGER.info("Module $moduleID is missing at least one of mod dependencies: ${modDependencies.joinToString(", ")}. Skipping...")
 		}
+		return instances.sortedWith(compareBy({ it.containerID }, { it.moduleID }))
+	}
+
+	/**
+	 * @param asmDataTable the ASM Data Table containing the module data
+	 * @return a map of Container ID to list of associated modules sorted by Module ID
+	 */
+	private fun getModules(asmDataTable: ASMDataTable): Map<String, MutableList<ICatalyxModule>> {
+		val modules = Object2ReferenceLinkedOpenHashMap<String, MutableList<ICatalyxModule>>()
+		getInstances(asmDataTable).forEach {
+			modules.computeIfAbsent(it.containerID) { _ -> mutableListOf() }.add(it)
+		}
+		return modules
+	}
+
+	/**
+	 * @param module the module to get the comment for
+	 * @return the comment for the module's configuration
+	 */
+	private fun getComment(module: ICatalyxModule): String {
+		val annotation = module.annotation
+		val dependencies = module.dependencyUids
+		var comment = annotation.description
+		if(!dependencies.isEmpty())
+			comment += dependencies.joinToString(", ", "\nModule Dependencies: [ ", " ]")
+
+		val modDependencies = annotation.modDependencies
+		if(!modDependencies.isEmpty())
+			comment += modDependencies.joinToString(", ", "\nMod Dependencies: [ ", " ]")
+
+		return comment
 	}
 
 	private var containers = Object2ReferenceLinkedOpenHashMap<String, IModuleContainer>()
@@ -138,10 +127,10 @@ class ModuleManager : IModuleManager {
 	 * Set up the Module Manager
 	 *
 	 * @param asmDataTable    the data table containing all the Module Container and Module classes
-	 * @param configDirectory the directory containing the mod config directory
 	 */
 	fun setup(asmDataTable: ASMDataTable) {
 		discoverContainers(asmDataTable)
+		// roz: hashmaps don't have any inherent order, why sort, and also why create a hashmap just to turn it into a fastutil hashmap? ;p
 		containers = containers.entries
 			.sortedBy { it.key }
 			.associate { it.key to it.value }
@@ -152,11 +141,11 @@ class ModuleManager : IModuleManager {
 		configureModules(getModules(asmDataTable))
 
 		loadedModules.forEach { module ->
-			currentContainer = containers[getContainerID(module)]
+			currentContainer = containers[module.containerID]
 			module.logger.debug("Registering event handlers")
-			module.eventBusSubscribers.forEach { MinecraftForge.EVENT_BUS.register(it) }
-			module.terrainGenBusSubscriber.forEach { MinecraftForge.TERRAIN_GEN_BUS.register(it) }
-			module.oreGenBusSubscriber.forEach { MinecraftForge.ORE_GEN_BUS.register(it) }
+			module.eventBusSubscribers.forEach(MinecraftForge.EVENT_BUS::register)
+			module.terrainGenBusSubscriber.forEach(MinecraftForge.TERRAIN_GEN_BUS::register)
+			module.oreGenBusSubscriber.forEach(MinecraftForge.ORE_GEN_BUS::register)
 		}
 		currentContainer = null
 	}
@@ -170,9 +159,10 @@ class ModuleManager : IModuleManager {
 		asmDataTable.getAll(ModuleContainer::class.java.canonicalName).forEach {
 			try {
 				val clazz = Class.forName(it.className)
-				if(IModuleContainer::class.java.isAssignableFrom(clazz)) {
-					registerContainer(clazz.getConstructor().newInstance() as IModuleContainer?)
-				} else Catalyx.LOGGER.error("Module Container Class ${it.className} is not an instance of IModuleContainer")
+				if(IModuleContainer::class.java.isAssignableFrom(clazz))
+					registerContainer(clazz.getConstructor().newInstance() as IModuleContainer)
+				else
+					Catalyx.LOGGER.error("Module Container Class ${it.className} is not an instance of IModuleContainer")
 			} catch(e: Exception) {
 				when(e) {
 					is ClassNotFoundException,
@@ -195,14 +185,14 @@ class ModuleManager : IModuleManager {
 		Locale.setDefault(Locale.ENGLISH)
 		val toLoad = ObjectLinkedOpenHashSet<ResourceLocation>()
 		val modulesToLoad = ReferenceLinkedOpenHashSet<ICatalyxModule>()
-		val config = getConfiguration()
+		val config = configuration
 		config.load()
 		config.addCustomCategoryComment(MODULE_CFG_CATEGORY_NAME, "Module configuration file. Can individually enable/disable modules from Catalyx and its addons.")
 		containers.values.forEach { container ->
 			val containerID = container.id
 			val containerModules = modules[containerID] ?: throw IllegalStateException("Could not find any modules for container $containerID")
-			val coreModule = getCoreModule(containerModules)
-			coreModule?.let {
+
+			getCoreModule(containerModules)?.let {
 				containerModules.remove(it)
 				containerModules.add(0, it) // Ensure core module is always first
 			} ?: throw IllegalStateException("Could not find core module for container $containerID")
@@ -211,12 +201,11 @@ class ModuleManager : IModuleManager {
 			while(iterator.hasNext()) {
 				val module = iterator.next()
 				if(!isModuleEnabled(module)) {
-					module.logger.info("Module ${getModuleID(module)} is disabled in config, skipping...")
+					module.logger.info("Module ${module.moduleID} is disabled in config, skipping...")
 					iterator.remove()
 					continue
 				}
-				val annotation = module::class.java.getAnnotation(CatalyxModule::class.java)
-				toLoad.add(ResourceLocation(containerID, annotation.moduleID))
+				toLoad.add(ResourceLocation(containerID, module.moduleID))
 				modulesToLoad.add(module)
 			}
 		}
@@ -233,9 +222,8 @@ class ModuleManager : IModuleManager {
 				if(!toLoad.containsAll(dependencies)) {
 					iterator.remove()
 					changed = true
-					val annotation = module::class.java.getAnnotation(CatalyxModule::class.java)
-					val moduleID = annotation.moduleID
-					toLoad.remove(ResourceLocation(moduleID))
+					val moduleID = module.moduleID
+					toLoad.remove(ResourceLocation(moduleID)) // roz: shouldn't this be ResourceLocation(containerID, moduleID)?
 					module.logger.info("Module $moduleID is missing at least one of its module dependencies: [ ${dependencies.joinToString(", ")} ]. Skipping...")
 				}
 			}
@@ -249,7 +237,7 @@ class ModuleManager : IModuleManager {
 				val module = iterator.next()
 				if(sortedModules.keys.containsAll(module.dependencyUids)) {
 					iterator.remove()
-					val annotation = module::class.java.getAnnotation(CatalyxModule::class.java)
+					val annotation = module.annotation
 					sortedModules[ResourceLocation(annotation.containerID, annotation.moduleID)] = module
 					changed = true
 					break
@@ -261,6 +249,7 @@ class ModuleManager : IModuleManager {
 
 		if(config.hasChanged())
 			config.save()
+
 		Locale.setDefault(locale)
 	}
 
@@ -268,27 +257,20 @@ class ModuleManager : IModuleManager {
 		sortedModules.containsKey(id)
 
 	private fun isModuleEnabled(module: ICatalyxModule): Boolean {
-		val annotation = module::class.java.getAnnotation(CatalyxModule::class.java)
+		val annotation = module.annotation
 		val comment = getComment(module)
-		val prop = getConfiguration().get(MODULE_CFG_CATEGORY_NAME, "${annotation.containerID}:${annotation.moduleID}", true, comment)
-		return prop.boolean && (annotation.testModule && DevUtils.isDeobfuscated || !annotation.testModule)
+		val prop = configuration.get(MODULE_CFG_CATEGORY_NAME, "${annotation.containerID}:${annotation.moduleID}", true, comment)
+		return prop.boolean && (!annotation.testModule || DevUtils.isDeobfuscated)
 	}
 
-	private fun getConfiguration(): Configuration {
-		if(config == null) {
-			config = Configuration(File(configDirectory, MODULE_CFG_FILE_NAME))
-		}
-		return config!!
-	}
+	val configuration: Configuration
+		get() = config ?: Configuration(File(configDirectory, MODULE_CFG_FILE_NAME)).also { config = it }
 
 	override val loadedContainer: IModuleContainer?
 		get() = currentContainer
 
 	override val moduleStage: ModuleStage
 		get() = currentStage
-
-	override fun passedStage(stage: ModuleStage) =
-		currentStage.ordinal > stage.ordinal
 
 	override fun registerContainer(container: IModuleContainer?) {
 		when {
@@ -303,51 +285,42 @@ class ModuleManager : IModuleManager {
 	private fun lifecycle(stage: ModuleStage, action: (ICatalyxModule, FMLStateEvent) -> Unit, event: FMLStateEvent) {
 		currentStage = stage
 		loadedModules.forEach {
-			currentContainer = containers[getContainerID(it)]
-			it.logger.debug("[${getModuleID(it)}] $currentStage start")
+			val annotation = it.annotation
+			currentContainer = containers[annotation.containerID]
+			it.logger.debug("[${annotation.moduleID}] $currentStage start")
 			action(it, event)
-			it.logger.debug("[${getModuleID(it)}] $currentStage complete")
+			it.logger.debug("[${annotation.moduleID}] $currentStage complete")
 		}
 		currentContainer = null
 	}
 
-	override fun construction(event: FMLConstructionEvent) {
+	override fun construction(event: FMLConstructionEvent) =
 		lifecycle(ModuleStage.CONSTRUCTION, { module, _ -> module.construction(event) }, event)
-	}
 
-	override fun preInit(event: FMLPreInitializationEvent) {
+	override fun preInit(event: FMLPreInitializationEvent) =
 		lifecycle(ModuleStage.PRE_INIT, { module, _ -> module.preInit(event) }, event)
-	}
 
-	override fun init(event: FMLInitializationEvent) {
+	override fun init(event: FMLInitializationEvent) =
 		lifecycle(ModuleStage.INIT, { module, _ -> module.init(event) }, event)
-	}
 
-	override fun postInit(event: FMLPostInitializationEvent) {
+	override fun postInit(event: FMLPostInitializationEvent) =
 		lifecycle(ModuleStage.POST_INIT, { module, _ -> module.postInit(event) }, event)
-	}
 
-	override fun loadComplete(event: FMLLoadCompleteEvent) {
+	override fun loadComplete(event: FMLLoadCompleteEvent) =
 		lifecycle(ModuleStage.FINISHED, { module, _ -> module.loadComplete(event) }, event)
-	}
 
-	override fun serverAboutToStart(event: FMLServerAboutToStartEvent) {
+	override fun serverAboutToStart(event: FMLServerAboutToStartEvent) =
 		lifecycle(ModuleStage.SERVER_ABOUT_TO_START, { module, _ -> module.serverAboutToStart(event) }, event)
-	}
 
-	override fun serverStarting(event: FMLServerStartingEvent) {
+	override fun serverStarting(event: FMLServerStartingEvent) =
 		lifecycle(ModuleStage.SERVER_STARTING, { module, _ -> module.serverStarting(event) }, event)
-	}
 
-	override fun serverStarted(event: FMLServerStartedEvent) {
+	override fun serverStarted(event: FMLServerStartedEvent) =
 		lifecycle(ModuleStage.SERVER_STARTED, { module, _ -> module.serverStarted(event) }, event)
-	}
 
-	override fun serverStopping(event: FMLServerStoppingEvent) {
+	override fun serverStopping(event: FMLServerStoppingEvent) =
 		lifecycle(ModuleStage.SERVER_STOPPING, { module, _ -> module.serverStopping(event) }, event)
-	}
 
-	override fun serverStopped(event: FMLServerStoppedEvent) {
+	override fun serverStopped(event: FMLServerStoppedEvent) =
 		lifecycle(ModuleStage.SERVER_STOPPED, { module, _ -> module.serverStopped(event) }, event)
-	}
 }

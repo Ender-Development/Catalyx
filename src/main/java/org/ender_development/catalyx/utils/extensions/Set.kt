@@ -1,9 +1,10 @@
 package org.ender_development.catalyx.utils.extensions
 
-import com.google.common.collect.ImmutableSet
+import it.unimi.dsi.fastutil.objects.ObjectSets
+import java.util.*
 
-fun <T> Set<T>.toImmutableSet(): ImmutableSet<T> =
-	ImmutableSet.copyOf(this)
+fun <T> Set<T>.toImmutableSet(): Set<T> =
+	Collections.unmodifiableSet(this)
 
 fun <T> Set<T>.toSingletonSet(): Set<T> =
-	ImmutableSet.copyOf(this.take(1))
+	ObjectSets.singleton(first())

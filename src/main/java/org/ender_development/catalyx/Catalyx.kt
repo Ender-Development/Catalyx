@@ -48,58 +48,55 @@ object Catalyx {
 
 	internal val ownSettings = CatalyxSettings(Reference.MODID, CreativeTabs.MISC, Catalyx, true, { }, { CatalyxModItems.items.add(it) })
 
-	internal lateinit var moduleManager: ModuleManager
-
 	@EventHandler
 	fun construction(e: FMLConstructionEvent) {
 		PersistentData.init()
-		moduleManager = ModuleManager.instance
-		moduleManager.registerContainer(CatalyxModules)
+		ModuleManager.registerContainer(CatalyxModules)
 		MinecraftForge.EVENT_BUS.post(ModuleContainerRegistryEvent())
-		moduleManager.setup(e.asmHarvestedData)
-		moduleManager.construction(e)
+		ModuleManager.setup(e.asmHarvestedData)
+		ModuleManager.construction(e)
 	}
 
 	@EventHandler
 	fun preInit(e: FMLPreInitializationEvent) {
-		moduleManager.preInit(e)
+		ModuleManager.preInit(e)
 		PacketHandler.init()
 	}
 
 	@EventHandler
 	fun init(e: FMLInitializationEvent) {
-		moduleManager.init(e)
+		ModuleManager.init(e)
 		if(Loader.isModLoaded("theoneprobe"))
 			CatalyxTOPHandler.init()
 	}
 
 	@EventHandler
 	fun postInit(e: FMLPostInitializationEvent) =
-		moduleManager.postInit(e)
+		ModuleManager.postInit(e)
 
 	@EventHandler
 	fun loadComplete(e: FMLLoadCompleteEvent) =
-		moduleManager.loadComplete(e)
+		ModuleManager.loadComplete(e)
 
 	@EventHandler
 	fun serverAboutToStart(e: FMLServerAboutToStartEvent) =
-		moduleManager.serverAboutToStart(e)
+		ModuleManager.serverAboutToStart(e)
 
 	@EventHandler
 	fun serverStarting(e: FMLServerStartingEvent) =
-		moduleManager.serverStarting(e)
+		ModuleManager.serverStarting(e)
 
 	@EventHandler
 	fun serverStarted(e: FMLServerStartedEvent) =
-		moduleManager.serverStarted(e)
+		ModuleManager.serverStarted(e)
 
 	@EventHandler
 	fun serverStopping(e: FMLServerStoppingEvent) =
-		moduleManager.serverStopping(e)
+		ModuleManager.serverStopping(e)
 
 	@EventHandler
 	fun serverStopped(e: FMLServerStoppedEvent) =
-		moduleManager.serverStopped(e)
+		ModuleManager.serverStopped(e)
 
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)

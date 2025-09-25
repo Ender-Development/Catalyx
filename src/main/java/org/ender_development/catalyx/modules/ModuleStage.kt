@@ -4,7 +4,7 @@ package org.ender_development.catalyx.modules
  * Basically [net.minecraftforge.fml.common.LoaderState] but only for launch stages.
  * Also includes early module stages.
  */
-enum class ModuleStage {
+enum class ModuleStage(val displayName: String) {
 	CONTAINER_SETUP("Container Setup"),  // Initializing Module Containers
 	MODULE_SETUP("Module Setup"),  // Initializing Modules
 	CONSTRUCTION("Construction"),  // MC Construction stage
@@ -18,9 +18,6 @@ enum class ModuleStage {
 	SERVER_STOPPING("Server stopping"),  // MC ServerStopping stage
 	SERVER_STOPPED("Server stopped");  // MC ServerStopped stage
 
-	val displayName: String
-
-	constructor(displayName: String) { this.displayName = displayName }
-
-	override fun toString() = displayName
+	override fun toString() =
+		displayName
 }
