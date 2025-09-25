@@ -23,7 +23,7 @@ class Validator {
 		errorMessages.add(message)
 
 	fun logMessages() =
-		errorMessages.forEach(Catalyx.logger::error)
+		errorMessages.forEach(Catalyx.LOGGER::error)
 
 	enum class ValidationStatus {
 		VALID, INVALID, WARNING

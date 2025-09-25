@@ -2,13 +2,16 @@ package org.ender_development.catalyx.recipes
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.objects.Object2ReferenceOpenHashMap
+import net.minecraft.util.SoundEvent
 import org.ender_development.catalyx.Catalyx
-import org.ender_development.catalyx.Reference
+import org.ender_development.catalyx.CatalyxSettings
 import org.ender_development.catalyx.integration.groovyscript.VirtualizedRecipeMap
+import org.ender_development.catalyx.modules.CatalyxModules
 import org.ender_development.catalyx.recipes.chance.boost.IBoostFunction
 import org.ender_development.catalyx.recipes.maps.AbstractMapIngredient
 import org.ender_development.catalyx.recipes.maps.Branch
 import org.ender_development.catalyx.utils.Delegates
+import org.ender_development.catalyx.utils.extensions.toImmutableList
 import java.lang.ref.WeakReference
 import java.util.*
 
@@ -23,6 +26,16 @@ class RecipeMap<R : RecipeBuilder<R>> {
 		internal var foundInvalidRecipe = false
 
 		val DEFAULT_CHANCE_FUNCTION = IBoostFunction.TIER
+
+		fun getRecipeMaps(): List<RecipeMap<out RecipeBuilder<*>>> =
+			RECIPE_MAP_REGISTRY.values.map { it }.toImmutableList()
+
+		fun getByName(name: String): RecipeMap<out RecipeBuilder<*>>? =
+			RECIPE_MAP_REGISTRY[name]
+
+		fun setInvalidRecipeFound(foundInvalidRecipe: Boolean) {
+			RecipeMap.foundInvalidRecipe = RecipeMap.foundInvalidRecipe || foundInvalidRecipe
+		}
 	}
 
 	private lateinit var recipeMap: RecipeMap<R>
@@ -30,6 +43,7 @@ class RecipeMap<R : RecipeBuilder<R>> {
 	private val RECIPE_BY_CATEGORY = Object2ObjectOpenHashMap<RecipeCategory, List<Recipe>>()
 
 	val unlocalizedName: String
+	val translationKey: String
 
 	private val recipeBuilderSample: R
 	private val primaryRecipeCategory: RecipeCategory
@@ -38,8 +52,10 @@ class RecipeMap<R : RecipeBuilder<R>> {
 
 	var chanceBoostFunction = DEFAULT_CHANCE_FUNCTION
 
-	private var hasOreDictInputs = false
-	private var hasNBTMatcherInputs = false
+	internal var hasOreDictInputs = false
+	internal var hasNBTMatcherInputs = false
+	internal var allowEmptyOutput = false
+	internal var sound: SoundEvent? = null
 
 	//private var smallRecipeMap: RecipeMap<*>?
 
@@ -58,26 +74,23 @@ class RecipeMap<R : RecipeBuilder<R>> {
 	 * @param maxFluidInputs       the maximum fluid inputs
 	 * @param maxFluidOutputs      the maximum fluid outputs
 	 */
-	constructor(unlocalizedName: String, defaultRecipeBuilder: R, maxInputs: Int, maxOutputs: Int, maxFluidInputs: Int, maxFluidOutputs: Int) {
+	internal constructor(settings: CatalyxSettings, unlocalizedName: String, defaultRecipeBuilder: R, maxInputs: Int, maxOutputs: Int, maxFluidInputs: Int, maxFluidOutputs: Int) {
 		this.unlocalizedName = unlocalizedName
 		this.maxInputs = maxInputs
 		this.maxFluidInputs = maxFluidInputs
 		this.maxOutputs = maxOutputs
 		this.maxFluidOutputs = maxFluidOutputs
-		translationKey = "recipemap.$unlocalizedName.name"
-		// roz: shouldn't this modid be the caller's modid instead of ours?
-		// TODO: add modid parameter to constructor
-		// roz: we had a tool for that, is was called [CatalyxSettings]
-		primaryRecipeCategory = RecipeCategory.create(Reference.MODID, unlocalizedName, translationKey, this)
+		translationKey = "recipemap.${settings.modId}.$unlocalizedName.name"
+		primaryRecipeCategory = RecipeCategory.create(settings.modId, unlocalizedName, translationKey, this)
 
 		defaultRecipeBuilder.recipeMap = this
 		defaultRecipeBuilder.category = primaryRecipeCategory
 		recipeBuilderSample = defaultRecipeBuilder
 		RECIPE_MAP_REGISTRY[unlocalizedName] = this
 
-		if(Catalyx.GROOVYSCRIPT)
+		if(Catalyx.moduleManager.isModuleEnabled(CatalyxModules.MODULE_GRS))
 			grsVirtualizedRecipeMap = VirtualizedRecipeMap(this)
 	}
 
-	val translationKey: String
+
 }
