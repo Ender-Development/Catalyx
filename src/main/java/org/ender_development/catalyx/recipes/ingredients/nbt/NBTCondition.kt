@@ -24,7 +24,7 @@ open class NBTCondition {
 		this.nbtKey = nbtKey
 		this.value = value
 		if(tagType == null || nbtKey == null || value == null)
-			Catalyx.logger.error("Creating NBTCondition with null values: tagType=$tagType, nbtKey=$nbtKey, value=$value", Throwable())
+			Catalyx.LOGGER.error("Creating NBTCondition with null values: tagType=$tagType, nbtKey=$nbtKey, value=$value", Throwable())
 	}
 
 	override fun toString() =

@@ -37,7 +37,7 @@ abstract class RecipeInput {
 				tag.hasKey("ore") -> OreInput(tag.getInteger("ore"), amount)
 				tag.hasKey("fluid") -> FluidInput(FluidStack.loadFluidStackFromNBT(tag.getCompoundTag("fluid"))!!, amount)
 				else -> {
-					Catalyx.logger.warn("Unable to read tag: $tag")
+					Catalyx.LOGGER.warn("Unable to read tag: $tag")
 					null
 				}
 			}

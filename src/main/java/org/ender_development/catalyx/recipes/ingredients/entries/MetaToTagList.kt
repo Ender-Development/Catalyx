@@ -29,7 +29,7 @@ class MetaToTagList : Int2ObjectMap.Entry<List<TagToStack>> {
 		return tagToStack
 	}
 
-	@Deprecated("Use getIntKey() instead", ReplaceWith("getIntKey()")) // roz: why?
+	@Suppress("OVERRIDE_DEPRECATION")
 	override val key: Int
 		get() = meta
 
