@@ -17,8 +17,8 @@ import java.lang.reflect.InvocationTargetException
 import java.util.*
 
 object ModuleManager : IModuleManager {
-	const val MODULE_CFG_FILE_NAME = "modules.cfg"
 	const val MODULE_CFG_CATEGORY_NAME = "modules"
+	const val MODULE_CFG_FILE_NAME = "$MODULE_CFG_CATEGORY_NAME.cfg"
 
 	private val sortedModules = Object2ReferenceLinkedOpenHashMap<ResourceLocation, ICatalyxModule>()
 	private val loadedModules = ReferenceLinkedOpenHashSet<ICatalyxModule>()
@@ -32,7 +32,7 @@ object ModuleManager : IModuleManager {
 	/**
 	 * The configuration for the Module Manager
 	 */
-	val configuration: Configuration
+	private val configuration: Configuration
 		get() = config ?: Configuration(File(configDirectory, MODULE_CFG_FILE_NAME)).also { config = it }
 
 	/**
@@ -66,13 +66,20 @@ object ModuleManager : IModuleManager {
 
 		loadedModules.forEach { module ->
 			currentContainer = containers[module.containerID]
-			module.logger.debug("Registering event handlers")
+			module.logger.debug("Registering event handlers...")
 			module.eventBusSubscribers.forEach(MinecraftForge.EVENT_BUS::register)
 			module.terrainGenBusSubscriber.forEach(MinecraftForge.TERRAIN_GEN_BUS::register)
 			module.oreGenBusSubscriber.forEach(MinecraftForge.ORE_GEN_BUS::register)
 		}
 		currentContainer = null
 	}
+
+	/**
+	 * @param id the ID of the module to check
+	 * @return true if the module is enabled, false otherwise
+	 */
+	override fun isModuleEnabled(id: ResourceLocation) =
+		sortedModules.containsKey(id)
 
 	/**
 	 * @param modules the list of modules possibly containing a Core Module
@@ -279,9 +286,6 @@ object ModuleManager : IModuleManager {
 		Locale.setDefault(locale)
 	}
 
-	override fun isModuleEnabled(id: ResourceLocation) =
-		sortedModules.containsKey(id)
-
 	private fun isModuleEnabled(module: ICatalyxModule): Boolean {
 		val annotation = module.annotation
 		val comment = getComment(module)
@@ -304,9 +308,9 @@ object ModuleManager : IModuleManager {
 		loadedModules.forEach {
 			val annotation = it.annotation
 			currentContainer = containers[annotation.containerID]
-			it.logger.debug("[${annotation.moduleID}] $currentStage start")
+			it.logger.debug("Starting $currentStage stage!")
 			action(it, event)
-			it.logger.debug("[${annotation.moduleID}] $currentStage complete")
+			it.logger.debug("Completed $currentStage stage!")
 		}
 		currentContainer = null
 	}

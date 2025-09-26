@@ -3,7 +3,6 @@ package org.ender_development.catalyx.modules
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.fml.common.event.*
 import org.apache.logging.log4j.Logger
-import org.ender_development.catalyx.Catalyx
 
 /**
  * All modules must implement this interface.
@@ -22,7 +21,6 @@ interface ICatalyxModule {
 	 * A logger to use for this module.
 	 */
 	val logger: Logger
-		get() = Catalyx.LOGGER
 
 	fun construction(event: FMLConstructionEvent) {}
 

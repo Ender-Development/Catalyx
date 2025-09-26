@@ -10,11 +10,11 @@ import net.minecraftforge.fml.common.event.*
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
-import org.apache.logging.log4j.LogManager
 import org.ender_development.catalyx.client.AreaHighlighter
 import org.ender_development.catalyx.items.CatalyxModItems
 import org.ender_development.catalyx.modules.ModuleManager
 import org.ender_development.catalyx.network.PacketHandler
+import org.ender_development.catalyx.utils.LoggerUtils
 import org.ender_development.catalyx.utils.PersistentData
 import kotlin.random.Random
 
@@ -39,7 +39,7 @@ object Catalyx {
 	 * The logger for the mod to use. Also, the default logger for modules.
 	 * We can't grep the logger from pre-init because some modules may want to use it in construction.
 	 */
-	internal val LOGGER = LogManager.getLogger(Reference.MOD_NAME)
+	internal val LOGGER = LoggerUtils.logger
 
 	internal val ownSettings = CatalyxSettings(Reference.MODID, CreativeTabs.MISC, Catalyx, true, { }, { CatalyxModItems.items.add(it) })
 
