@@ -12,12 +12,13 @@ import org.ender_development.catalyx.utils.extensions.translate
 import java.awt.Color
 
 class FluidTileProvider : IProbeInfoProvider {
-	override fun getID() = "${Reference.MODID}.fluidtile_provider"
+	override fun getID() = "${Reference.MODID}.auto.ifluidtile_provider"
 
 	override fun addProbeInfo(mode: ProbeMode, info: IProbeInfo, player: EntityPlayer, world: World, state: IBlockState, data: IProbeHitData) {
 		val tile = world.getTileEntity(data.pos) ?: return
 
-		if(tile !is IFluidTile) return
+		if(tile !is IFluidTile)
+			return
 
 		tile.fluidTanks.tankProperties.forEach { tank ->
 			val contents = tank.contents

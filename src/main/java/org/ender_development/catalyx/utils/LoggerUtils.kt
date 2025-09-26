@@ -7,6 +7,7 @@ import org.ender_development.catalyx.Reference
 object LoggerUtils {
 	internal val logger = LogManager.getLogger(Reference.MOD_NAME)
 
-	fun new(name: String): Logger =
+	@Suppress("NOTHING_TO_INLINE")
+	inline fun new(name: String): Logger =
 		LogManager.getLogger("${Reference.MOD_NAME}-$name")
 }

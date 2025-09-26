@@ -1,6 +1,7 @@
 package org.ender_development.catalyx.utils
 
 import net.minecraftforge.fml.common.Loader
+import kotlin.properties.ReadOnlyProperty
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
@@ -40,4 +41,19 @@ object Delegates {
 			this.value = value
 		}
 	}
+
+	fun <V : Any> lazyProperty(getter: () -> V): ReadOnlyProperty<Any?, V> =
+		object : ReadOnlyProperty<Any?, V> {
+			var gotProperty = false
+			lateinit var property: V
+
+			override fun getValue(thisRef: Any?, property: KProperty<*>) =
+				if(gotProperty)
+					this.property
+				else {
+					gotProperty = true
+					this.property = getter()
+					this.property
+				}
+		}
 }

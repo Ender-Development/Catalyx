@@ -11,9 +11,11 @@ import net.minecraftforge.fml.common.discovery.ASMDataTable
 import net.minecraftforge.fml.common.event.*
 import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.Reference
+import org.ender_development.catalyx.utils.Delegates
 import org.ender_development.catalyx.utils.DevUtils
 import java.io.File
 import java.lang.reflect.InvocationTargetException
+import java.lang.reflect.Modifier
 import java.util.*
 
 object ModuleManager : IModuleManager {
@@ -22,30 +24,27 @@ object ModuleManager : IModuleManager {
 
 	private val sortedModules = Object2ReferenceLinkedOpenHashMap<ResourceLocation, ICatalyxModule>()
 	private val loadedModules = ReferenceLinkedOpenHashSet<ICatalyxModule>()
-	private var containers = Object2ReferenceLinkedOpenHashMap<String, ICatalyxModuleContainer>()
+	private val containers = Object2ReferenceLinkedOpenHashMap<String, ICatalyxModuleContainer>()
 
-	private var config: Configuration? = null
-	private var configDirectory: File? = null
-	private var currentContainer: ICatalyxModuleContainer? = null
-	private var currentStage: ModuleStage = ModuleStage.CONTAINER_SETUP
+	private lateinit var configDirectory: File
 
-	/**
-	 * The configuration for the Module Manager
-	 */
-	private val configuration: Configuration
-		get() = config ?: Configuration(File(configDirectory, MODULE_CFG_FILE_NAME)).also { config = it }
 
 	/**
 	 * The currently loaded Module Container
 	 */
-	override val loadedContainer: ICatalyxModuleContainer?
-		get() = currentContainer
+	override var loadedContainer: ICatalyxModuleContainer? = null
+		private set
 
 	/**
 	 * The current stage of the Module loading process
 	 */
-	override val moduleStage: ModuleStage
-		get() = currentStage
+	override var moduleStage: ModuleStage = ModuleStage.CONTAINER_SETUP
+		private set
+
+	/**
+	 * The configuration for the Module Manager
+	 */
+	private val configuration: Configuration by Delegates.lazyProperty { Configuration(File(configDirectory, MODULE_CFG_FILE_NAME)) }
 
 	/**
 	 * Set up the Module Manager
@@ -54,24 +53,19 @@ object ModuleManager : IModuleManager {
 	 */
 	fun setup(asmDataTable: ASMDataTable) {
 		discoverContainers(asmDataTable)
-		// roz: hashmaps don't have any inherent order, why sort, and also why create a hashmap just to turn it into a fastutil hashmap? ;p
-		containers = containers.entries
-			.sortedBy { it.key }
-			.associate { it.key to it.value }
-			.let { Object2ReferenceLinkedOpenHashMap(it) }
 
-		currentStage = ModuleStage.MODULE_SETUP
+		moduleStage = ModuleStage.MODULE_SETUP
 		configDirectory = File(Loader.instance().configDir, Reference.MODID)
 		configureModules(getModules(asmDataTable))
 
 		loadedModules.forEach { module ->
-			currentContainer = containers[module.containerID]
+			loadedContainer = containers[module.containerID]
 			module.logger.debug("Registering event handlers...")
 			module.eventBusSubscribers.forEach(MinecraftForge.EVENT_BUS::register)
 			module.terrainGenBusSubscriber.forEach(MinecraftForge.TERRAIN_GEN_BUS::register)
 			module.oreGenBusSubscriber.forEach(MinecraftForge.ORE_GEN_BUS::register)
 		}
-		currentContainer = null
+		loadedContainer = null
 	}
 
 	/**
@@ -185,7 +179,7 @@ object ModuleManager : IModuleManager {
 			try {
 				val clazz = Class.forName(it.className)
 				if(ICatalyxModuleContainer::class.java.isAssignableFrom(clazz)) {
-					val container = if(clazz.modifiers and java.lang.reflect.Modifier.FINAL != 0) {
+					val container = if(Modifier.isFinal(clazz.modifiers)) {
 						Catalyx.LOGGER.debug("Found final Module Container Class ${it.className}! Using INSTANCE field")
 						clazz.getField("INSTANCE").get(null)
 					} else {
@@ -254,10 +248,9 @@ object ModuleManager : IModuleManager {
 				if(!toLoad.containsAll(dependencies)) {
 					iterator.remove()
 					changed = true
-					val containerID = module.containerID
-					val moduleID = module.moduleID
-					toLoad.remove(ResourceLocation(containerID, moduleID))
-					module.logger.info("Module $moduleID is missing at least one of its module dependencies: [ ${dependencies.joinToString(", ")} ]. Skipping...")
+					val annotation = module.annotation
+					toLoad.remove(ResourceLocation(annotation.containerID, annotation.moduleID))
+					module.logger.info("Module ${annotation.moduleID} is missing at least one of its module dependencies: [ ${dependencies.joinToString(", ")} ]. Skipping...")
 				}
 			}
 		} while(changed)
@@ -296,7 +289,7 @@ object ModuleManager : IModuleManager {
 	override fun registerContainer(container: ICatalyxModuleContainer?) {
 		when {
 			container == null -> Catalyx.LOGGER.error("Failed to register null container!")
-			currentStage != ModuleStage.CONTAINER_SETUP -> Catalyx.LOGGER.error("Failed to register container ${container.id}, as module loading has already begun!")
+			moduleStage != ModuleStage.CONTAINER_SETUP -> Catalyx.LOGGER.error("Failed to register container ${container.id}, as module loading has already begun!")
 			else -> containers[container.id] = container
 		}
 	}
@@ -304,15 +297,15 @@ object ModuleManager : IModuleManager {
 	// FML Lifecycle Events
 
 	private fun lifecycle(stage: ModuleStage, action: (ICatalyxModule, FMLStateEvent) -> Unit, event: FMLStateEvent) {
-		currentStage = stage
+		moduleStage = stage
 		loadedModules.forEach {
 			val annotation = it.annotation
-			currentContainer = containers[annotation.containerID]
-			it.logger.debug("Starting $currentStage stage!")
+			loadedContainer = containers[annotation.containerID]
+			it.logger.debug("Starting $moduleStage stage!")
 			action(it, event)
-			it.logger.debug("Completed $currentStage stage!")
+			it.logger.debug("Completed $moduleStage stage!")
 		}
-		currentContainer = null
+		loadedContainer = null
 	}
 
 	override fun construction(event: FMLConstructionEvent) =

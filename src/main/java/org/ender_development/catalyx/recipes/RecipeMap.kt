@@ -28,10 +28,10 @@ class RecipeMap<R : RecipeBuilder<R>> {
 
 		val DEFAULT_CHANCE_FUNCTION = IBoostFunction.TIER
 
-		fun getRecipeMaps(): List<RecipeMap<out RecipeBuilder<*>>> =
-			RECIPE_MAP_REGISTRY.values.map { it }.toImmutableList()
+		val recipeMaps: List<RecipeMap<out RecipeBuilder<*>>>
+			get() = RECIPE_MAP_REGISTRY.values.toList()
 
-		fun getByName(name: String): RecipeMap<out RecipeBuilder<*>>? =
+		operator fun get(name: String): RecipeMap<out RecipeBuilder<*>>? =
 			RECIPE_MAP_REGISTRY[name]
 
 		fun setInvalidRecipeFound(foundInvalidRecipe: Boolean) {

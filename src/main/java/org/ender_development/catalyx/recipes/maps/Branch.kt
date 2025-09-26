@@ -2,26 +2,27 @@ package org.ender_development.catalyx.recipes.maps
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import org.ender_development.catalyx.recipes.Recipe
+import org.ender_development.catalyx.utils.Delegates
 
 class Branch {
 	// Keys on this have *(should)* unique hashcodes.
-	private var nodes: Map<AbstractMapIngredient, Either<Recipe, Branch>>? = null
+	private val nodes: Map<AbstractMapIngredient, Either<Recipe, Branch>> by Delegates.lazyProperty { Object2ObjectOpenHashMap() }
 	// Keys on this have collisions, and must be differentiated by equality.
-	private var specialNodes: Map<AbstractMapIngredient, Either<Recipe, Branch>>? = null
+	private val specialNodes: Map<AbstractMapIngredient, Either<Recipe, Branch>> by Delegates.lazyProperty { Object2ObjectOpenHashMap() }
 
 	fun getRecipes(filterHidden: Boolean): Iterable<Recipe> {
-		if(nodes == null && specialNodes == null)
+		if(nodes.isEmpty() && specialNodes.isEmpty())
 			return emptyList()
 
 		val stream: MutableList<Recipe> = mutableListOf()
 
-		nodes?.let {
+		nodes.let {
 			it.values.forEach {
 				it.map({ stream.add(it) }, { stream.addAll(it.getRecipes(filterHidden)) })
 			}
 		}
 
-		specialNodes?.let {
+		specialNodes.let {
 			it.values.forEach {
 				it.map({ stream.add(it) }, { stream.addAll(it.getRecipes(filterHidden)) })
 			}
@@ -34,15 +35,5 @@ class Branch {
 	}
 
 	val empty: Boolean
-		get() = nodes?.isEmpty() != false && specialNodes?.isEmpty() != false
-
-	fun getNodes(): Map<AbstractMapIngredient, Either<Recipe, Branch>> =
-		nodes ?: Object2ObjectOpenHashMap<AbstractMapIngredient, Either<Recipe, Branch>>().also {
-			nodes = it
-		}
-
-	fun getSpecialNodes(): Map<AbstractMapIngredient, Either<Recipe, Branch>> =
-		specialNodes ?: Object2ObjectOpenHashMap<AbstractMapIngredient, Either<Recipe, Branch>>().also {
-			specialNodes = it
-		}
+		get() = nodes.isEmpty() && specialNodes.isEmpty()
 }

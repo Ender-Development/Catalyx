@@ -50,7 +50,7 @@ class OreInput : RecipeInput {
 		if(inputStacks != null || currentStandard != STANDARD) {
 			currentStandard = STANDARD
 			inputStacks = OreDictionary.getOres(OreDictionary.getOreName(ore)).map {
-				it.copy().also { copy ->
+				it.copy().let { copy ->
 					copy.count = amount
 				}
 			}

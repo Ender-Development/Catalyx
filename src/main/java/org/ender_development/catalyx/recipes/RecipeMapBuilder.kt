@@ -33,7 +33,7 @@ class RecipeMapBuilder<B : RecipeBuilder<B>>(
 	 */
 	fun build(): RecipeMap<B> {
 		val recipeMap = RecipeMap(settings, unlocalizedName, defaultRecipeBuilder, itemInputs, itemOutputs, fluidInputs, fluidOutputs)
-		sound?.let { recipeMap.sound = it }
+		recipeMap.sound = sound
 		recipeMap.allowEmptyOutput = allowEmptyOutputs
 		return recipeMap
 	}
@@ -88,12 +88,33 @@ class RecipeMapBuilder<B : RecipeBuilder<B>>(
 	}
 
 	/**
-	 * Make the recipemap accept recipes without any outputs
+	 * Make the [RecipeMap] accept recipes without any outputs
 	 *
 	 * @return this
 	 */
 	fun allowEmptyOutputs(): RecipeMapBuilder<B> {
 		this.allowEmptyOutputs = true
+		return this
+	}
+
+	/**
+	 * Set all available properties
+	 *
+	 * @param itemInputs the amount of item inputs
+	 * @param itemOutputs the amount of item outputs
+	 * @param fluidInputs the amount of fluid inputs
+	 * @param fluidOutputs the amount of fluid outputs
+	 * @param sound the sound to use
+	 * @param allowEmptyOutputs whether to allow recipes without any outputs
+	 * @return this
+	 */
+	fun set(itemInputs: Int = this.itemInputs, itemOutputs: Int = this.itemOutputs, fluidInputs: Int = this.fluidInputs, fluidOutputs: Int = this.fluidOutputs, sound: SoundEvent? = this.sound, allowEmptyOutputs: Boolean = this.allowEmptyOutputs): RecipeMapBuilder<B> {
+		this.itemInputs = itemInputs
+		this.itemOutputs = itemOutputs
+		this.fluidInputs = fluidInputs
+		this.fluidOutputs = fluidOutputs
+		this.sound = sound
+		this.allowEmptyOutputs = allowEmptyOutputs
 		return this
 	}
 }

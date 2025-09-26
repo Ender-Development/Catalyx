@@ -12,19 +12,20 @@ import java.nio.file.Path
 
 object PersistentData {
 	private lateinit var path: Path
-	private var data: NBTTagCompound? = null
-
-	internal fun init() {
-		path = Loader.instance().configDir.toPath().resolve(Reference.MODID).resolve("persistent_data.dat")
+	private val data: NBTTagCompound by Delegates.lazyProperty @Synchronized {
+		read()
 	}
 
 	val tag: NBTTagCompound
-		@Synchronized
-		get() = data ?: read().also { data = it }
+		get() = data
 
 	@Synchronized
 	fun save() =
 		write()
+
+	internal fun init() {
+		path = Loader.instance().configDir.toPath().resolve(Reference.MODID).resolve("persistent_data.dat")
+	}
 
 	/**
 	 * @return the read NBTTagCompound from disk
@@ -49,7 +50,7 @@ object PersistentData {
 	private fun write() {
 		Catalyx.LOGGER.debug("Write persistent data to path $path")
 
-		data?.let { data ->
+		data.let { data ->
 			if(data.isEmpty)
 				return
 
