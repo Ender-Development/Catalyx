@@ -5,5 +5,5 @@ import org.ender_development.catalyx.modules.CatalyxModule
 import org.ender_development.catalyx.modules.CatalyxModules
 import org.ender_development.catalyx.modules.ICatalyxModule
 
-@CatalyxModule(moduleID = CatalyxModules.MODULE_CORE, containerID = Reference.MODID, name = "Core", description = "The core module required by all other Catalyx modules.", coreModule = true)
+@CatalyxModule(moduleID = CatalyxModules.MODULE_CORE, containerID = Reference.MODID, name = "Core", description = "The core module required by all other modules from Catalyx.", coreModule = true)
 class CoreModule : ICatalyxModule

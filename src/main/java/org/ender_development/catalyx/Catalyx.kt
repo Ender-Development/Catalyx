@@ -3,7 +3,6 @@ package org.ender_development.catalyx
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.item.Item
 import net.minecraftforge.client.event.RenderWorldLastEvent
-import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.Mod.EventHandler
@@ -14,8 +13,6 @@ import net.minecraftforge.fml.relauncher.SideOnly
 import org.apache.logging.log4j.LogManager
 import org.ender_development.catalyx.client.AreaHighlighter
 import org.ender_development.catalyx.items.CatalyxModItems
-import org.ender_development.catalyx.modules.CatalyxModules
-import org.ender_development.catalyx.modules.ModuleContainerRegistryEvent
 import org.ender_development.catalyx.modules.ModuleManager
 import org.ender_development.catalyx.network.PacketHandler
 import org.ender_development.catalyx.utils.PersistentData
@@ -49,8 +46,6 @@ object Catalyx {
 	@EventHandler
 	fun construction(e: FMLConstructionEvent) {
 		PersistentData.init()
-		ModuleManager.registerContainer(CatalyxModules)
-		MinecraftForge.EVENT_BUS.post(ModuleContainerRegistryEvent())
 		ModuleManager.setup(e.asmHarvestedData)
 		ModuleManager.construction(e)
 	}

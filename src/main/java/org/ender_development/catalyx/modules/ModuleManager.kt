@@ -17,9 +17,62 @@ import java.lang.reflect.InvocationTargetException
 import java.util.*
 
 object ModuleManager : IModuleManager {
-	var configDirectory: File? = null
 	const val MODULE_CFG_FILE_NAME = "modules.cfg"
 	const val MODULE_CFG_CATEGORY_NAME = "modules"
+
+	private val sortedModules = Object2ReferenceLinkedOpenHashMap<ResourceLocation, ICatalyxModule>()
+	private val loadedModules = ReferenceLinkedOpenHashSet<ICatalyxModule>()
+	private var containers = Object2ReferenceLinkedOpenHashMap<String, ICatalyxModuleContainer>()
+
+	private var config: Configuration? = null
+	private var configDirectory: File? = null
+	private var currentContainer: ICatalyxModuleContainer? = null
+	private var currentStage: ModuleStage = ModuleStage.CONTAINER_SETUP
+
+	/**
+	 * The configuration for the Module Manager
+	 */
+	val configuration: Configuration
+		get() = config ?: Configuration(File(configDirectory, MODULE_CFG_FILE_NAME)).also { config = it }
+
+	/**
+	 * The currently loaded Module Container
+	 */
+	override val loadedContainer: ICatalyxModuleContainer?
+		get() = currentContainer
+
+	/**
+	 * The current stage of the Module loading process
+	 */
+	override val moduleStage: ModuleStage
+		get() = currentStage
+
+	/**
+	 * Set up the Module Manager
+	 *
+	 * @param asmDataTable the data table containing all the Module Container and Module classes
+	 */
+	fun setup(asmDataTable: ASMDataTable) {
+		discoverContainers(asmDataTable)
+		// roz: hashmaps don't have any inherent order, why sort, and also why create a hashmap just to turn it into a fastutil hashmap? ;p
+		containers = containers.entries
+			.sortedBy { it.key }
+			.associate { it.key to it.value }
+			.let { Object2ReferenceLinkedOpenHashMap(it) }
+
+		currentStage = ModuleStage.MODULE_SETUP
+		configDirectory = File(Loader.instance().configDir, Reference.MODID)
+		configureModules(getModules(asmDataTable))
+
+		loadedModules.forEach { module ->
+			currentContainer = containers[module.containerID]
+			module.logger.debug("Registering event handlers")
+			module.eventBusSubscribers.forEach(MinecraftForge.EVENT_BUS::register)
+			module.terrainGenBusSubscriber.forEach(MinecraftForge.TERRAIN_GEN_BUS::register)
+			module.oreGenBusSubscriber.forEach(MinecraftForge.ORE_GEN_BUS::register)
+		}
+		currentContainer = null
+	}
 
 	/**
 	 * @param modules the list of modules possibly containing a Core Module
@@ -114,53 +167,26 @@ object ModuleManager : IModuleManager {
 		return comment
 	}
 
-	private var containers = Object2ReferenceLinkedOpenHashMap<String, IModuleContainer>()
-	private val sortedModules = Object2ReferenceLinkedOpenHashMap<ResourceLocation, ICatalyxModule>()
-	private val loadedModules = ReferenceLinkedOpenHashSet<ICatalyxModule>()
-
-	private var config: Configuration? = null
-	private var currentContainer: IModuleContainer? = null
-	private var currentStage: ModuleStage = ModuleStage.CONTAINER_SETUP
-
-	/**
-	 * Set up the Module Manager
-	 *
-	 * @param asmDataTable    the data table containing all the Module Container and Module classes
-	 */
-	fun setup(asmDataTable: ASMDataTable) {
-		discoverContainers(asmDataTable)
-		// roz: hashmaps don't have any inherent order, why sort, and also why create a hashmap just to turn it into a fastutil hashmap? ;p
-		containers = containers.entries
-			.sortedBy { it.key }
-			.associate { it.key to it.value }
-			.let { Object2ReferenceLinkedOpenHashMap(it) }
-
-		currentStage = ModuleStage.MODULE_SETUP
-		configDirectory = File(Loader.instance().configDir, Reference.MODID)
-		configureModules(getModules(asmDataTable))
-
-		loadedModules.forEach { module ->
-			currentContainer = containers[module.containerID]
-			module.logger.debug("Registering event handlers")
-			module.eventBusSubscribers.forEach(MinecraftForge.EVENT_BUS::register)
-			module.terrainGenBusSubscriber.forEach(MinecraftForge.TERRAIN_GEN_BUS::register)
-			module.oreGenBusSubscriber.forEach(MinecraftForge.ORE_GEN_BUS::register)
-		}
-		currentContainer = null
-	}
-
 	/**
 	 * Discovers ModuleContainers and registers them
 	 *
 	 * @param asmDataTable the table containing the ModuleContainer data
 	 */
 	private fun discoverContainers(asmDataTable: ASMDataTable) {
-		asmDataTable.getAll(ModuleContainer::class.java.canonicalName).forEach {
+		Catalyx.LOGGER.debug("Discovering Module Containers...")
+		asmDataTable.getAll(CatalyxModuleContainer::class.java.canonicalName).forEach {
 			try {
 				val clazz = Class.forName(it.className)
-				if(IModuleContainer::class.java.isAssignableFrom(clazz))
-					registerContainer(clazz.getConstructor().newInstance() as IModuleContainer)
-				else
+				if(ICatalyxModuleContainer::class.java.isAssignableFrom(clazz)) {
+					val container = if (clazz.modifiers and java.lang.reflect.Modifier.FINAL != 0) {
+						Catalyx.LOGGER.debug("Found final Module Container Class ${it.className}! Using INSTANCE field")
+						clazz.getField("INSTANCE").get(null)
+					} else {
+						Catalyx.LOGGER.debug("Found non-final Module Container Class ${it.className}! Using default constructor")
+						clazz.getConstructor().newInstance()
+					}
+					registerContainer(container as ICatalyxModuleContainer?)
+				} else
 					Catalyx.LOGGER.error("Module Container Class ${it.className} is not an instance of IModuleContainer")
 			} catch(e: Exception) {
 				when(e) {
@@ -221,8 +247,9 @@ object ModuleManager : IModuleManager {
 				if(!toLoad.containsAll(dependencies)) {
 					iterator.remove()
 					changed = true
+					val containerID = module.containerID
 					val moduleID = module.moduleID
-					toLoad.remove(ResourceLocation(moduleID)) // roz: shouldn't this be ResourceLocation(containerID, moduleID)?
+					toLoad.remove(ResourceLocation(containerID,moduleID))
 					module.logger.info("Module $moduleID is missing at least one of its module dependencies: [ ${dependencies.joinToString(", ")} ]. Skipping...")
 				}
 			}
@@ -262,16 +289,7 @@ object ModuleManager : IModuleManager {
 		return prop.boolean && (!annotation.testModule || DevUtils.isDeobfuscated)
 	}
 
-	val configuration: Configuration
-		get() = config ?: Configuration(File(configDirectory, MODULE_CFG_FILE_NAME)).also { config = it }
-
-	override val loadedContainer: IModuleContainer?
-		get() = currentContainer
-
-	override val moduleStage: ModuleStage
-		get() = currentStage
-
-	override fun registerContainer(container: IModuleContainer?) {
+	override fun registerContainer(container: ICatalyxModuleContainer?) {
 		when {
 			container == null -> Catalyx.LOGGER.error("Failed to register null container!")
 			currentStage != ModuleStage.CONTAINER_SETUP -> Catalyx.LOGGER.error("Failed to register container ${container.id}, as module loading has already begun!")

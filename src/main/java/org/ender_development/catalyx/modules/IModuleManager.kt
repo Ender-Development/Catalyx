@@ -12,9 +12,9 @@ interface IModuleManager {
 		isModuleEnabled(ResourceLocation(Reference.MODID, moduleID))
 
 	fun isModuleEnabled(id: ResourceLocation): Boolean
-	fun registerContainer(container: IModuleContainer?)
+	fun registerContainer(container: ICatalyxModuleContainer?)
 
-	val loadedContainer: IModuleContainer?
+	val loadedContainer: ICatalyxModuleContainer?
 	val moduleStage: ModuleStage
 
 	fun passedStage(stage: ModuleStage) =
