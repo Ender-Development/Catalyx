@@ -5,7 +5,6 @@ import net.minecraft.item.Item
 import net.minecraftforge.client.event.RenderWorldLastEvent
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.event.RegistryEvent
-import net.minecraftforge.fml.common.Loader
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.Mod.EventHandler
 import net.minecraftforge.fml.common.event.*
@@ -14,7 +13,6 @@ import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import org.apache.logging.log4j.LogManager
 import org.ender_development.catalyx.client.AreaHighlighter
-import org.ender_development.catalyx.integration.top.CatalyxTOPHandler
 import org.ender_development.catalyx.items.CatalyxModItems
 import org.ender_development.catalyx.modules.CatalyxModules
 import org.ender_development.catalyx.modules.ModuleContainerRegistryEvent
@@ -64,11 +62,8 @@ object Catalyx {
 	}
 
 	@EventHandler
-	fun init(e: FMLInitializationEvent) {
+	fun init(e: FMLInitializationEvent) =
 		ModuleManager.init(e)
-		if(Loader.isModLoaded("theoneprobe"))
-			CatalyxTOPHandler.init()
-	}
 
 	@EventHandler
 	fun postInit(e: FMLPostInitializationEvent) =
