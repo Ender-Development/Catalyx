@@ -36,8 +36,8 @@ object Catalyx {
 	internal val RANDOM = Random(System.nanoTime())
 
 	/**
-	 * The logger for the mod to use. Also, the default logger for modules.
-	 * We can't grep the logger from pre-init because some modules may want to use it in construction.
+	 * The logger for the mod to use. We can't grep the logger from pre-init,
+	 * because some modules may want to use it in construction.
 	 */
 	internal val LOGGER = LoggerUtils.logger
 

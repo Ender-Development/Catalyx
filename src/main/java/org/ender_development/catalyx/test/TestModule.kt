@@ -8,7 +8,13 @@ import org.ender_development.catalyx.modules.CatalyxModule
 import org.ender_development.catalyx.modules.CatalyxModules
 import org.ender_development.catalyx.utils.LoggerUtils
 
-@CatalyxModule(moduleID = CatalyxModules.MODULE_TEST, containerID = Reference.MODID, name = "Test Module", description = "A module for testing purposes. Will only work in a development environment.", testModule = true)
+@CatalyxModule(
+	moduleID = CatalyxModules.MODULE_TEST,
+	containerID = Reference.MODID,
+	name = "Test Module",
+	description = "A module for testing purposes. Will only work in a development environment.",
+	testModule = true
+)
 class TestModule : BaseCatalyxModule() {
 	override val logger: Logger = LoggerUtils.new("Development")
 

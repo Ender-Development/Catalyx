@@ -10,7 +10,13 @@ import org.ender_development.catalyx.modules.CatalyxModule
 import org.ender_development.catalyx.modules.CatalyxModules
 import org.ender_development.catalyx.utils.LoggerUtils
 
-@CatalyxModule(moduleID = CatalyxModules.MODULE_TOP, containerID = Reference.MODID, modDependencies = [Mods.TOP], name = "Catalyx The One Probe Integration Module", description = "Adds integration with The One Probe")
+@CatalyxModule(
+	moduleID = CatalyxModules.MODULE_TOP,
+	containerID = Reference.MODID,
+	modDependencies = [Mods.TOP],
+	name = "Catalyx The One Probe Integration Module",
+	description = "Adds integration with The One Probe"
+)
 class ModuleTheOneProbe : IntegrationSubmodule() {
 	override val logger: Logger = LoggerUtils.new("TheOneProbe")
 

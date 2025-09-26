@@ -185,7 +185,7 @@ object ModuleManager : IModuleManager {
 			try {
 				val clazz = Class.forName(it.className)
 				if(ICatalyxModuleContainer::class.java.isAssignableFrom(clazz)) {
-					val container = if (clazz.modifiers and java.lang.reflect.Modifier.FINAL != 0) {
+					val container = if(clazz.modifiers and java.lang.reflect.Modifier.FINAL != 0) {
 						Catalyx.LOGGER.debug("Found final Module Container Class ${it.className}! Using INSTANCE field")
 						clazz.getField("INSTANCE").get(null)
 					} else {
@@ -256,7 +256,7 @@ object ModuleManager : IModuleManager {
 					changed = true
 					val containerID = module.containerID
 					val moduleID = module.moduleID
-					toLoad.remove(ResourceLocation(containerID,moduleID))
+					toLoad.remove(ResourceLocation(containerID, moduleID))
 					module.logger.info("Module $moduleID is missing at least one of its module dependencies: [ ${dependencies.joinToString(", ")} ]. Skipping...")
 				}
 			}

@@ -12,7 +12,13 @@ import org.ender_development.catalyx.modules.CatalyxModules
 import org.ender_development.catalyx.utils.LoggerUtils
 
 @Optional.Interface(modid = Mods.GROOVYSCRIPT, iface = "com.cleanroommc.groovyscript.api.GroovyPlugin", striprefs = true)
-@CatalyxModule(moduleID = CatalyxModules.MODULE_GRS, containerID = Reference.MODID, modDependencies = [Mods.GROOVYSCRIPT], name = "Catalyx GroovyScript Integration Module", description = "Adds integration with GroovyScript")
+@CatalyxModule(
+	moduleID = CatalyxModules.MODULE_GRS,
+	containerID = Reference.MODID,
+	modDependencies = [Mods.GROOVYSCRIPT],
+	name = "Catalyx GroovyScript Integration Module",
+	description = "Adds integration with GroovyScript"
+)
 class ModuleGroovyScript(override val logger: Logger = LoggerUtils.new("GroovyScript")) : IntegrationSubmodule(), GroovyPlugin {
 	companion object {
 		private lateinit var modSupportContainer: GroovyContainer<*>
