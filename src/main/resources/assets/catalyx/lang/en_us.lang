@@ -1,4 +1,4 @@
-tooltip.catalyx.running=Click to pause
-tooltip.catalyx.paused=Click to resume
-tooltip.catalyx.redstone_high=Works with a redstone signal
-tooltip.catalyx.redstone_low=Works without a redstone signal
+tooltip.catalyx:running=Click to pause
+tooltip.catalyx:paused=Click to resume
+tooltip.catalyx:redstone_high=Works with a redstone signal
+tooltip.catalyx:redstone_low=Works without a redstone signal

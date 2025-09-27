@@ -5,14 +5,11 @@ import net.minecraft.item.ItemStack
 import org.ender_development.catalyx.Catalyx
 
 class ConfigHandler<T : ConfigParser.ConfigItemStack>(configData: Iterable<String>, parser: (String) -> T) {
-	private val configItems = mutableListOf<T>()
-
-	init {
-		try {
-			configItems.addAll(configData.map(parser))
-		} catch(e: Exception) {
-			Catalyx.LOGGER.error("Error parsing config data", e)
-		}
+	private val configItems = try {
+		configData.map(parser)
+	} catch(e: Exception) {
+		Catalyx.LOGGER.error("Error parsing config data", e)
+		emptyList()
 	}
 
 	/**

@@ -10,6 +10,13 @@ import net.minecraft.world.World
 import net.minecraftforge.fml.common.network.IGuiHandler
 import org.ender_development.catalyx.utils.SideUtils
 
+/**
+ * A GUI handler you can use for your machines
+ *
+ * Use the return value of [registerId] in the [org.ender_development.catalyx.blocks.BaseTileBlock.guiID] field
+ *
+ * Remember to register it with [net.minecraftforge.fml.common.network.NetworkRegistry.registerGuiHandler]
+ */
 class CatalyxGuiHandler : IGuiHandler {
 	private val containers = mutableListOf<Class<out Container>>()
 	private val guis = mutableListOf<Class<out GuiContainer>>()

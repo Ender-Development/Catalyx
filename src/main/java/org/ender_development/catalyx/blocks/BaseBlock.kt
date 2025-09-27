@@ -24,10 +24,7 @@ open class BaseBlock(settings: CatalyxSettings, name: String, material: Material
 	}
 
 	/**
-	 * You need to call this yourself, like
-	 * ```kt
-	 * catalyxSettings.blocks.forEach { it.registerBlocks(event) }
-	 * ```
+	 * You need to call this yourself
 	 */
 	override fun registerBlock(event: RegistryEvent.Register<Block>) =
 		event.registry.register(this)
@@ -39,19 +36,11 @@ open class BaseBlock(settings: CatalyxSettings, name: String, material: Material
 		ItemBlock(this)
 
 	/**
-	 * You need to call this yourself, like
-	 * ```kt
-	 * catalyxSettings.items.forEach { it.registerItem(event) }
-	 * ```
+	 * You need to call this yourself
 	 */
 	override fun registerItem(event: RegistryEvent.Register<Item>) {
 		val item = createItemBlock().setRegistryName(registryName)
 		event.registry.register(item)
 		ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(registryName!!, "inventory"))
 	}
-
-	//@SideOnly(Side.CLIENT)
-	//open fun registerModel() {
-	//	ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, ModelResourceLocation(registryName!!, "inventory"))
-	//}
 }

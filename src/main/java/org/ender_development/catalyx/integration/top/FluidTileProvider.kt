@@ -15,10 +15,7 @@ class FluidTileProvider : IProbeInfoProvider {
 	override fun getID() = "${Reference.MODID}.auto.ifluidtile_provider"
 
 	override fun addProbeInfo(mode: ProbeMode, info: IProbeInfo, player: EntityPlayer, world: World, state: IBlockState, data: IProbeHitData) {
-		val tile = world.getTileEntity(data.pos) ?: return
-
-		if(tile !is IFluidTile)
-			return
+		val tile = world.getTileEntity(data.pos) as? IFluidTile ?: return
 
 		tile.fluidTanks.tankProperties.forEach { tank ->
 			val contents = tank.contents

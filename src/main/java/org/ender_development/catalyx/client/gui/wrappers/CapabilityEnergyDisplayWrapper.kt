@@ -1,18 +1,14 @@
 package org.ender_development.catalyx.client.gui.wrappers
 
 import net.minecraftforge.energy.IEnergyStorage
-import java.text.NumberFormat
-import java.util.*
 
 open class CapabilityEnergyDisplayWrapper(x: Int, y: Int, width: Int, height: Int, val energyStorage: () -> IEnergyStorage) : CapabilityDisplayWrapper(x, y, width, height) {
-	override fun getStored() = energyStorage().energyStored
-	override fun getCapacity() = energyStorage().maxEnergyStored
+	override val stored: Int
+		get() = energyStorage().energyStored
 
-	private val numFormat = NumberFormat.getInstance(Locale.getDefault())
+	override val capacity: Int
+		get() = energyStorage().maxEnergyStored
 
-	override fun toStringList(): List<String> {
-		val stored = numFormat.format(getStored())
-		val capacity = numFormat.format(getCapacity())
-		return listOf("$stored/$capacity FE")
-	}
+	override val textLines: List<String>
+		get() = listOf("${numFormat.format(stored)}/${numFormat.format(capacity)} FE")
 }

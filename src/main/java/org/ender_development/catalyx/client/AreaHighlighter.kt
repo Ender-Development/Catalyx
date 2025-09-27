@@ -13,6 +13,8 @@ import org.lwjgl.opengl.GL11
 
 /**
  * A helper class allowing you to highlight an area or a block in 3D space
+ * @see [highlightBlock]
+ * @see [highlightArea]
  */
 @SideOnly(Side.CLIENT)
 class AreaHighlighter {

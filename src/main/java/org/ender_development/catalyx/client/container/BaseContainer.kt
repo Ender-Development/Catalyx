@@ -60,7 +60,7 @@ abstract class BaseContainer(playerInv: IInventory, val tileEntity: IBaseContain
 		} else if(!mergeItemStack(stack, PLAYER_INVENTORY_SIZE, PLAYER_INVENTORY_LAST_INDEX + tileEntity.SIZE, false))
 			return ItemStack.EMPTY
 
-		if(stack.count <= 0)
+		if(stack.isEmpty)
 			slot.putStack(ItemStack.EMPTY)
 		else
 			slot.onSlotChanged()

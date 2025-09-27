@@ -22,6 +22,7 @@ import org.ender_development.catalyx.utils.RenderUtils
 import org.ender_development.catalyx.utils.extensions.get
 import org.ender_development.catalyx.utils.extensions.translate
 
+// TODO fully rewrite this whole mess at some point
 abstract class BaseGuiTyped<T>(container: Container, val tileEntity: T) : GuiContainer(container) where T : IGuiTile, T : BaseTile, T : BaseGuiTyped.IDefaultButtonVariables {
 	abstract val textureLocation: ResourceLocation
 
@@ -62,39 +63,32 @@ abstract class BaseGuiTyped<T>(container: Container, val tileEntity: T) : GuiCon
 	}
 
 	open fun renderTooltips(mouseX: Int, mouseY: Int) {
-		if(isHovered(pauseButton.x, pauseButton.y, 16, 16, mouseX, mouseY)) {
-			if(tileEntity.isPaused)
-				this.drawHoveringText(listOf("tooltip.${Reference.MODID}.paused".translate()), mouseX, mouseY)
-			else
-				this.drawHoveringText(listOf("tooltip.${Reference.MODID}.running".translate()), mouseX, mouseY)
-		}
-		if(isHovered(redstoneButton.x, redstoneButton.y, 16, 16, mouseX, mouseY)) {
-			if(tileEntity.needsRedstonePower)
-				this.drawHoveringText(listOf("tooltip.${Reference.MODID}.redstone_high".translate()), mouseX, mouseY)
-			else
-				this.drawHoveringText(listOf("tooltip.${Reference.MODID}.redstone_low".translate()), mouseX, mouseY)
-		}
+		if(isHovered(pauseButton.x, pauseButton.y, 16, 16, mouseX, mouseY))
+			drawHoveringText(listOf("tooltip.${Reference.MODID}:${if(tileEntity.isPaused) "paused" else "running"}".translate()), mouseX, mouseY)
+
+		if(isHovered(redstoneButton.x, redstoneButton.y, 16, 16, mouseX, mouseY))
+			drawHoveringText(listOf("tooltip.${Reference.MODID}:redstone_${if(tileEntity.needsRedstonePower) "high" else "low"}".translate()), mouseX, mouseY)
 	}
 
-	open fun getBarScaled(pixels: Int, count: Int, max: Int): Int {
-		return if(count > 0 && max > 0) count * pixels / max else 0
-	}
+	open fun getBarScaled(pixels: Int, count: Int, max: Int) =
+		if(count > 0 && max > 0)
+			count * pixels / max
+		else
+			0
 
-	open fun drawPowerBar(
-		storage: CapabilityEnergyDisplayWrapper,
-		texture: ResourceLocation,
-		textureX: Int,
-		textureY: Int
-	) {
-		val i = storage.x + ((this.width - this.xSize) / 2)
-		val j = storage.y + ((this.height - this.ySize) / 2)
-		val k = this.getBarScaled(storage.height, storage.getStored(), storage.getCapacity())
+	open fun drawPowerBar(storage: CapabilityEnergyDisplayWrapper, texture: ResourceLocation, textureX: Int, textureY: Int) {
+		val x = storage.x + ((width - xSize) shr 1)
+		val y = storage.y + ((height - ySize) shr 1)
+
 		mc.textureManager.bindTexture(texture)
-		this.drawTexturedModalRect(i, j, textureX, textureY, storage.width, storage.height)
-		if(storage.getStored() > 0) {
-			this.drawTexturedModalRect(i, j + storage.height - k, textureX + 16, textureY, storage.width, k)
+		drawTexturedModalRect(x, y, textureX, textureY, storage.width, storage.height)
+
+		if(storage.stored > 5) {
+			val barSize = getBarScaled(storage.height, storage.stored, storage.capacity)
+			drawTexturedModalRect(x, y + storage.height - barSize, textureX + 16, textureY, storage.width, barSize)
 		}
-		this.mc.textureManager.bindTexture(this.textureLocation)
+
+		mc.textureManager.bindTexture(textureLocation)
 	}
 
 	override fun drawScreen(mouseX: Int, mouseY: Int, partialTicks: Float) {
@@ -103,14 +97,12 @@ abstract class BaseGuiTyped<T>(container: Container, val tileEntity: T) : GuiCon
 		renderHoveredToolTip(mouseX, mouseY)
 		renderTooltips(mouseX, mouseY)
 
-		val x = (this.width - this.xSize) / 2
-		val y = (this.height - this.ySize) / 2
-		this.displayData.filter { data ->
-			(mouseX >= data.x + x
-					&& mouseX <= data.x + x + data.width
-					&& mouseY >= data.y + y
-					&& mouseY <= data.y + y + data.height)
-		}.forEach { drawHoveringText(it.toStringList(), mouseX, mouseY, fontRenderer) }
+		val x = (width - xSize) shr 1
+		val y = (height - ySize) shr 1
+		displayData.forEach {
+			if(isHovered(it.x + x, it.y + y, it.width, it.height, mouseX, mouseY))
+				drawHoveringText(it.textLines, mouseX, mouseY, fontRenderer)
+		}
 	}
 
 	override fun actionPerformed(button: GuiButton) {
@@ -118,47 +110,52 @@ abstract class BaseGuiTyped<T>(container: Container, val tileEntity: T) : GuiCon
 			PacketHandler.channel.sendToServer(ButtonPacket(tileEntity.pos, button.wrapper))
 	}
 
-	fun drawFluidTank(wrapper: CapabilityFluidDisplayWrapper, i: Int, j: Int, width: Int = 16, height: Int = 70) {
-		if(wrapper.getStored() > 5) {
+	fun drawFluidTank(wrapper: CapabilityFluidDisplayWrapper, x: Int, y: Int, width: Int = 16, height: Int = 70) {
+		// draw the actual fluid texture
+		if(wrapper.stored > 5) {
 			RenderUtils.bindBlockTexture()
-			RenderUtils.renderGuiTank(
-				wrapper.getFluid(), wrapper.getCapacity(),
-				wrapper.getStored(), i.toDouble(), j.toDouble(), zLevel.toDouble(), width.toDouble(), height.toDouble()
-			)
+			RenderUtils.renderGuiTank(wrapper.fluid, wrapper.capacity, wrapper.stored, x.toDouble(), y.toDouble(), zLevel.toDouble(), width.toDouble(), height.toDouble())
 		}
-		val i = wrapper.x + ((this.width - this.xSize) / 2)
-		val j = wrapper.y + ((this.height - this.ySize) / 2)
+
+		// draw the empty tank overlay overtop
+		val x = wrapper.x + ((this.width - xSize) shr 1)
+		val y = wrapper.y + ((this.height - ySize) shr 1)
+
 		mc.textureManager.bindTexture(powerBarTexture)
-		this.drawTexturedModalRect(i, j, 32, 0, 16, 70)
-		this.mc.textureManager.bindTexture(this.textureLocation)
+		drawTexturedModalRect(x, y, 32, 0, width, height)
+		mc.textureManager.bindTexture(textureLocation)
 	}
 
 	override fun drawGuiContainerBackgroundLayer(partialTicks: Float, mouseX: Int, mouseY: Int) {
-		GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f)
-		this.mc.textureManager.bindTexture(this.textureLocation)
+		GlStateManager.color(1f, 1f, 1f, 1f)
+		mc.textureManager.bindTexture(textureLocation)
 
-		this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize)
-		val i = (this.width - this.xSize) / 2
-		val j = (this.height - this.ySize) / 2
+		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize)
+		val x = (width - xSize) shr 1
+		val y = (height - ySize) shr 1
 
 		displayData.forEach { data ->
 			when(data) {
 				is CapabilityEnergyDisplayWrapper -> drawPowerBar(data, powerBarTexture, powerBarX, powerBarY)
-				is CapabilityFluidDisplayWrapper -> drawFluidTank(data, i + data.x, j + data.y)
+				is CapabilityFluidDisplayWrapper -> drawFluidTank(data, x + data.x, y + data.y)
 			}
 		}
 	}
 
 	override fun drawGuiContainerForegroundLayer(mouseX: Int, mouseY: Int) {
-		if(tileEntity.isPaused) pauseButton.isPaused = PauseButtonWrapper.State.PAUSED
-		else pauseButton.isPaused = PauseButtonWrapper.State.RUNNING
+		pauseButton.isPaused = if(tileEntity.isPaused)
+			PauseButtonWrapper.State.PAUSED
+		else
+			PauseButtonWrapper.State.RUNNING
 
-		if(tileEntity.needsRedstonePower) redstoneButton.needsPower = RedstoneButtonWrapper.State.ON
-		else redstoneButton.needsPower = RedstoneButtonWrapper.State.OFF
+		redstoneButton.needsPower = if(tileEntity.needsRedstonePower)
+			RedstoneButtonWrapper.State.ON
+		else
+			RedstoneButtonWrapper.State.OFF
 
 		if(displayName.isNotEmpty()) {
 			val (x, y) = displayNameAlignment.getXY(0, xSize, 0, ySize, fontRenderer.getStringWidth(displayName), fontRenderer.FONT_HEIGHT, displayNameOffset, displayNameOffset)
-			fontRenderer.drawString(displayName, x, y, 4210752)
+			fontRenderer.drawString(displayName, x, y, 0x404040)
 		}
 	}
 

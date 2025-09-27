@@ -17,6 +17,7 @@ import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 import net.minecraftforge.fml.common.registry.GameRegistry
 import org.ender_development.catalyx.CatalyxSettings
+import org.ender_development.catalyx.recipes.ingredients.nbt.TagType
 import org.ender_development.catalyx.tiles.BaseTile
 
 /**
@@ -27,7 +28,8 @@ open class BaseTileBlock(val settings: CatalyxSettings, name: String, var tileCl
 		GameRegistry.registerTileEntity(tileClass, ResourceLocation(settings.modId, name))
 	}
 
-	override fun createNewTileEntity(worldIn: World, meta: Int): TileEntity = tileClass.newInstance()
+	override fun createNewTileEntity(worldIn: World, meta: Int): TileEntity =
+		tileClass.newInstance()
 
 	override fun onBlockActivated(world: World, pos: BlockPos, state: IBlockState, player: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
 		if(!world.isRemote) {
@@ -38,9 +40,8 @@ open class BaseTileBlock(val settings: CatalyxSettings, name: String, var tileCl
 		return true
 	}
 
-	override fun removedByPlayer(state: IBlockState, world: World, pos: BlockPos, player: EntityPlayer, willHarvest: Boolean): Boolean {
-		return if(willHarvest) true else super.removedByPlayer(state, world, pos, player, false)
-	}
+	override fun removedByPlayer(state: IBlockState, world: World, pos: BlockPos, player: EntityPlayer, willHarvest: Boolean) =
+		willHarvest || super.removedByPlayer(state, world, pos, player, false)
 
 	override fun harvestBlock(world: World, player: EntityPlayer, pos: BlockPos, state: IBlockState, te: TileEntity?, stack: ItemStack) {
 		super.harvestBlock(world, player, pos, state, te, stack)
@@ -49,61 +50,59 @@ open class BaseTileBlock(val settings: CatalyxSettings, name: String, var tileCl
 
 	override fun getDrops(drops: NonNullList<ItemStack>, world: IBlockAccess, pos: BlockPos, state: IBlockState, fortune: Int) {
 		val item = Item.getItemFromBlock(this)
-		if(item != Items.AIR) {
-			drops.add(ItemStack(item, 1, damageDropped(state)).apply {
-				this.tagCompound = world.getTileEntity(pos)?.updateTag
-				tagCompound?.removeTag("x")
-				tagCompound?.removeTag("y")
-				tagCompound?.removeTag("z")
-			})
-			val droppedItem: ItemStack? = drops.firstOrNull { it.item == item }
-			val tag = droppedItem?.tagCompound
-			tag?.apply {
-				if(this.hasKey("id")) removeTag("id")
-				if(this.hasKey("input")) {
-					val input = this.getCompoundTag("input")
-					if(input.hasKey("Size") && input.getInteger("Size") == 0) {
-						this.removeTag("input")
-					}
-					if(input.getTagList("Items", 10).isEmpty) {
-						this.removeTag("input")
-					}
-				}
-				if(this.hasKey("ProgressTicks") && this.getInteger("ProgressTicks") == 0) {
-					this.removeTag("ProgressTicks")
-				}
-				if(this.hasKey("output")) {
-					val output = this.getCompoundTag("output")
-					if(output.hasKey("Size") && output.getInteger("Size") == 0) {
-						this.removeTag("output")
-					}
-					if(output.getTagList("Items", 10).isEmpty) {
-						this.removeTag("output")
-					}
-				}
-				if(this.hasKey("InputTankNBT")) {
-					val inputTank = this.getCompoundTag("InputTankNBT")
-					if(inputTank.hasKey("Empty")) this.removeTag("InputTankNBT")
-				}
-				if(this.hasKey("OutputTankNBT")) {
-					val inputTank = this.getCompoundTag("OutputTankNBT")
-					if(inputTank.hasKey("Empty")) this.removeTag("OutputTankNBT")
-				}
-				if(this.hasKey("EnergyStored") && this.getInteger("EnergyStored") == 0) {
-					this.removeTag("EnergyStored")
-				}
-				if(this.hasKey("Owner")) this.removeTag("Owner")
+		if(item === Items.AIR)
+			return
+
+		drops.add(ItemStack(item, 1, damageDropped(state)).apply {
+			tagCompound = world.getTileEntity(pos)?.updateTag?.apply {
+				arrayOf("x", "y", "z").forEach(this::removeTag)
 			}
-			if(tag != null && tag.size == 0) droppedItem.tagCompound = null
+		})
+
+		val droppedItem: ItemStack? = drops.firstOrNull { it.item === item }
+		val tag = droppedItem?.tagCompound
+		tag?.apply {
+			// remove if they exist
+			arrayOf("id", "Owner").forEach { key ->
+				if(hasKey(key))
+					removeTag(key)
+			}
+
+			// remove if they exist and are 0
+			arrayOf("ProgressTicks", "EnergyStored").forEach { key ->
+				if(hasKey(key) && getInteger(key) == 0)
+					removeTag(key)
+			}
+
+			// remove if empty
+			arrayOf("input", "output").forEach { key ->
+				if(hasKey(key)) {
+					val io = getCompoundTag(key)
+					if((io.hasKey("Size") && io.getInteger("Size") == 0) || io.getTagList("Items", TagType.COMPOUND.typeId).isEmpty)
+						removeTag("input")
+				}
+			}
+
+			// remove if empty
+			arrayOf("InputTankNBT", "OutputTankNBT").forEach { key ->
+				val tank = getCompoundTag(key)
+				if(tank.hasKey("Empty"))
+					removeTag(key)
+			}
+
+			if(isEmpty)
+				droppedItem.tagCompound = null
 		}
 	}
 
 	override fun onBlockPlacedBy(world: World, pos: BlockPos, state: IBlockState, placer: EntityLivingBase, stack: ItemStack) {
 		val tile = world.getTileEntity(pos)
 		if(tile is BaseTile) {
-			stack.tagCompound?.setInteger("x", pos.x)
-			stack.tagCompound?.setInteger("y", pos.y)
-			stack.tagCompound?.setInteger("z", pos.z)
+			stack.tagCompound?.apply {
+				setInteger("x", pos.x)
+				setInteger("y", pos.y)
+				setInteger("z", pos.z)
+			}
 			tile.markDirtyClient()
 		}
 	}

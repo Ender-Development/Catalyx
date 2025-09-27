@@ -32,5 +32,4 @@ class ModuleGroovyScript(override val logger: Logger = LoggerUtils.new("GroovySc
 	override fun getModId() = Reference.MODID
 
 	override fun getContainerName() = Reference.MOD_NAME
-
 }
