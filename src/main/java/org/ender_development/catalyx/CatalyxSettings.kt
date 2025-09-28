@@ -1,13 +1,13 @@
 package org.ender_development.catalyx
 
 import net.minecraft.creativetab.CreativeTabs
-import org.ender_development.catalyx.blocks.IBlockProvider
-import org.ender_development.catalyx.items.IItemProvider
+import org.ender_development.catalyx.core.CatalyxBlockRegistry
+import org.ender_development.catalyx.core.CatalyxItemRegistry
+import org.ender_development.catalyx.core.IBlockProvider
+import org.ender_development.catalyx.core.IItemProvider
 
-interface IBothProvider : IItemProvider, IBlockProvider
-
-private typealias Blocks = (block: IBothProvider) -> Unit
-private typealias Items = (item: IItemProvider) -> Unit
+private typealias Blocks = (block: IBlockProvider) -> Boolean
+private typealias Items = (item: IItemProvider) -> Boolean
 
 /**
  * Helper class that contains mod-specific data to pass into Catalyx constructors
@@ -43,7 +43,7 @@ class CatalyxSettings {
 	 */
 	val items: Items
 
-	constructor(modId: String, creativeTab: CreativeTabs, mod: Any, enableItemCapability: Boolean, blocks: Blocks, items: Items) {
+	constructor(modId: String, creativeTab: CreativeTabs, mod: Any, enableItemCapability: Boolean, blocks: Blocks = { CatalyxBlockRegistry.registry.add(it) }, items: Items = { CatalyxItemRegistry.registry.add(it) }) {
 		this.modId = modId
 		this.creativeTab = creativeTab
 		this.mod = mod

@@ -1,21 +1,12 @@
 package org.ender_development.catalyx
 
 import net.minecraft.creativetab.CreativeTabs
-import net.minecraft.item.Item
-import net.minecraftforge.client.event.RenderWorldLastEvent
-import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.Mod.EventHandler
 import net.minecraftforge.fml.common.event.*
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
-import net.minecraftforge.fml.relauncher.Side
-import net.minecraftforge.fml.relauncher.SideOnly
-import org.ender_development.catalyx.client.AreaHighlighter
-import org.ender_development.catalyx.items.CatalyxModItems
 import org.ender_development.catalyx.modules.ModuleManager
 import org.ender_development.catalyx.network.PacketHandler
 import org.ender_development.catalyx.utils.LoggerUtils
-import org.ender_development.catalyx.utils.PersistentData
 import kotlin.random.Random
 
 @Mod(
@@ -41,11 +32,10 @@ object Catalyx {
 	 */
 	internal val LOGGER = LoggerUtils.logger
 
-	internal val ownSettings = CatalyxSettings(Reference.MODID, CreativeTabs.MISC, Catalyx, true, { }, { CatalyxModItems.items.add(it) })
+	internal val ownSettings = CatalyxSettings(Reference.MODID, CreativeTabs.MISC, Catalyx, true)
 
 	@EventHandler
 	fun construction(e: FMLConstructionEvent) {
-		PersistentData.init()
 		ModuleManager.setup(e.asmHarvestedData)
 		ModuleManager.construction(e)
 	}
@@ -87,15 +77,4 @@ object Catalyx {
 	@EventHandler
 	fun serverStopped(e: FMLServerStoppedEvent) =
 		ModuleManager.serverStopped(e)
-
-	@SubscribeEvent
-	@SideOnly(Side.CLIENT)
-	fun renderWorldLast(event: RenderWorldLastEvent) {
-		AreaHighlighter.eventHandlers.forEach { it(event) }
-	}
-
-	@SubscribeEvent
-	fun registerItems(event: RegistryEvent.Register<Item>) {
-		CatalyxModItems.registerItems(event)
-	}
 }

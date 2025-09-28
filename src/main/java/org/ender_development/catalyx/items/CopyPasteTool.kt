@@ -2,7 +2,6 @@ package org.ender_development.catalyx.items
 
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumActionResult
@@ -10,7 +9,6 @@ import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
-import net.minecraftforge.event.RegistryEvent
 import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.client.gui.BaseGuiTyped
 import org.ender_development.catalyx.tiles.BaseTile
@@ -91,9 +89,9 @@ class CopyPasteTool() : BaseItem(Catalyx.ownSettings, "copy_paste_tool") {
 		}
 	}
 
-	// don't register if this isn't a dev environment, as this item is not finished; TODO tooltip, name translation, maybe signify what blocks you can actually copy across ;p
-	override fun registerItem(event: RegistryEvent.Register<Item>) {
-		if(DevUtils.isDeobfuscated)
-			super.registerItem(event)
-	}
+	/**
+	 * 	don't register if this isn't a dev environment, as this item is not finished
+	 * 	TODO tooltip, name translation, maybe signify what blocks you can actually copy across ;p
+	 */
+	override val isEnabled = DevUtils.isDeobfuscated
 }

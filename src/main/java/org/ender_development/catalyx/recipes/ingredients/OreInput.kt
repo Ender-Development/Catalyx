@@ -52,6 +52,7 @@ class OreInput : RecipeInput {
 			inputStacks = OreDictionary.getOres(OreDictionary.getOreName(ore)).map {
 				it.copy().let { copy ->
 					copy.count = amount
+					copy
 				}
 			}
 		}

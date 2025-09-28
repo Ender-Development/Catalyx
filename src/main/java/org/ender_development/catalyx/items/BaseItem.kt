@@ -6,6 +6,7 @@ import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.event.RegistryEvent
 import org.ender_development.catalyx.CatalyxSettings
+import org.ender_development.catalyx.core.IItemProvider
 
 /**
  * A base Catalyx item
@@ -18,13 +19,17 @@ open class BaseItem(settings: CatalyxSettings, val name: String) : Item(), IItem
 		settings.items(this)
 	}
 
+	override val item = this
+
+	override val isEnabled = true
+
 	/**
 	 * You need to call this yourself, like
 	 * ```kt
 	 * YourModItems.items.forEach { it.registerItem(event) }
 	 * ```
 	 */
-	override fun registerItem(event: RegistryEvent.Register<Item>) {
+	override fun register(event: RegistryEvent.Register<Item>) {
 		event.registry.register(this)
 		ModelLoader.setCustomModelResourceLocation(this, 0, ModelResourceLocation(registryName!!, "inventory"))
 	}

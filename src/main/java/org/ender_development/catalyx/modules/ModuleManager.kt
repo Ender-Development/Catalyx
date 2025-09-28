@@ -60,10 +60,18 @@ object ModuleManager : IModuleManager {
 
 		loadedModules.forEach { module ->
 			loadedContainer = containers[module.containerID]
-			module.logger.debug("Registering event handlers...")
-			module.eventBusSubscribers.forEach(MinecraftForge.EVENT_BUS::register)
-			module.terrainGenBusSubscriber.forEach(MinecraftForge.TERRAIN_GEN_BUS::register)
-			module.oreGenBusSubscriber.forEach(MinecraftForge.ORE_GEN_BUS::register)
+			module.eventBusSubscribers.forEach {
+				module.logger.debug("Registered event handler ${it.canonicalName}")
+				MinecraftForge.EVENT_BUS.register(it)
+			}
+			module.oreGenBusSubscriber.forEach {
+				module.logger.debug("Registered ore gen event handler ${it.canonicalName}")
+				MinecraftForge.ORE_GEN_BUS.register(it)
+			}
+			module.terrainGenBusSubscriber.forEach {
+				module.logger.debug("Registered terrain gen event handler ${it.canonicalName}")
+				MinecraftForge.TERRAIN_GEN_BUS.register(it)
+			}
 		}
 		loadedContainer = null
 	}

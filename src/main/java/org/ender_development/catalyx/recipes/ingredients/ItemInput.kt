@@ -47,6 +47,7 @@ class ItemInput : RecipeInput {
 		inputStacks = lst.map {
 			it.copy().let { copy ->
 				copy.count = amount
+				copy
 			}
 		}
 	}

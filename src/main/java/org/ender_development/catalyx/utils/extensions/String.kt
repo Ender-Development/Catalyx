@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.Ingredient
 import net.minecraft.potion.Potion
 import net.minecraft.util.ResourceLocation
+import net.minecraftforge.fml.common.Loader
 import net.minecraftforge.oredict.OreDictionary
 import net.minecraftforge.oredict.OreIngredient
 import org.ender_development.catalyx.utils.SideUtils
@@ -46,3 +47,6 @@ fun String.translate(vararg format: Any): String =
 		this
 	else
 		I18n.format(this, *format)
+
+fun String.loaded(): Boolean =
+	Loader.isModLoaded(this)

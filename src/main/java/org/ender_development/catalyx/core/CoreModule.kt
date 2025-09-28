@@ -14,4 +14,6 @@ import org.ender_development.catalyx.utils.LoggerUtils
 	description = "The core module required by all other modules from Catalyx.",
 	coreModule = true
 )
-class CoreModule(override val logger: Logger = LoggerUtils.new("Core")) : ICatalyxModule
+class CoreModule(override val logger: Logger = LoggerUtils.new("Core")) : ICatalyxModule {
+	override val eventBusSubscribers: List<Class<*>> = listOf(CoreEventHandler::class.java)
+}
