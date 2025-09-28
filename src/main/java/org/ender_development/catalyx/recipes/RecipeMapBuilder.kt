@@ -2,7 +2,7 @@ package org.ender_development.catalyx.recipes
 
 import net.minecraft.util.SoundEvent
 import org.ender_development.catalyx.Catalyx
-import org.ender_development.catalyx.CatalyxSettings
+import org.ender_development.catalyx.core.CatalyxSettings
 
 /**
  * A builder for creating a [RecipeMap]. Call [build] on it to return a RecipeMap instance.
@@ -24,7 +24,7 @@ class RecipeMapBuilder<B : RecipeBuilder<B>>(
 	private var sound: SoundEvent? = null
 	private var allowEmptyOutputs = false
 
-	internal constructor(unlocalizedName: String, defaultRecipeBuilder: B) : this(Catalyx.ownSettings, unlocalizedName, defaultRecipeBuilder)
+	internal constructor(unlocalizedName: String, defaultRecipeBuilder: B) : this(Catalyx.modSettings, unlocalizedName, defaultRecipeBuilder)
 
 	/**
 	 * Do not call this twice. RecipeMapBuilders are not re-usable.

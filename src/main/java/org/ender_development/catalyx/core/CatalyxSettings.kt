@@ -1,13 +1,9 @@
-package org.ender_development.catalyx
+package org.ender_development.catalyx.core
 
 import net.minecraft.creativetab.CreativeTabs
-import org.ender_development.catalyx.core.CatalyxBlockRegistry
-import org.ender_development.catalyx.core.CatalyxItemRegistry
-import org.ender_development.catalyx.core.IBlockProvider
-import org.ender_development.catalyx.core.IItemProvider
 
-private typealias Blocks = (block: IBlockProvider) -> Boolean
-private typealias Items = (item: IItemProvider) -> Boolean
+private typealias Blocks = (block: IBlockProvider) -> Unit
+private typealias Items = (item: IItemProvider) -> Unit
 
 /**
  * Helper class that contains mod-specific data to pass into Catalyx constructors

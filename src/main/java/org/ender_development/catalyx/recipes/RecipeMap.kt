@@ -3,7 +3,7 @@ package org.ender_development.catalyx.recipes
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.objects.Object2ReferenceOpenHashMap
 import net.minecraft.util.SoundEvent
-import org.ender_development.catalyx.CatalyxSettings
+import org.ender_development.catalyx.core.CatalyxSettings
 import org.ender_development.catalyx.integration.Mods
 import org.ender_development.catalyx.integration.groovyscript.VirtualizedRecipeMap
 import org.ender_development.catalyx.modules.CatalyxModules
@@ -12,7 +12,6 @@ import org.ender_development.catalyx.recipes.chance.boost.IBoostFunction
 import org.ender_development.catalyx.recipes.maps.AbstractMapIngredient
 import org.ender_development.catalyx.recipes.maps.Branch
 import org.ender_development.catalyx.utils.Delegates
-import org.ender_development.catalyx.utils.extensions.toImmutableList
 import java.lang.ref.WeakReference
 import java.util.*
 

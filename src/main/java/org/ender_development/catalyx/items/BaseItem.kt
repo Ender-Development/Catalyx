@@ -5,7 +5,7 @@ import net.minecraft.item.Item
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.event.RegistryEvent
-import org.ender_development.catalyx.CatalyxSettings
+import org.ender_development.catalyx.core.CatalyxSettings
 import org.ender_development.catalyx.core.IItemProvider
 
 /**

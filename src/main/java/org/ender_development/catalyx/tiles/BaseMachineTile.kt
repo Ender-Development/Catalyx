@@ -2,7 +2,7 @@ package org.ender_development.catalyx.tiles
 
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.ITickable
-import org.ender_development.catalyx.CatalyxSettings
+import org.ender_development.catalyx.core.CatalyxSettings
 import org.ender_development.catalyx.client.button.AbstractButtonWrapper
 import org.ender_development.catalyx.client.button.PauseButtonWrapper
 import org.ender_development.catalyx.client.button.RedstoneButtonWrapper

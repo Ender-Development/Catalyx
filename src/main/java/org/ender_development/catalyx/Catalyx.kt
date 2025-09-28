@@ -4,6 +4,8 @@ import net.minecraft.creativetab.CreativeTabs
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.Mod.EventHandler
 import net.minecraftforge.fml.common.event.*
+import org.ender_development.catalyx.core.CatalyxSettings
+import org.ender_development.catalyx.core.ICatalyxMod
 import org.ender_development.catalyx.modules.ModuleManager
 import org.ender_development.catalyx.network.PacketHandler
 import org.ender_development.catalyx.utils.LoggerUtils
@@ -13,14 +15,12 @@ import kotlin.random.Random
 	modid = Reference.MODID,
 	name = Reference.MOD_NAME,
 	version = Reference.VERSION,
-	dependencies = Catalyx.DEPENDENCIES,
-	modLanguageAdapter = "io.github.chaosunity.forgelin.KotlinAdapter",
+	dependencies = ICatalyxMod.DEPENDENCIES,
+	modLanguageAdapter = ICatalyxMod.MOD_LANGUAGE_ADAPTER,
 	acceptableRemoteVersions = "*"
 )
 @Mod.EventBusSubscriber(modid = Reference.MODID)
-object Catalyx {
-	const val DEPENDENCIES = "required-after:forgelin_continuous@[${Reference.KOTLIN_VERSION},);after:groovyscript@[${Reference.GROOVYSCRIPT_VERSION},);"
-
+object Catalyx: ICatalyxMod {
 	/**
 	 * The random number generator used throughout the mod.
 	 */
@@ -32,7 +32,7 @@ object Catalyx {
 	 */
 	internal val LOGGER = LoggerUtils.logger
 
-	internal val ownSettings = CatalyxSettings(Reference.MODID, CreativeTabs.MISC, Catalyx, true)
+	override val modSettings = CatalyxSettings(Reference.MODID, CreativeTabs.MISC, Catalyx, true)
 
 	@EventHandler
 	fun construction(e: FMLConstructionEvent) {
