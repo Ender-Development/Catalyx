@@ -22,7 +22,7 @@ class CatalyxSettings {
 	/**
 	 * Your mod's main class instance
 	 */
-	val mod: Any
+	val mod: ICatalyxMod
 
 	/**
 	 * Whether to enable giving CapabilityItemHandler.ITEM_HANDLER_CAPABILITY in TileEntities
