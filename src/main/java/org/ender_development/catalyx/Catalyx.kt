@@ -32,7 +32,7 @@ object Catalyx : ICatalyxMod {
 	 */
 	internal val LOGGER = LoggerUtils.logger
 
-	override val modSettings = CatalyxSettings(Reference.MODID, CreativeTabs.MISC, Catalyx, true)
+	override val modSettings = CatalyxSettings(Reference.MODID, CreativeTabs.MISC, this, true)
 
 	@EventHandler
 	fun construction(e: FMLConstructionEvent) {
