@@ -39,7 +39,7 @@ class CatalyxSettings {
 	 */
 	val items: Items
 
-	constructor(modId: String, creativeTab: CreativeTabs, mod: Any, enableItemCapability: Boolean, blocks: Blocks = { CatalyxBlockRegistry.registry.add(it) }, items: Items = { CatalyxItemRegistry.registry.add(it) }) {
+	constructor(modId: String, creativeTab: CreativeTabs, mod: ICatalyxMod, enableItemCapability: Boolean, blocks: Blocks = { CatalyxBlockRegistry.registry.add(it) }, items: Items = { CatalyxItemRegistry.registry.add(it) }) {
 		this.modId = modId
 		this.creativeTab = creativeTab
 		this.mod = mod
@@ -57,7 +57,7 @@ class CatalyxSettings {
 		CatalyxSettings(modId, newCreativeTab, mod, enableItemCapability, blocks, items)
 
 	/** Create a new CatalyxSettings instance with a different mod */
-	fun mod(newMod: Any) =
+	fun mod(newMod: ICatalyxMod) =
 		CatalyxSettings(modId, creativeTab, newMod, enableItemCapability, blocks, items)
 
 	/** Create a new CatalyxSettings instance with a different item capability setting */
