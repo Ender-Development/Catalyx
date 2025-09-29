@@ -1,3 +1,5 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package org.ender_development.catalyx.utils.extensions
 
 import net.minecraft.block.Block
@@ -13,10 +15,10 @@ import net.minecraftforge.oredict.OreDictionary
 import net.minecraftforge.oredict.OreIngredient
 import org.ender_development.catalyx.utils.SideUtils
 
-fun String.toPotion(): Potion =
+inline fun String.toPotion(): Potion =
 	Potion.getPotionFromResourceLocation(this)!!
 
-fun String.toOre() =
+inline fun String.toOre() =
 	OreIngredient(this)
 
 fun String.toStack(quantity: Int = 1, meta: Int = 0): ItemStack {
@@ -33,13 +35,13 @@ fun String.toStack(quantity: Int = 1, meta: Int = 0): ItemStack {
 		ItemStack.EMPTY
 }
 
-fun String.toIngredient(meta: Int = 0): Ingredient =
+inline fun String.toIngredient(meta: Int = 0): Ingredient =
 	Ingredient.fromStacks(toStack(meta = meta))
 
-fun String.toDict(prefix: String) =
+inline fun String.toDict(prefix: String) =
 	"$prefix${replaceFirstChar(Char::uppercaseChar)}"
 
-fun String.firstOre(): ItemStack =
+inline fun String.firstOre(): ItemStack =
 	OreDictionary.getOres(this).firstOrNull() ?: ItemStack.EMPTY
 
 fun String.translate(vararg format: Any): String =
@@ -48,5 +50,5 @@ fun String.translate(vararg format: Any): String =
 	else
 		I18n.format(this, *format)
 
-fun String.loaded(): Boolean =
-	Loader.isModLoaded(this)
+inline fun String?.loaded(): Boolean =
+	this != null && Loader.isModLoaded(this)

@@ -10,15 +10,13 @@ import org.ender_development.catalyx.modules.ModuleManager
 
 @Config(modid = Reference.MODID, name = "${Reference.MODID}/${ModuleManager.MODULE_CFG_CATEGORY_NAME}", category = ModuleManager.MODULE_CFG_CATEGORY_NAME)
 object CatalyxConfig {
-
 	@Mod.EventBusSubscriber(modid = Reference.MODID)
 	object ConfigEventHandler {
 		@SubscribeEvent
 		@JvmStatic
 		fun onConfigChangedEvent(event: ConfigChangedEvent.OnConfigChangedEvent) {
-			if(event.modID == Reference.MODID) {
+			if(event.modID == Reference.MODID)
 				ConfigManager.sync(Reference.MODID, Config.Type.INSTANCE)
-			}
 		}
 	}
 }

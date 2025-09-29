@@ -30,18 +30,21 @@ open class BaseBlock(settings: CatalyxSettings, name: String, material: Material
 		event.registry.register(this)
 
 	/**
-	 * Override this instead of `registerItem` if you only want to change the registered Item associated with this Block (like with a [org.ender_development.catalyx.items.TooltipItemBlock])
+	 * Override this instead of [registerItemBlock] if you only want to change the registered Item associated with this Block (like with a [org.ender_development.catalyx.items.TooltipItemBlock])
 	 */
 	override val item: Item =
 		ItemBlock(this)
 
+	/**
+	 * Whether or not to register this block
+	 */
 	override val isEnabled: Boolean = true
 
 	/**
 	 * You need to call this yourself
 	 */
 	override fun registerItemBlock(event: RegistryEvent.Register<Item>) {
-		val item = item.setRegistryName(registryName)
+		item.registryName = registryName
 		event.registry.register(item)
 		ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(registryName!!, "inventory"))
 	}

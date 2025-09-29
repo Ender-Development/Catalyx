@@ -20,7 +20,7 @@ import kotlin.random.Random
 	acceptableRemoteVersions = "*"
 )
 @Mod.EventBusSubscriber(modid = Reference.MODID)
-object Catalyx: ICatalyxMod {
+object Catalyx : ICatalyxMod {
 	/**
 	 * The random number generator used throughout the mod.
 	 */

@@ -8,7 +8,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry
 /**
  * A provider of items or blocks to be registered.
  */
-interface IProvider<T> where T : IForgeRegistryEntry<T> {
+interface IProvider<T : IForgeRegistryEntry<T>> {
 	/**
 	 * Whether this provider is enabled and should be registered.
 	 */

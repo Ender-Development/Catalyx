@@ -1,6 +1,7 @@
 package org.ender_development.catalyx.utils
 
 import net.minecraftforge.fml.common.Loader
+import org.ender_development.catalyx.utils.extensions.loaded
 import kotlin.properties.ReadOnlyProperty
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
@@ -17,7 +18,7 @@ object Delegates {
 	 * If the specified mod is not loaded, every attempt at writing to the property will do nothing, every attempt at reading the property will throw an [IllegalStateException]
 	 */
 	fun <V : Any> onlyIfLoaded(mod: String): ReadWriteProperty<Any?, V> =
-		if(Loader.isModLoaded(mod))
+		if(mod.loaded())
 			OnlyIfTrue()
 		else
 			OnlyIfFalse(mod)

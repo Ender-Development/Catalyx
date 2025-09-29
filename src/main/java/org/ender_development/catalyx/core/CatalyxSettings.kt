@@ -20,7 +20,7 @@ class CatalyxSettings {
 	val creativeTab: CreativeTabs
 
 	/**
-	 * Your mod's main class
+	 * Your mod's main class instance
 	 */
 	val mod: Any
 

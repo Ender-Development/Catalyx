@@ -13,6 +13,7 @@ import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.Reference
 import org.ender_development.catalyx.utils.Delegates
 import org.ender_development.catalyx.utils.DevUtils
+import org.ender_development.catalyx.utils.extensions.loaded
 import java.io.File
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Modifier
@@ -123,7 +124,7 @@ object ModuleManager : IModuleManager {
 					emptyList()
 				}
 
-			if(modDependencies.all { dep -> Loader.isModLoaded(dep) }) {
+			if(modDependencies.all(String::loaded)) {
 				try {
 					val clazz = Class.forName(it.className)
 					if(ICatalyxModule::class.java.isAssignableFrom(clazz))
@@ -309,9 +310,9 @@ object ModuleManager : IModuleManager {
 		loadedModules.forEach {
 			val annotation = it.annotation
 			loadedContainer = containers[annotation.containerID]
-			it.logger.debug("Starting $moduleStage stage!")
+			it.logger.debug("Starting {} stage!", moduleStage)
 			action(it, event)
-			it.logger.debug("Completed $moduleStage stage!")
+			it.logger.debug("Completed {} stage!", moduleStage)
 		}
 		loadedContainer = null
 	}
