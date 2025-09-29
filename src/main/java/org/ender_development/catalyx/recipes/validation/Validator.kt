@@ -1,14 +1,14 @@
-package org.ender_development.catalyx.recipes
+package org.ender_development.catalyx.recipes.validation
 
 import org.ender_development.catalyx.Catalyx
 
 class Validator {
 	private val errorMessages = mutableListOf<String>()
 
-	val status: ValidationStatus
+	val status: ValidationState
 		get() = when {
-			errorMessages.isEmpty() -> ValidationStatus.VALID
-			else -> ValidationStatus.INVALID
+			isValid -> ValidationState.VALID
+			else -> ValidationState.INVALID
 		}
 
 	val isValid: Boolean
@@ -24,8 +24,4 @@ class Validator {
 
 	fun logMessages() =
 		errorMessages.forEach(Catalyx.LOGGER::error)
-
-	enum class ValidationStatus {
-		VALID, INVALID, WARNING
-	}
 }
