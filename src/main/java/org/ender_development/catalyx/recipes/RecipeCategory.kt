@@ -8,7 +8,7 @@ class RecipeCategory {
 	private val name: String
 	private val uniqueID: String
 	private val translationKey: String
-	private val recipeMap: RecipeMap<*>
+	val recipeMap: RecipeMap<*>
 	/**
 	 * The icon can be an [net.minecraft.item.ItemStack] or any other format supported by JEI.
 	 */

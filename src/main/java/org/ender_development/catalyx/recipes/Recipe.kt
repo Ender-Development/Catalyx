@@ -7,6 +7,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 import net.minecraftforge.items.ItemHandlerHelper
 import net.minecraftforge.oredict.OreDictionary
+import org.ender_development.catalyx.integration.groovyscript.ModuleGroovyScript
 import org.ender_development.catalyx.recipes.chance.output.ChancedFluidOutput
 import org.ender_development.catalyx.recipes.chance.output.ChancedItemOutput
 import org.ender_development.catalyx.recipes.chance.output.ChancedOutputList
@@ -21,7 +22,7 @@ class Recipe(
 	val chancedOutputs: ChancedOutputList<ItemStack, ChancedItemOutput>,
 	fluidInputs: List<RecipeInput?>,
 	val fluidOutputs: List<FluidStack>,
-	val chancedFluidOutput: ChancedOutputList<FluidStack, ChancedFluidOutput>,
+	val chancedFluidOutputs: ChancedOutputList<FluidStack, ChancedFluidOutput>,
 	val duration: Int,
 	val energyPerTick: Long,
 	val hidden: Boolean,
@@ -30,6 +31,7 @@ class Recipe(
 	val inputs = RecipeInputCache.deduplicateInputs(inputs)
 	val fluidInputs = RecipeInputCache.deduplicateInputs(fluidInputs)
 	val hashCode = makeHashCode()
+	val groovyRecipe = ModuleGroovyScript.isRunning
 
 	companion object {
 		/**
@@ -80,13 +82,13 @@ class Recipe(
 	}
 
 	fun copy() =
-		Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs, chancedFluidOutput, duration, energyPerTick, hidden, recipeCategory)
+		Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs, chancedFluidOutputs, duration, energyPerTick, hidden, recipeCategory)
 
 	override fun equals(other: Any?) =
 		this === other || (other is Recipe && hasSameInputs(other) && hasSameFluidInputs(other))
 
 	override fun toString() =
-		"Recipe{inputs=$inputs; outputs=$outputs; chancedOutputs=$chancedOutputs; fluidInputs=$fluidInputs; fluidOutputs=$fluidOutputs; chancedFluidOutput=$chancedFluidOutput; duration=$duration; energyPerTick=$energyPerTick; hidden=$hidden}"
+		"Recipe{inputs=$inputs; outputs=$outputs; chancedOutputs=$chancedOutputs; fluidInputs=$fluidInputs; fluidOutputs=$fluidOutputs; chancedFluidOutput=$chancedFluidOutputs; duration=$duration; energyPerTick=$energyPerTick; hidden=$hidden}"
 
 	override fun hashCode() =
 		hashCode
@@ -250,7 +252,7 @@ class Recipe(
 	fun getResultFluidOutputs(recipeTier: Int, machineTier: Int, recipeMap: RecipeMap<*>): List<FluidStack> {
 		val outputs = fluidOutputs.toMutableList()
 		val boostFunction = recipeMap.chanceBoostFunction
-		val chancedOutputList = chancedFluidOutput.roll(boostFunction, recipeTier, machineTier)
+		val chancedOutputList = chancedFluidOutputs.roll(boostFunction, recipeTier, machineTier)
 
 		val resultChanced = mutableListOf<FluidStack>()
 		chancedOutputList?.forEach {
@@ -318,7 +320,7 @@ class Recipe(
 	 */
 	fun getFluidAndChanceOutputs(outputLimit: Int): Pair<List<FluidStack>, List<ChancedFluidOutput>> {
 		val outputs = mutableListOf<FluidStack>()
-		var chancedOutputs = chancedFluidOutput.chancedElements.toMutableList()
+		var chancedOutputs = chancedFluidOutputs.chancedElements.toMutableList()
 		when {
 			// No limiting
 			outputLimit == -1 -> outputs.addAll(fluidOutputs)
@@ -361,7 +363,7 @@ class Recipe(
 	 * @return A List of FluidStack outputs from the recipe, including all chanced outputs
 	 */
 	fun getAllFluidOutputs() =
-		fluidOutputs + chancedFluidOutput.chancedElements.map { it.ingredient.copy() }
+		fluidOutputs + chancedFluidOutputs.chancedElements.map { it.ingredient.copy() }
 
 	fun hasValidInputsForDisplay(): Boolean {
 		inputs.forEach {

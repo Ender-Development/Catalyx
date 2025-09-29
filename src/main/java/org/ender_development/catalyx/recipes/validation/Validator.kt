@@ -1,5 +1,6 @@
 package org.ender_development.catalyx.recipes.validation
 
+import org.apache.logging.log4j.Logger
 import org.ender_development.catalyx.Catalyx
 
 class Validator {
@@ -14,14 +15,40 @@ class Validator {
 	val isValid: Boolean
 		get() = errorMessages.isEmpty()
 
+	/**
+	 * All error messages concatenated into a single string, separated by new lines
+	 */
 	val message: String
 		get() = errorMessages.joinToString("\n")
 
+	/**
+	 * All error messages as a list of strings
+	 */
 	val messages: List<String> = errorMessages // typecast down to prevent modification
 
+	/** Add an error message to the validator
+	 * @param message The error message to add
+	 */
 	fun error(message: String) =
 		errorMessages.add(message)
 
-	fun logMessages() =
-		errorMessages.forEach(Catalyx.LOGGER::error)
+	/**
+	 * Add an error message to the validator if the function returns true
+	 * @param function The function to evaluate
+	 * @param message The error message to add if the function returns true
+	 */
+	fun error(function: () -> Boolean, message: String) =
+		if(function()) error(message) else Unit
+
+	/**
+	 * Log all error messages using the specified logger
+	 * @param logger The logger to use, defaults to [Catalyx.LOGGER]
+	 * @param initialMsg An optional initial message to log before the error messages
+	 */
+	fun logMessages(logger: Logger = Catalyx.LOGGER, initialMsg: String = "") =
+		errorMessages.forEachIndexed { index, string ->
+			if(index == 0 && initialMsg.isNotEmpty())
+				logger.error(initialMsg)
+			logger.error(if(initialMsg.isNotEmpty()) "    " else "" + string)
+		}
 }

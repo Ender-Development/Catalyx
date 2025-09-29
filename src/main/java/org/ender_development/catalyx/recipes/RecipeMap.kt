@@ -2,6 +2,7 @@ package org.ender_development.catalyx.recipes
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.objects.Object2ReferenceOpenHashMap
+import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import net.minecraft.util.SoundEvent
 import org.ender_development.catalyx.core.CatalyxSettings
 import org.ender_development.catalyx.integration.Mods
@@ -11,7 +12,11 @@ import org.ender_development.catalyx.modules.ModuleManager
 import org.ender_development.catalyx.recipes.chance.boost.IBoostFunction
 import org.ender_development.catalyx.recipes.maps.AbstractMapIngredient
 import org.ender_development.catalyx.recipes.maps.Branch
+import org.ender_development.catalyx.recipes.validation.ValidationResult
+import org.ender_development.catalyx.recipes.validation.ValidationState
+import org.ender_development.catalyx.recipes.validation.Validator
 import org.ender_development.catalyx.utils.Delegates
+import org.ender_development.catalyx.utils.extensions.toImmutableList
 import java.lang.ref.WeakReference
 import java.util.*
 
@@ -28,7 +33,7 @@ class RecipeMap<R : RecipeBuilder<R>> {
 		val DEFAULT_CHANCE_FUNCTION = IBoostFunction.TIER
 
 		val recipeMaps: List<RecipeMap<out RecipeBuilder<*>>>
-			get() = RECIPE_MAP_REGISTRY.values.toList()
+			get() = RECIPE_MAP_REGISTRY.values.toList().toImmutableList()
 
 		operator fun get(name: String): RecipeMap<out RecipeBuilder<*>>? =
 			RECIPE_MAP_REGISTRY[name]
@@ -59,10 +64,10 @@ class RecipeMap<R : RecipeBuilder<R>> {
 
 	//private var smallRecipeMap: RecipeMap<*>?
 
-	private var maxInputs: Int
-	private var maxOutputs: Int
-	private var maxFluidInputs: Int
-	private var maxFluidOutputs: Int
+	var maxInputs: Int
+	var maxOutputs: Int
+	var maxFluidInputs: Int
+	var maxFluidOutputs: Int
 
 	/**
 	 * Create and register new instance of RecipeMap with specified properties.
@@ -90,5 +95,86 @@ class RecipeMap<R : RecipeBuilder<R>> {
 
 		if(ModuleManager.isModuleEnabled(CatalyxModules.MODULE_GRS))
 			grsVirtualizedRecipeMap = VirtualizedRecipeMap(this)
+	}
+
+	/**
+	 * Internal usage only, use [RecipeBuilder.buildAndRegister]!!!
+	 *
+	 * @param validationResult the validation result from building the recipe
+	 * @return if adding the recipe was successful
+	 */
+	internal fun addRecipe(validationResult: ValidationResult<Recipe>): Boolean {
+		val result = postValidateRecipe(validationResult)
+		when (result.type) {
+			ValidationState.SKIP -> return false
+			ValidationState.INVALID -> {
+				setInvalidRecipeFound(true)
+				return false
+			}
+			else -> {
+				val recipe = result.result
+				if(recipe.groovyRecipe) {
+					grsVirtualizedRecipeMap.addScripted(recipe)
+				}
+				return compileRecipe(recipe)
+			}
+		}
+	}
+
+	/**
+	 * Compiles a recipe and adds it to the ingredient tree
+	 *
+	 * @param recipe the recipe to compile
+	 * @return if the recipe was successfully compiled
+	 */
+	private fun compileRecipe(recipe: Recipe?): Boolean {
+		if(recipe == null)
+			return false
+		val items = fromRecipe(recipe)
+		TODO("I'm out of time, finish this later")
+		return false
+	}
+
+	private fun fromRecipe(recipe: Recipe): List<List<AbstractMapIngredient>> {
+		val list = ObjectArrayList<List<AbstractMapIngredient>>(recipe.inputs.size + recipe.fluidInputs.size)
+		TODO("Add the actual logic here")
+		return list
+	}
+
+	private fun postValidateRecipe(validationResult: ValidationResult<Recipe>): ValidationResult<Recipe> {
+		val recipe = validationResult.result
+		if(recipe.groovyRecipe)
+			return validationResult
+		val validator = Validator()
+		validator.error(
+			{ recipe.inputs.isEmpty() && recipe.fluidInputs.isEmpty() },
+			"Invalid amounts of recipe inputs. Recipe inputs are empty."
+		)
+		validator.error(
+			{
+				!allowEmptyOutput && recipe.energyPerTick > 0
+						&& recipe.outputs.isEmpty() && recipe.fluidOutputs.isEmpty()
+						&& recipe.chancedOutputs.chancedElements.isEmpty() && recipe.chancedFluidOutputs.chancedElements.isEmpty()
+			},
+			"Invalid amounts of recipe outputs. Recipe outputs are empty."
+		)
+		validator.error(
+			{ recipe.inputs.size > maxInputs },
+			"Invalid amounts of item inputs. Recipe has ${recipe.inputs.size} item inputs, but the maximum is $maxInputs."
+		)
+		validator.error(
+			{ recipe.outputs.size + recipe.chancedOutputs.chancedElements.size > maxOutputs },
+			"Invalid amounts of item outputs. Recipe has ${recipe.outputs.size + recipe.chancedOutputs.chancedElements.size} item outputs, but the maximum is $maxOutputs."
+		)
+		validator.error(
+			{ recipe.fluidInputs.size > maxFluidInputs },
+			"Invalid amounts of fluid inputs. Recipe has ${recipe.fluidInputs.size} fluid inputs, but the maximum is $maxFluidInputs."
+		)
+		validator.error(
+			{ recipe.fluidOutputs.size + recipe.chancedFluidOutputs.chancedElements.size > maxFluidOutputs },
+			"Invalid amounts of fluid outputs. Recipe has ${recipe.fluidOutputs.size + recipe.chancedFluidOutputs.chancedElements.size} fluid outputs, but the maximum is $maxFluidOutputs."
+		)
+		validator.logMessages()
+		return ValidationResult.newResult(validator.status, recipe)
 	}
 }
