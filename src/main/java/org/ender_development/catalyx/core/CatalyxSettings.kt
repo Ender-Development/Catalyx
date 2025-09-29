@@ -30,12 +30,16 @@ class CatalyxSettings {
 	val enableItemCapability: Boolean
 
 	/**
-	 * A function that takes in every instantiated block (meant for adding to a main `blocks` array for easier registration)), note: this is not required anymore as Catalyx can handle registration for you
+	 * A function that takes in every instantiated block (meant for adding to a main `blocks` array for easier registration)).
+	 * Note: this is not required anymore as Catalyx can handle registration for you
+	 * @see CatalyxBlockRegistry
 	 */
 	val blocks: Blocks
 
 	/**
-	 * A function that takes in every instantiated item (meant for adding to a main `items` array for easier registration), note: this is not required anymore as Catalyx can handle registration for you
+	 * A function that takes in every instantiated item (meant for adding to a main `items` array for easier registration)
+	 * Note: this is not required anymore as Catalyx can handle registration for you
+	 * @see CatalyxItemRegistry
 	 */
 	val items: Items
 

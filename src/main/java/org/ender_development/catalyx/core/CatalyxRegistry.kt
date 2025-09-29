@@ -11,7 +11,7 @@ import org.ender_development.catalyx.Reference
 import org.ender_development.catalyx.utils.DevUtils
 
 @Mod.EventBusSubscriber(modid = Reference.MODID)
-object CatalyxItemRegistry : IRegistry<IItemProvider, Item> {
+object CatalyxItemRegistry : IRegistry<Item, IItemProvider> {
 	override val registry = ProviderHashSet<IItemProvider>()
 
 	@SubscribeEvent
@@ -26,7 +26,7 @@ object CatalyxItemRegistry : IRegistry<IItemProvider, Item> {
 }
 
 @Mod.EventBusSubscriber(modid = Reference.MODID)
-object CatalyxBlockRegistry : IRegistry<IBlockProvider, Block> {
+object CatalyxBlockRegistry : IRegistry<Block, IBlockProvider> {
 	override val registry = ProviderHashSet<IBlockProvider>()
 
 	@SubscribeEvent
@@ -50,6 +50,6 @@ class ProviderHashSet<K : IProvider<*>> : ObjectOpenHashSet<K>() {
 	override fun add(k: K?) =
 		k?.isEnabled == true && super.add(k)
 
-	val plural: String
+	val plural
 		get() = if(size == 1) "" else "s"
 }
