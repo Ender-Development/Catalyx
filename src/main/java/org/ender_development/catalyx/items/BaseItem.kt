@@ -23,12 +23,6 @@ open class BaseItem(settings: CatalyxSettings, val name: String) : Item(), IItem
 
 	override val isEnabled = true
 
-	/**
-	 * You need to call this yourself, like
-	 * ```kt
-	 * YourModItems.items.forEach { it.registerItem(event) }
-	 * ```
-	 */
 	override fun register(event: RegistryEvent.Register<Item>) {
 		event.registry.register(this)
 		ModelLoader.setCustomModelResourceLocation(this, 0, ModelResourceLocation(registryName!!, "inventory"))

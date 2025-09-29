@@ -23,9 +23,6 @@ open class BaseBlock(settings: CatalyxSettings, name: String, material: Material
 		settings.blocks(this)
 	}
 
-	/**
-	 * You need to call this yourself
-	 */
 	override fun register(event: RegistryEvent.Register<Block>) =
 		event.registry.register(this)
 
@@ -40,9 +37,6 @@ open class BaseBlock(settings: CatalyxSettings, name: String, material: Material
 	 */
 	override val isEnabled: Boolean = true
 
-	/**
-	 * You need to call this yourself
-	 */
 	override fun registerItemBlock(event: RegistryEvent.Register<Item>) {
 		item.registryName = registryName
 		event.registry.register(item)
