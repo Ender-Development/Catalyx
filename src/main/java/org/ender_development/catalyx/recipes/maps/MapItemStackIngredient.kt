@@ -42,8 +42,8 @@ open class MapItemStackIngredient : AbstractMapIngredient {
 		"MapItemStackIngredient{item=${stack.item.registryName}} {meta=$meta} {tag=$tag}"
 
 	companion object {
-		fun from(r: RecipeInput): MutableList<AbstractMapIngredient?> {
-			val list = ObjectArrayList<AbstractMapIngredient?>()
+		fun from(r: RecipeInput): MutableList<AbstractMapIngredient> {
+			val list = ObjectArrayList<AbstractMapIngredient>()
 			r.getInputStacks()?.forEach {
 				list.add(MapItemStackIngredient(it, r))
 			}

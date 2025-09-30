@@ -6,9 +6,9 @@ import org.ender_development.catalyx.utils.Delegates
 
 class Branch {
 	// Keys on this have *(should)* unique hashcodes.
-	private val nodes: Map<AbstractMapIngredient, Either<Recipe, Branch>> by Delegates.lazyProperty { Object2ObjectOpenHashMap() }
+	internal val nodes: Object2ObjectOpenHashMap<AbstractMapIngredient, Either<Recipe, Branch>> by Delegates.lazyProperty { Object2ObjectOpenHashMap() }
 	// Keys on this have collisions, and must be differentiated by equality.
-	private val specialNodes: Map<AbstractMapIngredient, Either<Recipe, Branch>> by Delegates.lazyProperty { Object2ObjectOpenHashMap() }
+	internal val specialNodes: Object2ObjectOpenHashMap<AbstractMapIngredient, Either<Recipe, Branch>> by Delegates.lazyProperty { Object2ObjectOpenHashMap() }
 
 	fun getRecipes(filterHidden: Boolean): Iterable<Recipe> {
 		if(nodes.isEmpty() && specialNodes.isEmpty())
@@ -16,15 +16,15 @@ class Branch {
 
 		val stream: MutableList<Recipe> = mutableListOf()
 
-		nodes.let {
-			it.values.forEach {
-				it.map({ stream.add(it) }, { stream.addAll(it.getRecipes(filterHidden)) })
+		nodes.let { node ->
+			node.values.forEach { either ->
+				either.map({ stream.add(it) }, { stream.addAll(it.getRecipes(filterHidden)) })
 			}
 		}
 
-		specialNodes.let {
-			it.values.forEach {
-				it.map({ stream.add(it) }, { stream.addAll(it.getRecipes(filterHidden)) })
+		specialNodes.let { node ->
+			node.values.forEach { either ->
+				either.map({ stream.add(it) }, { stream.addAll(it.getRecipes(filterHidden)) })
 			}
 		}
 

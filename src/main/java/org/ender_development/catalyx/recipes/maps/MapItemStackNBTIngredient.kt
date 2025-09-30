@@ -31,8 +31,8 @@ class MapItemStackNBTIngredient : MapItemStackIngredient {
 	override val isSpecialIngredient = true
 
 	companion object {
-		fun from(r: RecipeInput): MutableList<AbstractMapIngredient?> {
-			val list = ObjectArrayList<AbstractMapIngredient?>()
+		fun from(r: RecipeInput): MutableList<AbstractMapIngredient> {
+			val list = ObjectArrayList<AbstractMapIngredient>()
 			r.getInputStacks()?.forEach {
 				list.add(MapItemStackNBTIngredient(it, r))
 			}
