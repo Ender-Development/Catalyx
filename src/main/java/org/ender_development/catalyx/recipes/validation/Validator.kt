@@ -33,12 +33,24 @@ class Validator {
 		errorMessages.add(message)
 
 	/**
-	 * Add an error message to the validator if the function returns true
-	 * @param function The function to evaluate
-	 * @param message The error message to add if the function returns true
+	 * Add an error message to the validator if the given expression is **true**
+	 * @param error The result of an expression
+	 * @param message The error message to add if the expression is true
 	 */
-	fun error(function: () -> Boolean, message: String) =
-		if(function()) error(message) else Unit
+	@Suppress("NOTHING_TO_INLINE")
+	inline fun error(error: Boolean, message: String) {
+		if(error)
+			error(message)
+	}
+
+	/**
+	 * Add an error message to the validator if the given expression is **false**
+	 * @param assertion The result of an expression
+	 * @param message The error message to add if the expression is false
+	 */
+	@Suppress("NOTHING_TO_INLINE")
+	inline fun assert(assertion: Boolean, message: String) =
+		error(!assertion, message)
 
 	/**
 	 * Log all error messages using the specified logger
@@ -49,6 +61,6 @@ class Validator {
 		errorMessages.forEachIndexed { index, string ->
 			if(index == 0 && initialMsg.isNotEmpty())
 				logger.error(initialMsg)
-			logger.error(if(initialMsg.isNotEmpty()) "    " else "" + string)
+			logger.error((if(initialMsg.isNotEmpty()) "    " else "") + string)
 		}
 }

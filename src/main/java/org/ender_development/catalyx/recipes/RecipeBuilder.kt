@@ -6,6 +6,7 @@ import net.minecraftforge.fluids.FluidStack
 import net.minecraftforge.fml.common.Optional
 import org.ender_development.catalyx.integration.Mods
 import org.ender_development.catalyx.integration.groovyscript.ModuleGroovyScript
+import org.ender_development.catalyx.recipes.RecipeBuilder.Companion.getRequiredString
 import org.ender_development.catalyx.recipes.chance.output.ChancedFluidOutput
 import org.ender_development.catalyx.recipes.chance.output.ChancedItemOutput
 import org.ender_development.catalyx.recipes.chance.output.ChancedOutputList
@@ -71,48 +72,42 @@ class RecipeBuilder<R : RecipeBuilder<R>> {
 		this.category = recipe.recipeCategory
 	}
 
-	fun build(): ValidationResult<Recipe> {
-		val validationState = validate()
-		return ValidationResult.newResult(
-			validationState, Recipe(
+	fun build() =
+		ValidationResult(
+			validate(), Recipe(
 				inputs, outputs.filterNotNull(), ChancedOutputList(chancedOutputLogic, chancedOutputs.filterNotNull()),
 				fluidInputs, fluidOutputs.filterNotNull(), ChancedOutputList(chancedFluidOutputLogic, chancedFluidOutputs.filterNotNull()),
 				duration, energyPerTick, hidden, category!!
 			)
 		)
-	}
 
 	private fun validate(): ValidationState {
 		val validator = Validator()
 		if(ModuleGroovyScript.isRunning) {
-			val msg = GroovyLog.msg("Error adding ${recipeMap.unlocalizedName} recipe").error()
+			val msg = GroovyLog.msg("Error adding recipe: ${recipeMap.unlocalizedName}").error()
 			validateGroovy(msg)
 			return if(msg.postIfNotEmpty()) ValidationState.SKIP else ValidationState.VALID
 		}
-		validator.error({ duration <= 0 }, "Duration must be greater than 0")
-		validator.error({ energyPerTick == 0.toLong() }, "Energy per tick must not be 0")
-		validator.error({ category == null }, "Recipe category must be set")
-		validator.error({ category?.recipeMap != recipeMap }, "Recipe category does not belong to the recipe map")
+		validator.assert(duration > 0, "Duration must be greater than 0")
+		validator.assert(energyPerTick != 0L, "Energy per tick must not be 0")
+		validator.assert(category != null, "Recipe category must be set")
+		validator.assert(category?.recipeMap == recipeMap, "Recipe category does not belong to the recipe map")
 		validator.logMessages(initialMsg = "Invalid recipe for ${recipeMap.unlocalizedName}:")
 		return validator.status
 	}
 
 	@Optional.Method(modid = Mods.GROOVYSCRIPT)
 	private fun validateGroovy(errorMsg: GroovyLog.Msg) {
-		errorMsg.add(energyPerTick == 0.toLong(), Supplier { "Energy per tick must not be to 0" })
+		errorMsg.add(energyPerTick == 0L, Supplier { "Energy per tick must not be to 0" })
 		errorMsg.add(duration <= 0, Supplier { "Duration must not be less or equal to 0" })
-		val maxInput: Int = recipeMap.maxInputs
-		val maxOutput: Int = recipeMap.maxOutputs
-		val maxFluidInput: Int = recipeMap.maxFluidInputs
-		val maxFluidOutput: Int = recipeMap.maxFluidOutputs
+		val maxInput = recipeMap.maxInputs
+		val maxOutput = recipeMap.maxOutputs
+		val maxFluidInput = recipeMap.maxFluidInputs
+		val maxFluidOutput = recipeMap.maxFluidOutputs
 		errorMsg.add(inputs.size > maxInput, Supplier { getRequiredString(maxInput, inputs.size, "item input") })
 		errorMsg.add(outputs.size > maxOutput, Supplier { getRequiredString(maxOutput, outputs.size, "item output") })
-		errorMsg.add(
-			fluidInputs.size > maxFluidInput,
-			Supplier { getRequiredString(maxFluidInput, fluidInputs.size, "fluid input") })
-		errorMsg.add(
-			fluidOutputs.size > maxFluidOutput,
-			Supplier { getRequiredString(maxFluidOutput, fluidOutputs.size, "fluid output") })
+		errorMsg.add(fluidInputs.size > maxFluidInput, Supplier { getRequiredString(maxFluidInput, fluidInputs.size, "fluid input") })
+		errorMsg.add(fluidOutputs.size > maxFluidOutput, Supplier { getRequiredString(maxFluidOutput, fluidOutputs.size, "fluid output") })
 	}
 
 	/**

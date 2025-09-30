@@ -33,7 +33,7 @@ class RecipeMap<R : RecipeBuilder<R>> {
 		val DEFAULT_CHANCE_FUNCTION = IBoostFunction.TIER
 
 		val recipeMaps: List<RecipeMap<out RecipeBuilder<*>>>
-			get() = RECIPE_MAP_REGISTRY.values.toList().toImmutableList()
+			get() = RECIPE_MAP_REGISTRY.values.toList()
 
 		operator fun get(name: String): RecipeMap<out RecipeBuilder<*>>? =
 			RECIPE_MAP_REGISTRY[name]
@@ -105,18 +105,19 @@ class RecipeMap<R : RecipeBuilder<R>> {
 	 */
 	internal fun addRecipe(validationResult: ValidationResult<Recipe>): Boolean {
 		val result = postValidateRecipe(validationResult)
-		when (result.type) {
-			ValidationState.SKIP -> return false
+		return when(result.type) {
+			ValidationState.SKIP ->
+				false
 			ValidationState.INVALID -> {
 				setInvalidRecipeFound(true)
-				return false
+				false
 			}
 			else -> {
 				val recipe = result.result
-				if(recipe.groovyRecipe) {
+				if(recipe.groovyRecipe)
 					grsVirtualizedRecipeMap.addScripted(recipe)
-				}
-				return compileRecipe(recipe)
+
+				compileRecipe(recipe)
 			}
 		}
 	}
@@ -145,36 +146,21 @@ class RecipeMap<R : RecipeBuilder<R>> {
 		val recipe = validationResult.result
 		if(recipe.groovyRecipe)
 			return validationResult
+
 		val validator = Validator()
+		validator.error(recipe.inputs.isEmpty() && recipe.fluidInputs.isEmpty(), "Invalid amounts of recipe inputs. Recipe inputs are empty.")
+		validator.assert(recipe.energyPerTick != 0L, "Energy per tick must not be 0")
 		validator.error(
-			{ recipe.inputs.isEmpty() && recipe.fluidInputs.isEmpty() },
-			"Invalid amounts of recipe inputs. Recipe inputs are empty."
-		)
-		validator.error(
-			{
-				!allowEmptyOutput && recipe.energyPerTick > 0
+				!allowEmptyOutput
 						&& recipe.outputs.isEmpty() && recipe.fluidOutputs.isEmpty()
-						&& recipe.chancedOutputs.chancedElements.isEmpty() && recipe.chancedFluidOutputs.chancedElements.isEmpty()
-			},
+						&& recipe.chancedOutputs.chancedElements.isEmpty() && recipe.chancedFluidOutputs.chancedElements.isEmpty(),
 			"Invalid amounts of recipe outputs. Recipe outputs are empty."
 		)
-		validator.error(
-			{ recipe.inputs.size > maxInputs },
-			"Invalid amounts of item inputs. Recipe has ${recipe.inputs.size} item inputs, but the maximum is $maxInputs."
-		)
-		validator.error(
-			{ recipe.outputs.size + recipe.chancedOutputs.chancedElements.size > maxOutputs },
-			"Invalid amounts of item outputs. Recipe has ${recipe.outputs.size + recipe.chancedOutputs.chancedElements.size} item outputs, but the maximum is $maxOutputs."
-		)
-		validator.error(
-			{ recipe.fluidInputs.size > maxFluidInputs },
-			"Invalid amounts of fluid inputs. Recipe has ${recipe.fluidInputs.size} fluid inputs, but the maximum is $maxFluidInputs."
-		)
-		validator.error(
-			{ recipe.fluidOutputs.size + recipe.chancedFluidOutputs.chancedElements.size > maxFluidOutputs },
-			"Invalid amounts of fluid outputs. Recipe has ${recipe.fluidOutputs.size + recipe.chancedFluidOutputs.chancedElements.size} fluid outputs, but the maximum is $maxFluidOutputs."
-		)
+		validator.error(recipe.inputs.size > maxInputs, "Invalid amounts of item inputs. Recipe has ${recipe.inputs.size} item inputs, but the maximum is $maxInputs.")
+		validator.error(recipe.outputs.size + recipe.chancedOutputs.chancedElements.size > maxOutputs, "Invalid amounts of item outputs. Recipe has ${recipe.outputs.size + recipe.chancedOutputs.chancedElements.size} item outputs, but the maximum is $maxOutputs.")
+		validator.error(recipe.fluidInputs.size > maxFluidInputs, "Invalid amounts of fluid inputs. Recipe has ${recipe.fluidInputs.size} fluid inputs, but the maximum is $maxFluidInputs.")
+		validator.error(recipe.fluidOutputs.size + recipe.chancedFluidOutputs.chancedElements.size > maxFluidOutputs, "Invalid amounts of fluid outputs. Recipe has ${recipe.fluidOutputs.size + recipe.chancedFluidOutputs.chancedElements.size} fluid outputs, but the maximum is $maxFluidOutputs.")
 		validator.logMessages()
-		return ValidationResult.newResult(validator.status, recipe)
+		return ValidationResult(validator.status, recipe)
 	}
 }
