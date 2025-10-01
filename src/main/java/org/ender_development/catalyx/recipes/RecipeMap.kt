@@ -4,6 +4,7 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.objects.Object2ReferenceOpenHashMap
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import it.unimi.dsi.fastutil.objects.ObjectLists
+import it.unimi.dsi.fastutil.objects.ObjectSets
 import net.minecraft.util.SoundEvent
 import org.ender_development.catalyx.core.CatalyxSettings
 import org.ender_development.catalyx.integration.Mods
@@ -52,15 +53,8 @@ class RecipeMap<R : RecipeBuilder<R>> {
 		fun uniqueIngredientsList(inputs: List<RecipeInput>): List<RecipeInput> {
 			val list = ObjectArrayList<RecipeInput>(inputs.size)
 			inputs.forEach { item ->
-				var isEqual = false
-				list.forEach {
-					if(item.equalsIgnoreAmount(it)) {
-						isEqual = true
-						return@forEach
-					}
-				}
-				if(isEqual) return@forEach
-				list.add(item)
+				if(list.none { item.equalsIgnoreAmount(it) })
+					list.add(item)
 			}
 			return list
 		}
@@ -72,9 +66,11 @@ class RecipeMap<R : RecipeBuilder<R>> {
 		 * @param branchMap  the branch containing the nodes
 		 * @return the correct nodes for the ingredient
 		 */
-		private fun determineRootNodes(ingredient: AbstractMapIngredient, branchMap: Branch): Object2ObjectOpenHashMap<AbstractMapIngredient, Either<Recipe, Branch>> {
-			return if(ingredient.isSpecialIngredient) branchMap.specialNodes else branchMap.nodes
-		}
+		private fun determineRootNodes(ingredient: AbstractMapIngredient, branchMap: Branch): Object2ObjectOpenHashMap<AbstractMapIngredient, Either<Recipe, Branch>> =
+			if(ingredient.isSpecialIngredient)
+				branchMap.specialNodes
+			else
+				branchMap.nodes
 	}
 
 	private lateinit var recipeMap: RecipeMap<R>
@@ -168,9 +164,7 @@ class RecipeMap<R : RecipeBuilder<R>> {
 		val items = fromRecipe(recipe)
 		if(recurseIngredientTreeAdd(recipe, items, lockup, 0, 0)) {
 			RECIPE_BY_CATEGORY.compute(recipe.recipeCategory) { _, list ->
-				if(list == null) listOf(recipe)
-				else list.add(recipe)
-				list
+				list?.also { it.add(recipe) } ?: mutableListOf(recipe)
 			}
 			return true
 		}
@@ -181,7 +175,7 @@ class RecipeMap<R : RecipeBuilder<R>> {
 	 * Converts a Recipe's [RecipeInput]s into a List of [AbstractMapIngredient]s
 	 *
 	 * @param recipe the recipe to use
-	 * @return a list of all the AbstractMapIngredients comprising the recipe
+	 * @return a list of all the [AbstractMapIngredient]s comprising the recipe
 	 */
 	private fun fromRecipe(recipe: Recipe): List<List<AbstractMapIngredient>> {
 		val list = ObjectArrayList<List<AbstractMapIngredient>>(recipe.inputs.size + recipe.fluidInputs.size)
@@ -196,36 +190,34 @@ class RecipeMap<R : RecipeBuilder<R>> {
 	 * Converts a list of [RecipeInput]s for Items into a List of [AbstractMapIngredient]s.
 	 * Do not supply [RecipeInput]s dealing with any other type of input other than Items.
 	 *
-	 * @param list the list of MapIngredients to add to
-	 * @param inputs the GTRecipeInputs to convert
+	 * @param list the list of [AbstractMapIngredient]s to add to
+	 * @param inputs the [RecipeInput]s to convert
 	 */
 	private fun buildFromRecipeItems(list: ObjectArrayList<List<AbstractMapIngredient>>, inputs: List<RecipeInput>) {
 		inputs.forEach { it ->
 			if(it.isOreDict()) {
-				var ingredient: AbstractMapIngredient
 				hasOreDictInputs = true
-				if(it.hasNBTMatchingCondition()) {
+				val ingredient = if(it.hasNBTMatchingCondition()) {
 					hasNBTMatcherInputs = true
-					ingredient = MapOreDictNBTIngredient(it.getOreDict(), it.nbtMatcher, it.nbtCondition)
+					MapOreDictNBTIngredient(it.getOreDict(), it.nbtMatcher, it.nbtCondition)
 				} else
-					ingredient = MapOreDictIngredient(it.getOreDict())
+					MapOreDictIngredient(it.getOreDict())
+
 				// use the cached version if it exists
 				retrieveCachedIngredient(list, ingredient, INGREDIENT_ROOT)
 			} else {
-				var ingredients: MutableList<AbstractMapIngredient>
-				if(it.hasNBTMatchingCondition()) {
-					ingredients = MapItemStackNBTIngredient.from(it)
+				val ingredients = if(it.hasNBTMatchingCondition()) {
 					hasNBTMatcherInputs = true
+					MapItemStackNBTIngredient.from(it)
 				} else
-					ingredients = MapItemStackIngredient.from(it)
+					MapItemStackIngredient.from(it)
+
 				ingredients.indices.forEach { i ->
 					val mappedIngredient = ingredients[i]
 					// attempt to use the cached version if it exists, otherwise cache it
-					val cached = INGREDIENT_ROOT.get(mappedIngredient)
-					if(cached != null && cached.get() != null)
-						ingredients[i] = cached.get()!!
-					else
+					INGREDIENT_ROOT.get(mappedIngredient)?.get()?.let { ingredients[i] = it } ?: run {
 						INGREDIENT_ROOT[mappedIngredient] = WeakReference(mappedIngredient)
+					}
 				}
 				list.add(ingredients)
 			}
@@ -236,13 +228,12 @@ class RecipeMap<R : RecipeBuilder<R>> {
 	 * Converts a list of [RecipeInput]s for Fluids into a List of [AbstractMapIngredient]s.
 	 * Do not supply [RecipeInput]s dealing with any other type of input other than Fluids.
 	 *
-	 * @param list the list of MapIngredients to add to
+	 * @param list the list of [AbstractMapIngredient]s to add to
 	 * @param fluidInputs the [RecipeInput]s to convert
 	 */
 	private fun buildFromRecipeFluids(list: ObjectArrayList<List<AbstractMapIngredient>>, fluidInputs: List<RecipeInput>) {
 		fluidInputs.forEach {
-			val ingredient = MapFluidIngredient(it)
-			retrieveCachedIngredient(list, ingredient, FLUID_INGREDIENT_ROOT)
+			retrieveCachedIngredient(list, MapFluidIngredient(it), FLUID_INGREDIENT_ROOT)
 		}
 	}
 
@@ -258,10 +249,7 @@ class RecipeMap<R : RecipeBuilder<R>> {
 		defaultIngredient: AbstractMapIngredient,
 		cache: WeakHashMap<AbstractMapIngredient, WeakReference<AbstractMapIngredient>>
 	) {
-		val cached = cache[defaultIngredient]
-		if(cached != null && cached.get() != null)
-			list.add(ObjectLists.singleton(cached.get()))
-		else {
+		cache[defaultIngredient]?.get()?.let { list.add(ObjectLists.singleton(it)) } ?: run {
 			cache[defaultIngredient] = WeakReference(defaultIngredient)
 			list.add(ObjectLists.singleton(defaultIngredient))
 		}
@@ -272,7 +260,7 @@ class RecipeMap<R : RecipeBuilder<R>> {
 	 *
 	 * TODO: actually document the algorithm as it tends to be confusing
 	 *
-	 * TODO: maybe roz can come up with a improved implementation or at least make it more readable
+	 * TODO: maybe roz can come up with a improved implementation or at least make it more readable; roz: I have no idea what is happening here, so, no thanks. all I can do is make is less readable :3
 	 *
 	 * @param recipe the recipe to add.
 	 * @param ingredients list of input ingredients representing the recipe.
