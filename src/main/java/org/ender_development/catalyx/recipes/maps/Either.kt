@@ -7,15 +7,6 @@ abstract class Either<L, R> private constructor() {
 
 		fun <L, R> right(value: R): Either<L, R> =
 			Right(value)
-
-		// these technically don't compile down perfectly (see https://gist.github.com/rozbrajaczpoziomow/94043850979f095452d1b5720d45a7bf) but whatever
-		@Suppress("NOTHING_TO_INLINE")
-		inline fun <L, R> value(left: L, overloadResolutionSucks: Any? = null): Either<L, R> =
-			left(left)
-
-		@Suppress("NOTHING_TO_INLINE")
-		inline fun <L, R> value(right: R): Either<L, R> =
-			right(right)
 	}
 
 	abstract fun <C, D> mapBoth(l: (L) -> C, r: (R) -> D): Either<C, D>

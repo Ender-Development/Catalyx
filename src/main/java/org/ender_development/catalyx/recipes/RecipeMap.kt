@@ -260,7 +260,7 @@ class RecipeMap<R : RecipeBuilder<R>> {
 	 *
 	 * TODO: actually document the algorithm as it tends to be confusing
 	 *
-	 * TODO: maybe roz can come up with a improved implementation or at least make it more readable; roz: I have no idea what is happening here, so, no thanks. all I can do is make is less readable :3
+	 * TODO: maybe roz can come up with a improved implementation or at least make it more readable; roz: I have no idea what is happening here, so, no thanks. all I can do is make is less readable :3 (which I now did)
 	 *
 	 * @param recipe the recipe to add.
 	 * @param ingredients list of input ingredients representing the recipe.
@@ -269,44 +269,41 @@ class RecipeMap<R : RecipeBuilder<R>> {
 	 * @param count how many branches were added already.
 	 */
 	private fun recurseIngredientTreeAdd(recipe: Recipe, ingredients: List<List<AbstractMapIngredient>>, branchMap: Branch, index: Int, count: Int): Boolean {
-		if(count >= ingredients.size) return true
-		if(index >= ingredients.size) throw IllegalStateException("Index $index is out of bounds for ingredients list of size ${ingredients.size}")
+		if(count >= ingredients.size)
+			return true
+
+		if(index >= ingredients.size)
+			throw IllegalStateException("Index $index is out of bounds for ingredients list of size ${ingredients.size}")
+
 		val current = ingredients[index]
 		val branchRight = Branch()
-		var r: Either<Recipe, Branch>
 		current.forEach { ingredient ->
 			val targetMap = determineRootNodes(ingredient, branchMap)
-			r = targetMap.compute(ingredient) { _, existing ->
-				if(count == ingredients.size - 1) {
-					if(existing != null) {
-						if(existing.left != null || existing.left != recipe) {
-							if(recipe.groovyRecipe) {
+			val r: Either<Recipe, Branch> = targetMap.compute(ingredient) { _, existing ->
+				return@compute if(count == ingredients.size - 1) {
+					existing?.also {
+						if(it.left != recipe) {
+							if(recipe.groovyRecipe)
 								TODO("Handle Groovy Recipe")
-							}
 						}
-						return@compute existing
-					} else
-						return@compute Either.left(recipe)
-				} else if(existing == null)
-					return@compute Either.right(branchRight)
-				return@compute existing
+					} ?: Either.left(recipe)
+				} else
+					existing ?: Either.right(branchRight)
 			}!!
-			if(r.left != null) {
-				if(r.left == recipe)
+
+			r.left?.let {
+				if(it == recipe)
 					return@forEach
 				else
 					return false
 			}
-			val addedNextBranch: Boolean = r.right?.let { recurseIngredientTreeAdd(recipe, ingredients, it, (index + 1) % ingredients.size, count + 1) } == true
-			if(!addedNextBranch) {
-				if(count == ingredients.size - 1) {
-					targetMap.remove(ingredient)
-				} else {
-					if(targetMap[ingredient]?.right != null)
-						if(targetMap[ingredient]?.right?.empty ?: false)
-							targetMap.remove(ingredient)
+
+			r.right?.let {
+				if(!recurseIngredientTreeAdd(recipe, ingredients, it, (index + 1) % ingredients.size, count + 1)) {
+					if(count == ingredients.size - 1 || targetMap[ingredient]?.right?.empty == true)
+						targetMap.remove(ingredient)
+					return false
 				}
-				return false
 			}
 		}
 		return true
