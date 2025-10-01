@@ -10,6 +10,18 @@ import net.minecraftforge.registries.IForgeRegistryEntry
  */
 interface IProvider<T : IForgeRegistryEntry<T>> {
 	/**
+	 * The instance provided by this provider.
+	 */
+	val instance: T
+
+	/**
+	 * The mod ID(s) required for this provider to be enabled, separated by semicolons. Prefixes of "!" can be used to indicate that a mod must NOT be present.
+	 *
+	 * Default is an empty string, meaning no dependencies.
+	 */
+	var modDependencies: String
+
+	/**
 	 * Whether this provider is enabled and should be registered.
 	 */
 	val isEnabled: Boolean
@@ -20,18 +32,21 @@ interface IProvider<T : IForgeRegistryEntry<T>> {
 	 * @param event The registry event.
 	 */
 	fun register(event: RegistryEvent.Register<T>)
+
+	/**
+	 * Specify that this provider requires the given mod dependency to be present.
+	 *
+	 * @param modDependencies The mod ID(s) required, separated by semicolons. Prefixes of "!" can be used to indicate that a mod must NOT be present.
+	 * @return This instance, for chaining.
+	 */
+	fun requires(modDependencies: String): T
 }
 
-interface IItemProvider : IProvider<Item> {
-	/**
-	 * The Item provided by this provider.
-	 */
-	val item: Item
-}
+interface IItemProvider : IProvider<Item>
 
 interface IBlockProvider : IProvider<Block> {
 	/**
-	 * The Item associated with this Block
+	 * Override this instead of [registerItemBlock] if you only want to change the registered Item associated with this Block (like with a [org.ender_development.catalyx.items.TooltipItemBlock])
 	 */
 	val item: Item
 

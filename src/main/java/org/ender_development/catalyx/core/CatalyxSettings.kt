@@ -1,6 +1,8 @@
 package org.ender_development.catalyx.core
 
 import net.minecraft.creativetab.CreativeTabs
+import org.ender_development.catalyx.core.registry.CatalyxBlockRegistry
+import org.ender_development.catalyx.core.registry.CatalyxItemRegistry
 
 private typealias Blocks = (block: IBlockProvider) -> Unit
 private typealias Items = (item: IItemProvider) -> Unit
@@ -8,6 +10,7 @@ private typealias Items = (item: IItemProvider) -> Unit
 /**
  * Helper class that contains mod-specific data to pass into Catalyx constructors
  */
+@Suppress("unused")
 class CatalyxSettings {
 	/**
 	 * Your mod's mod id

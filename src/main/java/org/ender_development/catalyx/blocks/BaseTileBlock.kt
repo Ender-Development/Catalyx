@@ -23,7 +23,7 @@ import org.ender_development.catalyx.tiles.BaseTile
 /**
  * A Catalyx Block interacting with a TileEntity and a GUI
  */
-open class BaseTileBlock(val settings: CatalyxSettings, name: String, var tileClass: Class<out TileEntity>, val guiID: Int) : BaseBlock(settings, name), ITileEntityProvider {
+open class BaseTileBlock(settings: CatalyxSettings, name: String, var tileClass: Class<out TileEntity>, val guiID: Int) : BaseBlock(settings, name), ITileEntityProvider {
 	init {
 		GameRegistry.registerTileEntity(tileClass, ResourceLocation(settings.modId, name))
 	}

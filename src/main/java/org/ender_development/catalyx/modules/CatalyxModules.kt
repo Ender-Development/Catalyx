@@ -8,6 +8,7 @@ object CatalyxModules : ICatalyxModuleContainer {
 	override val id = Reference.MODID
 
 	const val MODULE_CORE = "core"
+	const val MODULE_INTERNAL = "internal"
 	const val MODULE_TEST = "test"
 	const val MODULE_INTEGRATION = "integration"
 

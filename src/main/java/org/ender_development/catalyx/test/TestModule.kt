@@ -2,8 +2,11 @@ package org.ender_development.catalyx.test
 
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 import org.apache.logging.log4j.Logger
+import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.Reference
-import org.ender_development.catalyx.items.CopyPasteTool
+import org.ender_development.catalyx.blocks.BaseBlock
+import org.ender_development.catalyx.integration.Mods
+import org.ender_development.catalyx.items.BaseItem
 import org.ender_development.catalyx.modules.BaseCatalyxModule
 import org.ender_development.catalyx.modules.CatalyxModule
 import org.ender_development.catalyx.modules.CatalyxModules
@@ -17,7 +20,9 @@ import org.ender_development.catalyx.utils.LoggerUtils
 	testModule = true
 )
 class TestModule : BaseCatalyxModule() {
-	val copyPasteTool = CopyPasteTool()
+	val testItem = BaseItem(Catalyx.modSettings, "test_item").requires("!${Mods.GROOVYSCRIPT}")
+	val testItem2 = BaseItem(Catalyx.modSettings, "test_item_2").requires(Mods.GROOVYSCRIPT)
+	val testBlock = BaseBlock(Catalyx.modSettings, "test_block")
 
 	override val logger: Logger = LoggerUtils.new("Development")
 
