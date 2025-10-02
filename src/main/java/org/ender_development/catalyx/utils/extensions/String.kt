@@ -50,20 +50,5 @@ fun String.translate(vararg format: Any): String =
 	else
 		I18n.format(this, *format)
 
-inline fun String?.loaded(): Boolean =
+inline fun String?.modLoaded(): Boolean =
 	this != null && Loader.isModLoaded(this)
-
-/**
- * Special expansion to evaluate modDependencies strings.
- */
-inline fun String.evaluate(): Boolean =
-	if(this.isEmpty())
-		true
-	else
-		this.split(";").all {
-			if(it.startsWith("!"))
-				!it.substring(1).loaded()
-			else
-				it.loaded()
-		}
-

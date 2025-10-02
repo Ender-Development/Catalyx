@@ -26,6 +26,6 @@ abstract class AbstractItem(val settings: CatalyxSettings): Item(), IItemProvide
 
 	override fun register(event: RegistryEvent.Register<Item>) {
 		event.registry.register(this)
-		ModelLoader.setCustomModelResourceLocation(instance, 0, ModelResourceLocation(registryName!!, "inventory"))
+		ModelLoader.setCustomModelResourceLocation(this, 0, ModelResourceLocation(registryName!!, "inventory"))
 	}
 }

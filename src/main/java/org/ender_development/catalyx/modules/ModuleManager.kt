@@ -13,7 +13,7 @@ import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.Reference
 import org.ender_development.catalyx.utils.Delegates
 import org.ender_development.catalyx.utils.DevUtils
-import org.ender_development.catalyx.utils.extensions.loaded
+import org.ender_development.catalyx.utils.extensions.modLoaded
 import java.io.File
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Modifier
@@ -124,7 +124,7 @@ object ModuleManager : IModuleManager {
 					emptyList()
 				}
 
-			if(modDependencies.all(String::loaded)) {
+			if(modDependencies.all(String::modLoaded)) {
 				try {
 					val clazz = Class.forName(it.className)
 					if(ICatalyxModule::class.java.isAssignableFrom(clazz))

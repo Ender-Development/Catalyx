@@ -2,8 +2,7 @@ package org.ender_development.catalyx.config
 
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
-import net.minecraftforge.fml.common.Loader
-import org.ender_development.catalyx.utils.extensions.loaded
+import org.ender_development.catalyx.utils.extensions.modLoaded
 
 /**
  * Utility object for parsing configuration strings into item representations.
@@ -72,7 +71,7 @@ object ConfigParser {
 			if(modid == null || itemid == null)
 				throw IllegalArgumentException("Mod ID and item name cannot be null")
 
-			if(!modid.loaded())
+			if(!modid.modLoaded())
 				throw IllegalArgumentException("Mod ID is not loaded: $modid")
 
 			if(meta < IGNORE_META)

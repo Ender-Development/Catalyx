@@ -19,8 +19,7 @@ abstract class AbstractBlock(val settings: CatalyxSettings, material: Material):
 
 	override var modDependencies = ""
 
-	override val item =
-		ItemBlock(instance)
+	override val item = ItemBlock(this)
 
 	override val isEnabled = true
 
