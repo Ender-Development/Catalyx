@@ -10,6 +10,8 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext
 import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.client.button.AbstractButtonWrapper
 import org.ender_development.catalyx.tiles.helper.IButtonTile
+import org.ender_development.catalyx.utils.extensions.readString
+import org.ender_development.catalyx.utils.extensions.writeString
 
 class ButtonPacket() : IMessage {
 	private lateinit var blockPos: BlockPos
@@ -26,7 +28,7 @@ class ButtonPacket() : IMessage {
 		y = buf.readInt()
 		width = buf.readInt()
 		height = buf.readInt()
-		val className = buf.readCharSequence(buf.readInt(), Charsets.UTF_8).toString()
+		val className = buf.readString()
 		if(!AbstractButtonWrapper.buttonWrappers.contains(className)) {
 			// this is needed to prevent potential security risks from people being able to send custom packets and potentially loading any class they want
 			val error = "Received illegal class name '$className' in ButtonPacket"
@@ -49,8 +51,7 @@ class ButtonPacket() : IMessage {
 		buf.writeInt(y)
 		buf.writeInt(width)
 		buf.writeInt(height)
-		buf.writeInt(wrapperClass.name.length)
-		buf.writeCharSequence(wrapperClass.name, Charsets.UTF_8)
+		buf.writeString(wrapperClass.name)
 		buf.writeInt(extraData.readableBytes())
 		buf.writeBytes(extraData)
 	}
