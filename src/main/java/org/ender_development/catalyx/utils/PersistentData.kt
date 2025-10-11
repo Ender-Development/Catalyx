@@ -5,15 +5,22 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraftforge.fml.common.Loader
 import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.Reference
-import org.ender_development.catalyx.utils.PersistentData.tag
 import java.io.IOException
 import kotlin.io.path.createParentDirectories
 import kotlin.io.path.inputStream
 import kotlin.io.path.notExists
 import kotlin.io.path.outputStream
 
-object PersistentData {
-	private val path = Loader.instance().configDir.toPath().resolve(Reference.MODID).resolve("persistent_data.dat")
+open class PersistentData(
+	// roz: this KDoc doesn't really display like I wanted it to, but oh well
+	/**
+	 * The unique id for your persistent data, has to be unique across all mods using Catalyx. Recommended is just your modId, or ${modId}_purpose if you're making more than one for some reason.
+	 *
+	 * Note: this **will be used as part of a filename**, as such, don't change this across mod versions and don't use any special characters.
+	 */
+	private val uniqueId: String
+) {
+	private val path = Loader.instance().configDir.toPath().resolve(Reference.MODID).resolve("persistent_data_$uniqueId.dat")
 	private val data: NBTTagCompound by Delegates.lazyProperty @Synchronized {
 		read()
 	}
@@ -37,7 +44,7 @@ object PersistentData {
 		return try {
 			CompressedStreamTools.readCompressed(path.inputStream())
 		} catch(e: IOException) {
-			Catalyx.LOGGER.error("Failed to read persistent data", e)
+			Catalyx.LOGGER.error("Failed to read persistent data (uniqueId: $uniqueId)", e)
 			NBTTagCompound()
 		}
 	}
@@ -62,7 +69,7 @@ object PersistentData {
 		try {
 			CompressedStreamTools.writeCompressed(tag, path.outputStream())
 		} catch(e: IOException) {
-			Catalyx.LOGGER.error("Failed to write persistent data", e)
+			Catalyx.LOGGER.error("Failed to write persistent data (uniqueId: $uniqueId)", e)
 		}
 	}
 }

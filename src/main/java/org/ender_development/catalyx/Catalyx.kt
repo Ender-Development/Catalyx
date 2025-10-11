@@ -9,6 +9,7 @@ import org.ender_development.catalyx.core.ICatalyxMod
 import org.ender_development.catalyx.modules.ModuleManager
 import org.ender_development.catalyx.network.PacketHandler
 import org.ender_development.catalyx.utils.LoggerUtils
+import org.ender_development.catalyx.utils.PersistentData
 import kotlin.random.Random
 
 @Mod(
@@ -33,6 +34,7 @@ object Catalyx : ICatalyxMod {
 	internal val LOGGER = LoggerUtils.logger
 
 	override val modSettings = CatalyxSettings(Reference.MODID, CreativeTabs.MISC, this, true)
+	internal val persistentData = PersistentData(Reference.MODID)
 
 	@EventHandler
 	fun construction(e: FMLConstructionEvent) {
