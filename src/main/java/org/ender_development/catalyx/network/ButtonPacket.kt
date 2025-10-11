@@ -99,7 +99,7 @@ class ButtonPacket() : IMessage {
 					}
 				}
 			}
-			instance.readExtraData(message.extraData)
+			instance.readExtraData(message.extraData, ctx)
 			tile.handleButtonPress(instance)
 		}
 	}

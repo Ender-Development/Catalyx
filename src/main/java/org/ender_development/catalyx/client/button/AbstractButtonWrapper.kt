@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiButton
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.util.ResourceLocation
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import org.ender_development.catalyx.Reference
@@ -87,7 +88,7 @@ abstract class AbstractButtonWrapper(x: Int, y: Int, width: Int = 16, height: In
 		null
 
 	/** Deserialize data coming from a network packet into possible class fields */
-	open fun readExtraData(buf: ByteBuf) {}
+	open fun readExtraData(buf: ByteBuf, ctx: MessageContext) {}
 	/** Serialize class fields into data to be transmitted over the network */
 	open fun writeExtraData(buf: ByteBuf) {}
 
