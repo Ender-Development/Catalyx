@@ -81,7 +81,7 @@ class ButtonPacket() : IMessage {
 
 			if(tile !is IButtonTile) {
 				// Received a ButtonPacket for a BlockPos which doesn't have a TileEntity that extends IButtonTile ;p
-				Catalyx.LOGGER.error("Received a ButtonPacket for a block which doesn't have a tile entity that can handle button presses")
+				Catalyx.LOGGER.error("Received a ButtonPacket (from ${playerEntity.gameProfile.name}) for a block (at ${message.blockPos}) which doesn't have a tile entity (te: $tile) that can handle button presses")
 				return
 			}
 			val instance = message.wrapperClass.let {
