@@ -26,7 +26,7 @@ class FluidTileProvider : IProbeInfoProvider {
 					contents.amount,
 					tank.capacity,
 					ProgressStyle().filledColor(color).alternateFilledColor(altColour).numberFormat(NumberFormat.COMMAS).borderColor(0)
-						.suffix(" mB ${contents.fluid.unlocalizedName.translate()}")
+						.suffix(" mB ${contents.fluid.getLocalizedName(contents)}")
 				)
 			}
 		}
