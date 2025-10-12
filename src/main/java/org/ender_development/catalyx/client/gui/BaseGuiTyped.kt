@@ -77,8 +77,8 @@ abstract class BaseGuiTyped<T>(container: Container, val tileEntity: T) : GuiCon
 			0
 
 	open fun drawPowerBar(storage: CapabilityEnergyDisplayWrapper, texture: ResourceLocation, textureX: Int, textureY: Int) {
-		val x = storage.x + ((width - xSize) shr 1)
-		val y = storage.y + ((height - ySize) shr 1)
+		val x = storage.x + guiLeft
+		val y = storage.y + guiTop
 
 		mc.textureManager.bindTexture(texture)
 		drawTexturedModalRect(x, y, textureX, textureY, storage.width, storage.height)
@@ -97,10 +97,8 @@ abstract class BaseGuiTyped<T>(container: Container, val tileEntity: T) : GuiCon
 		renderHoveredToolTip(mouseX, mouseY)
 		renderTooltips(mouseX, mouseY)
 
-		val x = (width - xSize) shr 1
-		val y = (height - ySize) shr 1
 		displayData.forEach {
-			if(isHovered(it.x + x, it.y + y, it.width, it.height, mouseX, mouseY))
+			if(isHovered(it.x + guiLeft, it.y + guiTop, it.width, it.height, mouseX, mouseY))
 				drawHoveringText(it.textLines, mouseX, mouseY, fontRenderer)
 		}
 	}
@@ -118,8 +116,8 @@ abstract class BaseGuiTyped<T>(container: Container, val tileEntity: T) : GuiCon
 		}
 
 		// draw the empty tank overlay overtop
-		val x = wrapper.x + ((this.width - xSize) shr 1)
-		val y = wrapper.y + ((this.height - ySize) shr 1)
+		val x = wrapper.x + guiLeft
+		val y = wrapper.y + guiTop
 
 		mc.textureManager.bindTexture(powerBarTexture)
 		drawTexturedModalRect(x, y, 32, 0, width, height)
@@ -131,13 +129,11 @@ abstract class BaseGuiTyped<T>(container: Container, val tileEntity: T) : GuiCon
 		mc.textureManager.bindTexture(textureLocation)
 
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize)
-		val x = (width - xSize) shr 1
-		val y = (height - ySize) shr 1
 
 		displayData.forEach { data ->
 			when(data) {
 				is CapabilityEnergyDisplayWrapper -> drawPowerBar(data, powerBarTexture, powerBarX, powerBarY)
-				is CapabilityFluidDisplayWrapper -> drawFluidTank(data, x + data.x, y + data.y)
+				is CapabilityFluidDisplayWrapper -> drawFluidTank(data, guiLeft + data.x, guiTop + data.y)
 			}
 		}
 	}
@@ -171,13 +167,11 @@ abstract class BaseGuiTyped<T>(container: Container, val tileEntity: T) : GuiCon
 abstract class BaseGui(container: Container, tileEntity: BaseMachineTile<*>) : BaseGuiTyped<BaseMachineTile<*>>(container, tileEntity) {
 	fun drawProgressBar(x: Int, y: Int, u: Int, v: Int, w: Int, h: Int) {
 		mc.textureManager.bindTexture(textureLocation)
-		val i = (width - xSize) shr 1
-		val j = (height - ySize) shr 1
 		if(tileEntity.recipeTime == 0 && !tileEntity.input[0].isEmpty) {
-			drawTexturedModalRect(x + i, y + j, u, v, w, h)
+			drawTexturedModalRect(x + guiLeft, y + guiTop, u, v, w, h)
 		} else if(tileEntity.progressTicks > 0) {
 			val k = getBarScaled(w, tileEntity.progressTicks, tileEntity.recipeTime)
-			drawTexturedModalRect(x + i, y + j, u, v, k, h)
+			drawTexturedModalRect(x + guiLeft, y + guiTop, u, v, k, h)
 		}
 	}
 }
