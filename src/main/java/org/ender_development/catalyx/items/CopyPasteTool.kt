@@ -69,7 +69,7 @@ class CopyPasteTool() : BaseItem(Catalyx.modSettings, "copy_paste_tool") {
 			}
 
 			if(te is ICopyPasteExtraTile)
-				te.pasteData(pasteTag)
+				te.pasteData(pasteTag, player)
 		}
 
 		if(!stack.hasTagCompound())
