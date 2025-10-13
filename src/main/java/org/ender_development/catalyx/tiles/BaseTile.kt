@@ -203,7 +203,7 @@ abstract class BaseTile(val settings: CatalyxSettings) : TileEntity(), BaseConta
 		else {
 			when(capability) {
 				ENERGY_CAP -> if(this is IEnergyTile) return ENERGY_CAP.cast<T>((this as IEnergyTile).energyStorage)
-				FLUID_CAP -> if(this is IFluidTile) return FLUID_CAP.cast<T>(fluidTanks)
+				FLUID_CAP -> if(this is IFluidTile) return FLUID_CAP.cast<T>(fluidHandler)
 				ITEM_CAP -> if(this is IItemTile) return ITEM_CAP.cast<T>(automationInvHandler)
 				ANIMATION_CAP -> if(this is IAnimatedTile) return ANIMATION_CAP.cast<T>(asm)
 			}

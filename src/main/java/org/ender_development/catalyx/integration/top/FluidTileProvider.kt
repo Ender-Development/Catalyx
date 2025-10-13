@@ -8,7 +8,6 @@ import net.minecraft.world.World
 import org.ender_development.catalyx.Reference
 import org.ender_development.catalyx.tiles.helper.IFluidTile
 import org.ender_development.catalyx.utils.extensions.getRealColor
-import org.ender_development.catalyx.utils.extensions.translate
 import java.awt.Color
 
 internal class FluidTileProvider : IProbeInfoProvider {
@@ -17,7 +16,7 @@ internal class FluidTileProvider : IProbeInfoProvider {
 	override fun addProbeInfo(mode: ProbeMode, info: IProbeInfo, player: EntityPlayer, world: World, state: IBlockState, data: IProbeHitData) {
 		val tile = world.getTileEntity(data.pos) as? IFluidTile ?: return
 
-		tile.fluidTanks.tankProperties.forEach { tank ->
+		tile.fluidHandler.tankProperties.forEach { tank ->
 			val contents = tank.contents
 			if(contents != null && contents.amount > 0) {
 				val color = contents.getRealColor()
