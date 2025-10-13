@@ -58,15 +58,15 @@ abstract class BaseGuiTyped<T>(container: Container, val tileEntity: T) : GuiCon
 		}
 		redstoneButton = RedstoneButtonWrapper(guiLeft + x, guiTop + y)
 		buttonList.add(redstoneButton.button)
-		pauseButton = PauseButtonWrapper(redstoneButton.x + 16 + 2, redstoneButton.y)
+		pauseButton = PauseButtonWrapper(redstoneButton.x + redstoneButton.width + 2, redstoneButton.y)
 		buttonList.add(pauseButton.button)
 	}
 
 	open fun renderTooltips(mouseX: Int, mouseY: Int) {
-		if(isHovered(pauseButton.x, pauseButton.y, 16, 16, mouseX, mouseY))
+		if(pauseButton.button!!.hovered)
 			drawHoveringText(listOf("tooltip.${Reference.MODID}:${if(tileEntity.isPaused) "paused" else "running"}".translate()), mouseX, mouseY)
 
-		if(isHovered(redstoneButton.x, redstoneButton.y, 16, 16, mouseX, mouseY))
+		if(redstoneButton.button!!.hovered)
 			drawHoveringText(listOf("tooltip.${Reference.MODID}:redstone_${if(tileEntity.needsRedstonePower) "high" else "low"}".translate()), mouseX, mouseY)
 	}
 
