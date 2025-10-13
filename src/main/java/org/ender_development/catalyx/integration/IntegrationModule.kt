@@ -13,4 +13,4 @@ import org.ender_development.catalyx.utils.LoggerUtils
 	name = "Catalyx Integration Module",
 	description = "Adds integration with other mods. Disabling this will disable all integration submodules."
 )
-class IntegrationModule(override val logger: Logger = LoggerUtils.new("Integration")) : BaseCatalyxModule()
+internal class IntegrationModule(override val logger: Logger = LoggerUtils.new("Integration")) : BaseCatalyxModule()

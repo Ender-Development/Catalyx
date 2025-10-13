@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger
 import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.Reference
 
-open class BaseCatalyxModule : ICatalyxModule {
+internal open class BaseCatalyxModule : ICatalyxModule {
 	override val logger: Logger = Catalyx.LOGGER
 
 	override val dependencyUids: Set<ResourceLocation> =

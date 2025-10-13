@@ -21,7 +21,7 @@ import org.ender_development.catalyx.utils.LoggerUtils
 	name = "Catalyx GroovyScript Integration Module",
 	description = "Adds integration with GroovyScript"
 )
-class ModuleGroovyScript(override val logger: Logger = LoggerUtils.new("GroovyScript")) : IntegrationSubmodule(), GroovyPlugin {
+internal class ModuleGroovyScript(override val logger: Logger = LoggerUtils.new("GroovyScript")) : IntegrationSubmodule(), GroovyPlugin {
 	companion object {
 		private lateinit var modSupportContainer: GroovyContainer<*>
 

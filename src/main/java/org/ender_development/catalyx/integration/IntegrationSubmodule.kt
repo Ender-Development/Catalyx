@@ -10,7 +10,7 @@ import org.ender_development.catalyx.modules.CatalyxModules
  * Abstract class meant to be used by mod-specific compatibility modules.
  * Implements some shared skeleton code that should be shared by other modules.
  */
-abstract class IntegrationSubmodule : BaseCatalyxModule() {
+internal abstract class IntegrationSubmodule : BaseCatalyxModule() {
 	override val dependencyUids: Set<ResourceLocation>
 		get() = ObjectSets.singleton(ResourceLocation(Reference.MODID, CatalyxModules.MODULE_INTEGRATION))
 }

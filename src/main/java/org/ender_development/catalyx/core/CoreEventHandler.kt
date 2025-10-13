@@ -6,7 +6,7 @@ import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import org.ender_development.catalyx.client.AreaHighlighter
 
-object CoreEventHandler {
+internal object CoreEventHandler {
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	fun renderWorldLast(event: RenderWorldLastEvent) =

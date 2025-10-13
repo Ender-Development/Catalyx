@@ -9,7 +9,7 @@ import org.ender_development.catalyx.Reference
 import org.ender_development.catalyx.modules.ModuleManager
 
 @Config(modid = Reference.MODID, name = "${Reference.MODID}/${ModuleManager.MODULE_CFG_CATEGORY_NAME}", category = ModuleManager.MODULE_CFG_CATEGORY_NAME)
-object CatalyxConfig {
+internal object CatalyxConfig {
 	@Mod.EventBusSubscriber(modid = Reference.MODID)
 	object ConfigEventHandler {
 		@SubscribeEvent

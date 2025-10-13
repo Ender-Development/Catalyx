@@ -19,7 +19,7 @@ import org.ender_development.catalyx.utils.LoggerUtils
 	description = "A module for testing purposes. Will only work in a development environment.",
 	testModule = true
 )
-class TestModule : BaseCatalyxModule() {
+internal class TestModule : BaseCatalyxModule() {
 	val testItem = BaseItem(Catalyx.modSettings, "test_item").requires("!${Mods.GROOVYSCRIPT}")
 	val testItem2 = BaseItem(Catalyx.modSettings, "test_item_2").requires(Mods.GROOVYSCRIPT)
 	val testBlock = BaseBlock(Catalyx.modSettings, "test_block")

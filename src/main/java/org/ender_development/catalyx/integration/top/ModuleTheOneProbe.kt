@@ -17,7 +17,7 @@ import org.ender_development.catalyx.utils.LoggerUtils
 	name = "Catalyx The One Probe Integration Module",
 	description = "Adds integration with The One Probe"
 )
-class ModuleTheOneProbe : IntegrationSubmodule() {
+internal class ModuleTheOneProbe : IntegrationSubmodule() {
 	override val logger: Logger = LoggerUtils.new("TheOneProbe")
 
 	override fun init(event: FMLInitializationEvent) {
