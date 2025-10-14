@@ -19,16 +19,17 @@ import net.minecraftforge.energy.IEnergyStorage
 import net.minecraftforge.fluids.FluidUtil
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler
 import net.minecraftforge.fluids.capability.IFluidHandler
+import net.minecraftforge.fluids.capability.IFluidHandlerItem
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 import net.minecraftforge.items.wrapper.CombinedInvWrapper
-import org.ender_development.catalyx.core.CatalyxSettings
 import org.ender_development.catalyx.client.button.AbstractButtonWrapper
 import org.ender_development.catalyx.client.button.PauseButtonWrapper
 import org.ender_development.catalyx.client.button.RedstoneButtonWrapper
 import org.ender_development.catalyx.client.container.BaseContainer
 import org.ender_development.catalyx.client.gui.BaseGuiTyped
+import org.ender_development.catalyx.core.CatalyxSettings
 import org.ender_development.catalyx.tiles.helper.*
 
 /**
@@ -158,7 +159,7 @@ abstract class BaseTile(val settings: CatalyxSettings) : TileEntity(), BaseConta
 	): Boolean {
 		if(this is IFluidTile) {
 			val heldItem = player.getHeldItem(hand)
-			if(heldItem.hasCapability(FLUID_CAP, facing)) {
+			if(heldItem.hasCapability(ITEM_FLUID_CAP, facing) || heldItem.hasCapability(FLUID_CAP, facing)) {
 				val didInteract = FluidUtil.interactWithFluidHandler(player, hand, world, pos, facing)
 				markDirty()
 				return didInteract
@@ -222,6 +223,7 @@ abstract class BaseTile(val settings: CatalyxSettings) : TileEntity(), BaseConta
 	companion object {
 		val ENERGY_CAP: Capability<IEnergyStorage> = CapabilityEnergy.ENERGY
 		val ITEM_CAP: Capability<IItemHandler> = CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
+		val ITEM_FLUID_CAP: Capability<IFluidHandlerItem> = CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY
 		val FLUID_CAP: Capability<IFluidHandler> = CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY
 		val ANIMATION_CAP: Capability<IAnimationStateMachine> = CapabilityAnimation.ANIMATION_CAPABILITY
 	}
