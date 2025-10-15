@@ -38,7 +38,7 @@ object Catalyx : ICatalyxMod {
 
 	@EventHandler
 	fun construction(e: FMLConstructionEvent) {
-		ModuleManager.setup(e.asmHarvestedData)
+		ModuleManager.setup(e.asmHarvestedData, e.modClassLoader)
 		ModuleManager.construction(e)
 	}
 

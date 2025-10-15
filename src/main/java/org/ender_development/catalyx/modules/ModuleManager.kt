@@ -7,6 +7,7 @@ import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.common.config.Configuration
 import net.minecraftforge.fml.common.Loader
+import net.minecraftforge.fml.common.ModClassLoader
 import net.minecraftforge.fml.common.discovery.ASMDataTable
 import net.minecraftforge.fml.common.event.*
 import org.ender_development.catalyx.Catalyx
@@ -28,7 +29,6 @@ object ModuleManager : IModuleManager {
 	private val containers = Object2ReferenceLinkedOpenHashMap<String, ICatalyxModuleContainer>()
 
 	private lateinit var configDirectory: File
-
 
 	/**
 	 * The currently loaded Module Container
@@ -52,12 +52,12 @@ object ModuleManager : IModuleManager {
 	 *
 	 * @param asmDataTable the data table containing all the Module Container and Module classes
 	 */
-	fun setup(asmDataTable: ASMDataTable) {
-		discoverContainers(asmDataTable)
+	fun setup(asmDataTable: ASMDataTable, loader: ModClassLoader) {
+		discoverContainers(asmDataTable, loader)
 
 		moduleStage = ModuleStage.MODULE_SETUP
 		configDirectory = File(Loader.instance().configDir, Reference.MODID)
-		configureModules(getModules(asmDataTable))
+		configureModules(getModules(asmDataTable, loader))
 
 		loadedModules.forEach { module ->
 			loadedContainer = containers[module.containerID]
@@ -113,7 +113,7 @@ object ModuleManager : IModuleManager {
 	 * @param asmDataTable the ASM Data Table containing the module data
 	 * @return all ICatalyxModule instances in sorted order by Container and Module ID
 	 */
-	private fun getInstances(asmDataTable: ASMDataTable): List<ICatalyxModule> {
+	private fun getInstances(asmDataTable: ASMDataTable, loader: ModClassLoader): List<ICatalyxModule> {
 		val instances = mutableListOf<ICatalyxModule>()
 		asmDataTable.getAll(CatalyxModule::class.java.canonicalName).forEach {
 			val moduleID = it.annotationInfo["moduleID"] as String
@@ -126,7 +126,7 @@ object ModuleManager : IModuleManager {
 
 			if(modDependencies.all(String::modLoaded)) {
 				try {
-					val clazz = Class.forName(it.className)
+					val clazz = Class.forName(it.className, true, loader)
 					if(ICatalyxModule::class.java.isAssignableFrom(clazz))
 						instances.add(clazz.getConstructor().newInstance() as ICatalyxModule)
 					else
@@ -151,9 +151,9 @@ object ModuleManager : IModuleManager {
 	 * @param asmDataTable the ASM Data Table containing the module data
 	 * @return a map of Container ID to list of associated modules sorted by Module ID
 	 */
-	private fun getModules(asmDataTable: ASMDataTable): Map<String, MutableList<ICatalyxModule>> {
+	private fun getModules(asmDataTable: ASMDataTable, loader: ModClassLoader): Map<String, MutableList<ICatalyxModule>> {
 		val modules = Object2ReferenceLinkedOpenHashMap<String, MutableList<ICatalyxModule>>()
-		getInstances(asmDataTable).forEach {
+		getInstances(asmDataTable, loader).forEach {
 			modules.computeIfAbsent(it.containerID) { _ -> mutableListOf() }.add(it)
 		}
 		return modules
@@ -182,11 +182,11 @@ object ModuleManager : IModuleManager {
 	 *
 	 * @param asmDataTable the table containing the ModuleContainer data
 	 */
-	private fun discoverContainers(asmDataTable: ASMDataTable) {
+	private fun discoverContainers(asmDataTable: ASMDataTable, loader: ModClassLoader) {
 		Catalyx.LOGGER.debug("Discovering Module Containers...")
 		asmDataTable.getAll(CatalyxModuleContainer::class.java.canonicalName).forEach {
 			try {
-				val clazz = Class.forName(it.className)
+				val clazz = Class.forName(it.className, true, loader)
 				if(ICatalyxModuleContainer::class.java.isAssignableFrom(clazz)) {
 					val container = if(Modifier.isFinal(clazz.modifiers)) {
 						Catalyx.LOGGER.debug("Found final Module Container Class ${it.className}! Using INSTANCE field")
