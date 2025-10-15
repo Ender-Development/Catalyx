@@ -6,6 +6,7 @@ import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.event.RegistryEvent
 import org.ender_development.catalyx.core.CatalyxSettings
 import org.ender_development.catalyx.core.IItemProvider
+import org.ender_development.catalyx.utils.SideUtils
 
 abstract class AbstractItem(val settings: CatalyxSettings): Item(), IItemProvider {
 	override val instance = this
@@ -26,6 +27,7 @@ abstract class AbstractItem(val settings: CatalyxSettings): Item(), IItemProvide
 
 	override fun register(event: RegistryEvent.Register<Item>) {
 		event.registry.register(this)
-		ModelLoader.setCustomModelResourceLocation(this, 0, ModelResourceLocation(registryName!!, "inventory"))
+		if(SideUtils.isClient)
+			ModelLoader.setCustomModelResourceLocation(this, 0, ModelResourceLocation(registryName!!, "inventory"))
 	}
 }

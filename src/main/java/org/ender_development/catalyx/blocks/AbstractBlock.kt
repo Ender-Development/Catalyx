@@ -9,6 +9,7 @@ import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.event.RegistryEvent
 import org.ender_development.catalyx.core.CatalyxSettings
 import org.ender_development.catalyx.core.IBlockProvider
+import org.ender_development.catalyx.utils.SideUtils
 
 abstract class AbstractBlock(val settings: CatalyxSettings, material: Material): Block(material), IBlockProvider {
 	init {
@@ -29,7 +30,8 @@ abstract class AbstractBlock(val settings: CatalyxSettings, material: Material):
 	override fun registerItemBlock(event: RegistryEvent.Register<Item>) {
 		item.registryName = registryName
 		event.registry.register(item)
-		ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(registryName!!, "inventory"))
+		if(SideUtils.isClient)
+			ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(registryName!!, "inventory"))
 	}
 
 	override fun requires(modDependencies: String): Block {
