@@ -82,8 +82,7 @@ dependencies {
 
 	implementation("mezz:jei:" + project.hei_version)
 
-	implementation rfg.deobf("curse.maven:the-one-probe-community-edition-885670:6934576")
-	runtimeOnly "curse.maven:topalldependents-1120632:6512825"
+	implementation rfg.deobf("curse.maven:theonesmeagle-977883:7095096")
 
 	// implementation 'com.cleanroommc:configanytime:3.0'
 }
