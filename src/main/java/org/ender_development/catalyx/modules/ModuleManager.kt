@@ -3,6 +3,7 @@ package org.ender_development.catalyx.modules
 import it.unimi.dsi.fastutil.objects.Object2ReferenceLinkedOpenHashMap
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet
 import it.unimi.dsi.fastutil.objects.ReferenceLinkedOpenHashSet
+import net.minecraft.launchwrapper.Launch
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.common.config.Configuration
@@ -126,7 +127,7 @@ object ModuleManager : IModuleManager {
 
 			if(modDependencies.all(String::modLoaded)) {
 				try {
-					val clazz = Class.forName(it.className, true, loader)
+					val clazz = loader.loadClass(it.className)
 					if(ICatalyxModule::class.java.isAssignableFrom(clazz))
 						instances.add(clazz.getConstructor().newInstance() as ICatalyxModule)
 					else
@@ -186,7 +187,8 @@ object ModuleManager : IModuleManager {
 		Catalyx.LOGGER.debug("Discovering Module Containers...")
 		asmDataTable.getAll(CatalyxModuleContainer::class.java.canonicalName).forEach {
 			try {
-				val clazz = Class.forName(it.className, true, loader)
+				addModFileToClassLoader(it)
+				val clazz = loader.loadClass(it.className)
 				if(ICatalyxModuleContainer::class.java.isAssignableFrom(clazz)) {
 					val container = if(Modifier.isFinal(clazz.modifiers)) {
 						Catalyx.LOGGER.debug("Found final Module Container Class ${it.className}! Using INSTANCE field")
@@ -208,6 +210,25 @@ object ModuleManager : IModuleManager {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Because Catalyx construction is before every dependent mod, the [net.minecraft.launchwrapper.LaunchClassLoader]'s source list doesn't have any dependent mod's file added to it, and as such,
+	 * trying to load it will just result in a [ClassNotFoundException]
+	 *
+	 * We only have to really deal with this during the Module Container phase, as containers are loaded and initalised before searching for modules.
+	 *
+	 * @param containerData ASM container data
+	 */
+	private fun addModFileToClassLoader(containerData: ASMDataTable.ASMData) {
+		val modId = containerData.annotationInfo["modId"] as? String ?: error("Mod Container ${containerData.className} has no modId defined, somehow.") // error shouldn't happen
+		val modContainer = Loader.instance().modList.firstOrNull { it.modId == modId } ?: error("Mod Container ${containerData.className} has an invalid modId of '$modId' => couldn't find a valid ModContainer to match")
+		val url = modContainer.source.toURI().toURL()
+		if(Launch.classLoader.sources.none { it == url })
+			Launch.classLoader.addURL(url)
+
+		// debug println for checking LCL sources
+		// println(Launch.classLoader.sources.joinToString("',\n'", "\n'", "'", transform = URL::toString))
 	}
 
 	/**

@@ -5,4 +5,10 @@ package org.ender_development.catalyx.modules
  */
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
-annotation class CatalyxModuleContainer()
+annotation class CatalyxModuleContainer(
+	/**
+	 * Your mod's id
+	 */
+	@Suppress("UNUSED") // used in ModuleManager via ASM
+	val modId: String
+)
