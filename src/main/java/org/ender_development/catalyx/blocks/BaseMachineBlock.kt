@@ -6,13 +6,13 @@ import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
-import org.ender_development.catalyx.core.CatalyxSettings
+import org.ender_development.catalyx.core.ICatalyxMod
 import org.ender_development.catalyx.tiles.BaseTile
 
 /**
  * A Catalyx Block interacting with a TileEntity and a GUI that also interacts with a Comparator
  */
-open class BaseMachineBlock(settings: CatalyxSettings, name: String, tileClass: Class<out TileEntity>, guiID: Int) : BaseTileBlock(settings, name, tileClass, guiID) {
+open class BaseMachineBlock(mod: ICatalyxMod, name: String, tileClass: Class<out TileEntity>, guiID: Int) : BaseTileBlock(mod, name, tileClass, guiID) {
 	@Deprecated("")
 	override fun hasComparatorInputOverride(state: IBlockState) =
 		true

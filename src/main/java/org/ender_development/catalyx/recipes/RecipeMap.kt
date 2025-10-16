@@ -4,9 +4,8 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.objects.Object2ReferenceOpenHashMap
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import it.unimi.dsi.fastutil.objects.ObjectLists
-import it.unimi.dsi.fastutil.objects.ObjectSets
 import net.minecraft.util.SoundEvent
-import org.ender_development.catalyx.core.CatalyxSettings
+import org.ender_development.catalyx.core.ICatalyxMod
 import org.ender_development.catalyx.integration.Mods
 import org.ender_development.catalyx.integration.groovyscript.VirtualizedRecipeMap
 import org.ender_development.catalyx.modules.CatalyxModules
@@ -109,14 +108,14 @@ class RecipeMap<R : RecipeBuilder<R>> {
 	 * @param maxFluidInputs       the maximum fluid inputs
 	 * @param maxFluidOutputs      the maximum fluid outputs
 	 */
-	internal constructor(settings: CatalyxSettings, unlocalizedName: String, defaultRecipeBuilder: R, maxInputs: Int, maxOutputs: Int, maxFluidInputs: Int, maxFluidOutputs: Int) {
+	internal constructor(mod: ICatalyxMod, unlocalizedName: String, defaultRecipeBuilder: R, maxInputs: Int, maxOutputs: Int, maxFluidInputs: Int, maxFluidOutputs: Int) {
 		this.unlocalizedName = unlocalizedName
 		this.maxInputs = maxInputs
 		this.maxFluidInputs = maxFluidInputs
 		this.maxOutputs = maxOutputs
 		this.maxFluidOutputs = maxFluidOutputs
-		translationKey = "recipemap.${settings.modId}.$unlocalizedName.name"
-		primaryRecipeCategory = RecipeCategory.create(settings.modId, unlocalizedName, translationKey, this)
+		translationKey = "recipemap.${mod.modId}.$unlocalizedName.name"
+		primaryRecipeCategory = RecipeCategory.create(mod.modId, unlocalizedName, translationKey, this)
 
 		defaultRecipeBuilder.recipeMap = this
 		defaultRecipeBuilder.category = primaryRecipeCategory

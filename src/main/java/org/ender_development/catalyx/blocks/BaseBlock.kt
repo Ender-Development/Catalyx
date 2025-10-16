@@ -8,21 +8,21 @@ import net.minecraft.item.ItemBlock
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.event.RegistryEvent
-import org.ender_development.catalyx.core.CatalyxSettings
 import org.ender_development.catalyx.core.IBlockProvider
+import org.ender_development.catalyx.core.ICatalyxMod
+import org.ender_development.catalyx.core.register
 import org.ender_development.catalyx.utils.SideUtils
-import scala.reflect.macros.contexts.`Infrastructure$class`.settings
 
 /**
  * A base Catalyx Block
  */
-open class BaseBlock(val settings: CatalyxSettings, name: String, material: Material = Material.ROCK, hardness: Float = 3f) : Block(material), IBlockProvider {
+open class BaseBlock(val mod: ICatalyxMod, name: String, material: Material = Material.ROCK, hardness: Float = 3f) : Block(material), IBlockProvider {
 	init {
-		registryName = ResourceLocation(settings.modId, name)
+		registryName = ResourceLocation(mod.modId, name)
 		translationKey = "$registryName"
 		blockHardness = hardness
-		creativeTab = settings.creativeTab
-		settings.register(this)
+		creativeTab = mod.creativeTab
+		mod.register(this)
 	}
 
 	override val instance = this
@@ -45,7 +45,7 @@ open class BaseBlock(val settings: CatalyxSettings, name: String, material: Mate
 
 	override fun requires(modDependencies: String): Block {
 		this.modDependencies = modDependencies
-		settings.register(this)
+		mod.register(this)
 		return this
 	}
 }

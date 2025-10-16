@@ -5,20 +5,20 @@ import net.minecraft.item.Item
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.event.RegistryEvent
-import org.ender_development.catalyx.core.CatalyxSettings
+import org.ender_development.catalyx.core.ICatalyxMod
 import org.ender_development.catalyx.core.IItemProvider
+import org.ender_development.catalyx.core.register
 import org.ender_development.catalyx.utils.SideUtils
-import scala.reflect.macros.contexts.`Infrastructure$class`.settings
 
 /**
  * A base Catalyx item
  */
-open class BaseItem(val settings: CatalyxSettings, val name: String) : Item(), IItemProvider {
+open class BaseItem(val mod: ICatalyxMod, val name: String) : Item(), IItemProvider {
 	init {
-		registryName = ResourceLocation(settings.modId, name)
+		registryName = ResourceLocation(mod.modId, name)
 		translationKey = "$registryName"
-		creativeTab = settings.creativeTab
-		settings.register(this)
+		creativeTab = mod.creativeTab
+		mod.register(this)
 	}
 
 	override val instance = this
@@ -29,7 +29,7 @@ open class BaseItem(val settings: CatalyxSettings, val name: String) : Item(), I
 
 	override fun requires(modDependencies: String): Item {
 		this.modDependencies = modDependencies
-		settings.register(this)
+		mod.register(this)
 		return this
 	}
 

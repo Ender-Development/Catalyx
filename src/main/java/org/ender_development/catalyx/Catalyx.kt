@@ -4,7 +4,6 @@ import net.minecraft.creativetab.CreativeTabs
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.Mod.EventHandler
 import net.minecraftforge.fml.common.event.*
-import org.ender_development.catalyx.core.CatalyxSettings
 import org.ender_development.catalyx.core.ICatalyxMod
 import org.ender_development.catalyx.modules.ModuleManager
 import org.ender_development.catalyx.network.PacketHandler
@@ -33,7 +32,7 @@ object Catalyx : ICatalyxMod {
 	 */
 	internal val LOGGER = LoggerUtils.logger
 
-	override val catalyxSettings = CatalyxSettings(Reference.MODID, CreativeTabs.MISC, this)
+	override val creativeTab: CreativeTabs = CreativeTabs.MISC
 	internal val persistentData = PersistentData(Reference.MODID)
 
 	@EventHandler

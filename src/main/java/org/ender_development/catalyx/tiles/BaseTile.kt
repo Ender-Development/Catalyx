@@ -29,13 +29,13 @@ import org.ender_development.catalyx.client.button.PauseButtonWrapper
 import org.ender_development.catalyx.client.button.RedstoneButtonWrapper
 import org.ender_development.catalyx.client.container.BaseContainer
 import org.ender_development.catalyx.client.gui.BaseGuiTyped
-import org.ender_development.catalyx.core.CatalyxSettings
+import org.ender_development.catalyx.core.ICatalyxMod
 import org.ender_development.catalyx.tiles.helper.*
 
 /**
  * A base TileEntity in Catalyx, implementing separate input and output inventories; saving/loading from NBT; energy, fluid and item capability handling
  */
-abstract class BaseTile(val settings: CatalyxSettings) : TileEntity(), BaseContainer.IBaseContainerCompat {
+abstract class BaseTile(val mod: ICatalyxMod) : TileEntity(), BaseContainer.IBaseContainerCompat {
 	var inputSlots = 0
 	var outputSlots = 0
 	override val SIZE

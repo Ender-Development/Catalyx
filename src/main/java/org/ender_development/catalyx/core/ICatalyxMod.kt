@@ -1,6 +1,10 @@
 package org.ender_development.catalyx.core
 
+import net.minecraft.creativetab.CreativeTabs
+import net.minecraftforge.fml.common.Mod
 import org.ender_development.catalyx.Reference
+import org.ender_development.catalyx.core.registry.CatalyxBlockRegistry
+import org.ender_development.catalyx.core.registry.CatalyxItemRegistry
 
 interface ICatalyxMod {
 	 companion object {
@@ -24,5 +28,17 @@ interface ICatalyxMod {
 		 const val MOD_LANGUAGE_ADAPTER = "io.github.chaosunity.forgelin.KotlinAdapter"
 	 }
 
-	val catalyxSettings: CatalyxSettings
+	val creativeTab: CreativeTabs
+
+	val modId: String
+		get() = this::class.java.getAnnotation(Mod::class.java).modid
 }
+
+// helper functions
+@Suppress("NOTHING_TO_INLINE")
+inline fun ICatalyxMod.register(item: IItemProvider) =
+	CatalyxItemRegistry.registry.add(item)
+
+@Suppress("NOTHING_TO_INLINE")
+inline fun ICatalyxMod.register(block: IBlockProvider) =
+	CatalyxBlockRegistry.registry.add(block)

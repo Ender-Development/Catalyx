@@ -20,9 +20,9 @@ import org.ender_development.catalyx.utils.LoggerUtils
 	testModule = true
 )
 internal class TestModule : BaseCatalyxModule() {
-	val testItem = BaseItem(Catalyx.catalyxSettings, "test_item").requires("!${Mods.GROOVYSCRIPT}")
-	val testItem2 = BaseItem(Catalyx.catalyxSettings, "test_item_2").requires(Mods.GROOVYSCRIPT)
-	val testBlock = BaseBlock(Catalyx.catalyxSettings, "test_block")
+	val testItem = BaseItem(Catalyx, "test_item").requires("!${Mods.GROOVYSCRIPT}")
+	val testItem2 = BaseItem(Catalyx, "test_item_2").requires(Mods.GROOVYSCRIPT)
+	val testBlock = BaseBlock(Catalyx, "test_block")
 
 	override val logger: Logger = LoggerUtils.new("Development")
 

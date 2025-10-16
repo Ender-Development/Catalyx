@@ -2,11 +2,11 @@ package org.ender_development.catalyx.tiles
 
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.ITickable
-import org.ender_development.catalyx.core.CatalyxSettings
 import org.ender_development.catalyx.client.button.AbstractButtonWrapper
 import org.ender_development.catalyx.client.button.PauseButtonWrapper
 import org.ender_development.catalyx.client.button.RedstoneButtonWrapper
 import org.ender_development.catalyx.client.gui.BaseGuiTyped
+import org.ender_development.catalyx.core.ICatalyxMod
 import org.ender_development.catalyx.tiles.helper.IButtonTile
 import org.ender_development.catalyx.tiles.helper.IGuiTile
 import org.ender_development.catalyx.tiles.helper.IItemTile
@@ -14,7 +14,7 @@ import org.ender_development.catalyx.tiles.helper.IItemTile
 /**
  * A base Catalyx TileEntity with functions allowing you to create custom machines efficiently
  */
-abstract class BaseMachineTile<T>(settings: CatalyxSettings) : BaseTile(settings), ITickable, IGuiTile, IItemTile, IButtonTile, BaseGuiTyped.IDefaultButtonVariables {
+abstract class BaseMachineTile<T>(mod: ICatalyxMod) : BaseTile(mod), ITickable, IGuiTile, IItemTile, IButtonTile, BaseGuiTyped.IDefaultButtonVariables {
 	abstract val recipeTime: Int
 	abstract val energyPerTick: Int
 

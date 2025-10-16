@@ -16,16 +16,16 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 import net.minecraftforge.fml.common.registry.GameRegistry
-import org.ender_development.catalyx.core.CatalyxSettings
+import org.ender_development.catalyx.core.ICatalyxMod
 import org.ender_development.catalyx.recipes.ingredients.nbt.TagType
 import org.ender_development.catalyx.tiles.BaseTile
 
 /**
  * A Catalyx Block interacting with a TileEntity and a GUI
  */
-open class BaseTileBlock(settings: CatalyxSettings, name: String, var tileClass: Class<out TileEntity>, val guiID: Int) : BaseBlock(settings, name), ITileEntityProvider {
+open class BaseTileBlock(mod: ICatalyxMod, name: String, var tileClass: Class<out TileEntity>, val guiID: Int) : BaseBlock(mod, name), ITileEntityProvider {
 	init {
-		GameRegistry.registerTileEntity(tileClass, ResourceLocation(settings.modId, name))
+		GameRegistry.registerTileEntity(tileClass, ResourceLocation(mod.modId, name))
 	}
 
 	override fun createNewTileEntity(worldIn: World, meta: Int): TileEntity =
@@ -35,7 +35,7 @@ open class BaseTileBlock(settings: CatalyxSettings, name: String, var tileClass:
 		if(!world.isRemote) {
 			val tile = world.getTileEntity(pos)
 			if(tile is BaseTile && !tile.onBlockActivated(world, pos, state, player, hand, facing, hitX, hitY, hitZ))
-				player.openGui(settings.mod, guiID, world, pos.x, pos.y, pos.z)
+				player.openGui(mod, guiID, world, pos.x, pos.y, pos.z)
 		}
 		return true
 	}
