@@ -15,7 +15,7 @@ import org.ender_development.catalyx.tiles.BaseTile
 import org.ender_development.catalyx.tiles.helper.ICopyPasteExtraTile
 import org.ender_development.catalyx.utils.DevUtils
 
-class CopyPasteTool() : BaseItem(Catalyx.modSettings, "copy_paste_tool") {
+class CopyPasteTool() : BaseItem(Catalyx.catalyxSettings, "copy_paste_tool") {
 	private companion object {
 		const val NBT_COPIED_BLOCK_KEY = "CopiedBlock"
 		const val NBT_COPIED_DATA_KEY = "CopiedData"

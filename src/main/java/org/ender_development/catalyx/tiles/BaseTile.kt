@@ -47,6 +47,8 @@ abstract class BaseTile(val settings: CatalyxSettings) : TileEntity(), BaseConta
 	lateinit var output: TileStackHandler
 	protected lateinit var automationOutput: IItemHandlerModifiable
 
+	open val enableItemCapability = true
+
 	open val inventory: IItemHandler
 		get() = CombinedInvWrapper(input, output)
 
@@ -178,7 +180,7 @@ abstract class BaseTile(val settings: CatalyxSettings) : TileEntity(), BaseConta
 	 * 	          `-    \`_`"'-
 	 */
 	override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean {
-		return if(capability == ITEM_CAP && !settings.enableItemCapability)
+		return if(capability == ITEM_CAP && !enableItemCapability)
 			false
 		else {
 			when(capability) {
@@ -199,7 +201,7 @@ abstract class BaseTile(val settings: CatalyxSettings) : TileEntity(), BaseConta
 	 * 	-(((---(((--------
 	 */
 	override fun <T : Any> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
-		return if(capability == ITEM_CAP && !settings.enableItemCapability)
+		return if(capability == ITEM_CAP && !enableItemCapability)
 			null
 		else {
 			when(capability) {

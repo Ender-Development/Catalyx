@@ -24,7 +24,7 @@ class RecipeMapBuilder<B : RecipeBuilder<B>>(
 	private var sound: SoundEvent? = null
 	private var allowEmptyOutputs = false
 
-	internal constructor(unlocalizedName: String, defaultRecipeBuilder: B) : this(Catalyx.modSettings, unlocalizedName, defaultRecipeBuilder)
+	internal constructor(unlocalizedName: String, defaultRecipeBuilder: B) : this(Catalyx.catalyxSettings, unlocalizedName, defaultRecipeBuilder)
 
 	/**
 	 * Do not call this twice. RecipeMapBuilders are not re-usable.

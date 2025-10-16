@@ -33,7 +33,7 @@ object Catalyx : ICatalyxMod {
 	 */
 	internal val LOGGER = LoggerUtils.logger
 
-	override val modSettings = CatalyxSettings(Reference.MODID, CreativeTabs.MISC, this, true)
+	override val catalyxSettings = CatalyxSettings(Reference.MODID, CreativeTabs.MISC, this)
 	internal val persistentData = PersistentData(Reference.MODID)
 
 	@EventHandler

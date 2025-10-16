@@ -24,5 +24,5 @@ interface ICatalyxMod {
 		 const val MOD_LANGUAGE_ADAPTER = "io.github.chaosunity.forgelin.KotlinAdapter"
 	 }
 
-	val modSettings: CatalyxSettings
+	val catalyxSettings: CatalyxSettings
 }
