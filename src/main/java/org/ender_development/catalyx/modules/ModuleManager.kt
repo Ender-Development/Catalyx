@@ -221,8 +221,8 @@ object ModuleManager : IModuleManager {
 	 * @param containerData ASM container data
 	 */
 	private fun addModFileToClassLoader(containerData: ASMDataTable.ASMData) {
-		val modId = containerData.annotationInfo["modId"] as? String ?: error("Mod Container ${containerData.className} has no modId defined, somehow.") // error shouldn't happen
-		val modContainer = Loader.instance().modList.firstOrNull { it.modId == modId } ?: error("Mod Container ${containerData.className} has an invalid modId of '$modId' => couldn't find a valid ModContainer to match")
+		val modId = containerData.annotationInfo["modId"] as? String ?: error("Module Container ${containerData.className} has no modId defined, somehow.") // error shouldn't happen
+		val modContainer = Loader.instance().modList.firstOrNull { it.modId == modId } ?: error("Module Container ${containerData.className} has an invalid modId of '$modId' => couldn't find a valid ModContainer to match")
 		val url = modContainer.source.toURI().toURL()
 		if(Launch.classLoader.sources.none { it == url })
 			Launch.classLoader.addURL(url)
