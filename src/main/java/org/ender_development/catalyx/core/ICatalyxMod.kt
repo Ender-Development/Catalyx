@@ -31,7 +31,7 @@ interface ICatalyxMod {
 	val creativeTab: CreativeTabs
 
 	val modId: String
-		get() = this::class.java.getAnnotation(Mod::class.java).modid
+		get() = this::class.java.getAnnotation(Mod::class.java)?.modid ?: error("ICatalyxMod ${this::class.java.canonicalName} ($this) doesn't have a Forge @Mod annotation - this shouldn't happen!")
 }
 
 // helper functions
