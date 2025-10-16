@@ -8,7 +8,7 @@ fun FluidStack.getColor() =
 	fluid.getColor(this)
 
 private val waterColour = Color.blue.rgb
-private val lavaColour = Color.orange.rgb
+private val lavaColour = Color(0x81, 0x3d, 0x0e).rgb
 internal fun FluidStack.getRealColor() =
 	when(fluid) {
 		FluidRegistry.WATER -> waterColour
