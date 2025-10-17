@@ -8,19 +8,24 @@ import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.fml.common.network.IGuiHandler
+import org.ender_development.catalyx.core.ICatalyxMod
 import org.ender_development.catalyx.utils.SideUtils
 
 /**
  * A GUI handler you can use for your machines
  *
- * Use the return value of [registerId] in the [org.ender_development.catalyx.blocks.BaseTileBlock.guiID] field
+ * Use the return value of [registerId] in the [org.ender_development.catalyx.blocks.BaseTileBlock.guiId] field
  *
  * Remember to register it with [net.minecraftforge.fml.common.network.NetworkRegistry.registerGuiHandler]
  */
-class CatalyxGuiHandler : IGuiHandler {
-	private val containers = mutableListOf<Class<out Container>>()
-	private val guis = mutableListOf<Class<out GuiContainer>>()
-	private val tileEntities = mutableListOf<Class<out TileEntity>>()
+class CatalyxGuiHandler(mod: ICatalyxMod) : IGuiHandler {
+	internal val containers = mutableListOf<Class<out Container>>()
+	internal val guis = mutableListOf<Class<out GuiContainer>>()
+	internal val tileEntities = mutableListOf<Class<out TileEntity>>()
+
+	init {
+		instances.put(mod, this)
+	}
 
 	fun registerId(te: Class<out TileEntity>, container: Class<out Container>, gui: () -> Class<out GuiContainer>): Int {
 		tileEntities.add(te)
@@ -48,5 +53,9 @@ class CatalyxGuiHandler : IGuiHandler {
 			return null
 
 		return sidedGui.getConstructor(IInventory::class.java, tileEntity).newInstance(player.inventory, te)
+	}
+
+	internal companion object {
+		val instances = mutableMapOf<ICatalyxMod, CatalyxGuiHandler>()
 	}
 }

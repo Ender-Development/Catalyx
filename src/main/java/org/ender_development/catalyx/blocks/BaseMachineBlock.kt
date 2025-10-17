@@ -12,7 +12,13 @@ import org.ender_development.catalyx.tiles.BaseTile
 /**
  * A Catalyx Block interacting with a TileEntity and a GUI that also interacts with a Comparator
  */
-open class BaseMachineBlock(mod: ICatalyxMod, name: String, tileClass: Class<out TileEntity>, guiID: Int) : BaseTileBlock(mod, name, tileClass, guiID) {
+open class BaseMachineBlock : BaseTileBlock {
+	constructor(mod: ICatalyxMod, name: String, tileClass: Class<out TileEntity>, guiId: Int) : super(mod, name, tileClass, guiId)
+	/**
+	 * Only use this constructor if you used a [org.ender_development.catalyx.client.gui.CatalyxGuiHandler] for the guiId
+	 */
+	constructor(mod: ICatalyxMod, name: String, guiId: Int) : super(mod, name, guiId)
+
 	@Deprecated("")
 	override fun hasComparatorInputOverride(state: IBlockState) =
 		true

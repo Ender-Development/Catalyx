@@ -25,7 +25,9 @@ open class BaseBlock(val mod: ICatalyxMod, name: String, material: Material = Ma
 		mod.register(this)
 	}
 
-	override val instance = this
+	// this needs to be a getter for whatever reason, otherwise a very fun problem will affect dependent mods
+	override val instance
+		get() = this
 
 	override var modDependencies = ""
 
