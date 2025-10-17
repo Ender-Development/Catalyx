@@ -22,12 +22,10 @@ open class BaseBlock(val mod: ICatalyxMod, name: String, material: Material = Ma
 		translationKey = "$registryName"
 		blockHardness = hardness
 		creativeTab = mod.creativeTab
-		mod.register(this)
 	}
 
 	// this needs to be a getter for whatever reason, otherwise a very fun problem will affect dependent mods
-	override val instance
-		get() = this
+	override val instance = this
 
 	override var modDependencies = ""
 
@@ -49,5 +47,9 @@ open class BaseBlock(val mod: ICatalyxMod, name: String, material: Material = Ma
 		this.modDependencies = modDependencies
 		mod.register(this)
 		return this
+	}
+
+	init {
+		mod.register(this)
 	}
 }

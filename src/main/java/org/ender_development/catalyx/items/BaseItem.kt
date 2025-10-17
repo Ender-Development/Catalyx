@@ -18,12 +18,9 @@ open class BaseItem(val mod: ICatalyxMod, val name: String) : Item(), IItemProvi
 		registryName = ResourceLocation(mod.modId, name)
 		translationKey = "$registryName"
 		creativeTab = mod.creativeTab
-		mod.register(this)
 	}
 
-	// this needs to be a getter for whatever reason, otherwise a very fun problem will affect dependent mods
-	override val instance
-		get() = this
+	override val instance = this
 
 	override val isEnabled = true
 
@@ -39,5 +36,9 @@ open class BaseItem(val mod: ICatalyxMod, val name: String) : Item(), IItemProvi
 		event.registry.register(this)
 		if(SideUtils.isClient)
 			ModelLoader.setCustomModelResourceLocation(this, 0, ModelResourceLocation(registryName!!, "inventory"))
+	}
+
+	init {
+		mod.register(this)
 	}
 }
