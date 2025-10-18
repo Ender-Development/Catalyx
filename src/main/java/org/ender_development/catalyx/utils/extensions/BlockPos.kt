@@ -20,7 +20,7 @@ inline operator fun BlockPos.minus(other: BlockPos): BlockPos =
 inline operator fun BlockPos.plus(other: BlockPos): BlockPos =
 	add(other)
 
-inline operator fun BlockPos.times(scalar: Int): BlockPos =
+inline operator fun BlockPos.times(scalar: Int) =
 	BlockPos(x * scalar, y * scalar, z * scalar)
 
 inline fun Pair<BlockPos, BlockPos>.getAllInBox() =

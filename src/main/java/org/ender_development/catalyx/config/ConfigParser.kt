@@ -1,8 +1,12 @@
 package org.ender_development.catalyx.config
 
+import net.minecraft.block.Block
+import net.minecraft.block.state.IBlockState
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
+import net.minecraft.util.ResourceLocation
 import org.ender_development.catalyx.utils.extensions.modLoaded
+import java.util.*
 
 /**
  * Utility object for parsing configuration strings into item representations.
@@ -119,5 +123,74 @@ object ConfigParser {
 	 *  @param configString The configuration string to parse.
 	 */
 	class ConfigItemStackWithBoolean(configString: String) : ConfigItemStackWith<Boolean>(configString, String::toBoolean)
+
+	open class ConfigBlockState() {
+		companion object {
+			internal const val IGNORE_META = -1
+		}
+
+		private var modId: String? = null
+		private var blockId: String? = null
+		private var meta: Int = IGNORE_META
+
+		open val block: Block?
+			get() {
+				val id = ResourceLocation(modId ?: return null, blockId ?: return null)
+				if(!Block.REGISTRY.containsKey(id))
+					return null
+				return Block.REGISTRY.getObject(id)
+			}
+
+		open val state: IBlockState?
+			@Suppress("DEPRECATION")
+			get() = block?.getStateFromMeta(if(meta == IGNORE_META) 0 else meta)
+
+		/**
+		 * Constructor that takes a configuration string in the format "modId:blockId:meta" or "modId:blockId"
+		 * Meta defaults to [IGNORE_META] if not set
+		 * Should be used if config consists of a single block or list of blocks.
+		 *
+		 * @param configString The configuration string to parse.
+		 */
+		constructor(configString: String) : this() {
+			parseConfigString(configString)
+			validate()
+		}
+
+		override fun equals(other: Any?) =
+			when {
+				this === other -> true
+				other is IBlockState -> block === other.block && (meta == IGNORE_META || block?.getMetaFromState(other) == meta)
+				other is ConfigBlockState -> modId == other.modId && blockId == other.blockId && meta == other.meta
+				else -> false
+			}
+
+		override fun hashCode() =
+			Objects.hash(modId, blockId, meta)
+
+		open fun parseConfigString(configString: String) {
+			val parts = configString.split(":")
+			if(parts.size != 2 && parts.size != 3)
+				error("Invalid config string format: '$configString'")
+
+			modId = parts[0]
+			blockId = parts[1]
+			if(parts.size == 3)
+				meta = parts[2].toInt()
+		}
+
+		open fun validate() {
+			if(modId == null || blockId == null)
+				error("Mod Id and Block Id cannot be null")
+
+			if(!modId.modLoaded())
+				error("Mod ID is not loaded: $modId")
+
+			if(meta < IGNORE_META)
+				error("Meta value cannot be negative")
+		}
+	}
+
+	// TODO for roz - extend ^ like CIS does
 }
 
