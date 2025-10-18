@@ -9,7 +9,8 @@ import org.ender_development.catalyx.utils.extensions.modLoaded
 import java.util.*
 
 /**
- * Utility object for parsing configuration strings into item representations.
+ * Utility object for parsing configuration strings into different representations.
+ *
  * This object provides classes to handle items with different configurations,
  * including those with additional values.
  */
@@ -191,6 +192,37 @@ object ConfigParser {
 		}
 	}
 
-	// TODO for roz - extend ^ like CIS does
+	/**
+	 * Helper class
+	 *
+	 * @param configString The configuration string to parse in the format "modId:blockId:meta;value"
+	 * @param optional Whether the argument is optional or not
+	 * @param parser The parser with which the value should be parsed to produce the expected value
+	 */
+	open class ConfigBlockStateWith<T>(configString: String, optional: Boolean, parser: (String) -> T) : ConfigBlockState() {
+		val value: T?
+
+		init {
+			val parts = configString.split(';', ',')
+			if(parts.size == 2) {
+				parseConfigString(parts[0])
+				value = parser(parts[1])
+			} else {
+				if(!optional)
+					error("Invalid config string format: '$configString'")
+				else {
+					parseConfigString(configString)
+					value = null
+				}
+			}
+			validate()
+		}
+	}
+
+	class ConfigBlockStateWithInt(configString: String, optional: Boolean) : ConfigBlockStateWith<Int>(configString, optional, String::toInt)
+
+	class ConfigBlockStateWithFloat(configString: String, optional: Boolean) : ConfigBlockStateWith<Float>(configString, optional, String::toFloat)
+
+	class ConfigBlockStateWithBoolean(configString: String, optional: Boolean) : ConfigBlockStateWith<Boolean>(configString, optional, String::toBoolean)
 }
 
