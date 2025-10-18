@@ -7,8 +7,9 @@ import net.minecraftforge.fml.relauncher.SideOnly
 import org.ender_development.catalyx.client.AreaHighlighter
 
 internal object CoreEventHandler {
+	@JvmStatic // required because of EventBus shitfuckery
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	fun renderWorldLast(event: RenderWorldLastEvent) =
-		AreaHighlighter.eventHandlers.forEach { it(event) }
+		AreaHighlighter.eventHandlers.toList().forEach { it(event) } // convert to list to avoid a ConcurrentME
 }
