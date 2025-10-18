@@ -199,7 +199,10 @@ object ConfigParser {
 	 * @param optional Whether the argument is optional or not
 	 * @param parser The parser with which the value should be parsed to produce the expected value
 	 */
-	open class ConfigBlockStateWith<T>(configString: String, optional: Boolean, parser: (String) -> T) : ConfigBlockState() {
+	open class ConfigBlockStateWith<T : Any>(configString: String, optional: Boolean, parser: (String) -> T) : ConfigBlockState() {
+		/**
+		 * Only nullable when [optional] is true
+		 */
 		val value: T?
 
 		init {
