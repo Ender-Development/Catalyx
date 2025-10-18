@@ -52,7 +52,7 @@ fun rotateZ(v: Vec3, degrees: Int): Vec3 {
  * @param center The center position of the wall.
  * @param r The radius from the center to the edges of the wall.
  * @param h The height of the wall.
- * @param offset An optional vertical offset to apply to the base of the wall.
+ * @param offset An optional horizontal offset to apply to the wall's position.
  * @param degrees The rotation angle in degrees to apply around the Y-axis.
  * @return A pair of [Vec3] representing the minimum and maximum corners of the wall.
  */
@@ -84,8 +84,8 @@ fun wall(center: Vec3, r: Int, h: Int, offset: Int = 0, degrees: Int = 0): Pair<
  * @param offset An optional vertical offset to apply to the base of the cuboid.
  * @return A list of pairs of [Vec3] representing the minimum and maximum corners of each wall.
  */
-fun hollowCuboid(center: Vec3, r: Int, h: Int): List<Pair<Vec3, Vec3>> =
-	(0..3).map { i -> wall(center, r, h, 1, i * 90)
+fun hollowCuboid(center: Vec3, r: Int, h: Int, offset: Int = 1): List<Pair<Vec3, Vec3>> =
+	(0..3).map { i -> wall(center, r, h, offset, i * 90)
 }
 
 fun getAllInBox(v1: Vec3, v2: Vec3): Iterable<BlockPos> = BlockPos.getAllInBox(v1.toBlockPos(), v2.toBlockPos())
