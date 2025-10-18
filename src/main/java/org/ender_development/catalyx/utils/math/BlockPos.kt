@@ -1,5 +1,6 @@
 package org.ender_development.catalyx.utils.math
 
+import net.minecraft.util.math.BlockPos
 import kotlin.math.cos
 import kotlin.math.roundToInt
 import kotlin.math.sin
@@ -9,6 +10,8 @@ data class Vec3(val x: Int, val y: Int, val z: Int) {
 	operator fun minus(other: Vec3) = Vec3(x - other.x, y - other.y, z - other.z)
 	operator fun times(scalar: Int) = Vec3(x * scalar, y * scalar, z * scalar)
 }
+
+fun Vec3.toBlockPos() = BlockPos(x, y, z)
 
 fun rotateY(v: Vec3, degrees: Int): Vec3 {
 	val rad = Math.toRadians(degrees.toDouble())
@@ -84,3 +87,7 @@ fun wall(center: Vec3, r: Int, h: Int, offset: Int = 0, degrees: Int = 0): Pair<
 fun hollowCuboid(center: Vec3, r: Int, h: Int): List<Pair<Vec3, Vec3>> =
 	(0..3).map { i -> wall(center, r, h, 1, i * 90)
 }
+
+fun getAllInBox(v1: Vec3, v2: Vec3): Iterable<BlockPos> = BlockPos.getAllInBox(v1.toBlockPos(), v2.toBlockPos())
+
+fun getAllInBox(pair: Pair<Vec3, Vec3>): Iterable<BlockPos> = getAllInBox(pair.first, pair.second)
