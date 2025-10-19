@@ -6,6 +6,7 @@ import net.minecraftforge.fml.common.eventhandler.Event
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
+import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.blocks.multiblock.BaseEdge
 import org.ender_development.catalyx.blocks.multiblock.IMultiBlockPart
 import org.ender_development.catalyx.client.AreaHighlighter
@@ -27,7 +28,7 @@ internal object CoreEventHandler {
 
 		val controller = event.world.getTileEntity(event.pos.getHorizontalCenterFromMeta(blockState.getValue(BaseEdge.state)))
 		if(controller !is IMultiBlockPart)
-			return
+			return Catalyx.LOGGER.error("Edge block at ${event.pos} pointed to invalid controller at ${event.pos.getHorizontalCenterFromMeta(blockState.getValue(BaseEdge.state))}")
 
 		val lookVector = event.entityPlayer.lookVec
 		event.result = if(controller.activate(event.world, event.pos, blockState, event.entityPlayer, event.hand, event.face!!, lookVector.x, lookVector.y, lookVector.z))
