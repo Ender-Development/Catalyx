@@ -26,25 +26,29 @@ inline operator fun BlockPos.times(scalar: Int) =
 inline fun Pair<BlockPos, BlockPos>.getAllInBox() =
 	BlockPos.getAllInBox(first, second)
 
+/**
+ * @see org.ender_development.catalyx.blocks.multiblock.BaseEdge
+ * @see getHorizontalCenterFromMeta
+ */
 inline fun BlockPos.getHorizontalSurroundings() = arrayOf(
-	this.north(),
-	this.north().west(),
-	this.west(),
-	this.south().west(),
-	this.south(),
-	this.south().east(),
-	this.east(),
-	this.north().east()
+	north().west(), north(), north().east(),
+	west(),        /* us */  east(),
+	south().west(), south(), south().east()
 )
 
-inline fun BlockPos.getHorizontalCenterFromMeta(meta: Int): BlockPos = when(meta.coerceAtMost(7)) {
-	0 -> this.south()
-	1 -> this.south().east()
-	2 -> this.east()
-	3 -> this.north().east()
-	4 -> this.north()
-	5 -> this.north().west()
-	6 -> this.west()
-	7 -> this.south().west()
-	else -> this
+/**
+ * Inverse of the order in [getHorizontalSurroundings]
+ * @see org.ender_development.catalyx.blocks.multiblock.BaseEdge
+ * @see getHorizontalSurroundings
+ */
+fun BlockPos.getHorizontalCenterFromMeta(meta: Int): BlockPos = when(meta.coerceIn(0, 7)) {
+	0 -> south().east()
+	1 -> south()
+	2 -> south().west()
+	3 -> east()
+	4 -> west()
+	5 -> north().east()
+	6 -> north()
+	7 -> north().west()
+	else -> error("physically cannot happen")
 }
