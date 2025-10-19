@@ -16,6 +16,7 @@ import org.ender_development.catalyx.utils.extensions.component1
 import org.ender_development.catalyx.utils.extensions.component2
 import org.ender_development.catalyx.utils.extensions.component3
 import org.ender_development.catalyx.utils.extensions.getCentre
+import org.ender_development.catalyx.utils.extensions.getHorizontalCenterFromMeta
 import org.ender_development.catalyx.utils.extensions.toStack
 
 open class BaseEdge(mod: ICatalyxMod, name: String) : BaseBlock(mod, name) {
@@ -33,98 +34,14 @@ open class BaseEdge(mod: ICatalyxMod, name: String) : BaseBlock(mod, name) {
 	override fun getStateFromMeta(meta: Int): IBlockState =
 		defaultState.withProperty(state, meta.coerceIn(0, 7))
 
-	fun breakBlockSafe(world: World, pos: BlockPos, player: EntityPlayer) {
-		val te = world.getTileEntity(pos)
-		if(te is IMultiBlockPart) {
-			te.breakBlock(world, pos, world.getBlockState(pos), player)
-			world.destroyBlock(pos, !player.capabilities.isCreativeMode)
-		} else
-			world.setBlockToAir(pos)
-	}
-
 	override fun onBlockHarvested(world: World, pos: BlockPos, block: IBlockState, player: EntityPlayer) {
-		// TODO what is this mess
-		when(block.getValue(state)) {
-			0 -> {
-				breakBlockSafe(world, pos.south(), player)
-				breakBlockSafe(world, pos.south(2), player)
-				breakBlockSafe(world, pos.east(), player)
-				breakBlockSafe(world, pos.west(), player)
-				breakBlockSafe(world, pos.east().south(), player)
-				breakBlockSafe(world, pos.west().south(), player)
-				breakBlockSafe(world, pos.east().south(2), player)
-				breakBlockSafe(world, pos.west().south(2), player)
-			}
-			1 -> {
-				breakBlockSafe(world, pos.east(), player)
-				breakBlockSafe(world, pos.east(2), player)
-				breakBlockSafe(world, pos.south(), player)
-				breakBlockSafe(world, pos.south(2), player)
-				breakBlockSafe(world, pos.east().south(), player)
-				breakBlockSafe(world, pos.east(2).south(), player)
-				breakBlockSafe(world, pos.east().south(2), player)
-				breakBlockSafe(world, pos.east(2).south(2), player)
-			}
-			2 -> {
-				breakBlockSafe(world, pos.east(), player)
-				breakBlockSafe(world, pos.east(2), player)
-				breakBlockSafe(world, pos.north(), player)
-				breakBlockSafe(world, pos.south(), player)
-				breakBlockSafe(world, pos.north().east(), player)
-				breakBlockSafe(world, pos.south().east(), player)
-				breakBlockSafe(world, pos.north().east(2), player)
-				breakBlockSafe(world, pos.south().east(2), player)
-			}
-			3 -> {
-				breakBlockSafe(world, pos.east(), player)
-				breakBlockSafe(world, pos.east(2), player)
-				breakBlockSafe(world, pos.north(), player)
-				breakBlockSafe(world, pos.north(2), player)
-				breakBlockSafe(world, pos.east().north(), player)
-				breakBlockSafe(world, pos.east(2).north(), player)
-				breakBlockSafe(world, pos.east().north(2), player)
-				breakBlockSafe(world, pos.east(2).north(2), player)
-			}
-			4 -> {
-				breakBlockSafe(world, pos.north(), player)
-				breakBlockSafe(world, pos.north(2), player)
-				breakBlockSafe(world, pos.east(), player)
-				breakBlockSafe(world, pos.west(), player)
-				breakBlockSafe(world, pos.east().north(), player)
-				breakBlockSafe(world, pos.west().north(), player)
-				breakBlockSafe(world, pos.east().north(2), player)
-				breakBlockSafe(world, pos.west().north(2), player)
-			}
-			5 -> {
-				breakBlockSafe(world, pos.west(), player)
-				breakBlockSafe(world, pos.west(2), player)
-				breakBlockSafe(world, pos.north(), player)
-				breakBlockSafe(world, pos.north(2), player)
-				breakBlockSafe(world, pos.west().north(), player)
-				breakBlockSafe(world, pos.west(2).north(), player)
-				breakBlockSafe(world, pos.west().north(2), player)
-				breakBlockSafe(world, pos.west(2).north(2), player)
-			}
-			6 -> {
-				breakBlockSafe(world, pos.west(), player)
-				breakBlockSafe(world, pos.west(2), player)
-				breakBlockSafe(world, pos.north(), player)
-				breakBlockSafe(world, pos.south(), player)
-				breakBlockSafe(world, pos.north().west(), player)
-				breakBlockSafe(world, pos.south().west(), player)
-				breakBlockSafe(world, pos.north().west(2), player)
-				breakBlockSafe(world, pos.south().west(2), player)
-			}
-			7 -> {
-				breakBlockSafe(world, pos.west(), player)
-				breakBlockSafe(world, pos.west(2), player)
-				breakBlockSafe(world, pos.south(), player)
-				breakBlockSafe(world, pos.south(2), player)
-				breakBlockSafe(world, pos.west().south(), player)
-				breakBlockSafe(world, pos.west(2).south(), player)
-				breakBlockSafe(world, pos.west().south(2), player)
-				breakBlockSafe(world, pos.west(2).south(2), player)
-			}
+		val center = pos.getHorizontalCenterFromMeta(block.getValue(state))
+		val tileEntity = world.getTileEntity(center)
+		if(tileEntity is IMultiBlockPart) {
+			tileEntity.breakBlock(world, center, world.getBlockState(center), player)
+			world.destroyBlock(center, !player.capabilities.isCreativeMode)
+		} else {
+			world.setBlockToAir(center)
 		}
 	}
 

@@ -35,7 +35,7 @@ import org.ender_development.catalyx.tiles.helper.*
 /**
  * A base TileEntity in Catalyx, implementing separate input and output inventories; saving/loading from NBT; energy, fluid and item capability handling
  */
-abstract class BaseTile(val mod: ICatalyxMod) : TileEntity(), BaseContainer.IBaseContainerCompat {
+abstract class BaseTile(open val mod: ICatalyxMod) : TileEntity(), BaseContainer.IBaseContainerCompat {
 	var inputSlots = 0
 	var outputSlots = 0
 	override val SIZE

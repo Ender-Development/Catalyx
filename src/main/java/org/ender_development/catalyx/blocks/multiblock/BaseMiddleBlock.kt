@@ -6,19 +6,9 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import org.ender_development.catalyx.blocks.BaseTileBlock
 import org.ender_development.catalyx.core.ICatalyxMod
+import org.ender_development.catalyx.utils.extensions.getHorizontalSurroundings
 
 open class BaseMiddleBlock<T>(mod: ICatalyxMod, name: String, tileClass: Class<T>, guiId: Int, val edge: BaseEdge) : BaseTileBlock(mod, name, tileClass, guiId) where T : TileEntity, T : IMultiBlockPart {
-	private fun getEdges(pos: BlockPos) = arrayOf(
-		pos.north(),
-		pos.north().west(),
-		pos.west(),
-		pos.south().west(),
-		pos.south(),
-		pos.south().east(),
-		pos.east(),
-		pos.north().east()
-	)
-
 	override fun canPlaceBlockAt(world: World, pos: BlockPos): Boolean {
 		val blockPos = arrayOf(
 			pos.east(), pos.west(), pos.north(), pos.south(),
@@ -31,7 +21,7 @@ open class BaseMiddleBlock<T>(mod: ICatalyxMod, name: String, tileClass: Class<T
 		world.getBlockState(pos).block.isReplaceable(world, pos)
 
 	override fun onBlockAdded(world: World, pos: BlockPos, state: IBlockState) {
-		getEdges(pos).forEachIndexed { idx, pos ->
+		pos.getHorizontalSurroundings().forEachIndexed { idx, pos ->
 			@Suppress("DEPRECATION")
 			world.setBlockState(pos, edge.getStateFromMeta(idx))
 		}
