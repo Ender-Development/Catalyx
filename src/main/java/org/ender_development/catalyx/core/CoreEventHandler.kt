@@ -22,9 +22,13 @@ internal object CoreEventHandler {
 	@SubscribeEvent
 	fun activateEdgeBlock(event: PlayerInteractEvent) {
 		val blockState = event.world.getBlockState(event.pos)
-		if(blockState.block !is BaseEdge) return
+		if(blockState.block !is BaseEdge)
+			return
+
 		val controller = event.world.getTileEntity(event.pos.getHorizontalCenterFromMeta(blockState.getValue(BaseEdge.state)))
-		if(controller !is IMultiBlockPart) return
+		if(controller !is IMultiBlockPart)
+			return
+
 		val lookVector = event.entityPlayer.lookVec
 		event.result = if(controller.activate(event.world, event.pos, blockState, event.entityPlayer, event.hand, event.face!!, lookVector.x, lookVector.y, lookVector.z))
 			Event.Result.ALLOW
