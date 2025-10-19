@@ -8,8 +8,7 @@ import org.ender_development.catalyx.blocks.BaseTileBlock
 import org.ender_development.catalyx.core.ICatalyxMod
 
 open class BaseMiddleBlock(mod: ICatalyxMod, name: String, tileClass: Class<out TileEntity>, guiId: Int, val edge: BaseEdge) : BaseTileBlock(mod, name, tileClass, guiId) {
-
-	private fun getEdges(pos: BlockPos) = listOf(
+	private fun getEdges(pos: BlockPos) = arrayOf(
 		pos.north(),
 		pos.north().west(),
 		pos.west(),
@@ -21,19 +20,21 @@ open class BaseMiddleBlock(mod: ICatalyxMod, name: String, tileClass: Class<out 
 	)
 
 	override fun canPlaceBlockAt(world: World, pos: BlockPos): Boolean {
-		val blockPos = listOf(
+		val blockPos = arrayOf(
 			pos.east(), pos.west(), pos.north(), pos.south(),
 			pos.east().north(), pos.east().south(), pos.west().north(), pos.west().south()
 		)
-		if(blockPos.all { isReplaceable(world, it) })
-			return super.canPlaceBlockAt(world, pos)
-		return false
+		return blockPos.all { isReplaceable(world, it) } && super.canPlaceBlockAt(world, pos)
 	}
 
-	private fun isReplaceable(world: World, pos: BlockPos) = world.getBlockState(pos).block.isReplaceable(world, pos)
+	private fun isReplaceable(world: World, pos: BlockPos) =
+		world.getBlockState(pos).block.isReplaceable(world, pos)
 
 	override fun onBlockAdded(world: World, pos: BlockPos, state: IBlockState) {
-		getEdges(pos).forEachIndexed { i, p -> world.setBlockState(p, edge.getStateFromMeta(i)) }
+		getEdges(pos).forEachIndexed { idx, pos ->
+			@Suppress("DEPRECATION")
+			world.setBlockState(pos, edge.getStateFromMeta(idx))
+		}
 	}
 }
 
