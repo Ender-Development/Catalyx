@@ -8,8 +8,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 
 interface IMultiBlockPart {
-	// unused?
-	fun activate(world: World, pos: BlockPos, state: IBlockState, player: EntityPlayer, hand: EnumHand, side: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean
+	fun activate(world: World, pos: BlockPos, state: IBlockState, player: EntityPlayer, hand: EnumHand, side: EnumFacing, hitX: Double, hitY: Double, hitZ: Double): Boolean
 
 	fun breakBlock(world: World, pos: BlockPos, state: IBlockState, player: EntityPlayer)
 }
