@@ -7,7 +7,7 @@ import net.minecraft.world.World
 import org.ender_development.catalyx.blocks.BaseTileBlock
 import org.ender_development.catalyx.core.ICatalyxMod
 
-open class BaseMiddleBlock(mod: ICatalyxMod, name: String, tileClass: Class<out TileEntity>, guiId: Int, val edge: BaseEdge) : BaseTileBlock(mod, name, tileClass, guiId) {
+open class BaseMiddleBlock<T>(mod: ICatalyxMod, name: String, tileClass: Class<T>, guiId: Int, val edge: BaseEdge) : BaseTileBlock(mod, name, tileClass, guiId) where T : TileEntity, T : IMultiBlockPart {
 	private fun getEdges(pos: BlockPos) = arrayOf(
 		pos.north(),
 		pos.north().west(),
