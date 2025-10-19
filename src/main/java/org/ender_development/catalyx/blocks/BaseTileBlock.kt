@@ -34,7 +34,6 @@ open class BaseTileBlock(mod: ICatalyxMod, name: String, val tileClass: Class<ou
 		GameRegistry.registerTileEntity(tileClass, ResourceLocation(mod.modId, name))
 	}
 
-	@Suppress("DEPRECATION")
 	override fun createNewTileEntity(worldIn: World, meta: Int): TileEntity =
 		tileClass.newInstance()
 
