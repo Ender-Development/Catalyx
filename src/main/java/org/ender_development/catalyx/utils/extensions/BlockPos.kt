@@ -2,6 +2,7 @@
 
 package org.ender_development.catalyx.utils.extensions
 
+import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
 import org.ender_development.catalyx.utils.math.BlockPosRotate
 
@@ -35,20 +36,3 @@ inline fun BlockPos.getHorizontalSurroundings() = arrayOf(
 	west(),        /* us */  east(),
 	south().west(), south(), south().east()
 )
-
-/**
- * Inverse of the order in [getHorizontalSurroundings]
- * @see org.ender_development.catalyx.blocks.multiblock.BaseEdge
- * @see getHorizontalSurroundings
- */
-fun BlockPos.getHorizontalCenterFromMeta(meta: Int): BlockPos = when(meta.coerceIn(0, 7)) {
-	0 -> south().east()
-	1 -> south()
-	2 -> south().west()
-	3 -> east()
-	4 -> west()
-	5 -> north().east()
-	6 -> north()
-	7 -> north().west()
-	else -> error("physically cannot happen")
-}

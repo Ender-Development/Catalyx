@@ -10,7 +10,6 @@ import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.blocks.multiblock.BaseEdge
 import org.ender_development.catalyx.blocks.multiblock.IMultiBlockPart
 import org.ender_development.catalyx.client.AreaHighlighter
-import org.ender_development.catalyx.utils.extensions.getHorizontalCenterFromMeta
 
 internal object CoreEventHandler {
 	@JvmStatic // required because of EventBus shitfuckery
@@ -22,18 +21,20 @@ internal object CoreEventHandler {
 	@JvmStatic
 	@SubscribeEvent
 	fun activateEdgeBlock(event: PlayerInteractEvent) {
-		val blockState = event.world.getBlockState(event.pos)
-		if(blockState.block !is BaseEdge)
+		if (event.world.isRemote)
 			return
+		val blockState = event.world.getBlockState(event.pos)
+		(blockState.block as? BaseEdge).let {
+			val posController = it?.getCenter(event.pos, blockState) ?: return
+			val controller = event.world.getTileEntity(posController)
+			if(controller !is IMultiBlockPart)
+				return Catalyx.LOGGER.error("Edge block at ${event.pos} pointed to invalid controller at $posController")
 
-		val controller = event.world.getTileEntity(event.pos.getHorizontalCenterFromMeta(blockState.getValue(BaseEdge.state)))
-		if(controller !is IMultiBlockPart)
-			return Catalyx.LOGGER.error("Edge block at ${event.pos} pointed to invalid controller at ${event.pos.getHorizontalCenterFromMeta(blockState.getValue(BaseEdge.state))}")
-
-		val lookVector = event.entityPlayer.lookVec
-		event.result = if(controller.activate(event.world, event.pos, blockState, event.entityPlayer, event.hand, event.face!!, lookVector.x, lookVector.y, lookVector.z))
-			Event.Result.ALLOW
-		else
-			Event.Result.DENY
+			val lookVector = event.entityPlayer.lookVec
+			event.result = if(controller.activate(event.world, event.pos, blockState, event.entityPlayer, event.hand, event.face!!, lookVector.x, lookVector.y, lookVector.z))
+				Event.Result.ALLOW
+			else
+				Event.Result.DENY
+		}
 	}
 }
