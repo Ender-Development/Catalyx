@@ -11,5 +11,5 @@ internal object CoreEventHandler {
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	fun renderWorldLast(event: RenderWorldLastEvent) =
-		AreaHighlighter.eventHandlers.toList().forEach { it(event) } // convert to list to avoid a ConcurrentME
+		AreaHighlighter.eventHandlers.toTypedArray().forEach { it(event) } // convert to array to avoid a ConcurrentME
 }

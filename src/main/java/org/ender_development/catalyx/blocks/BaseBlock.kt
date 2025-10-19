@@ -2,10 +2,14 @@ package org.ender_development.catalyx.blocks
 
 import net.minecraft.block.Block
 import net.minecraft.block.material.Material
+import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.item.Item
 import net.minecraft.item.ItemBlock
+import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
+import net.minecraft.util.math.BlockPos
+import net.minecraft.world.IBlockAccess
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.event.RegistryEvent
 import org.ender_development.catalyx.core.IBlockProvider
@@ -51,4 +55,8 @@ open class BaseBlock(val mod: ICatalyxMod, name: String, material: Material = Ma
 	init {
 		mod.register(this)
 	}
+
+	@Deprecated("")
+	override fun shouldSideBeRendered(blockState: IBlockState, blockAccess: IBlockAccess, pos: BlockPos, side: EnumFacing) =
+		blockAccess.getBlockState(pos.offset(side)).block !== this
 }
