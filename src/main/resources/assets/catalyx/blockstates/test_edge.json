@@ -1,0 +1,37 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"model": "catalyx:layered_orientable",
+		"textures": {
+			"particle": "catalyx:block/mb_inner",
+			"bot_down": "catalyx:block/mb_down",
+			"bot_up": "catalyx:block/mb_top",
+			"bot_north": "catalyx:block/mb_inner",
+			"bot_east": "catalyx:block/mb_inner",
+			"bot_south": "catalyx:block/mb_inner",
+			"bot_west": "catalyx:block/mb_inner",
+			"top_down": "catalyx:block/mb_down",
+			"top_up": "catalyx:block/mb_top",
+			"top_north": "catalyx:block/mb_inner",
+			"top_east": "catalyx:block/mb_inner",
+			"top_south": "catalyx:block/mb_inner",
+			"top_west": "catalyx:block/mb_inner"
+		}
+	},
+	"variants": {
+		"normal": [{}],
+		"inventory": [{}],
+		"type=0,facing=north": {
+			"textures": {
+				"bot_up": "catalyx:block/mb_top_right_upper",
+				"top_up": "catalyx:block/null",
+				"bot_down": "catalyx:block/mb_down_right_upper",
+				"top_down": "catalyx:block/null",
+				"bot_north": "catalyx:block/mb_corner1",
+				"top_north": "catalyx:block/null",
+				"bot_east": "catalyx:block/mb_corner2",
+				"top_east": "catalyx:block/null"
+			}
+		}
+	}
+}
