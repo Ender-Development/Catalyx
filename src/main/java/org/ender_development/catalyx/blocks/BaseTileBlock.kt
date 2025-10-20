@@ -61,7 +61,7 @@ open class BaseTileBlock(mod: ICatalyxMod, name: String, val tileClass: Class<ou
 
 		drops.add(ItemStack(item, 1, damageDropped(state)).apply {
 			tagCompound = world.getTileEntity(pos)?.updateTag?.apply {
-				arrayOf("x", "y", "z").forEach(this::removeTag)
+				arrayOf("x", "y", "z").forEach(::removeTag)
 			}
 		})
 

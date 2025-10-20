@@ -16,7 +16,7 @@ import kotlin.io.path.*
 open class ConfigPersistentData(override val id: ResourceLocation) : IPersistentData {
 	private val path = Loader.instance().configDir.toPath() / Reference.MODID / "persistent_data_${id.namespace}-${id.path}.dat"
 
-	override val data: NBTTagCompound by Delegates.lazyProperty(this::read)
+	override val data: NBTTagCompound by Delegates.lazyProperty(::read)
 
 	@Synchronized
 	private fun read(): NBTTagCompound {

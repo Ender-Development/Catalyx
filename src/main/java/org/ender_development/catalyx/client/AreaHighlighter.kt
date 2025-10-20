@@ -105,14 +105,14 @@ class AreaHighlighter {
 	 * otherwise, this is automatically called after the {time} passes
 	 */
 	fun hide() {
-		eventHandlers.remove(this::eventHandler)
+		eventHandlers.remove(::eventHandler)
 		shown = false
 		counter = 0
 		counterDirection = 1
 	}
 
 	internal fun show() {
-		eventHandlers.add(this::eventHandler)
+		eventHandlers.add(::eventHandler)
 		shown = true
 	}
 
