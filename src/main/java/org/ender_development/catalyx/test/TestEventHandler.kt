@@ -10,6 +10,7 @@ internal object TestEventHandler {
 	val areaHighlighter = AreaHighlighter()
 
 	@SubscribeEvent
+	@JvmStatic
 	fun onChat(ev: ClientChatEvent) {
 		if(!ev.message.startsWith($$"$c.h "))
 			return

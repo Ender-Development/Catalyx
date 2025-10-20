@@ -4,7 +4,6 @@ import it.unimi.dsi.fastutil.Hash
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet
 import net.minecraft.nbt.NBTTagCompound
 import org.ender_development.catalyx.Catalyx
-import org.ender_development.catalyx.utils.PersistentData
 
 object RecipeInputCache {
 	const val MINIMUM_CACHE_SIZE = 1 shl 13
@@ -35,10 +34,10 @@ object RecipeInputCache {
 		instances = null
 
 		if(size in MINIMUM_CACHE_SIZE..<MAXIMUM_CACHE_SIZE) {
-			val tagCompound = Catalyx.persistentData.tag
+			val tagCompound = Catalyx.configPersistentData.data
 			if(getExpectedInstanceAmount(tagCompound) != size) {
 				tagCompound.setInteger(DATA_NAME, size)
-				Catalyx.persistentData.save()
+				Catalyx.configPersistentData.save()
 			}
 		}
 	}
@@ -96,7 +95,7 @@ object RecipeInputCache {
 	 * @return the optimal expected input cache size
 	 */
 	private fun calculateOptimalExpectedSize(): Int {
-		val min = getExpectedInstanceAmount(Catalyx.persistentData.tag).coerceAtLeast(MINIMUM_CACHE_SIZE)
+		val min = getExpectedInstanceAmount(Catalyx.configPersistentData.data).coerceAtLeast(MINIMUM_CACHE_SIZE)
 		for(i in 13..30) {
 			val sizeToTest = 1 shl i
 			val arraySize = nextHighestPowerOf2((sizeToTest / Hash.DEFAULT_LOAD_FACTOR).toInt())

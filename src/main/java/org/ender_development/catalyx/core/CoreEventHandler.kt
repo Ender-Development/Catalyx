@@ -2,6 +2,9 @@ package org.ender_development.catalyx.core
 
 import net.minecraftforge.client.event.RenderWorldLastEvent
 import net.minecraftforge.event.entity.player.PlayerInteractEvent
+import net.minecraftforge.fml.common.FMLCommonHandler
+import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent
+import net.minecraftforge.fml.common.event.FMLServerStoppedEvent
 import net.minecraftforge.fml.common.eventhandler.Event
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.relauncher.Side
@@ -10,6 +13,7 @@ import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.blocks.multiblock.BaseEdge
 import org.ender_development.catalyx.blocks.multiblock.IMultiBlockPart
 import org.ender_development.catalyx.client.AreaHighlighter
+import org.ender_development.catalyx.utils.persistence.WorldPersistentData
 
 internal object CoreEventHandler {
 	@JvmStatic // required because of EventBus shitfuckery
@@ -37,4 +41,10 @@ internal object CoreEventHandler {
 				Event.Result.DENY
 		}
 	}
+
+	fun serverAboutToStart(event: FMLServerAboutToStartEvent) =
+		WorldPersistentData.instances.forEach(WorldPersistentData::worldJoined)
+
+	fun serverStopped(event: FMLServerStoppedEvent) =
+		WorldPersistentData.instances.forEach(WorldPersistentData::worldLeft)
 }

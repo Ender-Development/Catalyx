@@ -14,6 +14,7 @@ import org.ender_development.catalyx.modules.CatalyxModule
 import org.ender_development.catalyx.modules.CatalyxModules
 import org.ender_development.catalyx.tiles.BaseMiddleTile
 import org.ender_development.catalyx.utils.LoggerUtils
+import org.ender_development.catalyx.utils.SideUtils
 
 @CatalyxModule(
 	moduleID = CatalyxModules.MODULE_TEST,
@@ -31,7 +32,7 @@ internal class TestModule : BaseCatalyxModule() {
 
 	override val logger: Logger = LoggerUtils.new("Development")
 
-	override val eventBusSubscribers: List<Class<*>> = listOf(TestEventHandler::class.java)
+	override val eventBusSubscribers: List<Class<*>> = if(SideUtils.isClient) listOf(TestEventHandler::class.java) else emptyList()
 
 	override fun preInit(event: FMLPreInitializationEvent) =
 		logger.info("Detected deobfuscated environment, adding some testing features")
