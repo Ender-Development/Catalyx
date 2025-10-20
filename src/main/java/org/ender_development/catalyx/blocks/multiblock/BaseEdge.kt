@@ -115,7 +115,13 @@ open class BaseEdge(mod: ICatalyxMod, name: String) : BaseBlock(mod, name) {
 				BinaryFacing.SOUTH -> pos.north().east()
 				BinaryFacing.WEST  -> pos.south().east()
 			}
-			Type.SIDE_1, Type.SIDE_2 -> pos.offset(facing.facing.opposite)
+			//Type.SIDE_1, Type.SIDE_2 -> pos.offset(facing.facing)
+			else -> when(facing) {
+				BinaryFacing.NORTH -> pos.north()
+				BinaryFacing.EAST  -> pos.east()
+				BinaryFacing.SOUTH -> pos.south()
+				BinaryFacing.WEST  -> pos.west()
+			}
 		}
 	}
 
