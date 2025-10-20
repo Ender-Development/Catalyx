@@ -1,6 +1,7 @@
 package org.ender_development.catalyx.blocks.multiblock
 
 import net.minecraft.block.BlockHorizontal
+import net.minecraft.block.material.EnumPushReaction
 import net.minecraft.block.properties.PropertyInteger
 import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
@@ -10,6 +11,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.NonNullList
 import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.RayTraceResult
 import net.minecraft.world.World
 import org.ender_development.catalyx.blocks.BaseBlock
 import org.ender_development.catalyx.blocks.multiblock.BaseEdge.BinaryFacing.Companion.binary
@@ -108,6 +110,7 @@ open class BaseEdge(mod: ICatalyxMod, name: String) : BaseBlock(mod, name) {
 		val meta = getMetaFromState(state)
 		val (facing, type) = unshiftMeta(meta)
 		// TODO for Ender - verify if this is correct
+		// TODO for roz - west and south facing middle blocks don't find the center correctly
 		return when(type) {
 			Type.CORNER -> when(facing) {
 				BinaryFacing.NORTH -> pos.south().west()
@@ -135,4 +138,9 @@ open class BaseEdge(mod: ICatalyxMod, name: String) : BaseBlock(mod, name) {
 
 	// NO-OP
 	override fun getSubBlocks(itemIn: CreativeTabs, items: NonNullList<ItemStack?>) {}
+
+	override fun getPickBlock(state: IBlockState, target: RayTraceResult, world: World, pos: BlockPos, player: EntityPlayer): ItemStack = ItemStack.EMPTY
+
+	@Deprecated("Implementation is fine.")
+	override fun getPushReaction(state: IBlockState): EnumPushReaction = EnumPushReaction.BLOCK
 }
