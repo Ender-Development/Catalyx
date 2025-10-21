@@ -74,7 +74,7 @@ open class BaseEdge(mod: ICatalyxMod, name: String) : BaseBlock(mod, name) {
 	}
 
 	override fun onBlockHarvested(world: World, pos: BlockPos, block: IBlockState, player: EntityPlayer) {
-		val center = getCenter(pos, block)
+		val center = getCenter(world, pos, block)
 		val tileEntity = world.getTileEntity(center)
 		if(tileEntity is IMultiBlockPart) {
 			tileEntity.breakBlock(world, center, world.getBlockState(center), player)
@@ -99,36 +99,39 @@ open class BaseEdge(mod: ICatalyxMod, name: String) : BaseBlock(mod, name) {
 		setBlocks(world, pos, BinaryFacing.NORTH with Type.CORNER, BinaryFacing.EAST with Type.CORNER, BinaryFacing.SOUTH with Type.CORNER, BinaryFacing.WEST with Type.CORNER, corners)
 		when(facing) {
 			EnumFacing.NORTH -> setBlocks(world, pos, BinaryFacing.NORTH with Type.SIDE_1, BinaryFacing.EAST with Type.SIDE_2, BinaryFacing.SOUTH with Type.SIDE_1, BinaryFacing.WEST with Type.SIDE_2)
-			EnumFacing.EAST  -> setBlocks(world, pos, BinaryFacing.NORTH with Type.SIDE_2, BinaryFacing.EAST with Type.SIDE_1, BinaryFacing.SOUTH with Type.SIDE_2, BinaryFacing.WEST with Type.SIDE_1)
+			EnumFacing.EAST -> setBlocks(world, pos, BinaryFacing.NORTH with Type.SIDE_2, BinaryFacing.EAST with Type.SIDE_1, BinaryFacing.SOUTH with Type.SIDE_2, BinaryFacing.WEST with Type.SIDE_1)
 			EnumFacing.SOUTH -> setBlocks(world, pos, BinaryFacing.SOUTH with Type.SIDE_1, BinaryFacing.WEST with Type.SIDE_2, BinaryFacing.NORTH with Type.SIDE_1, BinaryFacing.EAST with Type.SIDE_2)
-			EnumFacing.WEST  -> setBlocks(world, pos, BinaryFacing.SOUTH with Type.SIDE_2, BinaryFacing.WEST with Type.SIDE_1, BinaryFacing.NORTH with Type.SIDE_2, BinaryFacing.EAST with Type.SIDE_1)
+			EnumFacing.WEST -> setBlocks(world, pos, BinaryFacing.SOUTH with Type.SIDE_2, BinaryFacing.WEST with Type.SIDE_1, BinaryFacing.NORTH with Type.SIDE_2, BinaryFacing.EAST with Type.SIDE_1)
 			else -> error("Impossible facing for horizontal multiblock: $facing")
 		}
 	}
 
-	fun getCenter(pos: BlockPos, state: IBlockState): BlockPos {
+	fun getCenter(world: World, pos: BlockPos, state: IBlockState): BlockPos {
 		val meta = getMetaFromState(state)
 		val (facing, type) = unshiftMeta(meta)
-		// TODO for Ender - verify if this is correct
-		// TODO for roz - west and south facing middle blocks don't find the center correctly
 		return when(type) {
 			Type.CORNER -> when(facing) {
 				BinaryFacing.NORTH -> pos.south().west()
-				BinaryFacing.EAST  -> pos.north().west()
+				BinaryFacing.EAST -> pos.north().west()
 				BinaryFacing.SOUTH -> pos.north().east()
-				BinaryFacing.WEST  -> pos.south().east()
+				BinaryFacing.WEST -> pos.south().east()
 			}
-			//Type.SIDE_1, Type.SIDE_2 -> pos.offset(facing.facing)
-			else -> when(facing) {
-				BinaryFacing.NORTH -> pos.north()
-				BinaryFacing.EAST  -> pos.east()
-				BinaryFacing.SOUTH -> pos.south()
-				BinaryFacing.WEST  -> pos.west()
+			else -> when (facing) {
+				BinaryFacing.NORTH, BinaryFacing.SOUTH -> getCenter(world, pos.east(), world.getBlockState(pos.east()))
+				BinaryFacing.EAST, BinaryFacing.WEST -> getCenter(world, pos.south(), world.getBlockState(pos.south()))
 			}
 		}
 	}
 
-	private fun setBlocks(world: World, origin: BlockPos, top: Int, right: Int, bottom: Int, left: Int, listPos: Array<BlockPos> = arrayOf(origin.north(), origin.east(), origin.south(), origin.west())) {
+	private fun setBlocks(
+		world: World,
+		origin: BlockPos,
+		top: Int,
+		right: Int,
+		bottom: Int,
+		left: Int,
+		listPos: Array<BlockPos> = arrayOf(origin.north(), origin.east(), origin.south(), origin.west())
+	) {
 		val metas = arrayOf(top, right, bottom, left)
 		@Suppress("DEPRECATION")
 		listPos.forEachIndexed { idx, pos ->

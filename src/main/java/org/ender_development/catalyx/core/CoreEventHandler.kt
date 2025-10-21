@@ -29,7 +29,7 @@ internal object CoreEventHandler {
 			return
 		val blockState = event.world.getBlockState(event.pos)
 		(blockState.block as? BaseEdge).let {
-			val posController = it?.getCenter(event.pos, blockState) ?: return
+			val posController = it?.getCenter(event.world, event.pos, blockState) ?: return
 			val controller = event.world.getTileEntity(posController)
 			if(controller !is IMultiBlockPart)
 				return Catalyx.LOGGER.error("Edge block at ${event.pos} pointed to invalid controller at $posController")
