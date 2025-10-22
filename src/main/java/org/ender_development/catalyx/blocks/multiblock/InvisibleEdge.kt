@@ -5,7 +5,7 @@ import net.minecraft.util.BlockRenderLayer
 import net.minecraft.util.EnumBlockRenderType
 import org.ender_development.catalyx.core.ICatalyxMod
 
-class InvisibleEdge(mod: ICatalyxMod, name: String) : BaseEdge(mod, name) {
+open class InvisibleEdge(mod: ICatalyxMod, name: String) : BaseEdge(mod, name) {
 	init {
 	    translucent = true
 	}
