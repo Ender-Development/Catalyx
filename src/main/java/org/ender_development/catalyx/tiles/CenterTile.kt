@@ -7,13 +7,13 @@ import net.minecraft.util.EnumHand
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import org.ender_development.catalyx.Catalyx
-import org.ender_development.catalyx.blocks.multiblock.BaseEdge
-import org.ender_development.catalyx.blocks.multiblock.IMultiBlockPart
+import org.ender_development.catalyx.blocks.multiblock.IMultiblockEdge
+import org.ender_development.catalyx.blocks.multiblock.IMultiblockTile
 import org.ender_development.catalyx.core.ICatalyxMod
 import org.ender_development.catalyx.utils.DevUtils
 import org.ender_development.catalyx.utils.extensions.getHorizontalSurroundings
 
-open class BaseMiddleTile(mod: ICatalyxMod) : BaseTile(mod), IMultiBlockPart {
+open class CenterTile(mod: ICatalyxMod) : BaseTile(mod), IMultiblockTile {
 	internal constructor() : this(Catalyx) {
 		if(!DevUtils.isDeobfuscated)
 			error("use the full constructor")
@@ -24,7 +24,7 @@ open class BaseMiddleTile(mod: ICatalyxMod) : BaseTile(mod), IMultiBlockPart {
 
 	override fun breakBlock(world: World, pos: BlockPos, state: IBlockState, player: EntityPlayer) {
 		pos.getHorizontalSurroundings().forEach {
-			if(world.getBlockState(it).block is BaseEdge)
+			if(world.getBlockState(it).block is IMultiblockEdge)
 				world.setBlockToAir(it)
 		}
 	}

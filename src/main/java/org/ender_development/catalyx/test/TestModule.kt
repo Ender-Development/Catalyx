@@ -5,15 +5,17 @@ import org.apache.logging.log4j.Logger
 import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.Reference
 import org.ender_development.catalyx.blocks.BaseBlock
-import org.ender_development.catalyx.blocks.multiblock.BaseEdge
-import org.ender_development.catalyx.blocks.multiblock.BaseMiddleBlock
-import org.ender_development.catalyx.blocks.multiblock.InvisibleEdge
+import org.ender_development.catalyx.blocks.multiblock.CenterBlock
+import org.ender_development.catalyx.blocks.multiblock.CornerBlock
+import org.ender_development.catalyx.blocks.multiblock.InvisibleCorner
+import org.ender_development.catalyx.blocks.multiblock.InvisibleSide
+import org.ender_development.catalyx.blocks.multiblock.SideBlock
 import org.ender_development.catalyx.integration.Mods
 import org.ender_development.catalyx.items.BaseItem
 import org.ender_development.catalyx.modules.BaseCatalyxModule
 import org.ender_development.catalyx.modules.CatalyxModule
 import org.ender_development.catalyx.modules.CatalyxModules
-import org.ender_development.catalyx.tiles.BaseMiddleTile
+import org.ender_development.catalyx.tiles.CenterTile
 import org.ender_development.catalyx.utils.LoggerUtils
 import org.ender_development.catalyx.utils.SideUtils
 
@@ -28,8 +30,12 @@ internal class TestModule : BaseCatalyxModule() {
 	val testItem = BaseItem(Catalyx, "test_item").requires("!${Mods.GROOVYSCRIPT}")
 	val testItem2 = BaseItem(Catalyx, "test_item_2").requires(Mods.GROOVYSCRIPT)
 	val testBlock = BaseBlock(Catalyx, "test_block")
-	val testMulti = InvisibleEdge(Catalyx, "test_edge")
-	val testMultiBlock = BaseMiddleBlock<BaseMiddleTile>(Catalyx, "test_middle", BaseMiddleTile::class.java, 1, testMulti)
+	val testCorner = CornerBlock(Catalyx, "test_corner")
+	val testSide = SideBlock(Catalyx, "test_side")
+	val testMultiBlock = CenterBlock<CenterTile>(Catalyx, "test_middle", CenterTile::class.java, 1, testCorner, testSide)
+	val invisibleCorner = InvisibleCorner(Catalyx, "invisible_corner")
+	val invisibleSide = InvisibleSide(Catalyx, "invisible_side")
+	val invisibleMiddle = CenterBlock<CenterTile>(Catalyx, "invisible_middle", CenterTile::class.java, 2, invisibleCorner, invisibleSide)
 
 	override val logger: Logger = LoggerUtils.new("Development")
 
