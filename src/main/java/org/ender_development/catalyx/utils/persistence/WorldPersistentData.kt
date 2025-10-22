@@ -42,7 +42,7 @@ open class WorldPersistentData(override val id: ResourceLocation, val autoLoad: 
 
 		val path = path ?: return
 
-		Catalyx.LOGGER.warn("Reading persistent data from path {}", path)
+		Catalyx.LOGGER.debug("Reading persistent data from path {}", path)
 
 		if(path.exists())
 			try {
@@ -59,7 +59,7 @@ open class WorldPersistentData(override val id: ResourceLocation, val autoLoad: 
 	override fun save() {
 		val path = path ?: return
 
-		Catalyx.LOGGER.warn("Write persistent data to path {}", path)
+		Catalyx.LOGGER.debug("Write persistent data to path {}", path)
 
 		if(data.isEmpty)
 			return
