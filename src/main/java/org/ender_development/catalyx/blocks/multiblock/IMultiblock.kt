@@ -16,7 +16,7 @@ interface IMultiblock
 /**
  * Interface for multiblock tile entities.
  */
-interface IMultiblockTile: IMultiblock {
+interface IMultiblockTile : IMultiblock {
 	fun activate(world: World, pos: BlockPos, state: IBlockState, player: EntityPlayer, hand: EnumHand, side: EnumFacing, hitX: Double, hitY: Double, hitZ: Double): Boolean
 
 	fun breakBlock(world: World, pos: BlockPos, state: IBlockState, player: EntityPlayer)
@@ -25,7 +25,7 @@ interface IMultiblockTile: IMultiblock {
 /**
  * Interface for the center block of a multiblock structure.
  */
-interface IMultiblockCenter: IMultiblock {
+interface IMultiblockCenter : IMultiblock {
 	/**
 	 * Checks if the multiblock can be placed at the given position.
 	 *
@@ -60,7 +60,7 @@ interface IMultiblockCenter: IMultiblock {
 /**
  * Interface for the edge blocks of a multiblock structure.
  */
-interface IMultiblockEdge: IMultiblock {
+interface IMultiblockEdge : IMultiblock {
 	/**
 	 * Gets the center position of the multiblock structure based on the edge block's state.
 	 *
