@@ -1,0 +1,13 @@
+{
+	"parent": "catalyx:layered_orientable",
+	"textures": {
+		"bot_up": "catalyx:block/mb_top_right_upper",
+		"top_up": "catalyx:block/null",
+		"bot_down": "catalyx:block/mb_down_right_upper",
+		"top_down": "catalyx:block/null",
+		"bot_north": "catalyx:block/mb_corner1",
+		"top_north": "catalyx:block/null",
+		"bot_east": "catalyx:block/mb_corner2",
+		"top_east": "catalyx:block/null"
+	}
+}

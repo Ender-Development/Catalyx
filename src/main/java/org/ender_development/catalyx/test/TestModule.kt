@@ -7,6 +7,7 @@ import org.ender_development.catalyx.Reference
 import org.ender_development.catalyx.blocks.BaseBlock
 import org.ender_development.catalyx.blocks.multiblock.BaseEdge
 import org.ender_development.catalyx.blocks.multiblock.BaseMiddleBlock
+import org.ender_development.catalyx.blocks.multiblock.InvisibleEdge
 import org.ender_development.catalyx.integration.Mods
 import org.ender_development.catalyx.items.BaseItem
 import org.ender_development.catalyx.modules.BaseCatalyxModule
@@ -27,7 +28,7 @@ internal class TestModule : BaseCatalyxModule() {
 	val testItem = BaseItem(Catalyx, "test_item").requires("!${Mods.GROOVYSCRIPT}")
 	val testItem2 = BaseItem(Catalyx, "test_item_2").requires(Mods.GROOVYSCRIPT)
 	val testBlock = BaseBlock(Catalyx, "test_block")
-	val testMulti = BaseEdge(Catalyx, "test_edge")
+	val testMulti = InvisibleEdge(Catalyx, "test_edge")
 	val testMultiBlock = BaseMiddleBlock<BaseMiddleTile>(Catalyx, "test_middle", BaseMiddleTile::class.java, 1, testMulti)
 
 	override val logger: Logger = LoggerUtils.new("Development")

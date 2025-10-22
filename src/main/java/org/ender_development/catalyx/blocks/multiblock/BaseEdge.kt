@@ -18,6 +18,10 @@ import org.ender_development.catalyx.blocks.multiblock.BaseEdge.BinaryFacing.Com
 import org.ender_development.catalyx.core.ICatalyxMod
 
 open class BaseEdge(mod: ICatalyxMod, name: String) : BaseBlock(mod, name) {
+	init {
+	    disableStats()
+	}
+
 	companion object {
 		val type: PropertyInteger = PropertyInteger.create("type", 0, 2)
 	}
@@ -106,7 +110,7 @@ open class BaseEdge(mod: ICatalyxMod, name: String) : BaseBlock(mod, name) {
 		}
 	}
 
-	fun getCenter(world: World, pos: BlockPos, state: IBlockState): BlockPos {
+	tailrec fun getCenter(world: World, pos: BlockPos, state: IBlockState): BlockPos {
 		val meta = getMetaFromState(state)
 		val (facing, type) = unshiftMeta(meta)
 		return when(type) {
