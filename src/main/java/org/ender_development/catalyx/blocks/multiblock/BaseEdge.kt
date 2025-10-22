@@ -60,7 +60,7 @@ open class BaseEdge(mod: ICatalyxMod, name: String) : BaseBlock(mod, name) {
 		binary shl 2 or type.binary
 
 	@Suppress("NOTHING_TO_INLINE")
-	private inline fun unshiftMeta(meta: Int) =
+	inline fun unshiftMeta(meta: Int) =
 		BinaryFacing.fromBinary(meta and 0b1100 shr 2) to Type.entries[meta and 0b0011]
 
 	// ---
