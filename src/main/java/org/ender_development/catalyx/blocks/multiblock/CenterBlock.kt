@@ -23,8 +23,8 @@ open class CenterBlock<T>(mod: ICatalyxMod, name: String, tileClass: Class<T>, g
 		additionalComponents.forEach { it.place(world, pos, state.getValue(BlockHorizontal.FACING)) }
 	}
 
-	override fun onBlockHarvested(worldIn: World, pos: BlockPos, state: IBlockState, player: EntityPlayer) {
-		pos.getHorizontalSurroundings().forEach { pos -> (worldIn.getBlockState(pos).block as? IMultiblockEdge)?.let { worldIn.setBlockToAir(pos) } }
-		super.onBlockHarvested(worldIn, pos, state, player)
+	override fun onBlockHarvested(world: World, pos: BlockPos, state: IBlockState, player: EntityPlayer) {
+		pos.getHorizontalSurroundings().forEach { pos -> (world.getBlockState(pos).block as? IMultiblockEdge)?.let { world.setBlockToAir(pos) } }
+		super.onBlockHarvested(world, pos, state, player)
 	}
 }
