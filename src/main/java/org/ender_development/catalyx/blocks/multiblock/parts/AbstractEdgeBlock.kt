@@ -71,8 +71,14 @@ abstract class AbstractEdgeBlock(mod: ICatalyxMod, val name: String) : BaseBlock
 	// NO-OP
 	override fun getSubBlocks(itemIn: CreativeTabs, items: NonNullList<ItemStack?>) {}
 
-	override fun getPickBlock(state: IBlockState, target: RayTraceResult, world: World, pos: BlockPos, player: EntityPlayer): ItemStack =
-		ItemStack.EMPTY
+	override fun getPickBlock(state: IBlockState, target: RayTraceResult, world: World, pos: BlockPos, player: EntityPlayer): ItemStack {
+		val center = getCenter(pos, state)
+		val tileEntity = world.getTileEntity(center)
+		(tileEntity as? IMultiblockTile)?.let {
+			val centerBlock = world.getBlockState(center).block
+			return centerBlock.getPickBlock(centerBlock.defaultState, target, world, center, player)
+		} ?: return ItemStack.EMPTY
+	}
 
 	@Deprecated("Implementation is fine.")
 	override fun getPushReaction(state: IBlockState): EnumPushReaction =

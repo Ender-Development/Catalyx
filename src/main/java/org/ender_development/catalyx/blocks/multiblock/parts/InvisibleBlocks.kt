@@ -10,9 +10,8 @@ open class InvisibleCorner(mod: ICatalyxMod, name: String) : CornerBlock(mod, na
 	    translucent = true
 	}
 
-	override fun getRenderLayer(): BlockRenderLayer {
-		return BlockRenderLayer.TRANSLUCENT
-	}
+	override fun getRenderLayer(): BlockRenderLayer =
+		BlockRenderLayer.TRANSLUCENT
 
 	@Deprecated("Implementation is fine.")
 	override fun getRenderType(state: IBlockState): EnumBlockRenderType =
@@ -28,9 +27,8 @@ open class InvisibleSide(mod: ICatalyxMod, name: String) : SideBlock(mod, name) 
 	    translucent = true
 	}
 
-	override fun getRenderLayer(): BlockRenderLayer {
-		return BlockRenderLayer.TRANSLUCENT
-	}
+	override fun getRenderLayer(): BlockRenderLayer =
+		BlockRenderLayer.TRANSLUCENT
 
 	@Deprecated("Implementation is fine.")
 	override fun getRenderType(state: IBlockState): EnumBlockRenderType =
