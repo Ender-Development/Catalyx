@@ -6,10 +6,10 @@ import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.Reference
 import org.ender_development.catalyx.blocks.BaseBlock
 import org.ender_development.catalyx.blocks.multiblock.CenterBlock
-import org.ender_development.catalyx.blocks.multiblock.CornerBlock
-import org.ender_development.catalyx.blocks.multiblock.InvisibleCorner
-import org.ender_development.catalyx.blocks.multiblock.InvisibleSide
-import org.ender_development.catalyx.blocks.multiblock.SideBlock
+import org.ender_development.catalyx.blocks.multiblock.parts.CornerBlock
+import org.ender_development.catalyx.blocks.multiblock.parts.InvisibleCorner
+import org.ender_development.catalyx.blocks.multiblock.parts.InvisibleSide
+import org.ender_development.catalyx.blocks.multiblock.parts.SideBlock
 import org.ender_development.catalyx.integration.Mods
 import org.ender_development.catalyx.items.BaseItem
 import org.ender_development.catalyx.modules.BaseCatalyxModule

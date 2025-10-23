@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.blocks.multiblock
+package org.ender_development.catalyx.blocks.multiblock.parts
 
 import net.minecraft.block.state.IBlockState
 import net.minecraft.util.BlockRenderLayer

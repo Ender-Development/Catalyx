@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.blocks.multiblock
+package org.ender_development.catalyx.blocks.multiblock.parts
 
 import net.minecraft.block.BlockHorizontal
 import net.minecraft.block.material.EnumPushReaction
@@ -14,6 +14,11 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.RayTraceResult
 import net.minecraft.world.World
 import org.ender_development.catalyx.blocks.BaseBlock
+import org.ender_development.catalyx.blocks.multiblock.Facing
+import org.ender_development.catalyx.blocks.multiblock.IMultiblockEdge
+import org.ender_development.catalyx.blocks.multiblock.IMultiblockTile
+import org.ender_development.catalyx.blocks.multiblock.Position
+import org.ender_development.catalyx.blocks.multiblock.with
 import org.ender_development.catalyx.core.ICatalyxMod
 
 abstract class AbstractEdgeBlock(mod: ICatalyxMod, val name: String) : BaseBlock(mod, name), IMultiblockEdge {
@@ -30,10 +35,10 @@ abstract class AbstractEdgeBlock(mod: ICatalyxMod, val name: String) : BaseBlock
 	}
 
 	override fun deconstructMeta(meta: Int): Pair<Facing, Position> =
-		Facing.fromBinary(meta and 0b1100 shr 2) to Position.entries[meta and 0b0011]
+		Facing.Companion.fromBinary(meta and 0b1100 shr 2) to Position.entries[meta and 0b0011]
 
 	override fun createBlockState(): BlockStateContainer =
-		BlockStateContainer(this, BlockHorizontal.FACING, position)
+        BlockStateContainer(this, BlockHorizontal.FACING, position)
 
 	/**
 	 * Gets the meta from the block state. The meta is constructed as follows:
@@ -60,7 +65,8 @@ abstract class AbstractEdgeBlock(mod: ICatalyxMod, val name: String) : BaseBlock
 			world.setBlockToAir(center)
 	}
 
-	internal fun placeBlock(world: World, pos: BlockPos, state: IBlockState) = world.setBlockState(pos, state, 1 or 2)
+	@Suppress("DEPRECATION")
+	internal fun placeBlock(world: World, pos: BlockPos, meta: Int) = world.setBlockState(pos, getStateFromMeta(meta), 1 or 2)
 
 	// NO-OP
 	override fun getSubBlocks(itemIn: CreativeTabs, items: NonNullList<ItemStack?>) {}
