@@ -19,7 +19,6 @@ open class CornerBlock(mod: ICatalyxMod, name: String) : AbstractEdgeBlock(mod, 
 			Position.P1 -> pos.south().east()
 			Position.P2 -> pos.south().west()
 			Position.P3 -> pos.north().west()
-			else -> error("Invalid position for corner block: $position")
 		}
 	}
 
