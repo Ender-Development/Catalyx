@@ -17,8 +17,31 @@ interface IMultiblock
  * Interface for multiblock tile entities.
  */
 interface IMultiblockTile : IMultiblock {
+	/**
+	 * Called when any part of the multiblock structure is activated (right-clicked) by a player.
+	 *
+	 * @param world The world where the block is located.
+	 * @param pos The position of the block.
+	 * @param state The block state of the block.
+	 * @param player The player who activated the block.
+	 * @param hand The hand used to activate the block.
+	 * @param side The side of the block that was clicked.
+	 * @param hitX The X coordinate of the hit vector.
+	 * @param hitY The Y coordinate of the hit vector.
+	 * @param hitZ The Z coordinate of the hit vector.
+	 * @return True if the activation was successful, false otherwise.
+	 */
 	fun activate(world: World, pos: BlockPos, state: IBlockState, player: EntityPlayer, hand: EnumHand, side: EnumFacing, hitX: Double, hitY: Double, hitZ: Double): Boolean
 
+	/**
+	 * Called when any part of the multiblock structure is broken by a player.
+	 * Usually used to handle cleanup and breaking of the entire multiblock structure.
+	 *
+	 * @param world The world where the block is located.
+	 * @param pos The position of the block.
+	 * @param state The block state of the block.
+	 * @param player The player who broke the block.
+	 */
 	fun breakBlock(world: World, pos: BlockPos, state: IBlockState, player: EntityPlayer)
 }
 
