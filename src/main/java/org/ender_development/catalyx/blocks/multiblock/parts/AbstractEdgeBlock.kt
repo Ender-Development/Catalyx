@@ -14,11 +14,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.RayTraceResult
 import net.minecraft.world.World
 import org.ender_development.catalyx.blocks.BaseBlock
-import org.ender_development.catalyx.blocks.multiblock.Facing
-import org.ender_development.catalyx.blocks.multiblock.IMultiblockEdge
-import org.ender_development.catalyx.blocks.multiblock.IMultiblockTile
-import org.ender_development.catalyx.blocks.multiblock.Position
-import org.ender_development.catalyx.blocks.multiblock.with
+import org.ender_development.catalyx.blocks.multiblock.*
 import org.ender_development.catalyx.core.ICatalyxMod
 
 abstract class AbstractEdgeBlock(mod: ICatalyxMod, val name: String) : BaseBlock(mod, name), IMultiblockEdge {
@@ -28,17 +24,17 @@ abstract class AbstractEdgeBlock(mod: ICatalyxMod, val name: String) : BaseBlock
 	}
 
 	init {
-	    disableStats()
-	    defaultState = blockState.baseState
+		disableStats()
+		defaultState = blockState.baseState
 			.withProperty(BlockHorizontal.FACING, EnumFacing.NORTH)
 			.withProperty(position, 0)
 	}
 
 	override fun deconstructMeta(meta: Int): Pair<Facing, Position> =
-		Facing.Companion.fromBinary(meta and 0b1100 shr 2) to Position.entries[meta and 0b0011]
+		Facing.fromBinary(meta and 0b1100 shr 2) to Position.entries[meta and 0b0011]
 
 	override fun createBlockState(): BlockStateContainer =
-        BlockStateContainer(this, BlockHorizontal.FACING, position)
+		BlockStateContainer(this, BlockHorizontal.FACING, position)
 
 	/**
 	 * Gets the meta from the block state. The meta is constructed as follows:
@@ -73,11 +69,11 @@ abstract class AbstractEdgeBlock(mod: ICatalyxMod, val name: String) : BaseBlock
 
 	override fun getPickBlock(state: IBlockState, target: RayTraceResult, world: World, pos: BlockPos, player: EntityPlayer): ItemStack {
 		val center = getCenter(pos, state)
-		val tileEntity = world.getTileEntity(center)
-		(tileEntity as? IMultiblockTile)?.let {
+		return if(world.getTileEntity(center) is IMultiblockTile) {
 			val centerBlock = world.getBlockState(center).block
-			return centerBlock.getPickBlock(centerBlock.defaultState, target, world, center, player)
-		} ?: return ItemStack.EMPTY
+			centerBlock.getPickBlock(centerBlock.defaultState, target, world, center, player)
+		} else
+			ItemStack.EMPTY
 	}
 
 	@Deprecated("Implementation is fine.")

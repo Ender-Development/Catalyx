@@ -1,6 +1,5 @@
 package org.ender_development.catalyx.utils.math.evaluator
 
-import org.ender_development.catalyx.utils.math.ExpressionException
 import org.ender_development.catalyx.utils.math.evaluator.TokenType.*
 import java.math.MathContext
 
@@ -59,7 +58,7 @@ internal class Scanner(private val source: String, private val mathContext: Math
 		}
 	}
 
-	private fun isDigit(		char: Char, previousChar: Char = '\u0000', nextChar: Char = '\u0000'	): Boolean {
+	private fun isDigit(char: Char, previousChar: Char = '\u0000', nextChar: Char = '\u0000'): Boolean {
 		return char.isDigit() || when(char) {
 			'.' -> true
 			'e', 'E' -> previousChar.isDigit() && (nextChar.isDigit() || nextChar == '+' || nextChar == '-')

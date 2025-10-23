@@ -1,6 +1,5 @@
 package org.ender_development.catalyx.utils.math.evaluator
 
-import org.ender_development.catalyx.utils.math.ExpressionException
 import org.ender_development.catalyx.utils.math.evaluator.TokenType.*
 import java.math.BigDecimal
 
