@@ -1,0 +1,66 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"model": "catalyx:layered_cube_all",
+		"textures": {
+			"top_all": "catalyx:blocks/mb_inner",
+			"bot_all": "catalyx:blocks/mb_inner"
+		}
+	},
+	"variants": {
+		"normal": [{}],
+		"inventory": [{}],
+		"facing": {
+			"north": {"y": 0},
+			"east": {"y": 90},
+			"south": {"y": 180},
+			"west": {"y": 270}
+		},
+		"position": {
+			"0": {
+				"y": 180,
+				"model": "catalyx:layered_side",
+				"textures": {
+					"bot_front": "catalyx:blocks/mb_side1",
+					"top_front": "catalyx:blocks/mb_side1",
+					"top_down": "catalyx:blocks/mb_down",
+					"top_up": "catalyx:blocks/mb_top",
+					"side_all": "catalyx:blocks/mb_inner"
+				}
+			},
+			"1": {
+				"y": 270,
+				"model": "catalyx:layered_side",
+				"textures": {
+					"bot_front": "catalyx:blocks/mb_side2",
+					"top_front": "catalyx:blocks/mb_side2",
+					"top_down": "catalyx:blocks/mb_down",
+					"top_up": "catalyx:blocks/mb_top",
+					"side_all": "catalyx:blocks/mb_inner"
+				}
+			},
+			"2": {
+				"y": 0,
+				"model": "catalyx:layered_side",
+				"textures": {
+					"bot_front": "catalyx:blocks/mb_side3",
+					"top_front": "catalyx:blocks/mb_side3",
+					"top_down": "catalyx:blocks/mb_down",
+					"top_up": "catalyx:blocks/mb_top",
+					"side_all": "catalyx:blocks/mb_inner"
+				}
+			},
+			"3": {
+				"y": 90,
+				"model": "catalyx:layered_side",
+				"textures": {
+					"bot_front": "catalyx:blocks/mb_side4",
+					"top_front": "catalyx:blocks/mb_side4",
+					"top_down": "catalyx:blocks/mb_down",
+					"top_up": "catalyx:blocks/mb_top",
+					"side_all": "catalyx:blocks/mb_inner"
+				}
+			}
+		}
+	}
+}
