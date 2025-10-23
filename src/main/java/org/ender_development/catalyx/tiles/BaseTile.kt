@@ -133,14 +133,17 @@ abstract class BaseTile(open val mod: ICatalyxMod) : TileEntity(), BaseContainer
 
 	override fun readFromNBT(compound: NBTTagCompound) {
 		super.readFromNBT(compound)
-		if(this is IEnergyTile) {
+		if(this is IEnergyTile && compound.hasKey("EnergyStored")) {
 			val energyStored = compound.getInteger("EnergyStored")
 			energyStorage.extractEnergy(Int.MAX_VALUE, false)
 			energyStorage.receiveEnergy(energyStored, false)
 		}
 		if(this is IItemTile) {
-			input.deserializeNBT(compound.getCompoundTag("input"))
-			output.deserializeNBT(compound.getCompoundTag("output"))
+			if(compound.hasKey("input"))
+				input.deserializeNBT(compound.getCompoundTag("input"))
+
+			if(compound.hasKey("output"))
+				output.deserializeNBT(compound.getCompoundTag("output"))
 		}
 	}
 
