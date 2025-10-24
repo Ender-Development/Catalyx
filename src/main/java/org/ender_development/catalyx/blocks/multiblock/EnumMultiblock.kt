@@ -16,6 +16,14 @@ enum class Facing(val binary: Int, val facing: EnumFacing) {
 	SOUTH(0b10, EnumFacing.SOUTH),
 	WEST(0b11, EnumFacing.WEST);
 
+	val opposite: Facing
+		inline get() = when(this) {
+			NORTH -> SOUTH
+			EAST -> WEST
+			SOUTH -> NORTH
+			WEST -> EAST
+		}
+
 	companion object {
 		@Suppress("NOTHING_TO_INLINE")
 		inline fun fromBinary(binary: Int) =
@@ -23,14 +31,6 @@ enum class Facing(val binary: Int, val facing: EnumFacing) {
 
 		internal val EnumFacing.binary: Int
 			inline get() = Facing.entries.first { it.facing === this }.binary
-
-		internal val Facing.opposite: Facing
-			inline get() = when(this) {
-				NORTH -> SOUTH
-				EAST -> WEST
-				SOUTH -> NORTH
-				WEST -> EAST
-			}
 	}
 }
 

@@ -23,7 +23,7 @@ internal object CoreEventHandler {
 
 	@JvmStatic
 	@SubscribeEvent
-	fun activateEdgeBlock(event: PlayerInteractEvent) {
+	fun activateEdgeBlock(event: PlayerInteractEvent.RightClickBlock) {
 		if (event.world.isRemote)
 			return
 		val blockState = event.world.getBlockState(event.pos)

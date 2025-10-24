@@ -10,7 +10,7 @@ import net.minecraft.util.math.AxisAlignedBB
  */
 fun AxisAlignedBB.rotateY(times: Int): AxisAlignedBB {
     // Normalize rotation to 0..3
-    val steps = ((times % 4) + 4) % 4
+    val steps = times % 4
 
     var minX = this.minX
     var maxX = this.maxX
