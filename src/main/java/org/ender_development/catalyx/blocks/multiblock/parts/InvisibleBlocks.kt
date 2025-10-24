@@ -3,6 +3,8 @@ package org.ender_development.catalyx.blocks.multiblock.parts
 import net.minecraft.block.state.IBlockState
 import net.minecraft.util.BlockRenderLayer
 import net.minecraft.util.EnumBlockRenderType
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 import org.ender_development.catalyx.core.ICatalyxMod
 
 open class InvisibleCorner(mod: ICatalyxMod, name: String) : CornerBlock(mod, name) {
@@ -20,6 +22,11 @@ open class InvisibleCorner(mod: ICatalyxMod, name: String) : CornerBlock(mod, na
 	@Deprecated("Implementation is fine.")
 	override fun isOpaqueCube(state: IBlockState) =
 		false
+
+	@SideOnly(Side.CLIENT)
+	@Deprecated("Implementation is fine.")
+	override fun getAmbientOcclusionLightValue(state: IBlockState): Float =
+		1.0f
 }
 
 open class InvisibleSide(mod: ICatalyxMod, name: String) : SideBlock(mod, name) {
@@ -37,4 +44,9 @@ open class InvisibleSide(mod: ICatalyxMod, name: String) : SideBlock(mod, name) 
 	@Deprecated("Implementation is fine.")
 	override fun isOpaqueCube(state: IBlockState) =
 		false
+
+	@SideOnly(Side.CLIENT)
+	@Deprecated("Implementation is fine.")
+	override fun getAmbientOcclusionLightValue(state: IBlockState): Float =
+		1.0f
 }

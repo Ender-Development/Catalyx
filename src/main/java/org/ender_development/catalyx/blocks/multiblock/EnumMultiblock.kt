@@ -23,6 +23,14 @@ enum class Facing(val binary: Int, val facing: EnumFacing) {
 
 		internal val EnumFacing.binary: Int
 			inline get() = Facing.entries.first { it.facing === this }.binary
+
+		internal val Facing.opposite: Facing
+			inline get() = when(this) {
+				NORTH -> SOUTH
+				EAST -> WEST
+				SOUTH -> NORTH
+				WEST -> EAST
+			}
 	}
 }
 
