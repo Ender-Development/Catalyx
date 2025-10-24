@@ -1,6 +1,5 @@
 package org.ender_development.catalyx.blocks.multiblock.parts
 
-import net.minecraft.block.Block.FULL_BLOCK_AABB
 import net.minecraft.block.state.IBlockState
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.AxisAlignedBB
@@ -8,7 +7,6 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import org.ender_development.catalyx.blocks.multiblock.Facing
 import org.ender_development.catalyx.blocks.multiblock.Facing.Companion.binary
-import org.ender_development.catalyx.blocks.multiblock.Facing.Companion.opposite
 import org.ender_development.catalyx.blocks.multiblock.Position
 import org.ender_development.catalyx.blocks.multiblock.with
 import org.ender_development.catalyx.core.ICatalyxMod
