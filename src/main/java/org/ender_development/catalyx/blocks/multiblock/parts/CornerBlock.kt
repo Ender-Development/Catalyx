@@ -34,7 +34,6 @@ open class CornerBlock(mod: ICatalyxMod, name: String) : AbstractEdgeBlock(mod, 
 			Facing.WEST.binary -> listOf(3, 0, 1, 2)
 			else -> error("Invalid facing binary: $direction")
 		}
-		@Suppress("DEPRECATION")
-		order.forEach { idx -> placeBlock(world, corners[idx], facing with Position.entries[idx]) }
+		corners.forEachIndexed { idx, corner -> placeBlock(world, corner, facing with Position.entries[order[idx]]) }
 	}
 }

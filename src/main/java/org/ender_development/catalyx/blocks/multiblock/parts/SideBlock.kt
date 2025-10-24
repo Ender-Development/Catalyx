@@ -34,7 +34,6 @@ open class SideBlock(mod: ICatalyxMod, name: String) : AbstractEdgeBlock(mod, na
 			Facing.WEST.binary -> listOf(3, 0, 1, 2)
 			else -> error("Invalid facing binary: $direction")
 		}
-		@Suppress("DEPRECATION")
-		order.forEach { idx -> placeBlock(world, sides[idx], facing with Position.entries[idx]) }
+		sides.forEachIndexed { idx, side -> placeBlock(world, side, facing with Position.entries[order[idx]]) }
 	}
 }
