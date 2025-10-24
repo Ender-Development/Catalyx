@@ -3,6 +3,7 @@ package org.ender_development.catalyx.blocks.multiblock.parts
 import net.minecraft.block.BlockHorizontal
 import net.minecraft.block.material.EnumPushReaction
 import net.minecraft.block.properties.PropertyInteger
+import net.minecraft.block.state.BlockFaceShape
 import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
 import net.minecraft.creativetab.CreativeTabs
@@ -80,18 +81,25 @@ abstract class AbstractEdgeBlock(mod: ICatalyxMod, val name: String) : BaseBlock
 	}
 
 	@Deprecated("Implementation is fine.")
+	override fun getBlockFaceShape(worldIn: IBlockAccess, state: IBlockState, pos: BlockPos, face: EnumFacing): BlockFaceShape =
+		if(getAABB(state) == FULL_BLOCK_AABB)
+			BlockFaceShape.SOLID
+		else
+			BlockFaceShape.UNDEFINED
+
+	@Deprecated("Implementation is fine.")
 	override fun getPushReaction(state: IBlockState): EnumPushReaction =
 		EnumPushReaction.BLOCK
 
 	@Deprecated("Implementation is fine")
-    override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos): AxisAlignedBB = getAABB(state)
+	override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos): AxisAlignedBB = getAABB(state)
 
-    @Deprecated("Implementation is fine")
-    override fun getCollisionBoundingBox(blockState: IBlockState, worldIn: IBlockAccess, pos: BlockPos): AxisAlignedBB? = getAABB(blockState)
+	@Deprecated("Implementation is fine")
+	override fun getCollisionBoundingBox(blockState: IBlockState, worldIn: IBlockAccess, pos: BlockPos): AxisAlignedBB? = getAABB(blockState)
 
-    @Deprecated("Implementation is fine")
-    override fun addCollisionBoxToList(state: IBlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: List<AxisAlignedBB>, entity: Entity?, isActualState: Boolean) {
-        @Suppress("DEPRECATION")
-        addCollisionBoxToList(pos, entityBox, collidingBoxes, getAABB(state))
-    }
+	@Deprecated("Implementation is fine")
+	override fun addCollisionBoxToList(state: IBlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: List<AxisAlignedBB>, entity: Entity?, isActualState: Boolean) {
+		@Suppress("DEPRECATION")
+		addCollisionBoxToList(pos, entityBox, collidingBoxes, getAABB(state))
+	}
 }

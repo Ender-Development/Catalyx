@@ -12,22 +12,15 @@ import org.ender_development.catalyx.blocks.multiblock.with
 import org.ender_development.catalyx.core.ICatalyxMod
 
 open class CornerBlock(mod: ICatalyxMod, name: String) : AbstractEdgeBlock(mod, name) {
-	override fun getCenter(pos: BlockPos, state: IBlockState): BlockPos {
-		/*
-		EnumFacing.NORTH with Position.P0, EnumFacing.EAST with Position.P1, EnumFacing.SOUTH with Position.P2, EnumFacing.WEST with Position.P3 -> pos.north().east()
-		EnumFacing.NORTH with Position.P1, EnumFacing.EAST with Position.P2, EnumFacing.SOUTH with Position.P3, EnumFacing.WEST with Position.P0 -> pos.south().east()
-		EnumFacing.NORTH with Position.P2, EnumFacing.EAST with Position.P3, EnumFacing.SOUTH with Position.P0, EnumFacing.WEST with Position.P1 -> pos.south().west()
-		EnumFacing.NORTH with Position.P3, EnumFacing.EAST with Position.P0, EnumFacing.SOUTH with Position.P1, EnumFacing.WEST with Position.P2 -> pos.north().west()
-		 */
-		val (facing, position) = deconstructMeta(getMetaFromState(state))
-		return when((facing.binary + position.binary) % 4) {
+	override fun getCenter(pos: BlockPos, state: IBlockState): BlockPos =
+		when(getMetaFromState(state) % 4) {
 			0 -> pos.north().east()
 			1 -> pos.south().east()
 			2 -> pos.south().west()
 			3 -> pos.north().west()
 			else -> error("Invalid corner!")
 		}
-	}
+
 
 	override fun getAABB(state: IBlockState): AxisAlignedBB = FULL_BLOCK_AABB
 
