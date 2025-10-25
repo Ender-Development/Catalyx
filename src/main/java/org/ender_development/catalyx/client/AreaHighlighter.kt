@@ -14,6 +14,7 @@ import org.lwjgl.opengl.GL11
 /**
  * A helper class allowing you to highlight an area or a block in 3D space
  * @see [highlightBlock]
+ * @see [highlightBlocks]
  * @see [highlightArea]
  */
 @SideOnly(Side.CLIENT)
@@ -39,6 +40,10 @@ class AreaHighlighter {
 		private set
 	val pos2
 		get() = BlockPos(x2, y2, z2)
+	var drawBlockPositions = false
+		private set
+	var drawnBlockPositions = emptyArray<BlockPos>()
+		private set
 	var r = 1f
 		private set
 	var g = 1f
@@ -69,13 +74,13 @@ class AreaHighlighter {
 	/**
 	 * r, g, b are colours between 0 and 1, time is in milliseconds
 	 */
-	fun highlightArea(p1: BlockPos, p2: BlockPos, r: Float, g: Float, b: Float, time: Int) {
-		x1 = p1.x.toDouble()
-		y1 = p1.y.toDouble()
-		z1 = p1.z.toDouble()
-		x2 = p2.x.toDouble()
-		y2 = p2.y.toDouble()
-		z2 = p2.z.toDouble()
+	fun highlightArea(x1: Double, y1: Double, z1: Double, x2: Double, y2: Double, z2: Double, r: Float, g: Float, b: Float, time: Int) {
+		this.x1 = x1
+		this.y1 = y1
+		this.z1 = z1
+		this.x2 = x2
+		this.y2 = y2
+		this.z2 = z2
 		this.r = r
 		this.g = g
 		this.b = b
@@ -86,13 +91,9 @@ class AreaHighlighter {
 	/**
 	 * r, g, b are colours between 0 and 1, time is in milliseconds
 	 */
-	fun highlightArea(x1: Double, y1: Double, z1: Double, x2: Double, y2: Double, z2: Double, r: Float, g: Float, b: Float, time: Int) {
-		this.x1 = x1
-		this.y1 = y1
-		this.z1 = z1
-		this.x2 = x2
-		this.y2 = y2
-		this.z2 = z2
+	fun highlightBlocks(blockPositions: Array<BlockPos>, r: Float, g: Float, b: Float, time: Int) {
+		drawBlockPositions = true
+		drawnBlockPositions = blockPositions
 		this.r = r
 		this.g = g
 		this.b = b
@@ -109,6 +110,8 @@ class AreaHighlighter {
 		shown = false
 		counter = 0
 		counterDirection = 1
+		drawBlockPositions = false
+		drawnBlockPositions = emptyArray()
 	}
 
 	internal fun show() {
@@ -153,7 +156,12 @@ class AreaHighlighter {
 		val tessellator = Tessellator.getInstance()
 		val buffer = tessellator.buffer
 		buffer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR)
-		renderOutline(buffer, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, r, g, b, alpha)
+		if(!drawBlockPositions)
+			renderOutline(buffer, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, r, g, b, alpha)
+		else
+			drawnBlockPositions.forEach {
+				renderOutline(buffer, it.x.toDouble(), it.y.toDouble(), it.z.toDouble(), 1.0, 1.0, 1.0, r, g, b, alpha)
+			}
 
 		tessellator.draw()
 
