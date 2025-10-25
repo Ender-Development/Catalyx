@@ -3,6 +3,7 @@ package org.ender_development.catalyx.recipes.validation
 import org.apache.logging.log4j.Logger
 import org.ender_development.catalyx.Catalyx
 
+@Deprecated("Needs to be refactored to use the new validation system")
 class Validator {
 	private val errorMessages = mutableListOf<String>()
 
