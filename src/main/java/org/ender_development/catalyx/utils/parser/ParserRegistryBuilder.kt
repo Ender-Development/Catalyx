@@ -6,10 +6,10 @@ import org.ender_development.catalyx.utils.validation.ValidationResult
 class ParserRegistryBuilder {
 	private val registry = ParserRegistry()
 
-	internal fun <T> parser(key: String, parser: IParser<T>) =
+	fun <T> parser(key: String, parser: IParser<T>) =
 		registry.registerParser(key, parser)
 
-	internal fun <T : Any> jsonParser(key: String, filePath: String, defaultData: () -> List<T>, sanitizer: (T) -> ValidationResult<T>) {
+	fun <T : Any> jsonParser(key: String, filePath: String, defaultData: () -> List<T>, sanitizer: (T) -> ValidationResult<T>) {
 		val parser = object : AbstractJsonParser<T, T>() {
 			override val filePath = filePath
 

@@ -6,13 +6,12 @@ import net.minecraftforge.fluids.FluidStack
 import net.minecraftforge.fml.common.Optional
 import org.ender_development.catalyx.integration.Mods
 import org.ender_development.catalyx.integration.groovyscript.ModuleGroovyScript
-import org.ender_development.catalyx.recipes.RecipeBuilder.Companion.getRequiredString
 import org.ender_development.catalyx.recipes.chance.output.ChancedFluidOutput
 import org.ender_development.catalyx.recipes.chance.output.ChancedItemOutput
 import org.ender_development.catalyx.recipes.chance.output.ChancedOutputList
 import org.ender_development.catalyx.recipes.chance.output.IChancedOutputLogic
 import org.ender_development.catalyx.recipes.ingredients.RecipeInput
-import org.ender_development.catalyx.recipes.validation.ValidationResult
+import org.ender_development.catalyx.recipes.validation.OldValidationResult
 import org.ender_development.catalyx.recipes.validation.ValidationState
 import org.ender_development.catalyx.recipes.validation.Validator
 import java.util.function.Supplier
@@ -73,7 +72,7 @@ class RecipeBuilder<R : RecipeBuilder<R>> {
 	}
 
 	fun build() =
-		ValidationResult(
+		OldValidationResult(
 			validate(), Recipe(
 				inputs, outputs.filterNotNull(), ChancedOutputList(chancedOutputLogic, chancedOutputs.filterNotNull()),
 				fluidInputs, fluidOutputs.filterNotNull(), ChancedOutputList(chancedFluidOutputLogic, chancedFluidOutputs.filterNotNull()),

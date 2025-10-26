@@ -13,7 +13,7 @@ import org.ender_development.catalyx.modules.ModuleManager
 import org.ender_development.catalyx.recipes.chance.boost.IBoostFunction
 import org.ender_development.catalyx.recipes.ingredients.RecipeInput
 import org.ender_development.catalyx.recipes.maps.*
-import org.ender_development.catalyx.recipes.validation.ValidationResult
+import org.ender_development.catalyx.recipes.validation.OldValidationResult
 import org.ender_development.catalyx.recipes.validation.ValidationState
 import org.ender_development.catalyx.recipes.validation.Validator
 import org.ender_development.catalyx.utils.Delegates
@@ -132,7 +132,7 @@ class RecipeMap<R : RecipeBuilder<R>> {
 	 * @param validationResult the validation result from building the recipe
 	 * @return if adding the recipe was successful
 	 */
-	internal fun addRecipe(validationResult: ValidationResult<Recipe>): Boolean {
+	internal fun addRecipe(validationResult: OldValidationResult<Recipe>): Boolean {
 		val result = postValidateRecipe(validationResult)
 		return when(result.type) {
 			ValidationState.SKIP ->
@@ -308,7 +308,7 @@ class RecipeMap<R : RecipeBuilder<R>> {
 		return true
 	}
 
-	private fun postValidateRecipe(validationResult: ValidationResult<Recipe>): ValidationResult<Recipe> {
+	private fun postValidateRecipe(validationResult: OldValidationResult<Recipe>): OldValidationResult<Recipe> {
 		val recipe = validationResult.result
 		if(recipe.groovyRecipe)
 			return validationResult
@@ -333,6 +333,6 @@ class RecipeMap<R : RecipeBuilder<R>> {
 			"Invalid amounts of fluid outputs. Recipe has ${recipe.fluidOutputs.size + recipe.chancedFluidOutputs.chancedElements.size} fluid outputs, but the maximum is $maxFluidOutputs."
 		)
 		validator.logMessages()
-		return ValidationResult(validator.status, recipe)
+		return OldValidationResult(validator.status, recipe)
 	}
 }

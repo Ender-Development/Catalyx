@@ -21,11 +21,17 @@ object CommonValidators {
 	fun range(min: Int, max: Int): IValidator<Int?> =
 		IValidator { it != null && it in min..max }
 
-	fun positive(): IValidator<Comparable<Number>?> =
-		IValidator { it != null && it > 0 }
+	fun positive(): IValidator<Number?> =
+		IValidator { it != null && it.toDouble() > 0 }
 
-	fun negative(): IValidator<Comparable<Number>?> =
-		IValidator { it != null && it < 0 }
+	fun negative(): IValidator<Number?> =
+		IValidator { it != null && it.toDouble() < 0 }
+
+	fun atLeast(value: Comparable<Number>): IValidator<Comparable<Number>?> =
+		IValidator { it != null && it >= value as Number }
+
+	fun atMost(value: Comparable<Number>): IValidator<Comparable<Number>?> =
+		IValidator { it != null && it <= value as Number }
 
 	fun <T> oneOf(vararg values: T): IValidator<T?> =
 		IValidator { it != null && values.contains(it) }
@@ -43,6 +49,17 @@ object CommonValidators {
 	}
 
 	fun isBlockState(): IValidator<String?> = IValidator {
+		if(it == null)
+			return@IValidator false
+
+		return@IValidator try {
+			ConfigParser.ConfigBlockState(it).state != null
+		} catch(_: Exception) {
+			false
+		}
+	}
+
+	fun isBlock(): IValidator<String?> = IValidator {
 		if(it == null)
 			return@IValidator false
 
