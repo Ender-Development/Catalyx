@@ -14,11 +14,12 @@ class FieldValidationBuilder<V>(private val value: V?, private val fieldName: St
 
 	fun withMessage(message: String): FieldValidationBuilder<V> {
         // Remove the last error and replace with custom message
-        val errors = parentBuilder.getErrors().toMutableList()
-        if (errors.isNotEmpty() && errors.last().field == fieldName) {
-            errors.removeLast()
-            parentBuilder.addError(fieldName, message)
-        }
+		parentBuilder.getErrors().lastOrNull()?.let {
+			if(it.field == fieldName) {
+				parentBuilder.errors.removeLast()
+				parentBuilder.addError(fieldName, message)
+			}
+		}
         return this
     }
 

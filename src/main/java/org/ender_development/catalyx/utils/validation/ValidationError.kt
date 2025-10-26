@@ -5,7 +5,11 @@ import org.apache.logging.log4j.Logger
 import org.ender_development.catalyx.Catalyx
 
 data class ValidationError(val field: String? = null, val message: String, val code: String? = null, val severity: Severity = Severity.ERROR) {
-	enum class Severity(internal val loggerLevel: Level) { WARNING(Level.WARN), ERROR(Level.ERROR), CRITICAL(Level.FATAL) }
+	enum class Severity(val loggerLevel: Level) {
+		WARNING(Level.WARN),
+		ERROR(Level.ERROR),
+		CRITICAL(Level.FATAL)
+	}
 
 	override fun toString(): String {
 		val prefix = when(severity) {
@@ -16,5 +20,6 @@ data class ValidationError(val field: String? = null, val message: String, val c
 		return field?.let { "$prefix [$field]: $message" } ?: "$prefix: $message"
 	}
 
-	fun log(logger: Logger = Catalyx.LOGGER) = logger.log(severity.loggerLevel, toString())
+	fun log(logger: Logger = Catalyx.LOGGER) =
+		logger.log(severity.loggerLevel, toString())
 }

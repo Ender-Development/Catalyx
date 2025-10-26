@@ -14,10 +14,10 @@ class ParserRegistry : IParserRegistry {
 	override fun <T> getParser(key: String): IParser<T>? =
 		parsers[key] as? IParser<T>
 
-	@Suppress("UNCHECKED_CAST")
 	override fun <T> getData(key: String): List<T>? {
 		if(dataCache.containsKey(key))
-			return dataCache[key] as List<T>
+			@Suppress("UNCHECKED_CAST")
+			return dataCache[key] as? List<T>
 
 		val parser = getParser<T>(key) ?: return null
 		val data = parser.parse()
@@ -26,14 +26,12 @@ class ParserRegistry : IParserRegistry {
 		return data
 	}
 
-	@Suppress("UNCHECKED_CAST")
 	override fun <T> search(key: String, predicate: (T) -> Boolean): List<T> {
-		val data = getData<T>(key) ?: return emptyList()
-		return data.filter(predicate)
+		return (getData<T>(key) ?: return emptyList()).filter(predicate)
 	}
 
-	override fun getAllKeys(): Set<String> =
-		parsers.keys.toSet()
+	override val allKeys: Set<String>
+		get() = parsers.keys
 
 	override fun refreshAll(): Map<String, ParsingStats> {
 		val results = mutableMapOf<String, ParsingStats>()
@@ -47,19 +45,19 @@ class ParserRegistry : IParserRegistry {
 		val parser = parsers[key] ?: return null
 		dataCache.remove(key)
 		getData<Any>(key)
-		return parser.getStats()
+		return parser.stats
 	}
 
-	fun getCacheInfo(): Map<String, CacheInfo> =
-		parsers.keys.associateWith { CacheInfo(dataCache.containsKey(it), lastRefresh[it], dataCache[it]?.size ?: 0) }
+	val cacheInfo: Map<String, CacheInfo>
+		get() = parsers.keys.associateWith { CacheInfo(dataCache.containsKey(it), lastRefresh[it], dataCache[it]?.size ?: 0) }
 
-	fun clearCache(key: String? = null) {
-		key?.let {
-			dataCache.remove(it)
-			lastRefresh.remove(it)
-		} ?: run {
-			dataCache.clear()
-			lastRefresh.clear()
-		}
+	fun clearCache(key: String) {
+		dataCache.remove(key)
+		lastRefresh.remove(key)
+	}
+
+	fun clearCache() {
+		dataCache.clear()
+		lastRefresh.clear()
 	}
 }

@@ -1,29 +1,31 @@
 package org.ender_development.catalyx.utils.validation
 
+// roz: move this to catalyx/utils/extensions please
+
 fun <T> T?.validateWith(vararg validators: IValidator<T?>): ValidationResult<T> {
 	val builder = ValidationBuilder<T>()
-	var result = this
 
-	validators.forEach {
-		if (!it.validate(result)) {
-			builder.addError(null, "Validation failed")
-			result = null
-		}
+	val error = validators.any {
+		!it.validate(this)
 	}
-	return builder.build(result)
+	if(!error)
+		return builder.build(this)
+
+	builder.addError(null, "Validation failed")
+	return builder.build(null)
 }
 
-inline fun <T> validate(data: T?, block: ValidationBuilder<T>.() -> Unit): ValidationResult<T> {
-	val builder = ValidationBuilder<T>()
-	builder.block()
-	return builder.build(data)
-}
+inline fun <T> validate(data: T?, block: ValidationBuilder<T>.() -> Unit) =
+	ValidationBuilder<T>().let {
+		it.block()
+		it.build(data)
+	}
 
-fun <T> List<T>.validateEach(validator: (T, Int) -> ValidationResult<T>): List<ValidationResult<T>> =
-	this.mapIndexed { index, item -> validator(item, index) }
+fun <T> List<T>.validateEach(validator: (idx: Int, T) -> ValidationResult<T>) =
+	mapIndexed(validator)
 
-fun List<ValidationError>.getBySeverity(severity: ValidationError.Severity): List<ValidationError> =
-	this.filter { it.severity == severity }
+fun List<ValidationError>.getBySeverity(severity: ValidationError.Severity) =
+	filter { it.severity == severity }
 
-fun List<ValidationError>.getByMinSeverity(severity: ValidationError.Severity): List<ValidationError> =
-	this.filter { it.severity.ordinal >= severity.ordinal }
+fun List<ValidationError>.getByMinSeverity(severity: ValidationError.Severity) =
+	filter { it.severity >= severity }

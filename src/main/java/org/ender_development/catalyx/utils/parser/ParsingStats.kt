@@ -9,18 +9,11 @@ data class ParsingStats(
 	val errors: List<ValidationError> = emptyList(),
 	val warnings: List<ValidationError> = emptyList()
 ) {
-	fun hasErrors() =
-		errors.isNotEmpty()
+	val hasErrors = errors.isNotEmpty()
+	val hasWarnings = warnings.isNotEmpty()
 
-	fun hasWarnings() =
-		warnings.isNotEmpty()
+	val successRate = if(totalItems == 0) .0 else successfulItems.toDouble() / totalItems
 
-	fun getSuccessRate() =
-		if (totalItems == 0) 0.0 else successfulItems.toDouble() / totalItems
-
-	fun getErrorMessages() =
-		errors.map { it.message }
-
-	fun getWarningMessages() =
-		warnings.map { it.message }
+	val errorMessages = errors.map(ValidationError::message)
+	val warningMessages = warnings.map(ValidationError::message)
 }

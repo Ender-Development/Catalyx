@@ -1,12 +1,12 @@
 package org.ender_development.catalyx.utils.validation
 
 class ValidationBuilder<T> {
-	private val errors = mutableListOf<ValidationError>()
+	internal val errors = mutableListOf<ValidationError>()
 	private var target: T? = null
 
 	fun <V> field(value: V?, fieldName: String, vararg validators: IValidator<V?>): FieldValidationBuilder<V> =
 		FieldValidationBuilder(value, fieldName, this).apply {
-			validators.forEach { validate(it) }
+			validators.forEach(::validate)
 		}
 
 	fun <V> validate(value: V?, fieldName: String, condition: (V) -> Boolean, errorMessage: String? = null): V? =
@@ -34,16 +34,14 @@ class ValidationBuilder<T> {
         addError(field, message, code, ValidationError.Severity.WARNING)
 
 	fun build(data: T?): ValidationResult<T> {
-        val criticalErrors = errors.filter { it.severity == ValidationError.Severity.CRITICAL }
-        val regularErrors = errors.filter { it.severity == ValidationError.Severity.ERROR }
+        val onlyWarnings = errors.none { it.severity != ValidationError.Severity.WARNING }
 
-        return if ((criticalErrors.isEmpty() && regularErrors.isEmpty()) && data != null) {
+        return if (onlyWarnings && data != null)
             ValidationResult.Success(data)
-        } else {
-            if (data == null && errors.isEmpty()) {
+        else {
+            if (data == null && errors.isEmpty())
                 errors.add(ValidationError(message = "Data construction failed"))
-            }
-            ValidationResult.Failure(errors.toList())
+            ValidationResult.Failure(errors)
         }
     }
 
@@ -54,5 +52,5 @@ class ValidationBuilder<T> {
 		errors.any { it.severity == ValidationError.Severity.WARNING }
 
     fun getErrors(): List<ValidationError> =
-		errors.toList()
+		errors
 }

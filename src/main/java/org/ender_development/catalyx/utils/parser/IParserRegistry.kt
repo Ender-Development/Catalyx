@@ -5,7 +5,7 @@ interface IParserRegistry {
 	fun <T> getParser(key: String): IParser<T>?
 	fun <T> getData(key: String): List<T>?
 	fun <T> search(key: String, predicate: (T) -> Boolean): List<T>
-	fun getAllKeys(): Set<String>
+	val allKeys: Set<String>
 	fun refreshAll(): Map<String, ParsingStats>
 	fun refresh(key: String): ParsingStats?
 }
