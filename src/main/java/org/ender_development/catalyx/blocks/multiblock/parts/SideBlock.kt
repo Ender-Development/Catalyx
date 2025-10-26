@@ -13,7 +13,7 @@ import org.ender_development.catalyx.core.ICatalyxMod
 
 open class SideBlock(mod: ICatalyxMod, name: String) : AbstractEdgeBlock(mod, name) {
 	override fun getCenter(pos: BlockPos, state: IBlockState): BlockPos =
-		when(getMetaFromState(state) % 4) {
+		when(normalizeRotation(state)) {
 			0 -> pos.north()
 			1 -> pos.east()
 			2 -> pos.south()

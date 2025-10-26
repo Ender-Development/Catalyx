@@ -1,5 +1,6 @@
 package org.ender_development.catalyx.blocks.multiblock.parts
 
+import net.minecraft.block.Block.FULL_BLOCK_AABB
 import net.minecraft.block.BlockHorizontal
 import net.minecraft.block.material.EnumPushReaction
 import net.minecraft.block.properties.PropertyInteger
@@ -36,6 +37,9 @@ abstract class AbstractEdgeBlock(mod: ICatalyxMod, val name: String) : BaseBlock
 
 	override fun deconstructMeta(meta: Int): Pair<Facing, Position> =
 		Facing.fromBinary(meta and 0b1100 shr 2) to Position.entries[meta and 0b0011]
+
+	override fun normalizeRotation(state: IBlockState): Int =
+		deconstructMeta(getMetaFromState(state)).sum() % 4
 
 	override fun createBlockState(): BlockStateContainer =
 		BlockStateContainer(this, BlockHorizontal.FACING, position)

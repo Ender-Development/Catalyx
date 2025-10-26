@@ -110,6 +110,14 @@ interface IMultiblockEdge : IMultiblock {
 	fun deconstructMeta(meta: Int): Pair<Facing, Position>
 
 	/**
+	 * Normalizes the rotation of the edge block based on its state.
+	 *
+	 * @param state The block state of the edge block.
+	 * @return An integer representing the normalized [Position] index (0-3).
+	 */
+	fun normalizeRotation(state: IBlockState): Int
+
+	/**
 	 * Places the edge block in the world at the specified position.
 	 *
 	 * @param world The world where the block is being placed.

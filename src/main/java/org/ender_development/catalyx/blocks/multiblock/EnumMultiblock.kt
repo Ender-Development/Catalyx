@@ -41,3 +41,7 @@ internal inline infix fun Facing.with(position: Position) =
 @Suppress("NOTHING_TO_INLINE")
 internal inline infix fun EnumFacing.with(position: Position) =
 	binary shl 2 or position.binary
+
+@Suppress("NOTHING_TO_INLINE")
+internal inline fun Pair<Facing, Position>.sum() =
+	first.binary + second.binary
