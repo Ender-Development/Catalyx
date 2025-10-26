@@ -21,10 +21,11 @@ interface IProvider<T : IForgeRegistryEntry<T>> {
 	 */
 	var modDependencies: String
 
+	// Note to self: do not make this a `val` as we wanna enforce a getter here (https://discord.com/channels/@me/1232745201009819749/1423296686691717220)
 	/**
 	 * Whether this provider is enabled and should be registered.
 	 */
-	val isEnabled: Boolean
+	fun isEnabled(): Boolean
 
 	/**
 	 * Register this provider's item/block with the given event.

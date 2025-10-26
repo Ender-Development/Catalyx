@@ -22,7 +22,8 @@ open class BaseItem(val mod: ICatalyxMod, val name: String) : Item(), IItemProvi
 
 	override val instance = this
 
-	override val isEnabled = true
+	override fun isEnabled() =
+		true
 
 	override var modDependencies = ""
 

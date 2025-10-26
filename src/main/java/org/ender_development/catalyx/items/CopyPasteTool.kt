@@ -90,11 +90,9 @@ class CopyPasteTool() : BaseItem(Catalyx, "copy_paste_tool") {
 	}
 
 	/**
-	 * 	don't register if this isn't a dev environment, as this item is not finished
-	 * 	TODO tooltip, name translation, maybe signify what blocks you can actually copy across ;p
-	 * 	Question for roz: Why does this only work when using get() and not with a normal assignment?
-	 * 	roz: because https://discord.com/channels/@me/1232745201009819749/1423296686691717220, hf
+	 * don't register if this isn't a dev environment, as this item is not finished
+	 * TODO tooltip, name translation, maybe signify what blocks you can actually copy across ;p
 	 */
-	override val isEnabled
-		get() = DevUtils.isDeobfuscated
+	override fun isEnabled() =
+		DevUtils.isDeobfuscated
 }

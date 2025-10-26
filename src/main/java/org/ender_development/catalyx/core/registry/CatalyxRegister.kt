@@ -7,7 +7,7 @@ import org.ender_development.catalyx.utils.extensions.modLoaded
 class CatalyxRegister<V : IProvider<*>> : HashMap<ResourceLocation, Pair<V, Boolean>>() {
 	fun add(provider: V): Boolean =
 		provider.instance.registryName?.let {
-			this[it] = provider to (provider.isEnabled && provider.modDependencies.evaluateModDependencies())
+			this[it] = provider to (provider.isEnabled() && provider.modDependencies.evaluateModDependencies())
 			true
 		} ?: false
 

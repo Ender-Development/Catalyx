@@ -34,7 +34,8 @@ open class BaseBlock(val mod: ICatalyxMod, name: String, material: Material = Ma
 
 	override val item = ItemBlock(this)
 
-	override val isEnabled = true
+	override fun isEnabled() =
+		true
 
 	override fun register(event: RegistryEvent.Register<Block>) =
 		event.registry.register(this)
