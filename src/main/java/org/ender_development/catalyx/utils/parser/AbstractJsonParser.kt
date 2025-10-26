@@ -6,8 +6,8 @@ import com.google.gson.reflect.TypeToken
 import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.utils.validation.ValidationError
 import org.ender_development.catalyx.utils.validation.ValidationResult
-import org.ender_development.catalyx.utils.validation.getByMinSeverity
-import org.ender_development.catalyx.utils.validation.getBySeverity
+import org.ender_development.catalyx.utils.extensions.getByMinSeverity
+import org.ender_development.catalyx.utils.extensions.getBySeverity
 import java.io.File
 import java.io.FileReader
 import java.io.FileWriter
