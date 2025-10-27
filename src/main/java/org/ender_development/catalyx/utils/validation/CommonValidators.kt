@@ -36,6 +36,18 @@ object CommonValidators {
 	fun <T> oneOf(vararg values: T): IValidator<T?> =
 		IValidator { it != null && values.contains(it) }
 
+	fun <T> listAll(elementValidator: IValidator<T?>): IValidator<List<T>?> =
+		IValidator { list ->
+			list != null && list.all { elementValidator.validate(it) }
+		}
+
+	fun <K, V> mapAll(keyValidator: IValidator<K?>, valueValidator: IValidator<V?>): IValidator<Map<K, V>?> =
+		IValidator { map ->
+			map != null && map.all { (key, value) ->
+				keyValidator.validate(key) && valueValidator.validate(value)
+			}
+		}
+
 	fun isItemStack(): IValidator<String?> = IValidator {
 		if(it == null)
 			return@IValidator false

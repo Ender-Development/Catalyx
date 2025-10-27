@@ -22,3 +22,9 @@ inline fun <T> validate(data: T?, block: ValidationBuilder<T>.() -> Unit) =
 		it.block()
 		it.build(data)
 	}
+
+inline fun <T> validate(block: ValidationBuilder<T>.() -> T?): ValidationResult<T> {
+    val builder = ValidationBuilder<T>()
+    val data = builder.block()
+    return builder.build(data)
+}
