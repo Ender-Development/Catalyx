@@ -27,11 +27,11 @@ object CommonValidators {
 	fun negative(): IValidator<Number?> =
 		IValidator { it != null && it.toDouble() < 0 }
 
-	fun atLeast(value: Comparable<Number>): IValidator<Comparable<Number>?> =
-		IValidator { it != null && it >= value as Number }
+	fun atLeast(value: Number): IValidator<Number?> =
+		IValidator { it != null && it.toDouble() >= value.toDouble() }
 
-	fun atMost(value: Comparable<Number>): IValidator<Comparable<Number>?> =
-		IValidator { it != null && it <= value as Number }
+	fun atMost(value: Number): IValidator<Number?> =
+		IValidator { it != null && it.toDouble() <= value.toDouble() }
 
 	fun <T> oneOf(vararg values: T): IValidator<T?> =
 		IValidator { it != null && values.contains(it) }
