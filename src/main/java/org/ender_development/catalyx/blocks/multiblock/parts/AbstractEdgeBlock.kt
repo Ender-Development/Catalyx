@@ -1,6 +1,5 @@
 package org.ender_development.catalyx.blocks.multiblock.parts
 
-import net.minecraft.block.Block.FULL_BLOCK_AABB
 import net.minecraft.block.BlockHorizontal
 import net.minecraft.block.material.EnumPushReaction
 import net.minecraft.block.properties.PropertyInteger
@@ -8,7 +7,6 @@ import net.minecraft.block.state.BlockFaceShape
 import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
 import net.minecraft.creativetab.CreativeTabs
-import net.minecraft.entity.Entity
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
@@ -70,7 +68,8 @@ abstract class AbstractEdgeBlock(mod: ICatalyxMod, val name: String) : BaseBlock
 	}
 
 	@Suppress("DEPRECATION")
-	internal fun placeBlock(world: World, pos: BlockPos, meta: Int) = world.setBlockState(pos, getStateFromMeta(meta), 1 or 2)
+	internal fun placeBlock(world: World, pos: BlockPos, meta: Int) =
+		world.setBlockState(pos, getStateFromMeta(meta), 1 or 2)
 
 	// NO-OP
 	override fun getSubBlocks(itemIn: CreativeTabs, items: NonNullList<ItemStack?>) {}
@@ -85,6 +84,14 @@ abstract class AbstractEdgeBlock(mod: ICatalyxMod, val name: String) : BaseBlock
 	}
 
 	@Deprecated("Implementation is fine.")
+	override fun isFullCube(state: IBlockState): Boolean =
+		getAABB(state) == FULL_BLOCK_AABB
+
+	@Deprecated("Implementation is fine.")
+	override fun isFullBlock(state: IBlockState): Boolean =
+		getAABB(state) == FULL_BLOCK_AABB
+
+	@Deprecated("Implementation is fine.")
 	override fun getBlockFaceShape(worldIn: IBlockAccess, state: IBlockState, pos: BlockPos, face: EnumFacing): BlockFaceShape =
 		if(getAABB(state) == FULL_BLOCK_AABB)
 			BlockFaceShape.SOLID
@@ -96,8 +103,6 @@ abstract class AbstractEdgeBlock(mod: ICatalyxMod, val name: String) : BaseBlock
 		EnumPushReaction.BLOCK
 
 	@Deprecated("Implementation is fine")
-	override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos): AxisAlignedBB = getAABB(state)
-
-	@Deprecated("Implementation is fine")
-	override fun getCollisionBoundingBox(blockState: IBlockState, worldIn: IBlockAccess, pos: BlockPos): AxisAlignedBB? = getAABB(blockState)
+	override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos): AxisAlignedBB =
+		getAABB(state)
 }
