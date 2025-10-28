@@ -1,5 +1,6 @@
 package org.ender_development.catalyx.utils.validation
 
+@Suppress("UNUSED")
 class ValidationBuilder<T> {
 	internal val errors = mutableListOf<ValidationError>()
 	private var target: T? = null

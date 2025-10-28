@@ -2,6 +2,7 @@ package org.ender_development.catalyx.utils.validation
 
 import org.ender_development.catalyx.config.ConfigParser
 
+@Suppress("UNUSED")
 object CommonValidators {
 	fun <T> notNull(): IValidator<T?> =
 		IValidator { it != null }

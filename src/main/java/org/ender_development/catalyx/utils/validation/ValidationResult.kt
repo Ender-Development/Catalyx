@@ -2,6 +2,7 @@ package org.ender_development.catalyx.utils.validation
 
 import kotlin.collections.map
 
+@Suppress("UNUSED")
 class ValidationResult<T> private constructor(
 	val data: T?,
 	val errors: List<ValidationError>

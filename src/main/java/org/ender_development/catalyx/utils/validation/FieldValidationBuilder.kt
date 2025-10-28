@@ -1,6 +1,7 @@
 package org.ender_development.catalyx.utils.validation
 
-class FieldValidationBuilder<V>(private val value: V?, private val fieldName: String, private val parentBuilder: ValidationBuilder<*>) {
+@Suppress("UNUSED")
+class FieldValidationBuilder<V>(value: V?, private val fieldName: String, private val parentBuilder: ValidationBuilder<*>) {
 	private var currentValue: V? = value
 
 	fun validate(validator: IValidator<V?>): FieldValidationBuilder<V> {

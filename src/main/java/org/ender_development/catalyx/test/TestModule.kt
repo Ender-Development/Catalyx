@@ -4,18 +4,12 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 import org.apache.logging.log4j.Logger
 import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.Reference
-import org.ender_development.catalyx.blocks.BaseBlock
 import org.ender_development.catalyx.blocks.multiblock.CenterBlock
 import org.ender_development.catalyx.blocks.multiblock.parts.CornerBlock
-import org.ender_development.catalyx.blocks.multiblock.parts.InvisibleCorner
-import org.ender_development.catalyx.blocks.multiblock.parts.InvisibleSide
 import org.ender_development.catalyx.blocks.multiblock.parts.SideBlock
-import org.ender_development.catalyx.integration.Mods
-import org.ender_development.catalyx.items.BaseItem
 import org.ender_development.catalyx.modules.BaseCatalyxModule
 import org.ender_development.catalyx.modules.CatalyxModule
 import org.ender_development.catalyx.modules.CatalyxModules
-import org.ender_development.catalyx.tiles.CenterTile
 import org.ender_development.catalyx.utils.LoggerUtils
 import org.ender_development.catalyx.utils.SideUtils
 
