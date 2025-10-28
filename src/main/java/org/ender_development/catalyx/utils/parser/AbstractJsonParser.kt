@@ -39,9 +39,9 @@ abstract class AbstractJsonParser<TRaw, TSanitized> : IParser<TSanitized> {
 		val allWarnings = mutableListOf<ValidationError>()
 
 		results.forEachIndexed { idx, result ->
-			when(result) {
-				is ValidationResult.Success -> successfulItems.add(result.underlyingData)
-				is ValidationResult.Failure -> {
+			when {
+				result.success -> successfulItems.add(result.data!!)
+				result.failure -> {
 					val errors = result.errors.getByMinSeverity(ValidationError.Severity.ERROR)
 					val warnings = result.errors.getBySeverity(ValidationError.Severity.WARNING)
 

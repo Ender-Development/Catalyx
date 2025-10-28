@@ -2,26 +2,19 @@ package org.ender_development.catalyx.utils.validation
 
 import kotlin.collections.map
 
-// roz: this might as well be a normal class with an enum
-sealed class ValidationResult<out T> {
-	data class Success<T>(val underlyingData: T) : ValidationResult<T>()
-	// roz: if [errors] in [Failure] is supposed to be a [MutableList], switch [errors] & [errorMessages] to getters
-	data class Failure(val underlyingErrors: List<ValidationError>) : ValidationResult<Nothing>()
+class ValidationResult<T> private constructor(
+	val data: T?,
+	val errors: List<ValidationError>
+) {
+	val success: Boolean = errors.isEmpty()
+	val failure: Boolean = !success
+	val errorMessages: List<String> = errors.map(ValidationError::message)
 
-	val success = this is Success<T>
-	val failure = this is Failure
+	companion object {
+		fun <T> success(data: T): ValidationResult<T> =
+			ValidationResult(data, emptyList())
 
-	val data =
-		when(this) {
-			is Success -> underlyingData
-			is Failure -> null
-		}
-
-	val errors =
-		when(this) {
-			is Success -> emptyList()
-			is Failure -> underlyingErrors
-		}
-
-	val errorMessages = errors.map(ValidationError::message)
+		fun failure(errors: List<ValidationError>): ValidationResult<Nothing> =
+			ValidationResult(null, errors)
+	}
 }
