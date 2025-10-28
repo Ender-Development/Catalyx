@@ -100,10 +100,4 @@ abstract class AbstractEdgeBlock(mod: ICatalyxMod, val name: String) : BaseBlock
 
 	@Deprecated("Implementation is fine")
 	override fun getCollisionBoundingBox(blockState: IBlockState, worldIn: IBlockAccess, pos: BlockPos): AxisAlignedBB? = getAABB(blockState)
-
-	@Deprecated("Implementation is fine")
-	override fun addCollisionBoxToList(state: IBlockState, worldIn: World, pos: BlockPos, entityBox: AxisAlignedBB, collidingBoxes: List<AxisAlignedBB>, entity: Entity?, isActualState: Boolean) {
-		@Suppress("DEPRECATION")
-		addCollisionBoxToList(pos, entityBox, collidingBoxes, getAABB(state))
-	}
 }

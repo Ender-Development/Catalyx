@@ -1,5 +1,7 @@
 package org.ender_development.catalyx.test
 
+import net.minecraft.block.state.IBlockState
+import net.minecraft.util.math.AxisAlignedBB
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 import org.apache.logging.log4j.Logger
 import org.ender_development.catalyx.Catalyx
@@ -12,6 +14,7 @@ import org.ender_development.catalyx.modules.CatalyxModule
 import org.ender_development.catalyx.modules.CatalyxModules
 import org.ender_development.catalyx.utils.LoggerUtils
 import org.ender_development.catalyx.utils.SideUtils
+import org.ender_development.catalyx.utils.extensions.rotateY
 
 @CatalyxModule(
 	moduleID = CatalyxModules.MODULE_TEST,
@@ -21,8 +24,16 @@ import org.ender_development.catalyx.utils.SideUtils
 	testModule = true
 )
 internal class TestModule : BaseCatalyxModule() {
-	val testCorner = CornerBlock(Catalyx, "test_corner")
-	val testSide = SideBlock(Catalyx, "test_side")
+	val testCorner = object : CornerBlock(Catalyx, "test_corner") {
+		override fun getAABB(state: IBlockState): AxisAlignedBB {
+			return AxisAlignedBB(3 * PIXEL_RATIO, .0, .0, 1.0, 1.0, 13 * PIXEL_RATIO).rotateY(normalizeRotation(state))
+		}
+	}
+	val testSide = object : SideBlock(Catalyx, "test_side") {
+		override fun getAABB(state: IBlockState): AxisAlignedBB {
+			return AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 1.0, 13 * PIXEL_RATIO).rotateY(normalizeRotation(state))
+		}
+	}
 	val testMultiBlock = CenterBlock<DummyClass1>(Catalyx, "test_middle", DummyClass1::class.java, 1, testCorner, testSide)
 
 	override val logger: Logger = LoggerUtils.new("Development")

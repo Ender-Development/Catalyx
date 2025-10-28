@@ -25,13 +25,12 @@ open class SideBlock(mod: ICatalyxMod, name: String) : AbstractEdgeBlock(mod, na
 
 	override fun place(world: World, pos: BlockPos, facing: EnumFacing) {
 		val sides = arrayOf(pos.south(), pos.west(), pos.north(), pos.east())
-		val direction = facing.binary
-		val order = when(direction) {
+		val order = when(facing.binary) {
 			Facing.NORTH.binary -> listOf(0, 1, 2, 3)
 			Facing.EAST.binary -> listOf(3, 0, 1, 2)
 			Facing.SOUTH.binary -> listOf(2, 3, 0, 1)
 			Facing.WEST.binary -> listOf(1, 2, 3, 0)
-			else -> error("Invalid facing binary: $direction")
+			else -> error("Invalid facing binary: ${facing.binary}")
 		}
 		sides.forEachIndexed { idx, side -> placeBlock(world, side, facing with Position.entries[order[idx]]) }
 	}
