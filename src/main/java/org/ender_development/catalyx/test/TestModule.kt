@@ -6,6 +6,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 import org.apache.logging.log4j.Logger
 import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.Reference
+import org.ender_development.catalyx.blocks.TesrTileBlock
 import org.ender_development.catalyx.blocks.multiblock.CenterBlock
 import org.ender_development.catalyx.blocks.multiblock.parts.CornerBlock
 import org.ender_development.catalyx.blocks.multiblock.parts.SideBlock
@@ -35,6 +36,8 @@ internal class TestModule : BaseCatalyxModule() {
 		}
 	}
 	val testMultiBlock = CenterBlock<DummyClass1>(Catalyx, "test_middle", DummyClass1::class.java, 1, testCorner, testSide)
+	val testTesrBlock = TesrTileBlock(Catalyx, "test_tesr", DummyClass2::class.java, 0)
+
 
 	override val logger: Logger = LoggerUtils.new("Development")
 
