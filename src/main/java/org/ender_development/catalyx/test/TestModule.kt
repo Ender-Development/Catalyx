@@ -27,15 +27,9 @@ import org.ender_development.catalyx.utils.SideUtils
 	testModule = true
 )
 internal class TestModule : BaseCatalyxModule() {
-	val testItem = BaseItem(Catalyx, "test_item").requires("!${Mods.GROOVYSCRIPT}")
-	val testItem2 = BaseItem(Catalyx, "test_item_2").requires(Mods.GROOVYSCRIPT)
-	val testBlock = BaseBlock(Catalyx, "test_block")
 	val testCorner = CornerBlock(Catalyx, "test_corner")
 	val testSide = SideBlock(Catalyx, "test_side")
 	val testMultiBlock = CenterBlock<DummyClass1>(Catalyx, "test_middle", DummyClass1::class.java, 1, testCorner, testSide)
-	val invisibleCorner = InvisibleCorner(Catalyx, "invisible_corner")
-	val invisibleSide = InvisibleSide(Catalyx, "invisible_side")
-	val invisibleMiddle = CenterBlock<DummyClass2>(Catalyx, "invisible_middle", DummyClass2::class.java, 2, invisibleCorner, invisibleSide)
 
 	override val logger: Logger = LoggerUtils.new("Development")
 
