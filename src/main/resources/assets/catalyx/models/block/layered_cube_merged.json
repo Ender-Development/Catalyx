@@ -1,0 +1,18 @@
+{
+  "parent": "catalyx:block/layered_cube_base",
+  "textures": {
+    "particle": "#particle",
+    "bot_down": "#down",
+    "bot_up": "#up",
+    "bot_north": "#north",
+    "bot_east": "#east",
+    "bot_south": "#south",
+    "bot_west": "#west",
+    "top_down": "#down",
+    "top_up": "#up",
+    "top_north": "#north",
+    "top_east": "#east",
+    "top_south": "#south",
+    "top_west": "#west"
+  }
+}
