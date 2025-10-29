@@ -1,8 +1,6 @@
 package org.ender_development.catalyx.client.tesr
 
-import groovy.util.Eval.x
 import net.minecraft.client.renderer.GlStateManager
-import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import org.ender_development.catalyx.tiles.BaseTile
@@ -13,7 +11,7 @@ import java.awt.Color
 abstract class AbstractTESRenderer : TileEntitySpecialRenderer<BaseTile>() {
 	companion object {
 		const val TESR_MAGIC_NUMBER = 0.0075
-		const val ONE_BLOCK_WIDTH = 1.0 / TESR_MAGIC_NUMBER
+		const val ONE_BLOCK_WIDTH = 1 / TESR_MAGIC_NUMBER
 	}
 
 	abstract override fun render(tileEntity: BaseTile, x: Double, y: Double, z: Double, partialTicks: Float, destroyStage: Int, alpha: Float)
@@ -31,59 +29,47 @@ abstract class AbstractTESRenderer : TileEntitySpecialRenderer<BaseTile>() {
 	 * @param tileHeight total height of the texture
 	 * @param zOffset Z offset to render at
 	 */
-	internal fun drawScaledCustomSizeModalRect(
-		x: Int,
-		y: Int,
-		u: Float,
-		v: Float,
-		uWidth: Int,
-		vHeight: Int,
-		width: Int,
-		height: Int,
-		tileWidth: Float,
-		tileHeight: Float,
-		zOffset: Double = 0.0
-	) {
-		val f = 1.0F / tileWidth
-		val f1 = 1.0F / tileHeight
+	internal fun drawScaledCustomSizeModalRect(x: Double, y: Double, u: Double, v: Double, uWidth: Double, vHeight: Double, width: Double, height: Double, tileWidth: Double, tileHeight: Double, zOffset: Double = .0) {
+		val tw = 1 / tileWidth
+		val th = 1 / tileHeight
 		RenderUtils.BUFFER_BUILDER.begin(7, DefaultVertexFormats.POSITION_TEX);
-		RenderUtils.BUFFER_BUILDER.pos(x.toDouble(), (y + height).toDouble(), zOffset).tex((u * f).toDouble(), ((v + vHeight) * f1).toDouble()).endVertex()
-		RenderUtils.BUFFER_BUILDER.pos((x + width).toDouble(), (y + height).toDouble(), zOffset).tex(((u + uWidth) * f).toDouble(), ((v + vHeight) * f1).toDouble()).endVertex()
-		RenderUtils.BUFFER_BUILDER.pos((x + width).toDouble(), y.toDouble(), zOffset).tex(((u + uWidth) * f).toDouble(), (v * f1).toDouble()).endVertex()
-		RenderUtils.BUFFER_BUILDER.pos(x.toDouble(), y.toDouble(), zOffset).tex((u * f).toDouble(), (v * f1).toDouble()).endVertex()
+		RenderUtils.BUFFER_BUILDER.pos(x, y + height, zOffset).tex(u * tw, (v + vHeight) * th).endVertex()
+		RenderUtils.BUFFER_BUILDER.pos(x + width, y + height, zOffset).tex((u + uWidth) * tw, (v + vHeight) * th).endVertex()
+		RenderUtils.BUFFER_BUILDER.pos(x + width, y, zOffset).tex((u + uWidth) * tw, v * th).endVertex()
+		RenderUtils.BUFFER_BUILDER.pos(x, y, zOffset).tex(u * tw, v * th).endVertex()
 		RenderUtils.TESSELLATOR.draw()
 	}
 
 	internal fun drawRectangle(color: Color, filled: Boolean, x: Double, y: Double, width: Double, height: Double, zTranslate: Double) {
-		val red = color.red / 255.0f
-		val green = color.green / 255.0f
-		val blue = color.blue / 255.0f
-		val alpha = color.alpha / 255.0f
+		val red = color.red / 255f
+		val green = color.green / 255f
+		val blue = color.blue / 255f
+		val alpha = color.alpha / 255f
 
-		GlStateManager.pushAttrib()
+		GlStateManager.pushAttrib() // push/pop attrib can mess with GlSM state, is this really needed?
 		GlStateManager.pushMatrix()
 
 		if(!filled) {
 			RenderUtils.BUFFER_BUILDER.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR)
 
-			RenderUtils.BUFFER_BUILDER.pos(x, y, 0.0).color(red, green, blue, alpha).endVertex()
-			RenderUtils.BUFFER_BUILDER.pos(x, y + height, 0.0).color(red, green, blue, alpha).endVertex()
-			RenderUtils.BUFFER_BUILDER.pos(x, y + height, 0.0).color(red, green, blue, alpha).endVertex()
-			RenderUtils.BUFFER_BUILDER.pos(x + width, y + height, 0.0).color(red, green, blue, alpha).endVertex()
-			RenderUtils.BUFFER_BUILDER.pos(x + width, y + height, 0.0).color(red, green, blue, alpha).endVertex()
-			RenderUtils.BUFFER_BUILDER.pos(x + width, y, 0.0).color(red, green, blue, alpha).endVertex()
-			RenderUtils.BUFFER_BUILDER.pos(x + width, y, 0.0).color(red, green, blue, alpha).endVertex()
-			RenderUtils.BUFFER_BUILDER.pos(x, y, 0.0).color(red, green, blue, alpha).endVertex()
+			RenderUtils.BUFFER_BUILDER.pos(x, y, .0).color(red, green, blue, alpha).endVertex()
+			RenderUtils.BUFFER_BUILDER.pos(x, y + height, .0).color(red, green, blue, alpha).endVertex()
+			RenderUtils.BUFFER_BUILDER.pos(x, y + height, .0).color(red, green, blue, alpha).endVertex()
+			RenderUtils.BUFFER_BUILDER.pos(x + width, y + height, .0).color(red, green, blue, alpha).endVertex()
+			RenderUtils.BUFFER_BUILDER.pos(x + width, y + height, .0).color(red, green, blue, alpha).endVertex()
+			RenderUtils.BUFFER_BUILDER.pos(x + width, y, .0).color(red, green, blue, alpha).endVertex()
+			RenderUtils.BUFFER_BUILDER.pos(x + width, y, .0).color(red, green, blue, alpha).endVertex()
+			RenderUtils.BUFFER_BUILDER.pos(x, y, .0).color(red, green, blue, alpha).endVertex()
 		} else {
 			RenderUtils.BUFFER_BUILDER.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR)
 
-			RenderUtils.BUFFER_BUILDER.pos(x, y + 0, 0.0).color(red, green, blue, alpha).endVertex()
-			RenderUtils.BUFFER_BUILDER.pos(x, y + height, 0.0).color(red, green, blue, alpha).endVertex()
-			RenderUtils.BUFFER_BUILDER.pos(x + width, y + height, 0.0).color(red, green, blue, alpha).endVertex()
-			RenderUtils.BUFFER_BUILDER.pos(x + width, y + 0, 0.0).color(red, green, blue, alpha).endVertex()
+			RenderUtils.BUFFER_BUILDER.pos(x, y + 0, .0).color(red, green, blue, alpha).endVertex()
+			RenderUtils.BUFFER_BUILDER.pos(x, y + height, .0).color(red, green, blue, alpha).endVertex()
+			RenderUtils.BUFFER_BUILDER.pos(x + width, y + height, .0).color(red, green, blue, alpha).endVertex()
+			RenderUtils.BUFFER_BUILDER.pos(x + width, y + 0, .0).color(red, green, blue, alpha).endVertex()
 		}
 
-		GlStateManager.translate(0.0, 0.0, zTranslate)
+		GlStateManager.translate(.0, .0, zTranslate)
 		GlStateManager.enableBlend()
 		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA)
 		GlStateManager.disableLighting()

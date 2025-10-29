@@ -6,7 +6,6 @@ import net.minecraft.entity.Entity
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
 import org.ender_development.catalyx.utils.math.BlockPosRotate
-import scala.inline
 
 inline fun BlockPos.rotateX(degrees: Int) =
 	BlockPosRotate.rotateX(this, degrees)
@@ -29,8 +28,8 @@ inline operator fun BlockPos.times(scalar: Int) =
 inline fun Pair<BlockPos, BlockPos>.getAllInBox() =
 	BlockPos.getAllInBox(first, second)
 
-inline fun BlockPos.getFacingFromEntityPosition(entityX: Double, entityZ: Double) =
-	EnumFacing.getFacingFromVector((entityX - this.x).toFloat(), 0f, (entityZ - this.z).toFloat())
+inline fun BlockPos.getFacingFromEntityPosition(entityX: Double, entityZ: Double): EnumFacing =
+	EnumFacing.getFacingFromVector((entityX - x).toFloat(), 0f, (entityZ - z).toFloat())
 
 inline fun BlockPos.getFacingFromEntity(entity: Entity): EnumFacing =
 	getFacingFromEntityPosition(entity.posX, entity.posZ)
@@ -38,8 +37,6 @@ inline fun BlockPos.getFacingFromEntity(entity: Entity): EnumFacing =
 /**
  * @see org.ender_development.catalyx.blocks.multiblock.parts.AbstractEdgeBlock
  */
-	inline
-
 fun BlockPos.getHorizontalSurroundings() = arrayOf(
 	north().west(), north(), north().east(),
 	west(),        /* us */  east(),

@@ -3,7 +3,6 @@ package org.ender_development.catalyx.tiles
 import net.minecraft.block.BlockHorizontal
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.Minecraft
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
@@ -13,30 +12,27 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
-import org.ender_development.catalyx.blocks.BaseRotatableTileBlock
 import org.ender_development.catalyx.client.tesr.HudInfoRenderer
-import org.ender_development.catalyx.client.tesr.IoRenderer
+import org.ender_development.catalyx.client.tesr.IORenderer
 import org.ender_development.catalyx.core.ICatalyxMod
-import org.ender_development.catalyx.tiles.TesrTile.IOType.Companion.next
 import org.ender_development.catalyx.tiles.helper.HudInfoLine
 import org.ender_development.catalyx.tiles.helper.IHudInfoProvider
 import org.ender_development.catalyx.tiles.helper.IPortRenderer
-import org.ender_development.catalyx.tiles.helper.ITesr
+import org.ender_development.catalyx.tiles.helper.ITESRTile
 import org.ender_development.catalyx.utils.extensions.withAlpha
 import java.awt.Color
-import java.util.Locale.getDefault
+import java.util.*
 
 // TODO: Refactor this into a proper class with mutable IO sides and so on
-open class TesrTile(mod: ICatalyxMod) : BaseTile(mod), ITesr, IHudInfoProvider, ITickable, IPortRenderer {
-	enum class IOType(val value: String) : IStringSerializable {
-		DEFAULT("default"), NONE("none"), INPUT("input"), PULL("pull"), OUTPUT("output"), PUSH("push");
+open class TESRTile(mod: ICatalyxMod) : BaseTile(mod), ITESRTile, IHudInfoProvider, ITickable, IPortRenderer {
+	enum class IOType() : IStringSerializable {
+		DEFAULT, NONE, INPUT, PULL, OUTPUT, PUSH;
 
-		override fun getName(): String = value
+		override fun getName() =
+			name
 
-		companion object {
-			fun IOType.next(): IOType =
-				entries[(this.ordinal + 1) % entries.size]
-		}
+		val next: IOType
+			get() = entries[(ordinal + 1) % entries.size]
 	}
 
 	val ioTOP = IOType.DEFAULT
@@ -47,24 +43,26 @@ open class TesrTile(mod: ICatalyxMod) : BaseTile(mod), ITesr, IHudInfoProvider, 
 	val ioRIGHT = IOType.DEFAULT
 
 	@SideOnly(Side.CLIENT)
-	override fun getRenderers(): MutableList<TileEntitySpecialRenderer<BaseTile>> = mutableListOf(HudInfoRenderer, IoRenderer)
+	override val renderers = arrayOf(HudInfoRenderer, IORenderer)
 
-	override fun getHudInfo(face: EnumFacing?): List<HudInfoLine> =
-		if((face != null) && Minecraft.getMinecraft().player.isSneaking) {
-			listOf(HudInfoLine(Color.LIGHT_GRAY, Color.LIGHT_GRAY.withAlpha(.24f), "Side: ${getSideDirection(face).uppercase(getDefault())} (${face.toString().capitalize()})"))
-		} else {
-			emptyList()
-		}
+	override fun getHudInfo(face: EnumFacing) =
+		if(Minecraft.getMinecraft().player.isSneaking)
+			arrayOf(HudInfoLine("Side: ${getRelativeOrientationTo(face).uppercase(Locale.getDefault())} (${face.toString().replaceFirstChar(Char::uppercaseChar)})", Color.LIGHT_GRAY, Color.LIGHT_GRAY.withAlpha(.24f)))
+		else
+			emptyArray()
 
 	override fun onBlockActivated(world: World, pos: BlockPos, state: IBlockState, player: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
-		getIOType(facing).next()
+		// roz: this does nothing
+		getIOType(facing).next
 		return super.onBlockActivated(world, pos, state, player, hand, facing, hitX, hitY, hitZ)
 	}
 
 	var counter = 0
 	var displayCounter = 0.0
 	override fun update() {
-		if(world.isRemote) return
+		if(world.isRemote)
+			return
+
 		counter++
 		if(counter >= 50) {
 			displayCounter += .1
@@ -76,7 +74,7 @@ open class TesrTile(mod: ICatalyxMod) : BaseTile(mod), ITesr, IHudInfoProvider, 
 		}
 	}
 
-	protected fun getSideDirection(face: EnumFacing) = when(facing) {
+	protected fun getRelativeOrientationTo(face: EnumFacing) = when(facing) {
 		face -> "front"
 		face.opposite -> "back"
 		face.rotateY() -> "right"
@@ -85,22 +83,16 @@ open class TesrTile(mod: ICatalyxMod) : BaseTile(mod), ITesr, IHudInfoProvider, 
 	}
 
 	val facing: EnumFacing
-		get() {
-			val state = this.getWorld().getBlockState(this.getPos())
-			if(state.block is BaseRotatableTileBlock) {
-				return state.getValue(BlockHorizontal.FACING)
-			}
-			return EnumFacing.NORTH
-		}
+		get() = world.getBlockState(pos).properties.getOrDefault(BlockHorizontal.FACING, EnumFacing.NORTH) as EnumFacing
 
 	fun getIOType(side: EnumFacing): IOType =
 		when(side) {
-			EnumFacing.UP -> ioTOP.next()
-			EnumFacing.DOWN -> ioBOTTOM.next()
-			EnumFacing.NORTH -> ioFRONT.next()
-			EnumFacing.SOUTH -> ioBACK.next()
-			EnumFacing.WEST -> ioLEFT.next()
-			EnumFacing.EAST -> ioRIGHT.next()
+			EnumFacing.UP -> ioTOP.next
+			EnumFacing.DOWN -> ioBOTTOM.next
+			EnumFacing.NORTH -> ioFRONT.next
+			EnumFacing.SOUTH -> ioBACK.next
+			EnumFacing.WEST -> ioLEFT.next
+			EnumFacing.EAST -> ioRIGHT.next
 	}
 
 	override fun getPortState(): Map<EnumFacing, IOType> =

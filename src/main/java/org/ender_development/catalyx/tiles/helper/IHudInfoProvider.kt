@@ -4,24 +4,20 @@ import net.minecraft.util.EnumFacing
 import java.awt.Color
 
 interface IHudInfoProvider {
-	fun getHudInfo(face: EnumFacing?): List<HudInfoLine>
+	fun getHudInfo(face: EnumFacing): Array<HudInfoLine>
 }
 
-class HudInfoLine(val color: Color?, val background: Color?, val border: Color?, val text: String) {
-	var percent = 0.0f
+data class HudInfoLine(val text: String, val color: Color? = null, val background: Color? = null, val border: Color? = null) {
+	var percent = 0f
 	var percentColor: Color? = null
 	var alignment = TextAlign.LEFT
 
-	constructor(text: String) : this(null, null, null, text)
-	constructor(color: Color, text: String) : this(color, null, null, text)
-	constructor(color: Color, background: Color, text: String) : this(color, background, null, text)
-
-	fun setTextAlign(align: TextAlign): HudInfoLine {
-		this.alignment = align
+	fun textAlign(align: TextAlign): HudInfoLine {
+		alignment = align
 		return this
 	}
 
-	fun setProgress(percent: Float, percentColor: Color): HudInfoLine {
+	fun progress(percent: Float, percentColor: Color): HudInfoLine {
 		this.percent = percent
 		this.percentColor = percentColor
 		return this

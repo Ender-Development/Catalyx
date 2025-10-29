@@ -1,8 +1,8 @@
 package org.ender_development.catalyx.tiles.helper
 
 import net.minecraft.util.EnumFacing
-import org.ender_development.catalyx.tiles.TesrTile
+import org.ender_development.catalyx.tiles.TESRTile
 
 interface IPortRenderer {
-	fun getPortState(): Map<EnumFacing, TesrTile.IOType>
+	fun getPortState(): Map<EnumFacing, TESRTile.IOType>
 }
