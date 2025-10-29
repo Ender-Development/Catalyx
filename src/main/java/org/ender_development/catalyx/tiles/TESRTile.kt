@@ -33,27 +33,43 @@ open class TESRTile(mod: ICatalyxMod) : BaseTile(mod), ITESRTile, IHudInfoProvid
 
 		val next: IOType
 			get() = entries[(ordinal + 1) % entries.size]
+
+		val random: IOType
+			get() = entries.random()
 	}
 
-	val ioTOP = IOType.DEFAULT
-	val ioBOTTOM = IOType.DEFAULT
-	val ioFRONT = IOType.DEFAULT
-	val ioBACK = IOType.DEFAULT
-	val ioLEFT = IOType.DEFAULT
-	val ioRIGHT = IOType.DEFAULT
+	var ioTOP = IOType.DEFAULT
+	var ioBOTTOM = IOType.DEFAULT
+	var ioFRONT = IOType.DEFAULT
+	var ioBACK = IOType.DEFAULT
+	var ioLEFT = IOType.DEFAULT
+	var ioRIGHT = IOType.DEFAULT
 
 	@SideOnly(Side.CLIENT)
 	override val renderers = arrayOf(HudInfoRenderer, IORenderer)
 
 	override fun getHudInfo(face: EnumFacing) =
 		if(Minecraft.getMinecraft().player.isSneaking)
-			arrayOf(HudInfoLine("Side: ${getRelativeOrientationTo(face).uppercase(Locale.getDefault())} (${face.toString().replaceFirstChar(Char::uppercaseChar)})", Color.LIGHT_GRAY, Color.LIGHT_GRAY.withAlpha(.24f)))
+			arrayOf(
+				HudInfoLine(
+					"Side: ${getRelativeOrientationTo(face).uppercase(Locale.getDefault())} (${face.toString().replaceFirstChar(Char::uppercaseChar)})",
+					Color.LIGHT_GRAY,
+					Color.LIGHT_GRAY.withAlpha(.24f)
+				)
+			)
 		else
 			emptyArray()
 
 	override fun onBlockActivated(world: World, pos: BlockPos, state: IBlockState, player: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
-		// roz: this does nothing
-		getIOType(facing).next
+		if(!world.isRemote)
+			when(facing) {
+				EnumFacing.UP -> ioTOP = ioTOP.next
+				EnumFacing.DOWN -> ioBOTTOM = ioBOTTOM.next
+				EnumFacing.NORTH -> ioFRONT = ioFRONT.next
+				EnumFacing.SOUTH -> ioBACK = ioBACK.next
+				EnumFacing.WEST -> ioLEFT = ioLEFT.next
+				EnumFacing.EAST -> ioRIGHT = ioRIGHT.next
+			}
 		return super.onBlockActivated(world, pos, state, player, hand, facing, hitX, hitY, hitZ)
 	}
 
@@ -87,21 +103,27 @@ open class TESRTile(mod: ICatalyxMod) : BaseTile(mod), ITESRTile, IHudInfoProvid
 
 	fun getIOType(side: EnumFacing): IOType =
 		when(side) {
-			EnumFacing.UP -> ioTOP.next
-			EnumFacing.DOWN -> ioBOTTOM.next
-			EnumFacing.NORTH -> ioFRONT.next
-			EnumFacing.SOUTH -> ioBACK.next
-			EnumFacing.WEST -> ioLEFT.next
-			EnumFacing.EAST -> ioRIGHT.next
-	}
+			EnumFacing.UP -> ioTOP
+			EnumFacing.DOWN -> ioBOTTOM
+			EnumFacing.NORTH -> ioFRONT
+			EnumFacing.SOUTH -> ioBACK
+			EnumFacing.WEST -> ioLEFT
+			EnumFacing.EAST -> ioRIGHT
+		}
 
-	override fun getPortState(): Map<EnumFacing, IOType> =
-		mapOf(
-			EnumFacing.UP to ioTOP,
-			EnumFacing.DOWN to ioBOTTOM,
-			EnumFacing.NORTH to IOType.entries.random(),
-			EnumFacing.SOUTH to IOType.entries.random(),
-			EnumFacing.WEST to IOType.entries.random(),
-			EnumFacing.EAST to IOType.entries.random()
-		)
+	var internalCtr = 0
+	var map: Map<EnumFacing, IOType>? = null
+	override fun getPortState(): Map<EnumFacing, IOType> {
+		if(++internalCtr % 2000 == 0 || map == null) {
+			map = mapOf(
+				EnumFacing.UP to ioTOP,
+				EnumFacing.DOWN to ioBOTTOM,
+				EnumFacing.NORTH to ioFRONT.random,
+				EnumFacing.SOUTH to ioBACK.random,
+				EnumFacing.WEST to ioLEFT.random,
+				EnumFacing.EAST to ioRIGHT.random
+			)
+		}
+		return map!!
+	}
 }
