@@ -17,7 +17,7 @@ abstract class AbstractTESRenderer : TileEntitySpecialRenderer<BaseTile>() {
 
 	abstract override fun render(tileEntity: BaseTile, x: Double, y: Double, z: Double, partialTicks: Float, destroyStage: Int, alpha: Float)
 
-	internal fun drawScaledCustomSizeModalRectLegacy(x: Double, y: Double, u: Double, v: Double, uWidth: Double, vHeight: Double, width: Double, height: Double, tileWidth: Double, tileHeight: Double, zOffset: Double = .0) {
+	fun drawScaledCustomSizeModalRectLegacy(x: Double, y: Double, u: Double, v: Double, uWidth: Double, vHeight: Double, width: Double, height: Double, tileWidth: Double, tileHeight: Double, zOffset: Double = .0) {
 		val tw = 1 / tileWidth
 		val th = 1 / tileHeight
 		RenderUtils.BUFFER_BUILDER.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
@@ -40,7 +40,7 @@ abstract class AbstractTESRenderer : TileEntitySpecialRenderer<BaseTile>() {
 	 * @param tileHeight total height of the texture
 	 * @param zOffset Z offset to render at
 	 */
-	internal fun drawScaledCustomSizeModalRect(
+	fun drawScaledCustomSizeModalRect(
 		x: Double,
 		y: Double,
 		u: Double,
@@ -67,7 +67,7 @@ abstract class AbstractTESRenderer : TileEntitySpecialRenderer<BaseTile>() {
 		RenderUtils.TESSELLATOR.draw()
 	}
 
-	internal fun drawRectangle(color: Color, filled: Boolean, x: Double, y: Double, width: Double, height: Double, zTranslate: Double) {
+	fun drawRectangle(color: Color, filled: Boolean, x: Double, y: Double, width: Double, height: Double, zTranslate: Double) {
 		val red = color.red / 255f
 		val green = color.green / 255f
 		val blue = color.blue / 255f
