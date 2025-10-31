@@ -14,6 +14,7 @@ import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import org.ender_development.catalyx.client.tesr.HudInfoRenderer
 import org.ender_development.catalyx.client.tesr.IORenderer
+import org.ender_development.catalyx.client.tesr.IORenderer2
 import org.ender_development.catalyx.core.ICatalyxMod
 import org.ender_development.catalyx.tiles.helper.HudInfoLine
 import org.ender_development.catalyx.tiles.helper.IHudInfoProvider
@@ -46,7 +47,7 @@ open class TESRTile(mod: ICatalyxMod) : BaseTile(mod), ITESRTile, IHudInfoProvid
 	var ioRIGHT = IOType.DEFAULT
 
 	@SideOnly(Side.CLIENT)
-	override val renderers = arrayOf(HudInfoRenderer, IORenderer)
+	override val renderers = arrayOf(HudInfoRenderer, IORenderer2)
 
 	override fun getHudInfo(face: EnumFacing) =
 		if(Minecraft.getMinecraft().player.isSneaking)
