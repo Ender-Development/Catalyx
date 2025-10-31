@@ -117,8 +117,8 @@ open class TESRTile(mod: ICatalyxMod) : BaseTile(mod), ITESRTile, IHudInfoProvid
 	override fun getPortState(): Map<EnumFacing, IOType> {
 		if(++internalCtr % 2000 == 0 || map == null) {
 			map = mapOf(
-				EnumFacing.UP to ioTOP,
-				EnumFacing.DOWN to ioBOTTOM,
+				EnumFacing.UP to ioTOP.random,
+				EnumFacing.DOWN to ioBOTTOM.random,
 				EnumFacing.NORTH to ioFRONT.random,
 				EnumFacing.SOUTH to ioBACK.random,
 				EnumFacing.WEST to ioLEFT.random,
