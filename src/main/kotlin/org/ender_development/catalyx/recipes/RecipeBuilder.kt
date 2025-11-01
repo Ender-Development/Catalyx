@@ -11,7 +11,7 @@ import org.ender_development.catalyx.recipes.chance.output.ChancedItemOutput
 import org.ender_development.catalyx.recipes.chance.output.ChancedOutputList
 import org.ender_development.catalyx.recipes.chance.output.IChancedOutputLogic
 import org.ender_development.catalyx.recipes.ingredients.RecipeInput
-import org.ender_development.catalyx.recipes.validation.OldValidationResult
+import org.ender_development.catalyx.recipes.validation.Result
 import org.ender_development.catalyx.recipes.validation.ValidationState
 import org.ender_development.catalyx.recipes.validation.Validator
 import java.util.function.Supplier
@@ -72,7 +72,7 @@ class RecipeBuilder<R : RecipeBuilder<R>> {
 	}
 
 	fun build() =
-		OldValidationResult(
+		Result(
 			validate(), Recipe(
 				inputs, outputs.filterNotNull(), ChancedOutputList(chancedOutputLogic, chancedOutputs.filterNotNull()),
 				fluidInputs, fluidOutputs.filterNotNull(), ChancedOutputList(chancedFluidOutputLogic, chancedFluidOutputs.filterNotNull()),
@@ -91,7 +91,7 @@ class RecipeBuilder<R : RecipeBuilder<R>> {
 		validator.assert(energyPerTick != 0L, "Energy per tick must not be 0")
 		validator.assert(category != null, "Recipe category must be set")
 		validator.assert(category?.recipeMap == recipeMap, "Recipe category does not belong to the recipe map")
-		validator.logMessages(initialMsg = "Invalid recipe for ${recipeMap.unlocalizedName}:")
+		validator.logErrors(initialMsg = "Invalid recipe for ${recipeMap.unlocalizedName}:")
 		return validator.status
 	}
 
