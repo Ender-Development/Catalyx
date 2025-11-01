@@ -1,30 +1,43 @@
 # <img src="src/main/resources/assets/catalyx/textures/logo.png" alt="Catalyx" height="42" width="42"> Catalyx
 
-Catalyx is a library mod written in [Kotlin](https://www.curseforge.com/minecraft/mc-mods/forgelin-continuous) for shared code between [Alchemistry Redox](https://github.com/Ender-Development/Alchemistry), [Re-Emerging Technology](https://github.com/Ender-Development/Re-Emerging-Technology) and possible future mods made by us.
+<!---freshmark description
+output = [
+link(shield("Kotlin", "Kotlin", "{{kotlin_version}}", "blue"), "https://kotlinlang.org/"),
+link(shield("Maven artifact", "Maven", "{{root_package}}:{{mod_name}}", "blue"), "https://maven.ender-development.org/{{root_package}}/{{mod_name}}/".replaceAll("\\.", "/").replaceAll("_", "-")),
+link(shield("Version", "Version", "{{mod_version}}", "blue"), "{{mod_url}}/commits/master"),
+link(shield("License", "License", "LGPL-3.0", "blue"), "{{mod_url}}/blob/master/LICENSE"),
+"",
+"{{mod_description}}".replace("Kotlin", link("Kotlin", "https://kotlinlang.org/")).replace("Ender-Development's mods", link("Ender-Development's mods", "https://www.curseforge.com/members/enderdevelopment/projects"))
+].join("\n")
+-->
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.2.20-blue.svg)](https://kotlinlang.org/)
+[![Maven artifact](https://img.shields.io/badge/Maven-org.ender__development%3ACatalyx-blue.svg)](https://maven/ender-development/org/org/ender-development/Catalyx/)
+[![Version](https://img.shields.io/badge/Version-0.1.0-blue.svg)](https://github.com/Ender-Development/Catalyx/commits/master)
+[![License](https://img.shields.io/badge/License-LGPL--3.0-blue.svg)](https://github.com/Ender-Development/Catalyx/blob/master/LICENSE)
 
-<a href="https://www.akliz.net/enderman"><img src="https://github.com/Ender-Development/PatchouliBooks/raw/master/banner.png" align="center"/></a>
+Catalyx is a library written in [Kotlin](https://kotlinlang.org/) for shared code between [Ender-Development's mods](https://www.curseforge.com/members/enderdevelopment/projects).
+<!---freshmark /description -->
+
+<a href="https://www.akliz.net/enderman"><img src="https://raw.githubusercontent.com/Ender-Development/Catalyx-Template/refs/heads/master/assets/ender_development/banner.png" align="center"/></a>
 
 ## Dependencies
 
-![badge](https://img.shields.io/badge/required-Forgelin--Continuous-gray?style=flat-square&labelColor=red&link=https://www.curseforge.com/minecraft/mc-mods/forgelin-continuous)
+<!---freshmark dependencies
+output = [
+link(shield("Forgelin-Continuous", "required", "Forgelin-Continuous", "red"), "https://www.curseforge.com/minecraft/mc-mods/forgelin-continuous"),
+"",
+"Forgelin-Continuous is an updated version of " + link("Shadowfacts' Forgelin", "https://www.curseforge.com/minecraft/mc-mods/shadowfacts-forgelin") + ", which packs latest versions of Kotlin libraries for mod developers to use with."
+].join("\n")
+-->
+[![Forgelin-Continuous](https://img.shields.io/badge/required-Forgelin--Continuous-red.svg)](https://www.curseforge.com/minecraft/mc-mods/forgelin-continuous)
 
-## [Ender-Development](https://github.com/Ender-Development)
-
-Our Team currently includes:
-
-- `_MasterEnderman_` - Project-Manager, Developer
-- `rozbrajaczpoziomow` - Developer
-- `Klebestreifen` - Developer
-
-You can contact us on our [Discord](https://discord.gg/JF7x2vG).
+Forgelin-Continuous is an updated version of [Shadowfacts' Forgelin](https://www.curseforge.com/minecraft/mc-mods/shadowfacts-forgelin), which packs latest versions of Kotlin libraries for mod developers to use with.
+<!---freshmark /dependencies -->
 
 ## Contributing
 
-Feel free to contribute to the project. We are always happy about pull requests.
-If you want to help us, you can find potential tasks in
-the [issue tracker](https://github.com/Ender-Development/Catalyx/issues).
-Of course, you can also create new issues if you find a bug or have a suggestion for a new feature.
-Should you have any questions, feel free to ask us on [Discord](https://discord.gg/JF7x2vG).
+Please make sure to read our [contributing guidelines](.github/CONTRIBUTING.md) first.
+Furthermore, you have to agree to our [code of conduct](.github/CODE_OF_CONDUCT.md) if you want to contribute.
 
 ## Partnership with Akliz
 
@@ -32,7 +45,7 @@ Should you have any questions, feel free to ask us on [Discord](https://discord.
 > to set up a server of your choice, they help me to push myself and the quality of my projects to the next level.
 > Furthermore, you can click on the banner below to get a discount. :')
 
-<a href="https://www.akliz.net/enderman"><img src="https://github.com/MasterEnderman/Zerblands-Remastered/raw/master/Akliz_Partner.png" align="center"/></a>
+<a href="https://www.akliz.net/enderman"><img src="https://raw.githubusercontent.com/Ender-Development/Catalyx-Template/refs/heads/master/assets/ender_development/partnership.png" align="center"/></a>
 
 If you aren't located in the [US](https://www.akliz.net/enderman), Akliz now offers servers in:
 
