@@ -19,12 +19,15 @@ abstract class AbstractTESRenderer : TileEntitySpecialRenderer<BaseTile>() {
 		val tw = 1 / tileWidth
 		val th = 1 / tileHeight
 		RenderUtils.BUFFER_BUILDER.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
-		RenderUtils.BUFFER_BUILDER.pos(x, y + height, zOffset).tex(u * tw, (v + vHeight) * th).color(1f,1f,1f,1f).endVertex()
-		RenderUtils.BUFFER_BUILDER.pos(x + width, y + height, zOffset).tex((u + uWidth) * tw, (v + vHeight) * th).color(1f,1f,1f,1f).endVertex()
-		RenderUtils.BUFFER_BUILDER.pos(x + width, y, zOffset).tex((u + uWidth) * tw, v * th).color(1f,1f,1f,1f).endVertex()
-		RenderUtils.BUFFER_BUILDER.pos(x, y, zOffset).tex(u * tw, v * th).color(1f,1f,1f,1f).endVertex()
+		RenderUtils.BUFFER_BUILDER.pos(x, y + height, zOffset).tex(u * tw, (v + vHeight) * th).color(1f, 1f, 1f, 1f).endVertex()
+		RenderUtils.BUFFER_BUILDER.pos(x + width, y + height, zOffset).tex((u + uWidth) * tw, (v + vHeight) * th).color(1f, 1f, 1f, 1f).endVertex()
+		RenderUtils.BUFFER_BUILDER.pos(x + width, y, zOffset).tex((u + uWidth) * tw, v * th).color(1f, 1f, 1f, 1f).endVertex()
+		RenderUtils.BUFFER_BUILDER.pos(x, y, zOffset).tex(u * tw, v * th).color(1f, 1f, 1f, 1f).endVertex()
 		RenderUtils.TESSELLATOR.draw()
 	}
+
+	data class LightLevel(val skyLight: Int, val blockLight: Int)
+
 	/**
 	 * Draws a scaled, textured, tiled modal rect. Adapted from the [net.minecraft.client.gui.Gui] class.
 	 *
@@ -50,18 +53,17 @@ abstract class AbstractTESRenderer : TileEntitySpecialRenderer<BaseTile>() {
 		tileWidth: Double,
 		tileHeight: Double,
 		zOffset: Double = .0,
-		light: Pair<Int, Int>
+		light: LightLevel
 	) {
 		val tw = 1 / tileWidth
 		val th = 1 / tileHeight
-		val s = light.first
-		val b = light.second
-		val brightness = (max(s, b).toFloat()).coerceAtLeast(0.01f)
-		RenderUtils.BUFFER_BUILDER.begin(7, DefaultVertexFormats.POSITION_TEX_LMAP_COLOR);
-		RenderUtils.BUFFER_BUILDER.pos(x, y + height, zOffset).tex(u * tw, (v + vHeight) * th).lightmap(s, b).color(brightness, brightness, brightness, 1f).endVertex()
-		RenderUtils.BUFFER_BUILDER.pos(x + width, y + height, zOffset).tex((u + uWidth) * tw, (v + vHeight) * th).lightmap(s, b).color(brightness, brightness, brightness, 1f).endVertex()
-		RenderUtils.BUFFER_BUILDER.pos(x + width, y, zOffset).tex((u + uWidth) * tw, v * th).lightmap(s, b).color(brightness, brightness, brightness, 1f).endVertex()
-		RenderUtils.BUFFER_BUILDER.pos(x, y, zOffset).tex(u * tw, v * th).lightmap(s, b).color(brightness, brightness, brightness, 1f).endVertex()
+		val (skyLight, blockLight) = light
+		val brightness = max(skyLight, blockLight).toFloat().coerceAtLeast(0.01f)
+		RenderUtils.BUFFER_BUILDER.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_LMAP_COLOR);
+		RenderUtils.BUFFER_BUILDER.pos(x, y + height, zOffset).tex(u * tw, (v + vHeight) * th).lightmap(skyLight, blockLight).color(brightness, brightness, brightness, 1f).endVertex()
+		RenderUtils.BUFFER_BUILDER.pos(x + width, y + height, zOffset).tex((u + uWidth) * tw, (v + vHeight) * th).lightmap(skyLight, blockLight).color(brightness, brightness, brightness, 1f).endVertex()
+		RenderUtils.BUFFER_BUILDER.pos(x + width, y, zOffset).tex((u + uWidth) * tw, v * th).lightmap(skyLight, blockLight).color(brightness, brightness, brightness, 1f).endVertex()
+		RenderUtils.BUFFER_BUILDER.pos(x, y, zOffset).tex(u * tw, v * th).lightmap(skyLight, blockLight).color(brightness, brightness, brightness, 1f).endVertex()
 		RenderUtils.TESSELLATOR.draw()
 	}
 
@@ -71,7 +73,9 @@ abstract class AbstractTESRenderer : TileEntitySpecialRenderer<BaseTile>() {
 		val blue = color.blue / 255f
 		val alpha = color.alpha / 255f
 
-		GlStateManager.pushAttrib() // push/pop attrib can mess with GlSM state, is this really needed?
+		// TODO remove this pushAttrib/popAttrib, the JavaDoc for it even says not to use it
+		// push/pop attrib can mess with GlSM state
+		GlStateManager.pushAttrib()
 		GlStateManager.pushMatrix()
 
 		if(!filled) {

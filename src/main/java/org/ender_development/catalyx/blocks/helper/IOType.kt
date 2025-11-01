@@ -12,5 +12,5 @@ enum class IOType() : IStringSerializable {
 		get() = entries[(ordinal + 1) % entries.size]
 
 	val random: IOType
-		get() = entries.random()
+		inline get() = entries.random()
 }

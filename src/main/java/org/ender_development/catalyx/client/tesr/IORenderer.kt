@@ -21,14 +21,17 @@ import org.lwjgl.opengl.GL11
 @SideOnly(Side.CLIENT)
 object IORenderer : AbstractTESRenderer() {
 	override fun render(tileEntity: BaseTile, x: Double, y: Double, z: Double, partialTicks: Float, destroyStage: Int, alpha: Float) {
-		val provider = (tileEntity as? IPortRenderer) ?: return
+		if(tileEntity !is IPortRenderer)
+			return
 
 		EnumFacing.entries.forEach { side ->
-			val state = provider.getPortState(side)
+			val state = tileEntity.getPortState(side)
 
-			if(state == IOType.DEFAULT)
+			if(state === IOType.DEFAULT)
 				return@forEach
 
+			// TODO remove this pushAttrib/popAttrib, the JavaDoc for it even says not to use it
+			// push/pop attrib can mess with GlSM state
 			GlStateManager.pushAttrib()
 			GlStateManager.pushMatrix()
 
@@ -45,18 +48,14 @@ object IORenderer : AbstractTESRenderer() {
 	private fun renderTexture(texture: ResourceLocation) {
 		GlStateManager.pushMatrix()
 
-		if(Minecraft.isAmbientOcclusionEnabled()) {
-			GlStateManager.shadeModel(GL11.GL_SMOOTH)
-		} else {
-			GlStateManager.shadeModel(GL11.GL_FLAT)
-		}
+		GlStateManager.shadeModel(if(Minecraft.isAmbientOcclusionEnabled()) GL11.GL_SMOOTH else GL11.GL_FLAT)
 
 		GlStateManager.translate(-.5, .0, .01)
 		GlStateManager.scale(TESR_MAGIC_NUMBER, -TESR_MAGIC_NUMBER, TESR_MAGIC_NUMBER)
 		GlStateManager.color(1f, 1f, 1f, 1f)
 
 		RenderUtils.bindTexture(texture)
-		drawScaledCustomSizeModalRectLegacy(.0, .0, .0, .0, 16.0, 16.0, ONE_BLOCK_WIDTH, ONE_BLOCK_WIDTH, 16.0, 16.0, 0.0)
+		drawScaledCustomSizeModalRectLegacy(.0, .0, .0, .0, 16.0, 16.0, ONE_BLOCK_WIDTH, ONE_BLOCK_WIDTH, 16.0, 16.0)
 
 		GlStateManager.popMatrix()
 	}

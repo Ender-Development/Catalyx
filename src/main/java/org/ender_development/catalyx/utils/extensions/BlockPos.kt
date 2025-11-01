@@ -28,11 +28,11 @@ inline operator fun BlockPos.times(scalar: Int) =
 inline fun Pair<BlockPos, BlockPos>.getAllInBox() =
 	BlockPos.getAllInBox(first, second)
 
-inline fun BlockPos.getFacingFromEntityPosition(entityX: Double, entityZ: Double): EnumFacing =
-	EnumFacing.getFacingFromVector((entityX - x).toFloat(), 0f, (entityZ - z).toFloat())
+inline fun BlockPos.getFacingFromEntityPosition(entityX: Float, entityZ: Float): EnumFacing =
+	EnumFacing.getFacingFromVector(entityX - x, 0f, entityZ - z)
 
 inline fun BlockPos.getFacingFromEntity(entity: Entity): EnumFacing =
-	getFacingFromEntityPosition(entity.posX, entity.posZ)
+	getFacingFromEntityPosition(entity.posX.toFloat(), entity.posZ.toFloat())
 
 /**
  * @see org.ender_development.catalyx.blocks.multiblock.parts.AbstractEdgeBlock

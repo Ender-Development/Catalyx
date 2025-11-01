@@ -6,5 +6,10 @@ import org.ender_development.catalyx.client.tesr.AbstractTESRenderer
 
 @SideOnly(Side.CLIENT)
 interface ITESRTile {
+	/**
+	 * The TESRs that will be called for rendering this TileEntity
+	 *
+	 * note: mark this as @SideOnly(Side.CLIENT), as the entire interface is marked as such.
+	 */
 	val renderers: Array<AbstractTESRenderer>
 }

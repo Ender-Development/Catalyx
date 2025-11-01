@@ -15,19 +15,12 @@ import org.ender_development.catalyx.utils.extensions.withAlpha
 import java.awt.Color
 
 open class TESRTile(mod: ICatalyxMod) : BaseTile(mod), ITESRTile, IHudInfoProvider {
-
 	@SideOnly(Side.CLIENT)
-	override val renderers: Array<AbstractTESRenderer> = arrayOf(HudInfoRenderer as AbstractTESRenderer)
+	override val renderers: Array<AbstractTESRenderer> = arrayOf(HudInfoRenderer)
 
 	override fun getHudInfo(face: EnumFacing) =
 		if(Minecraft.getMinecraft().player.isSneaking)
-			arrayOf(
-				HudInfoLine(
-					"Side: ${face.relativeDirection} ($face)",
-					Color.LIGHT_GRAY,
-					Color.LIGHT_GRAY.withAlpha(.24f)
-				)
-			)
+			arrayOf(HudInfoLine("Side: ${face.relativeDirection} ($face)", Color.LIGHT_GRAY, Color.LIGHT_GRAY.withAlpha(.24f)))
 		else
 			emptyArray()
 }

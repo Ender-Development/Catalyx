@@ -35,11 +35,8 @@ open class IOTileBlock(mod: ICatalyxMod, name: String, tileClass: Class<out IOTi
 		val IO_DOWN = IOProperty("io_down")
 	}
 
-	override fun createBlockState(): BlockStateContainer = ExtendedBlockState(
-		this,
-		arrayOf(BlockHorizontal.FACING),
-		arrayOf(IO_NORTH, IO_EAST, IO_SOUTH, IO_WEST, IO_UP, IO_DOWN)
-	)
+	override fun createBlockState() =
+		ExtendedBlockState(this, arrayOf(BlockHorizontal.FACING), arrayOf(IO_NORTH, IO_EAST, IO_SOUTH, IO_WEST, IO_UP, IO_DOWN))
 
 	override fun getExtendedState(state: IBlockState, world: IBlockAccess, pos: BlockPos): IBlockState {
 		val extendedBlockState = state as IExtendedBlockState

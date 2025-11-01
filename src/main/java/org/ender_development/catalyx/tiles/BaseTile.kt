@@ -59,7 +59,7 @@ abstract class BaseTile(open val mod: ICatalyxMod) : TileEntity(), BaseContainer
 	 * Defaults to [EnumFacing.NORTH] if the property is not found.
 	 */
 	open val facing: EnumFacing
-		get() = (world.getBlockState(pos).properties[BlockHorizontal.FACING] ?: EnumFacing.NORTH) as EnumFacing
+		get() = world.getBlockState(pos).properties.getOrDefault(BlockHorizontal.FACING, EnumFacing.NORTH) as EnumFacing
 
 	open val inventory: IItemHandler
 		get() = CombinedInvWrapper(input, output)

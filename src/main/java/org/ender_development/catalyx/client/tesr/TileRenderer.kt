@@ -8,8 +8,10 @@ import org.ender_development.catalyx.tiles.helper.ITESRTile
 @SideOnly(Side.CLIENT)
 object TileRenderer : AbstractTESRenderer() {
 	override fun render(tileEntity: BaseTile, x: Double, y: Double, z: Double, partialTicks: Float, destroyStage: Int, alpha: Float) {
-		val te = tileEntity as? ITESRTile ?: return
-		te.renderers.forEach {
+		if(tileEntity !is ITESRTile)
+			return
+
+		tileEntity.renderers.forEach {
 			it.setRendererDispatcher(rendererDispatcher)
 			it.render(tileEntity, x, y, z, partialTicks, destroyStage, alpha)
 		}

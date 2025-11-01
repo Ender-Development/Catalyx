@@ -21,7 +21,7 @@ object HudInfoRenderer : AbstractTESRenderer() {
 			return
 
 		var side = rendererDispatcher.cameraHitResult.sideHit
-		if(side == EnumFacing.DOWN || side == EnumFacing.UP)
+		if(side.axis === EnumFacing.Axis.Y)
 			side = tileEntity.pos.getFacingFromEntity(rendererDispatcher.entity)
 		val lines = tileEntity.getHudInfo(side)
 
