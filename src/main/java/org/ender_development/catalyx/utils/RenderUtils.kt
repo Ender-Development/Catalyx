@@ -1,6 +1,8 @@
 package org.ender_development.catalyx.utils
 
 import net.minecraft.client.Minecraft
+import net.minecraft.client.gui.FontRenderer
+import net.minecraft.client.renderer.BufferBuilder
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
@@ -12,12 +14,17 @@ import net.minecraftforge.fluids.Fluid
 import net.minecraftforge.fluids.FluidStack
 import net.minecraftforge.fluids.FluidTank
 import org.lwjgl.opengl.GL11
+import java.awt.Color
 
 object RenderUtils {
-	val BLOCK_TEX: ResourceLocation = TextureMap.LOCATION_BLOCKS_TEXTURE
-
 	val minecraft: Minecraft = Minecraft.getMinecraft()
+
+	val TESSELLATOR: Tessellator = Tessellator.getInstance()
+	val BUFFER_BUILDER: BufferBuilder = TESSELLATOR.buffer
+	val FONT_RENDERER: FontRenderer = minecraft.fontRenderer
 	val renderEngine: TextureManager = minecraft.renderEngine
+
+	val BLOCK_TEX: ResourceLocation = TextureMap.LOCATION_BLOCKS_TEXTURE
 
 	fun bindBlockTexture() =
 		renderEngine.bindTexture(BLOCK_TEX)
@@ -84,5 +91,41 @@ object RenderUtils {
 			i += 16
 		}
 		GlStateManager.disableBlend()
+	}
+
+	fun renderRect(x: Double, y: Double, width: Double, height: Double, color: Color) {
+		GlStateManager.pushMatrix()
+		GlStateManager.translate(.0, .0, .0)
+
+		GlStateManager.disableTexture2D()
+		GlStateManager.enableBlend()
+		GlStateManager.disableAlpha()
+		GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO)
+		GlStateManager.color(color.red / 255f, color.green / 255f, color.blue / 255f, 1f)
+
+		BUFFER_BUILDER.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION)
+		BUFFER_BUILDER.pos(x + width, y + height, .0).endVertex()
+		BUFFER_BUILDER.pos(x + width, y, .0).endVertex()
+		BUFFER_BUILDER.pos(x, y, .0).endVertex()
+		BUFFER_BUILDER.pos(x, y + height, .0).endVertex()
+		TESSELLATOR.draw()
+
+		GlStateManager.popMatrix()
+	}
+
+	fun renderText(text: String, x: Double, y: Double, color: Int, scale: Double = 1.0, shadow: Boolean = false) {
+		GlStateManager.disableCull()
+		GlStateManager.enableTexture2D()
+		GlStateManager.disableLighting()
+		GlStateManager.enableBlend()
+		GlStateManager.disableAlpha()
+		GlStateManager.disableDepth()
+		GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO)
+
+		GlStateManager.pushMatrix()
+		GlStateManager.translate(x, y, .0)
+		GlStateManager.scale(scale, scale, .0)
+		FONT_RENDERER.drawString(text, 0f, 0f, color, shadow)
+		GlStateManager.popMatrix()
 	}
 }

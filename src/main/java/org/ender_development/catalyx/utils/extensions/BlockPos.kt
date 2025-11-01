@@ -2,6 +2,7 @@
 
 package org.ender_development.catalyx.utils.extensions
 
+import net.minecraft.entity.Entity
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
 import org.ender_development.catalyx.utils.math.BlockPosRotate
@@ -27,11 +28,16 @@ inline operator fun BlockPos.times(scalar: Int) =
 inline fun Pair<BlockPos, BlockPos>.getAllInBox() =
 	BlockPos.getAllInBox(first, second)
 
+inline fun BlockPos.getFacingFromEntityPosition(entityX: Float, entityZ: Float): EnumFacing =
+	EnumFacing.getFacingFromVector(entityX - x, 0f, entityZ - z)
+
+inline fun BlockPos.getFacingFromEntity(entity: Entity): EnumFacing =
+	getFacingFromEntityPosition(entity.posX.toFloat(), entity.posZ.toFloat())
+
 /**
- * @see org.ender_development.catalyx.blocks.multiblock.BaseEdge
- * @see getHorizontalCenterFromMeta
+ * @see org.ender_development.catalyx.blocks.multiblock.parts.AbstractEdgeBlock
  */
-inline fun BlockPos.getHorizontalSurroundings() = arrayOf(
+fun BlockPos.getHorizontalSurroundings() = arrayOf(
 	north().west(), north(), north().east(),
 	west(),        /* us */  east(),
 	south().west(), south(), south().east()
