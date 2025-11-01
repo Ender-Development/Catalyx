@@ -56,4 +56,23 @@ object Delegates {
 					this.property
 				}
 		}
+
+	/**
+	 * Meant for parsing custom config values (like colours and whatnot), without requiring a [Config.RequiresMcRestart][net.minecraftforge.common.config.Config.RequiresMcRestart] annotation
+	 */
+	fun <C : Any, V : Any> cachedConfigParser(configGetter: () -> C, parser: (C) -> V): ReadOnlyProperty<Any?, V> =
+		object : ReadOnlyProperty<Any?, V> {
+			var config = configGetter()
+			var parsedValue = parser(config)
+
+			override fun getValue(thisRef: Any?, property: KProperty<*>): V {
+				val currentConfig = configGetter()
+				if(currentConfig == config)
+					return parsedValue
+
+				config = currentConfig
+				parsedValue = parser(config)
+				return parsedValue
+			}
+		}
 }
