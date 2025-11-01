@@ -36,6 +36,7 @@ import org.ender_development.catalyx.tiles.helper.*
 /**
  * A base TileEntity in Catalyx, implementing separate input and output inventories; saving/loading from NBT; energy, fluid and item capability handling
  */
+@Suppress("UNUSED")
 abstract class BaseTile(open val mod: ICatalyxMod) : TileEntity(), BaseContainer.IBaseContainerCompat {
 	var inputSlots = 0
 	var outputSlots = 0
@@ -59,7 +60,7 @@ abstract class BaseTile(open val mod: ICatalyxMod) : TileEntity(), BaseContainer
 	 * Defaults to [EnumFacing.NORTH] if the property is not found.
 	 */
 	open val facing: EnumFacing
-		get() = world.getBlockState(pos).properties.getOrDefault(BlockHorizontal.FACING, EnumFacing.NORTH) as EnumFacing
+		get() = world.getBlockState(pos).getValue(BlockHorizontal.FACING) ?: EnumFacing.NORTH
 
 	open val inventory: IItemHandler
 		get() = CombinedInvWrapper(input, output)
@@ -188,11 +189,20 @@ abstract class BaseTile(open val mod: ICatalyxMod) : TileEntity(), BaseContainer
 	/**
 	 * WHATEVER IS GOING ON HERE; PLEASE DO NOT TOUCH ANY OF THIS; WE DON'T KNOW WHY IT WORKS; BUT IT DOES!
 	 * SO IF SOMEONE COULD GIVE US SOME INSIGHT; PLEASE SEND HELP!!!
-	 *
-	 * 	 _._     _,-'""`-._
-	 * 	(,-.`._,'(       |\`-/|
-	 * 	    `-.-' \ )-`( , o o)
-	 * 	          `-    \`_`"'-
+	 * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+	 * ░░░░░░░░░░▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄░░░░░░░░░
+	 * ░░░░░░░░▄▀░░░░░░░░░░░░▄░░░░░░░▀▄░░░░░░░
+	 * ░░░░░░░░█░░▄░░░░▄░░░░░░░░░░░░░░█░░░░░░░
+	 * ░░░░░░░░█░░░░░░░░░░░░▄█▄▄░░▄░░░█░▄▄▄░░░
+	 * ░▄▄▄▄▄░░█░░░░░░▀░░░░▀█░░▀▄░░░░░█▀▀░██░░
+	 * ░██▄▀██▄█░░░▄░░░░░░░██░░░░▀▀▀▀▀░░░░██░░
+	 * ░░▀██▄▀██░░░░░░░░▀░██▀░░░░░░░░░░░░░▀██░
+	 * ░░░░▀████░▀░░░░▄░░░██░░░▄█░░░░▄░▄█░░██░
+	 * ░░░░░░░▀█░░░░▄░░░░░██░░░░▄░░░▄░░▄░░░██░
+	 * ░░░░░░░▄█▄░░░░░░░░░░░▀▄░░▀▀▀▀▀▀▀▀░░▄▀░░
+	 * ░░░░░░█▀▀█████████▀▀▀▀████████████▀░░░░
+	 * ░░░░░░████▀░░███▀░░░░░░▀███░░▀██▀░░░░░░
+	 * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 	 */
 	override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean {
 		return if(capability == ITEM_CAP && !enableItemCapability)
@@ -211,9 +221,15 @@ abstract class BaseTile(open val mod: ICatalyxMod) : TileEntity(), BaseContainer
 	/**
 	 * WHATEVER IS GOING ON HERE; PLEASE DO NOT TOUCH ANY OF THIS; WE DON'T KNOW WHY IT WORKS; BUT IT DOES!
 	 * SO IF SOMEONE COULD GIVE US SOME INSIGHT; PLEASE SEND HELP!!!
-	 * 	    |\__/,|   (`\
-	 * 	  _.|o o  |_   ) )
-	 * 	-(((---(((--------
+	 * ⣿⣿⣿⡿⢋⣍⠻⣿⣿⡿⢉⣍⢻⣿⠿⠿⠿⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+	 * ⠿⠿⠿⠁⣾⣿⣆⣀⣠⣠⣿⣿⣦⠤⠶⢄⣀⣴⠀⠈⡙⠻⣿⣿⣿⣿⣿⣿
+	 * ⣒⣒⠂⣸⣿⣉⣿⡋⠙⣿⣉⣹⣇⣐⣒⣻⣿⣿⣿⣿⣿⣦⡘⢿⣿⡿⠛⠛
+	 * ⣿⣿⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⡈⠛⠁⠄⢠
+	 * ⣿⣿⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠘⣂⣴⣿
+	 * ⣿⣿⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠇⣿⣿⣿⣿
+	 * ⣿⣿⡈⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⢠⣿⣿⣿⣿
+	 * ⣿⣿⣷⣌⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⣠⣿⣿⣿⣿⣿
+	 * ⣿⣿⣿⣿⣶⣀⣠⣤⣤⣄⣁⣤⣤⣤⣤⣄⣠⣤⣤⣄⣁⣼⣿⣿⣿⣿⣿⣿
 	 */
 	override fun <T : Any> getCapability(capability: Capability<T>, facing: EnumFacing?): T? {
 		return if(capability == ITEM_CAP && !enableItemCapability)

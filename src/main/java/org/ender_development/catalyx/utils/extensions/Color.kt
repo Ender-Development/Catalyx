@@ -9,3 +9,9 @@ inline fun Color.withAlpha(alpha: Float) =
 
 inline fun Color.withAlpha(alpha: Int) =
 	Color(red, green, blue, alpha)
+
+inline fun Color.destruct() =
+	arrayOf(red, green, blue, alpha)
+
+inline fun Color.destructFloat() =
+	this.destruct().map { it / 255.0f }.toFloatArray()

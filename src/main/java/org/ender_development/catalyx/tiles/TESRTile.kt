@@ -10,7 +10,7 @@ import org.ender_development.catalyx.core.ICatalyxMod
 import org.ender_development.catalyx.tiles.helper.HudInfoLine
 import org.ender_development.catalyx.tiles.helper.IHudInfoProvider
 import org.ender_development.catalyx.tiles.helper.ITESRTile
-import org.ender_development.catalyx.utils.extensions.relativeDirection
+import org.ender_development.catalyx.utils.extensions.relativeDirectionTo
 import org.ender_development.catalyx.utils.extensions.withAlpha
 import java.awt.Color
 
@@ -20,7 +20,7 @@ open class TESRTile(mod: ICatalyxMod) : BaseTile(mod), ITESRTile, IHudInfoProvid
 
 	override fun getHudInfo(face: EnumFacing) =
 		if(Minecraft.getMinecraft().player.isSneaking)
-			arrayOf(HudInfoLine("Side: ${face.relativeDirection} ($face)", Color.LIGHT_GRAY, Color.LIGHT_GRAY.withAlpha(.24f)))
+			arrayOf(HudInfoLine("Side: ${face.relativeDirectionTo(facing)} ($face)", Color.LIGHT_GRAY, Color.LIGHT_GRAY.withAlpha(.24f)))
 		else
 			emptyArray()
 }

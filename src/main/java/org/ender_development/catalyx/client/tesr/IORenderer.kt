@@ -30,18 +30,12 @@ object IORenderer : AbstractTESRenderer() {
 			if(state === IOType.DEFAULT)
 				return@forEach
 
-			// TODO remove this pushAttrib/popAttrib, the JavaDoc for it even says not to use it
-			// push/pop attrib can mess with GlSM state
-			GlStateManager.pushAttrib()
 			GlStateManager.pushMatrix()
-
 			translateToSide(side, x, y, z)
 
 			val texture = ResourceLocation(Reference.MODID, "textures/blocks/io/${state.name.lowercase()}.png")
 			renderTexture(texture)
-
 			GlStateManager.popMatrix()
-			GlStateManager.popAttrib()
 		}
 	}
 
@@ -55,11 +49,23 @@ object IORenderer : AbstractTESRenderer() {
 		GlStateManager.color(1f, 1f, 1f, 1f)
 
 		RenderUtils.bindTexture(texture)
-		drawScaledCustomSizeModalRectLegacy(.0, .0, .0, .0, 16.0, 16.0, ONE_BLOCK_WIDTH, ONE_BLOCK_WIDTH, 16.0, 16.0)
+		drawScaledCustomSizeModalRect(.0, .0, .0, .0, 16.0, 16.0, ONE_BLOCK_WIDTH, ONE_BLOCK_WIDTH, 16.0, 16.0)
 
 		GlStateManager.popMatrix()
 	}
 
+	/**
+	 * Translates and rotates the GL matrix to render on the given side of a block at the given coordinates.
+	 * Note: with this Implementation, the texture on side === DOWN is technically flipped top to bottom (i.e. ^ is v, …).
+	 * This can be "fixed" by always doing .opposite in the horizontalFacing calculation, but makes the most sense this way,
+	 * especially when it comes to respecting shading of the block textures.
+	 *
+	 * @param side The side to translate to
+	 * @param x The x coordinate of the current rendering
+	 * @param y The y coordinate of the current rendering
+	 * @param z The z coordinate of the current rendering
+	 * @see EnumFacing.glRotate
+	 */
 	private fun translateToSide(side: EnumFacing, x: Double, y: Double, z: Double) {
 		if(side.axis === EnumFacing.Axis.Y) {
 			// note: with this impl, the texture on side === DOWN is technically flipped top to bottom (i.e. ^ is v, …), this can be "fixed" by always doing .opposite here

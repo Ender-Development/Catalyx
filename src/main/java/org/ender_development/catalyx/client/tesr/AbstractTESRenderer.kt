@@ -5,9 +5,9 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import org.ender_development.catalyx.tiles.BaseTile
 import org.ender_development.catalyx.utils.RenderUtils
+import org.ender_development.catalyx.utils.extensions.destructFloat
 import org.lwjgl.opengl.GL11
 import java.awt.Color
-import kotlin.math.max
 
 abstract class AbstractTESRenderer : TileEntitySpecialRenderer<BaseTile>() {
 	companion object {
@@ -15,31 +15,20 @@ abstract class AbstractTESRenderer : TileEntitySpecialRenderer<BaseTile>() {
 		const val ONE_BLOCK_WIDTH = 1 / TESR_MAGIC_NUMBER
 	}
 
-	fun drawScaledCustomSizeModalRectLegacy(x: Double, y: Double, u: Double, v: Double, uWidth: Double, vHeight: Double, width: Double, height: Double, tileWidth: Double, tileHeight: Double, zOffset: Double = .0) {
-		val tw = 1 / tileWidth
-		val th = 1 / tileHeight
-		RenderUtils.BUFFER_BUILDER.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
-		RenderUtils.BUFFER_BUILDER.pos(x, y + height, zOffset).tex(u * tw, (v + vHeight) * th).color(1f, 1f, 1f, 1f).endVertex()
-		RenderUtils.BUFFER_BUILDER.pos(x + width, y + height, zOffset).tex((u + uWidth) * tw, (v + vHeight) * th).color(1f, 1f, 1f, 1f).endVertex()
-		RenderUtils.BUFFER_BUILDER.pos(x + width, y, zOffset).tex((u + uWidth) * tw, v * th).color(1f, 1f, 1f, 1f).endVertex()
-		RenderUtils.BUFFER_BUILDER.pos(x, y, zOffset).tex(u * tw, v * th).color(1f, 1f, 1f, 1f).endVertex()
-		RenderUtils.TESSELLATOR.draw()
-	}
-
-	data class LightLevel(val skyLight: Int, val blockLight: Int)
+	// Override super method to force use of BaseTile
+	abstract override fun render(te: BaseTile, x: Double, y: Double, z: Double, partialTicks: Float, destroyStage: Int, alpha: Float)
 
 	/**
 	 * Draws a scaled, textured, tiled modal rect. Adapted from the [net.minecraft.client.gui.Gui] class.
 	 *
 	 * @param u Texture U (or x) coordinate, in pixels
 	 * @param v Texture V (or y) coordinate, in pixels
-	 * @param uWidth Width of the rendered part of the texture, in pixels. Parts of the texture outside of it will wrap
-	 * around
-	 * @param vHeight Height of the rendered part of the texture, in pixels. Parts of the texture outside of it will
-	 * wrap around
+	 * @param uWidth Width of the rendered part of the texture, in pixels. Texture will be wrapped.
+	 * @param vHeight Height of the rendered part of the texture, in pixels. Texture will be wrapped.
 	 * @param tileWidth total width of the texture
 	 * @param tileHeight total height of the texture
 	 * @param zOffset Z offset to render at
+	 * @param color Color to tint the rendered texture with
 	 */
 	fun drawScaledCustomSizeModalRect(
 		x: Double,
@@ -53,17 +42,16 @@ abstract class AbstractTESRenderer : TileEntitySpecialRenderer<BaseTile>() {
 		tileWidth: Double,
 		tileHeight: Double,
 		zOffset: Double = .0,
-		light: LightLevel
+		color: Color = Color.WHITE
 	) {
 		val tw = 1 / tileWidth
 		val th = 1 / tileHeight
-		val (skyLight, blockLight) = light
-		val brightness = max(skyLight, blockLight).toFloat().coerceAtLeast(0.01f)
-		RenderUtils.BUFFER_BUILDER.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_LMAP_COLOR);
-		RenderUtils.BUFFER_BUILDER.pos(x, y + height, zOffset).tex(u * tw, (v + vHeight) * th).lightmap(skyLight, blockLight).color(brightness, brightness, brightness, 1f).endVertex()
-		RenderUtils.BUFFER_BUILDER.pos(x + width, y + height, zOffset).tex((u + uWidth) * tw, (v + vHeight) * th).lightmap(skyLight, blockLight).color(brightness, brightness, brightness, 1f).endVertex()
-		RenderUtils.BUFFER_BUILDER.pos(x + width, y, zOffset).tex((u + uWidth) * tw, v * th).lightmap(skyLight, blockLight).color(brightness, brightness, brightness, 1f).endVertex()
-		RenderUtils.BUFFER_BUILDER.pos(x, y, zOffset).tex(u * tw, v * th).lightmap(skyLight, blockLight).color(brightness, brightness, brightness, 1f).endVertex()
+		val (red, green, blue, alpha) = color.destructFloat()
+		RenderUtils.BUFFER_BUILDER.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+		RenderUtils.BUFFER_BUILDER.pos(x, y + height, zOffset).tex(u * tw, (v + vHeight) * th).color(red, green, blue, alpha).endVertex()
+		RenderUtils.BUFFER_BUILDER.pos(x + width, y + height, zOffset).tex((u + uWidth) * tw, (v + vHeight) * th).color(red, green, blue, alpha).endVertex()
+		RenderUtils.BUFFER_BUILDER.pos(x + width, y, zOffset).tex((u + uWidth) * tw, v * th).color(red, green, blue, alpha).endVertex()
+		RenderUtils.BUFFER_BUILDER.pos(x, y, zOffset).tex(u * tw, v * th).color(red, green, blue, alpha).endVertex()
 		RenderUtils.TESSELLATOR.draw()
 	}
 
@@ -73,9 +61,6 @@ abstract class AbstractTESRenderer : TileEntitySpecialRenderer<BaseTile>() {
 		val blue = color.blue / 255f
 		val alpha = color.alpha / 255f
 
-		// TODO remove this pushAttrib/popAttrib, the JavaDoc for it even says not to use it
-		// push/pop attrib can mess with GlSM state
-		GlStateManager.pushAttrib()
 		GlStateManager.pushMatrix()
 
 		if(!filled) {
@@ -110,6 +95,5 @@ abstract class AbstractTESRenderer : TileEntitySpecialRenderer<BaseTile>() {
 		GlStateManager.enableLighting()
 		GlStateManager.disableBlend()
 		GlStateManager.popMatrix()
-		GlStateManager.popAttrib()
 	}
 }
