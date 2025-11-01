@@ -232,6 +232,10 @@ tasks.withType<ProcessResources> {
     }
 }
 
+tasks.withType<Javadoc> {
+    exclude("**/package-info.java")
+}
+
 tasks.withType<Jar> {
     manifest {
         val attributeMap = mutableMapOf<String, String>()
