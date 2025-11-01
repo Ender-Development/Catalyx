@@ -1,7 +1,7 @@
 {
 	"forge_marker": 1,
 	"defaults": {
-		"model": "catalyx:layered_cube_combined",
+		"model": "catalyx:layered_cube_merged",
 		"textures": {
 			"particle": "catalyx:blocks/mb_inner"
 		}
@@ -17,7 +17,7 @@
 		},
 		"position": {
 			"0": {
-				"model": "catalyx:layered_cube_combined",
+				"model": "catalyx:layered_cube_merged",
 				"textures": {
 					"down": "catalyx:blocks/mb_down3",
 					"up": "catalyx:blocks/mb_top1",
@@ -28,7 +28,7 @@
 				}
 			},
 			"1": {
-				"model": "catalyx:layered_cube_combined",
+				"model": "catalyx:layered_cube_merged",
 				"textures": {
 					"down": "catalyx:blocks/mb_down2",
 					"up": "catalyx:blocks/mb_top2",
@@ -39,7 +39,7 @@
 				}
 			},
 			"2": {
-				"model": "catalyx:layered_cube_combined",
+				"model": "catalyx:layered_cube_merged",
 				"textures": {
 					"down": "catalyx:blocks/mb_down1",
 					"up": "catalyx:blocks/mb_top3",
@@ -50,7 +50,7 @@
 				}
 			},
 			"3": {
-				"model": "catalyx:layered_cube_combined",
+				"model": "catalyx:layered_cube_merged",
 				"textures": {
 					"down": "catalyx:blocks/mb_down4",
 					"up": "catalyx:blocks/mb_top4",
