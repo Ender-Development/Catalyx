@@ -16,12 +16,13 @@ out
 # gradle
 build
 .gradle
-
-# kotlin
 .kotlin
+secrets.properties
 
 # other
 eclipse
-run
 examples
-maven-publishing.credentials
+run
+.vscode
+*.log
+*.bak
