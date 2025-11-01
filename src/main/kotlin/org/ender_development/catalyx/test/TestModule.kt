@@ -25,16 +25,8 @@ import org.ender_development.catalyx.utils.extensions.rotateY
 	testModule = true
 )
 internal class TestModule : BaseCatalyxModule() {
-	val testCorner = object : CornerBlock(Catalyx, "test_corner") {
-		override fun getAABB(state: IBlockState): AxisAlignedBB {
-			return AxisAlignedBB(3 * PIXEL_RATIO, .0, .0, 1.0, 1.0, 13 * PIXEL_RATIO).rotateY(normalizeRotation(state))
-		}
-	}
-	val testSide = object : SideBlock(Catalyx, "test_side") {
-		override fun getAABB(state: IBlockState): AxisAlignedBB {
-			return AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 1.0, 13 * PIXEL_RATIO).rotateY(normalizeRotation(state))
-		}
-	}
+	val testCorner = CornerBlock(Catalyx, "test_corner")
+	val testSide = SideBlock(Catalyx, "test_side")
 	val testMultiBlock = CenterBlock<DummyClass1>(Catalyx, "test_middle", DummyClass1::class.java, 1, testCorner, testSide)
 	val testTesrBlock = IOTileBlock(Catalyx, "test_tesr", DummyClass2::class.java, 0)
 

@@ -2,7 +2,6 @@ package org.ender_development.catalyx.blocks.multiblock.parts
 
 import net.minecraft.block.state.IBlockState
 import net.minecraft.util.EnumFacing
-import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import org.ender_development.catalyx.blocks.multiblock.Facing
@@ -20,9 +19,6 @@ open class CornerBlock(mod: ICatalyxMod, name: String) : AbstractEdgeBlock(mod, 
 			3 -> pos.north().west()
 			else -> error("Invalid corner!")
 		}
-
-
-	override fun getAABB(state: IBlockState): AxisAlignedBB = FULL_BLOCK_AABB
 
 	override fun place(world: World, pos: BlockPos, facing: EnumFacing) {
 		val corners = arrayOf(pos.south().west(), pos.north().west(), pos.north().east(), pos.south().east())

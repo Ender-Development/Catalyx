@@ -25,7 +25,7 @@ open class CenterTile(mod: ICatalyxMod) : BaseTile(mod), IMultiblockTile {
 	override fun breakBlock(world: World, pos: BlockPos, state: IBlockState, player: EntityPlayer) {
 		pos.getHorizontalSurroundings().forEach {
 			if(world.getBlockState(it).block is IMultiblockEdge)
-				world.setBlockToAir(it)
+				world.destroyBlock(it, false)
 		}
 	}
 }

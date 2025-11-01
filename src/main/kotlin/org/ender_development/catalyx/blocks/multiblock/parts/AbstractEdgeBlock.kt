@@ -3,7 +3,6 @@ package org.ender_development.catalyx.blocks.multiblock.parts
 import net.minecraft.block.BlockHorizontal
 import net.minecraft.block.material.EnumPushReaction
 import net.minecraft.block.properties.PropertyInteger
-import net.minecraft.block.state.BlockFaceShape
 import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
 import net.minecraft.creativetab.CreativeTabs
@@ -11,10 +10,8 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.NonNullList
-import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.RayTraceResult
-import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 import org.ender_development.catalyx.blocks.BaseBlock
 import org.ender_development.catalyx.blocks.multiblock.*
@@ -22,7 +19,6 @@ import org.ender_development.catalyx.core.ICatalyxMod
 
 abstract class AbstractEdgeBlock(mod: ICatalyxMod, val name: String) : BaseBlock(mod, name), IMultiblockEdge {
 	companion object {
-		const val PIXEL_RATIO = 1.0 / 16.0
 		val position: PropertyInteger = PropertyInteger.create("position", 0, 3)
 	}
 
@@ -63,8 +59,7 @@ abstract class AbstractEdgeBlock(mod: ICatalyxMod, val name: String) : BaseBlock
 		if(tileEntity is IMultiblockTile) {
 			tileEntity.breakBlock(world, center, world.getBlockState(center), player)
 			world.destroyBlock(center, !player.capabilities.isCreativeMode)
-		} else
-			world.setBlockToAir(center)
+		}
 	}
 
 	@Suppress("DEPRECATION")
@@ -84,25 +79,6 @@ abstract class AbstractEdgeBlock(mod: ICatalyxMod, val name: String) : BaseBlock
 	}
 
 	@Deprecated("Implementation is fine.")
-	override fun isFullCube(state: IBlockState): Boolean =
-		getAABB(state) == FULL_BLOCK_AABB
-
-	@Deprecated("Implementation is fine.")
-	override fun isFullBlock(state: IBlockState): Boolean =
-		getAABB(state) == FULL_BLOCK_AABB
-
-	@Deprecated("Implementation is fine.")
-	override fun getBlockFaceShape(worldIn: IBlockAccess, state: IBlockState, pos: BlockPos, face: EnumFacing): BlockFaceShape =
-		if(getAABB(state) == FULL_BLOCK_AABB)
-			BlockFaceShape.SOLID
-		else
-			BlockFaceShape.UNDEFINED
-
-	@Deprecated("Implementation is fine.")
 	override fun getPushReaction(state: IBlockState): EnumPushReaction =
 		EnumPushReaction.BLOCK
-
-	@Deprecated("Implementation is fine")
-	override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos): AxisAlignedBB =
-		getAABB(state)
 }

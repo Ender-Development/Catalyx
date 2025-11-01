@@ -94,14 +94,6 @@ interface IMultiblockEdge : IMultiblock {
 	fun getCenter(pos: BlockPos, state: IBlockState): BlockPos
 
 	/**
-	 * Gets the Axis-Aligned Bounding Box (AABB) for the edge block based on its state.
-	 *
-	 * @param state The block state of the edge block.
-	 * @return The AABB of the edge block.
-	 */
-	fun getAABB(state: IBlockState): AxisAlignedBB
-
-	/**
 	 * Deconstructs the metadata to get the facing and position type.
 	 *
 	 * @param meta The metadata of the block.

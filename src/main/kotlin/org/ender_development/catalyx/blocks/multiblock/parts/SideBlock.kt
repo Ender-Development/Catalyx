@@ -2,7 +2,6 @@ package org.ender_development.catalyx.blocks.multiblock.parts
 
 import net.minecraft.block.state.IBlockState
 import net.minecraft.util.EnumFacing
-import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import org.ender_development.catalyx.blocks.multiblock.Facing
@@ -20,8 +19,6 @@ open class SideBlock(mod: ICatalyxMod, name: String) : AbstractEdgeBlock(mod, na
 			3 -> pos.west()
 			else -> error("Invalid side!")
 		}
-
-	override fun getAABB(state: IBlockState): AxisAlignedBB = FULL_BLOCK_AABB
 
 	override fun place(world: World, pos: BlockPos, facing: EnumFacing) {
 		val sides = arrayOf(pos.south(), pos.west(), pos.north(), pos.east())
