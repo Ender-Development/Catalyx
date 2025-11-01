@@ -189,7 +189,7 @@ if (propertyBoolean("use_spotless")) {
         }
 
         flexmark {
-            target(".github/**/*.md", "docs/**/*.md", "src/*/resources/**/*.md", "*.md")
+            target(".github/**/*.md", "docs/**/*.md", "src/*/resources/**/*.md")
             flexmark(propertyString("flexmark_version"))
         }
     }
