@@ -1,5 +1,5 @@
 {
-    "parent": "catalyx:block/layered_cube",
+    "parent": "catalyx:block/layered_cube_base",
     "display": {
         "firstperson_righthand": {
             "rotation": [ 0, 135, 0 ],

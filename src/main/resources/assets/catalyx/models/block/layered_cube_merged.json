@@ -1,5 +1,5 @@
 {
-  "parent": "catalyx:block/layered_cube",
+  "parent": "catalyx:block/layered_cube_base",
   "textures": {
     "particle": "#particle",
     "bot_down": "#down",

@@ -3,7 +3,13 @@
 	"defaults": {
 		"model": "catalyx:layered_cube_merged",
 		"textures": {
-			"particle": "catalyx:blocks/mb_inner"
+			"particle": "catalyx:blocks/mb_inner",
+			"down": "",
+			"up": "",
+			"north": "",
+			"east": "",
+			"south": "",
+			"west": ""
 		}
 	},
 	"variants": {
