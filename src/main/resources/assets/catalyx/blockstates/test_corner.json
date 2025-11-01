@@ -1,7 +1,7 @@
 {
 	"forge_marker": 1,
 	"defaults": {
-		"model": "catalyx:layered_cube",
+		"model": "catalyx:layered_cube_merged",
 		"textures": {
 			"particle": "catalyx:blocks/mb_inner"
 		}
@@ -17,47 +17,47 @@
 		},
 		"position": {
 			"0": {
-				"model": "catalyx:layered_cube",
+				"model": "catalyx:layered_cube_merged",
 				"textures": {
-					"top_down": "catalyx:blocks/mb_down_right_lower",
-					"top_up": "catalyx:blocks/mb_top_right_upper",
-					"top_north": "catalyx:blocks/mb_corner2",
-					"top_east": "catalyx:blocks/mb_corner1",
-					"top_south": "catalyx:blocks/mb_inner",
-					"top_west": "catalyx:blocks/mb_inner"
+					"down": "catalyx:blocks/mb_down_right_lower",
+					"up": "catalyx:blocks/mb_top_right_upper",
+					"north": "catalyx:blocks/mb_corner2",
+					"east": "catalyx:blocks/mb_corner1",
+					"south": "catalyx:blocks/mb_inner",
+					"west": "catalyx:blocks/mb_inner"
 				}
 			},
 			"1": {
-				"model": "catalyx:layered_cube",
+				"model": "catalyx:layered_cube_merged",
 				"textures": {
-					"top_down": "catalyx:blocks/mb_down_right_upper",
-					"top_up": "catalyx:blocks/mb_top_right_lower",
-					"top_north": "catalyx:blocks/mb_inner",
-					"top_east": "catalyx:blocks/mb_corner2",
-					"top_south": "catalyx:blocks/mb_corner1",
-					"top_west": "catalyx:blocks/mb_inner"
+					"down": "catalyx:blocks/mb_down_right_upper",
+					"up": "catalyx:blocks/mb_top_right_lower",
+					"north": "catalyx:blocks/mb_inner",
+					"east": "catalyx:blocks/mb_corner2",
+					"south": "catalyx:blocks/mb_corner1",
+					"west": "catalyx:blocks/mb_inner"
 				}
 			},
 			"2": {
-				"model": "catalyx:layered_cube",
+				"model": "catalyx:layered_cube_merged",
 				"textures": {
-					"top_down": "catalyx:blocks/mb_down_left_upper",
-					"top_up": "catalyx:blocks/mb_top_left_lower",
-					"top_north": "catalyx:blocks/mb_inner",
-					"top_east": "catalyx:blocks/mb_inner",
-					"top_south": "catalyx:blocks/mb_corner2",
-					"top_west": "catalyx:blocks/mb_corner1"
+					"down": "catalyx:blocks/mb_down_left_upper",
+					"up": "catalyx:blocks/mb_top_left_lower",
+					"north": "catalyx:blocks/mb_inner",
+					"east": "catalyx:blocks/mb_inner",
+					"south": "catalyx:blocks/mb_corner2",
+					"west": "catalyx:blocks/mb_corner1"
 				}
 			},
 			"3": {
-				"model": "catalyx:layered_cube",
+				"model": "catalyx:layered_cube_merged",
 				"textures": {
-					"top_down": "catalyx:blocks/mb_down_left_lower",
-					"top_up": "catalyx:blocks/mb_top_left_upper",
-					"top_north": "catalyx:blocks/mb_corner1",
-					"top_east": "catalyx:blocks/mb_inner",
-					"top_south": "catalyx:blocks/mb_inner",
-					"top_west": "catalyx:blocks/mb_corner2"
+					"down": "catalyx:blocks/mb_down_left_lower",
+					"up": "catalyx:blocks/mb_top_left_upper",
+					"north": "catalyx:blocks/mb_corner1",
+					"east": "catalyx:blocks/mb_inner",
+					"south": "catalyx:blocks/mb_inner",
+					"west": "catalyx:blocks/mb_corner2"
 				}
 			}
 		}

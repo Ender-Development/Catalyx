@@ -1,7 +1,7 @@
 {
 	"forge_marker": 1,
 	"defaults": {
-		"model": "catalyx:layered_cube",
+		"model": "catalyx:layered_cube_combined",
 		"textures": {
 			"particle": "catalyx:blocks/mb_inner"
 		}
@@ -17,47 +17,47 @@
 		},
 		"position": {
 			"0": {
-				"model": "catalyx:layered_cube",
+				"model": "catalyx:layered_cube_combined",
 				"textures": {
-					"top_down": "catalyx:blocks/mb_down3",
-					"top_up": "catalyx:blocks/mb_top1",
-					"top_north": "catalyx:blocks/mb_side1",
-					"top_east": "catalyx:blocks/mb_inner",
-					"top_south": "catalyx:blocks/mb_inner",
-					"top_west": "catalyx:blocks/mb_inner"
+					"down": "catalyx:blocks/mb_down3",
+					"up": "catalyx:blocks/mb_top1",
+					"north": "catalyx:blocks/mb_side1",
+					"east": "catalyx:blocks/mb_inner",
+					"south": "catalyx:blocks/mb_inner",
+					"west": "catalyx:blocks/mb_inner"
 				}
 			},
 			"1": {
-				"model": "catalyx:layered_cube",
+				"model": "catalyx:layered_cube_combined",
 				"textures": {
-					"top_down": "catalyx:blocks/mb_down2",
-					"top_up": "catalyx:blocks/mb_top2",
-					"top_north": "catalyx:blocks/mb_inner",
-					"top_east": "catalyx:blocks/mb_side2",
-					"top_south": "catalyx:blocks/mb_inner",
-					"top_west": "catalyx:blocks/mb_inner"
+					"down": "catalyx:blocks/mb_down2",
+					"up": "catalyx:blocks/mb_top2",
+					"north": "catalyx:blocks/mb_inner",
+					"east": "catalyx:blocks/mb_side2",
+					"south": "catalyx:blocks/mb_inner",
+					"west": "catalyx:blocks/mb_inner"
 				}
 			},
 			"2": {
-				"model": "catalyx:layered_cube",
+				"model": "catalyx:layered_cube_combined",
 				"textures": {
-					"top_down": "catalyx:blocks/mb_down1",
-					"top_up": "catalyx:blocks/mb_top3",
-					"top_north": "catalyx:blocks/mb_inner",
-					"top_east": "catalyx:blocks/mb_inner",
-					"top_south": "catalyx:blocks/mb_side3",
-					"top_west": "catalyx:blocks/mb_inner"
+					"down": "catalyx:blocks/mb_down1",
+					"up": "catalyx:blocks/mb_top3",
+					"north": "catalyx:blocks/mb_inner",
+					"east": "catalyx:blocks/mb_inner",
+					"south": "catalyx:blocks/mb_side3",
+					"west": "catalyx:blocks/mb_inner"
 				}
 			},
 			"3": {
-				"model": "catalyx:layered_cube",
+				"model": "catalyx:layered_cube_combined",
 				"textures": {
-					"top_down": "catalyx:blocks/mb_down4",
-					"top_up": "catalyx:blocks/mb_top4",
-					"top_north": "catalyx:blocks/mb_inner",
-					"top_east": "catalyx:blocks/mb_inner",
-					"top_south": "catalyx:blocks/mb_inner",
-					"top_west": "catalyx:blocks/mb_side4"
+					"down": "catalyx:blocks/mb_down4",
+					"up": "catalyx:blocks/mb_top4",
+					"north": "catalyx:blocks/mb_inner",
+					"east": "catalyx:blocks/mb_inner",
+					"south": "catalyx:blocks/mb_inner",
+					"west": "catalyx:blocks/mb_side4"
 				}
 			}
 		}
