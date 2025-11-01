@@ -65,8 +65,6 @@ abstract class AbstractEdgeBlock(mod: ICatalyxMod, val name: String) : BaseBlock
 	}
 
 	override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState, playerIn: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
-		if(worldIn.isRemote)
-			return true
 		val center = getCenter(pos, state)
 		val tileEntity = worldIn.getTileEntity(center)
 		if(tileEntity is IMultiblockTile)
