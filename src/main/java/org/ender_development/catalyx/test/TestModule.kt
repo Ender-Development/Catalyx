@@ -1,17 +1,12 @@
 package org.ender_development.catalyx.test
 
 import net.minecraft.block.state.IBlockState
-import net.minecraft.util.BlockRenderLayer
-import net.minecraft.util.EnumBlockRenderType
 import net.minecraft.util.math.AxisAlignedBB
-import net.minecraft.util.math.BlockPos
-import net.minecraft.world.IBlockAccess
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
-import net.minecraftforge.fml.relauncher.Side
-import net.minecraftforge.fml.relauncher.SideOnly
 import org.apache.logging.log4j.Logger
 import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.Reference
+import org.ender_development.catalyx.blocks.IOTileBlock
 import org.ender_development.catalyx.blocks.TESRTileBlock
 import org.ender_development.catalyx.blocks.multiblock.CenterBlock
 import org.ender_development.catalyx.blocks.multiblock.parts.CornerBlock
@@ -42,16 +37,7 @@ internal class TestModule : BaseCatalyxModule() {
 		}
 	}
 	val testMultiBlock = CenterBlock<DummyClass1>(Catalyx, "test_middle", DummyClass1::class.java, 1, testCorner, testSide)
-	val testTesrBlock = object : TESRTileBlock(Catalyx, "test_tesr", DummyClass2::class.java, 0) {
-		@Deprecated("Implementation is fine.")
-		override fun isOpaqueCube(state: IBlockState) =
-			false
-
-		@SideOnly(Side.CLIENT)
-		@Deprecated("Implementation is fine.")
-		override fun getAmbientOcclusionLightValue(state: IBlockState): Float =
-			0.2f
-	}
+	val testTesrBlock = IOTileBlock(Catalyx, "test_tesr", DummyClass2::class.java, 0)
 
 	override val logger: Logger = LoggerUtils.new("Development")
 

@@ -2,6 +2,9 @@ package org.ender_development.catalyx.utils.extensions
 
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.util.EnumFacing
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
+import org.ender_development.catalyx.blocks.helper.HorizontalDirection
 
 val EnumFacing.glRotationAngle: Float
 	get() = when(this) {
@@ -26,6 +29,7 @@ val EnumFacing.glOffsetZ
 		else -> .0
 	}
 
+@SideOnly(Side.CLIENT)
 fun EnumFacing.glRotate() =
 	when(this) {
 		EnumFacing.NORTH -> GlStateManager.rotate(180f, 0f, 1f, 0f)
@@ -34,4 +38,13 @@ fun EnumFacing.glRotate() =
 		EnumFacing.WEST -> GlStateManager.rotate(-90f, 0f, 1f, 0f)
 		EnumFacing.UP -> GlStateManager.rotate(-90f, 1f, 0f, 0f)
 		EnumFacing.DOWN -> GlStateManager.rotate(90f, 1f, 0f, 0f)
+	}
+
+val EnumFacing.relativeDirection
+	get() = when(this) {
+		this -> HorizontalDirection.FRONT
+		this.opposite -> HorizontalDirection.BACK
+		this.rotateY() -> HorizontalDirection.LEFT
+		this.rotateYCCW() -> HorizontalDirection.RIGHT
+		else -> error("Vertical facing $this has no relative horizontal direction.")
 	}

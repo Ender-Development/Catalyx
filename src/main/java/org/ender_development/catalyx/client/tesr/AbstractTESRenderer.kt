@@ -15,8 +15,6 @@ abstract class AbstractTESRenderer : TileEntitySpecialRenderer<BaseTile>() {
 		const val ONE_BLOCK_WIDTH = 1 / TESR_MAGIC_NUMBER
 	}
 
-	abstract override fun render(tileEntity: BaseTile, x: Double, y: Double, z: Double, partialTicks: Float, destroyStage: Int, alpha: Float)
-
 	fun drawScaledCustomSizeModalRectLegacy(x: Double, y: Double, u: Double, v: Double, uWidth: Double, vHeight: Double, width: Double, height: Double, tileWidth: Double, tileHeight: Double, zOffset: Double = .0) {
 		val tw = 1 / tileWidth
 		val th = 1 / tileHeight

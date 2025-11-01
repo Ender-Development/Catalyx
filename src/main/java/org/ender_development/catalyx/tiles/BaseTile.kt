@@ -1,5 +1,6 @@
 package org.ender_development.catalyx.tiles
 
+import net.minecraft.block.BlockHorizontal
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
@@ -47,7 +48,18 @@ abstract class BaseTile(open val mod: ICatalyxMod) : TileEntity(), BaseContainer
 	lateinit var output: TileStackHandler
 	protected lateinit var automationOutput: IItemHandlerModifiable
 
+	/**
+	 * Whether the item capability is enabled for this tile.
+	 * Can be overridden to disable item capability on certain tiles.
+	 */
 	open val enableItemCapability = true
+
+	/**
+	 * The facing of this tile, based on the [BlockHorizontal.FACING] property.
+	 * Defaults to [EnumFacing.NORTH] if the property is not found.
+	 */
+	open val facing: EnumFacing
+		get() = (world.getBlockState(pos).properties[BlockHorizontal.FACING] ?: EnumFacing.NORTH) as EnumFacing
 
 	open val inventory: IItemHandler
 		get() = CombinedInvWrapper(input, output)
