@@ -16,7 +16,7 @@ abstract class AbstractTESRenderer : TileEntitySpecialRenderer<BaseTile>() {
 	}
 
 	// Override super method to force use of BaseTile
-	abstract override fun render(te: BaseTile, x: Double, y: Double, z: Double, partialTicks: Float, destroyStage: Int, alpha: Float)
+	abstract override fun render(tileEntity: BaseTile, x: Double, y: Double, z: Double, partialTicks: Float, destroyStage: Int, alpha: Float)
 
 	/**
 	 * Draws a scaled, textured, tiled modal rect. Adapted from the [net.minecraft.client.gui.Gui] class.
