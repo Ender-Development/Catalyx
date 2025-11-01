@@ -14,4 +14,4 @@ inline fun Color.destruct() =
 	arrayOf(red, green, blue, alpha)
 
 inline fun Color.destructFloat() =
-	this.destruct().map { it / 255.0f }.toFloatArray()
+	floatArrayOf(red / 255f, green / 255f, blue / 255f, alpha / 255f)

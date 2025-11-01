@@ -50,8 +50,8 @@ fun EnumFacing.glRotate() =
 fun EnumFacing.relativeDirectionTo(facing: EnumFacing) =
 	when(facing) {
 		this -> HorizontalDirection.FRONT
-		this.opposite -> HorizontalDirection.BACK
-		this.rotateY() -> HorizontalDirection.LEFT
-		this.rotateYCCW() -> HorizontalDirection.RIGHT
-		else -> error("Vertical facing $facing has no relative horizontal direction.")
+		opposite -> HorizontalDirection.BACK
+		rotateY() -> HorizontalDirection.LEFT
+		EnumFacing.UP, EnumFacing.DOWN -> error("Vertical facing $facing has no relative horizontal direction.")
+		else -> HorizontalDirection.RIGHT
 	}
