@@ -3,7 +3,7 @@
 <!---freshmark description
 output = [
 link(shield("Kotlin", "Kotlin", "{{kotlin_version}}", "blue"), "https://kotlinlang.org/"),
-link(shield("Maven artifact", "Maven", "{{root_package}}:{{mod_name}}", "blue"), "https://maven.ender-development.org/{{root_package}}/{{mod_name}}/".replaceAll("\\.", "/").replaceAll("_", "-")),
+link(shield("Maven artifact", "Maven", "{{root_package}}:{{mod_name}}", "blue"), "https://maven.ender-development.org/" + "{{root_package}}/{{mod_id}}/".replaceAll("\\.", "/")),
 link(shield("Version", "Version", "{{mod_version}}", "blue"), "{{mod_url}}/commits/master"),
 link(shield("License", "License", "LGPL-3.0", "blue"), "{{mod_url}}/blob/master/LICENSE"),
 "",
@@ -11,7 +11,7 @@ link(shield("License", "License", "LGPL-3.0", "blue"), "{{mod_url}}/blob/master/
 ].join("\n")
 -->
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.2.20-blue.svg)](https://kotlinlang.org/)
-[![Maven artifact](https://img.shields.io/badge/Maven-org.ender__development%3ACatalyx-blue.svg)](https://maven/ender-development/org/org/ender-development/Catalyx/)
+[![Maven artifact](https://img.shields.io/badge/Maven-org.ender__development%3ACatalyx-blue.svg)](https://maven.ender-development.org/org/ender_development/catalyx/)
 [![Version](https://img.shields.io/badge/Version-0.1.0-blue.svg)](https://github.com/Ender-Development/Catalyx/commits/master)
 [![License](https://img.shields.io/badge/License-LGPL--3.0-blue.svg)](https://github.com/Ender-Development/Catalyx/blob/master/LICENSE)
 
