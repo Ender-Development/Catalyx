@@ -11,5 +11,5 @@ interface ITESRTile {
 	 *
 	 * note: mark this as @SideOnly(Side.CLIENT), as the entire interface is marked as such.
 	 */
-	val renderers: Array<AbstractTESRenderer>
+	val renderers: Array<out AbstractTESRenderer>
 }

@@ -16,7 +16,7 @@ import java.awt.Color
 
 open class TESRTile(mod: ICatalyxMod) : BaseTile(mod), ITESRTile, IHudInfoProvider {
 	@SideOnly(Side.CLIENT)
-	override val renderers: Array<AbstractTESRenderer> = arrayOf(HudInfoRenderer)
+	override val renderers = arrayOf(HudInfoRenderer)
 
 	override fun getHudInfo(face: EnumFacing) =
 		if(Minecraft.getMinecraft().player.isSneaking)
