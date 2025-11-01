@@ -9,10 +9,12 @@ import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
+import net.minecraft.util.EnumHand
 import net.minecraft.util.NonNullList
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.RayTraceResult
 import net.minecraft.world.World
+import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.blocks.BaseBlock
 import org.ender_development.catalyx.blocks.multiblock.*
 import org.ender_development.catalyx.core.ICatalyxMod
@@ -60,6 +62,17 @@ abstract class AbstractEdgeBlock(mod: ICatalyxMod, val name: String) : BaseBlock
 			tileEntity.breakBlock(world, center, world.getBlockState(center), player)
 			world.destroyBlock(center, !player.capabilities.isCreativeMode)
 		}
+	}
+
+	override fun onBlockActivated(worldIn: World, pos: BlockPos, state: IBlockState, playerIn: EntityPlayer, hand: EnumHand, facing: EnumFacing, hitX: Float, hitY: Float, hitZ: Float): Boolean {
+		if(worldIn.isRemote)
+			return true
+		val center = getCenter(pos, state)
+		val tileEntity = worldIn.getTileEntity(center)
+		if(tileEntity is IMultiblockTile)
+			return tileEntity.activate(worldIn, center, worldIn.getBlockState(center), playerIn, hand, facing, hitX.toDouble(), hitY.toDouble(), hitZ.toDouble())
+		Catalyx.LOGGER.error("Edge block at $pos pointed to invalid controller at $center")
+		return false
 	}
 
 	@Suppress("DEPRECATION")

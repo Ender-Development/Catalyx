@@ -20,7 +20,7 @@ open class CenterTile(mod: ICatalyxMod) : BaseTile(mod), IMultiblockTile {
 	}
 
 	override fun activate(world: World, pos: BlockPos, state: IBlockState, player: EntityPlayer, hand: EnumHand, side: EnumFacing, hitX: Double, hitY: Double, hitZ: Double) =
-		false
+		!player.isSneaking
 
 	override fun breakBlock(world: World, pos: BlockPos, state: IBlockState, player: EntityPlayer) {
 		pos.getHorizontalSurroundings().forEach {
