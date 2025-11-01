@@ -14,7 +14,7 @@ internal object CoreEventHandler {
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	fun renderWorldLast(event: RenderWorldLastEvent) =
-		AreaHighlighter.eventHandlers.toTypedArray().forEach { it(event) } // convert to array to avoid a ConcurrentME
+		AreaHighlighter.eventHandlers.forEach { it(event) }
 
 	fun serverAboutToStart(event: FMLServerAboutToStartEvent) =
 		WorldPersistentData.instances.forEach(WorldPersistentData::worldJoined)

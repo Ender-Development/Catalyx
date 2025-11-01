@@ -1,5 +1,6 @@
 package org.ender_development.catalyx.client
 
+import io.netty.util.internal.ConcurrentSet
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.BufferBuilder
 import net.minecraft.client.renderer.GlStateManager
@@ -120,7 +121,7 @@ class AreaHighlighter {
 	}
 
 	internal companion object {
-		val eventHandlers = hashSetOf<(RenderWorldLastEvent) -> Unit>()
+		val eventHandlers = ConcurrentSet<(RenderWorldLastEvent) -> Unit>()
 	}
 
 	private fun eventHandler(event: RenderWorldLastEvent) {
