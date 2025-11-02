@@ -68,6 +68,10 @@ abstract class BaseContainer(playerInv: IInventory, val tileEntity: IBaseContain
 		return stack
 	}
 
+	// because of the way we unorthodox organise slots (playerInventory, then custom slots; instead of the other way around), this is just a helper
+	override fun getSlot(slotId: Int): Slot =
+		super.getSlot((PLAYER_INVENTORY_SIZE + slotId) % inventorySlots.size)
+
 	interface IBaseContainerCompat : IGuiTile {
 		val SIZE: Int
 		fun canInteractWith(player: EntityPlayer): Boolean
