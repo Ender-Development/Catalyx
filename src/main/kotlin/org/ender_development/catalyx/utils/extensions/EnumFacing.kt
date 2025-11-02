@@ -4,7 +4,8 @@ import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
-import org.ender_development.catalyx.blocks.helper.HorizontalDirection
+import org.ender_development.catalyx.blocks.helper.RelativeDirection
+import org.ender_development.catalyx.utils.math.BlockPosRotate.rotateY
 
 val EnumFacing.glRotationAngle: Float
 	get() = when(this) {
@@ -41,17 +42,22 @@ fun EnumFacing.glRotate() =
 	}
 
 /**
- * Gets the relative horizontal direction from this facing to the given facing.
+ * Gets the relative direction from this facing to the given facing.
+ *
+ * If any of the facings involved are vertical, [TOP][RelativeDirection.TOP]/[BOTTOM][RelativeDirection.BOTTOM] is returned
  *
  * @param facing The facing to get the relative direction to.
- * @return The relative horizontal direction.
- * @throws IllegalArgumentException if the given facing is vertical.
+ * @return The [relative direction][RelativeDirection].
  */
 fun EnumFacing.relativeDirectionTo(facing: EnumFacing) =
-	when(facing) {
-		this -> HorizontalDirection.FRONT
-		opposite -> HorizontalDirection.BACK
-		rotateY() -> HorizontalDirection.LEFT
-		EnumFacing.UP, EnumFacing.DOWN -> error("Vertical facing $facing has no relative horizontal direction.")
-		else -> HorizontalDirection.RIGHT
-	}
+	if(this === EnumFacing.UP || facing === EnumFacing.UP)
+		RelativeDirection.TOP
+	else if(this === EnumFacing.DOWN || facing === EnumFacing.DOWN)
+		RelativeDirection.BOTTOM
+	else
+		when(facing) {
+			this -> RelativeDirection.FRONT
+			opposite -> RelativeDirection.BACK
+			rotateY() -> RelativeDirection.LEFT
+			else -> RelativeDirection.RIGHT
+		}

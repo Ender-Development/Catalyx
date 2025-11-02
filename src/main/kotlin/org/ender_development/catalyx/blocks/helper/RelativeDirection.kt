@@ -1,6 +1,8 @@
 package org.ender_development.catalyx.blocks.helper
 
-enum class HorizontalDirection {
+enum class RelativeDirection {
+	TOP,
+	BOTTOM,
 	FRONT,
 	BACK,
 	LEFT,
