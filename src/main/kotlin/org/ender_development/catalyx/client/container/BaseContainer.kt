@@ -39,7 +39,7 @@ abstract class BaseContainer(playerInv: IInventory, val tileEntity: IBaseContain
 
 	override fun canInteractWith(player: EntityPlayer): Boolean = tileEntity.canInteractWith(player)
 
-	private companion object {
+	companion object {
 		const val PLAYER_INVENTORY_SIZE = 36
 		const val PLAYER_INVENTORY_LAST_INDEX = PLAYER_INVENTORY_SIZE - 1
 	}
