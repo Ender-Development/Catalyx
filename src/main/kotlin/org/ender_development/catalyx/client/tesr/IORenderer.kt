@@ -12,6 +12,7 @@ import org.ender_development.catalyx.blocks.helper.IOType
 import org.ender_development.catalyx.tiles.BaseTile
 import org.ender_development.catalyx.tiles.helper.IPortRenderer
 import org.ender_development.catalyx.utils.RenderUtils
+import org.ender_development.catalyx.utils.RenderUtils.drawScaledCustomSizeModalRect
 import org.ender_development.catalyx.utils.extensions.glOffsetX
 import org.ender_development.catalyx.utils.extensions.glOffsetZ
 import org.ender_development.catalyx.utils.extensions.glRotate
@@ -57,6 +58,7 @@ object IORenderer : AbstractTESRenderer() {
 	/**
 	 * Translates and rotates the GL matrix to render on the given side of a block at the given coordinates.
 	 * Note: with this Implementation, the texture on side === DOWN is technically flipped top to bottom (i.e. ^ is v, …).
+	 *
 	 * This can be "fixed" by always doing .opposite in the horizontalFacing calculation, but makes the most sense this way,
 	 * especially when it comes to respecting shading of the block textures.
 	 *

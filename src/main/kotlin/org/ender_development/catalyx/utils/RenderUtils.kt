@@ -5,7 +5,6 @@ import net.minecraft.client.gui.FontRenderer
 import net.minecraft.client.renderer.BufferBuilder
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.Tessellator
-import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.client.renderer.texture.TextureManager
 import net.minecraft.client.renderer.texture.TextureMap
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
@@ -13,6 +12,7 @@ import net.minecraft.util.ResourceLocation
 import net.minecraftforge.fluids.Fluid
 import net.minecraftforge.fluids.FluidStack
 import net.minecraftforge.fluids.FluidTank
+import org.ender_development.catalyx.utils.extensions.destructFloat
 import org.lwjgl.opengl.GL11
 import java.awt.Color
 
@@ -93,26 +93,6 @@ object RenderUtils {
 		GlStateManager.disableBlend()
 	}
 
-	fun renderRect(x: Double, y: Double, width: Double, height: Double, color: Color) {
-		GlStateManager.pushMatrix()
-		GlStateManager.translate(.0, .0, .0)
-
-		GlStateManager.disableTexture2D()
-		GlStateManager.enableBlend()
-		GlStateManager.disableAlpha()
-		GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO)
-		GlStateManager.color(color.red / 255f, color.green / 255f, color.blue / 255f, 1f)
-
-		BUFFER_BUILDER.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION)
-		BUFFER_BUILDER.pos(x + width, y + height, .0).endVertex()
-		BUFFER_BUILDER.pos(x + width, y, .0).endVertex()
-		BUFFER_BUILDER.pos(x, y, .0).endVertex()
-		BUFFER_BUILDER.pos(x, y + height, .0).endVertex()
-		TESSELLATOR.draw()
-
-		GlStateManager.popMatrix()
-	}
-
 	fun renderText(text: String, x: Double, y: Double, color: Int, scale: Double = 1.0, shadow: Boolean = false) {
 		GlStateManager.disableCull()
 		GlStateManager.enableTexture2D()
@@ -127,5 +107,100 @@ object RenderUtils {
 		GlStateManager.scale(scale, scale, .0)
 		FONT_RENDERER.drawString(text, 0f, 0f, color, shadow)
 		GlStateManager.popMatrix()
+	}
+
+	/**
+	 * Draws a scaled, textured, tiled modal rect. Adapted from the [net.minecraft.client.gui.Gui] class.
+	 *
+	 * @param u Texture U (or x) coordinate, in pixels
+	 * @param v Texture V (or y) coordinate, in pixels
+	 * @param uWidth Width of the rendered part of the texture, in pixels. Texture will be wrapped.
+	 * @param vHeight Height of the rendered part of the texture, in pixels. Texture will be wrapped.
+	 * @param tileWidth total width of the texture
+	 * @param tileHeight total height of the texture
+	 * @param zOffset Z offset to render at
+	 * @param color Color to tint the rendered texture with
+	 */
+	fun drawScaledCustomSizeModalRect(
+		x: Double,
+		y: Double,
+		u: Double,
+		v: Double,
+		uWidth: Double,
+		vHeight: Double,
+		width: Double,
+		height: Double,
+		tileWidth: Double,
+		tileHeight: Double,
+		zOffset: Double = .0,
+		color: Color = Color.WHITE
+	) {
+		val tw = 1 / tileWidth
+		val th = 1 / tileHeight
+		val (red, green, blue, alpha) = color.destructFloat()
+		RenderUtils.BUFFER_BUILDER.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+		RenderUtils.BUFFER_BUILDER.pos(x, y + height, zOffset).tex(u * tw, (v + vHeight) * th).color(red, green, blue, alpha).endVertex()
+		RenderUtils.BUFFER_BUILDER.pos(x + width, y + height, zOffset).tex((u + uWidth) * tw, (v + vHeight) * th).color(red, green, blue, alpha).endVertex()
+		RenderUtils.BUFFER_BUILDER.pos(x + width, y, zOffset).tex((u + uWidth) * tw, v * th).color(red, green, blue, alpha).endVertex()
+		RenderUtils.BUFFER_BUILDER.pos(x, y, zOffset).tex(u * tw, v * th).color(red, green, blue, alpha).endVertex()
+		RenderUtils.TESSELLATOR.draw()
+	}
+
+	/**
+	 * Draw a colored 2D rectangle.
+	 *
+	 * @param filled Whether to draw a filled rectangle, or just its outline.
+	 */
+	fun drawRectangle(x: Double, y: Double, width: Double, height: Double, color: Color, filled: Boolean, zTranslate: Double = .0) {
+		val (red, green, blue, alpha) = color.destructFloat()
+
+		GlStateManager.pushMatrix()
+
+		if(!filled) {
+			RenderUtils.BUFFER_BUILDER.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR)
+
+			RenderUtils.BUFFER_BUILDER.pos(x, y, .0).color(red, green, blue, alpha).endVertex()
+			RenderUtils.BUFFER_BUILDER.pos(x, y + height, .0).color(red, green, blue, alpha).endVertex()
+			RenderUtils.BUFFER_BUILDER.pos(x, y + height, .0).color(red, green, blue, alpha).endVertex()
+			RenderUtils.BUFFER_BUILDER.pos(x + width, y + height, .0).color(red, green, blue, alpha).endVertex()
+			RenderUtils.BUFFER_BUILDER.pos(x + width, y + height, .0).color(red, green, blue, alpha).endVertex()
+			RenderUtils.BUFFER_BUILDER.pos(x + width, y, .0).color(red, green, blue, alpha).endVertex()
+			BUFFER_BUILDER.pos(x + width, y, .0).color(red, green, blue, alpha).endVertex()
+			RenderUtils.BUFFER_BUILDER.pos(x, y, .0).color(red, green, blue, alpha).endVertex()
+		} else {
+			RenderUtils.BUFFER_BUILDER.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR)
+
+			RenderUtils.BUFFER_BUILDER.pos(x, y + 0, .0).color(red, green, blue, alpha).endVertex()
+			RenderUtils.BUFFER_BUILDER.pos(x, y + height, .0).color(red, green, blue, alpha).endVertex()
+			RenderUtils.BUFFER_BUILDER.pos(x + width, y + height, .0).color(red, green, blue, alpha).endVertex()
+			RenderUtils.BUFFER_BUILDER.pos(x + width, y + 0, .0).color(red, green, blue, alpha).endVertex()
+		}
+
+		GlStateManager.translate(.0, .0, zTranslate)
+		GlStateManager.enableBlend()
+		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA)
+		GlStateManager.disableLighting()
+		GlStateManager.disableTexture2D()
+		GlStateManager.depthMask(false)
+		RenderUtils.TESSELLATOR.draw()
+		GlStateManager.depthMask(true)
+		GlStateManager.enableTexture2D()
+		GlStateManager.enableLighting()
+		GlStateManager.disableBlend()
+		GlStateManager.popMatrix()
+	}
+	
+	const val MAGIC_NUMBER = 0.00390625
+
+	/**
+	 * Draw a 2D textured rectangle. Adapted from [Gui#drawTexturedModalRect][net.minecraft.client.gui.Gui.drawTexturedModalRect].
+	 */
+	fun drawTexturedModalRect(x: Double, y: Double, u: Float, v: Float, width: Double, height: Double, zLevel: Double = .0) {
+		BUFFER_BUILDER.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX)
+		BUFFER_BUILDER.pos(x, y + height, zLevel).tex(u * MAGIC_NUMBER, (v + height) * MAGIC_NUMBER).endVertex()
+		BUFFER_BUILDER.pos(x + width, y + height, zLevel).tex((u + width) * MAGIC_NUMBER, (v + height) * MAGIC_NUMBER).endVertex()
+		BUFFER_BUILDER.pos(x + width, y, zLevel).tex((u + width) * MAGIC_NUMBER, v * MAGIC_NUMBER).endVertex()
+		BUFFER_BUILDER.pos(x, y, zLevel).tex(u * MAGIC_NUMBER, v * MAGIC_NUMBER).endVertex()
+		TESSELLATOR.draw()
 	}
 }

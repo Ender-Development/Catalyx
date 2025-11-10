@@ -8,6 +8,7 @@ import org.ender_development.catalyx.tiles.BaseTile
 import org.ender_development.catalyx.tiles.helper.HudInfoLine
 import org.ender_development.catalyx.tiles.helper.IHudInfoProvider
 import org.ender_development.catalyx.utils.RenderUtils.FONT_RENDERER
+import org.ender_development.catalyx.utils.RenderUtils.drawRectangle
 import org.ender_development.catalyx.utils.extensions.getFacingFromEntity
 import org.ender_development.catalyx.utils.extensions.glRotate
 
@@ -58,19 +59,20 @@ object HudInfoRenderer : AbstractTESRenderer() {
 		var y = -height * logSize - height / 2
 		for(message in messages) {
 			if(message.background != null)
-				drawRectangle(message.background, true, padding, y, blockSize, height, -.03)
+				drawRectangle(padding, y, blockSize, height, message.background, true, -.03)
 
 			if(message.percent > 0 && message.percentColor != null) {
 				val percent = message.percent.coerceIn(0f, 1f)
-				drawRectangle(message.percentColor!!, true, padding, y, blockSize * percent, height, -.02)
+				drawRectangle(padding, y, blockSize * percent, height, message.percentColor!!, true, -.02)
 			}
 
 			if(message.border != null)
-				drawRectangle(message.border, false, padding, y, blockSize, height, -.01)
+				drawRectangle(padding, y, blockSize, height, message.border, false, -.01)
 
 			val maxWidth = blockSize.toInt() - 2
 			val line = FONT_RENDERER.trimStringToWidth(message.text, maxWidth)
-			val colour = message.color?.rgb ?: 0xFFFFFF
+			val colour = message.color?.let { it.rgb and 0xFFFFFF } ?: 0xFFFFFF
+			println("colour=$colour; GlSM state={r=${GlStateManager.colorState.red}; g=${GlStateManager.colorState.green}; b=${GlStateManager.colorState.blue}; a=${GlStateManager.colorState.alpha}}")
 			if(message.alignment == HudInfoLine.TextAlign.LEFT)
 				FONT_RENDERER.drawString(line, padding.toInt() + 1, y.toInt() + 2, colour)
 			else {
