@@ -14,37 +14,48 @@ abstract class BaseContainer(playerInv: IInventory, val tileEntity: IBaseContain
 		addPlayerSlots(playerInv)
 	}
 
+	private var nextSlotId = 0
+
 	fun addSlotArray(x: Int, y: Int, rows: Int, columns: Int, handler: IItemHandler) {
 		var index = 0
-		for(row in 0..<rows)
-			for(column in 0..<columns)
+		repeat(rows) { row ->
+			repeat(columns) { column ->
 				addSlotToContainer(SlotItemHandler(handler, index++, x + 18 * column, y + 18 * row))
+			}
+		}
 	}
 
 	fun addPlayerSlots(playerInventory: IInventory) {
-		for(row in 0..2) {
-			for(col in 0..8) {
+		repeat(3) { row ->
+			repeat(9) { col ->
 				val x = 8 + col * 18
 				val y = row * 18 + tileEntity.guiHeight - 82
-				this.addSlotToContainer(Slot(playerInventory, col + row * 9 + 9, x, y))
+				super.addSlotToContainer(Slot(playerInventory, col + row * 9 + 9, x, y))
 			}
 		}
 
-		for(row in 0..8) {
+		repeat(9) { row ->
 			val x = 8 + row * 18
 			val y = tileEntity.guiHeight - 24
-			this.addSlotToContainer(Slot(playerInventory, row, x, y))
+			super.addSlotToContainer(Slot(playerInventory, row, x, y))
 		}
 	}
 
-	override fun canInteractWith(player: EntityPlayer): Boolean = tileEntity.canInteractWith(player)
+	// required because I wanted to refactor this class a while back to use `init {}` instead of a function, and this is what I get ;p
+	override fun addSlotToContainer(slot: Slot): Slot {
+		inventorySlots.add(nextSlotId, slot)
+		inventoryItemStacks.add(nextSlotId++, ItemStack.EMPTY)
 
-	companion object {
-		const val PLAYER_INVENTORY_SIZE = 36
-		const val PLAYER_INVENTORY_LAST_INDEX = PLAYER_INVENTORY_SIZE - 1
+		inventorySlots.forEachIndexed { idx, slot ->
+			slot.slotNumber = idx
+		}
+
+		return slot
 	}
 
-	// slot indexes are currently [...player inventory (PLAYER_INVENTORY_SIZE)][...container slots (tileEntity.SIZE)]
+	override fun canInteractWith(player: EntityPlayer) =
+		tileEntity.canInteractWith(player)
+
 	override fun transferStackInSlot(player: EntityPlayer, index: Int): ItemStack {
 		val slot = inventorySlots[index]
 		if(slot == null || !slot.hasStack)
@@ -52,12 +63,12 @@ abstract class BaseContainer(playerInv: IInventory, val tileEntity: IBaseContain
 
 		val stack = slot.stack
 
-		// transfer TE Container -> Player Inventory
-		if(index > PLAYER_INVENTORY_LAST_INDEX && index <= PLAYER_INVENTORY_LAST_INDEX + tileEntity.SIZE) {
-			if(!mergeItemStack(stack, 0, PLAYER_INVENTORY_SIZE, false))
+		// transfer TE Container -> Anywhere else (Player Inventory)
+		if(index < tileEntity.SIZE) {
+			if(!mergeItemStack(stack, tileEntity.SIZE, inventorySlots.size, true))
 				return ItemStack.EMPTY
-		// transfer Player Inventory -> TE Container
-		} else if(!mergeItemStack(stack, PLAYER_INVENTORY_SIZE, PLAYER_INVENTORY_LAST_INDEX + tileEntity.SIZE, false))
+		// transfer Anywhere else (Player Inventory) -> TE Container
+		} else if(!mergeItemStack(stack, 0, tileEntity.SIZE, false))
 			return ItemStack.EMPTY
 
 		if(stack.isEmpty)
@@ -68,11 +79,8 @@ abstract class BaseContainer(playerInv: IInventory, val tileEntity: IBaseContain
 		return stack
 	}
 
-	// because of the way we unorthodox organise slots (playerInventory, then custom slots; instead of the other way around), this is just a helper
-	override fun getSlot(slotId: Int): Slot =
-		super.getSlot((PLAYER_INVENTORY_SIZE + slotId) % inventorySlots.size)
-
 	interface IBaseContainerCompat : IGuiTile {
+		// TODO rename someday
 		val SIZE: Int
 		fun canInteractWith(player: EntityPlayer): Boolean
 	}
