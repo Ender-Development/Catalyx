@@ -9,6 +9,5 @@ annotation class CatalyxModuleContainer(
 	/**
 	 * Your mod's id
 	 */
-	@Suppress("UNUSED") // used in ModuleManager via ASM
 	val modId: String
 )

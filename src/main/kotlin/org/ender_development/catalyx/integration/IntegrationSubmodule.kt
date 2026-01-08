@@ -2,9 +2,9 @@ package org.ender_development.catalyx.integration
 
 import it.unimi.dsi.fastutil.objects.ObjectSets
 import org.ender_development.catalyx.Reference
-import org.ender_development.catalyx.modules.BaseCatalyxModule
-import org.ender_development.catalyx.modules.catalyx.CatalyxModules
 import org.ender_development.catalyx.modules.ModuleIdentifier
+import org.ender_development.catalyx.modules.catalyx.BaseCatalyxModule
+import org.ender_development.catalyx.modules.catalyx.CatalyxModules
 
 /**
  * Abstract class meant to be used by mod-specific compatibility modules.

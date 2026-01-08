@@ -13,6 +13,9 @@ import net.minecraftforge.fml.common.discovery.ASMDataTable
 import net.minecraftforge.fml.common.event.*
 import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.Reference
+import org.ender_development.catalyx.modules.ModuleManager.configuration
+import org.ender_development.catalyx.modules.ModuleManager.discoveredContainers
+import org.ender_development.catalyx.modules.ModuleManager.discoveredModules
 import org.ender_development.catalyx.utils.Delegates
 import org.ender_development.catalyx.utils.DevUtils
 import org.ender_development.catalyx.utils.extensions.modLoaded
@@ -31,7 +34,7 @@ object ModuleManager : IModuleManager {
 	private val loadedModuleIds = hashSetOf<ModuleIdentifier>() // ender, you can go and turn this into some fastutil bs
 	private val loadedContainers = Object2ReferenceLinkedOpenHashMap<ContainerId, ICatalyxModuleContainer>()
 
-	private lateinit var configDirectory: File
+	private val configDirectory = File(Loader.instance().configDir, Reference.MODID)
 
 	/**
 	 * The currently active Module Container
@@ -60,8 +63,6 @@ object ModuleManager : IModuleManager {
 	 */
 	fun setup(asmDataTable: ASMDataTable) {
 		discoverContainers(asmDataTable)
-
-		configDirectory = File(Loader.instance().configDir, Reference.MODID)
 		discoverModules(asmDataTable)
 	}
 
@@ -89,6 +90,7 @@ object ModuleManager : IModuleManager {
 	 * @param asmDataTable the ASM Data Table containing the module data
 	 */
 	private fun discoverModules(asmDataTable: ASMDataTable) {
+		Catalyx.LOGGER.debug("Discovering Modules...")
 		asmDataTable.getAll(CatalyxModule::class.java.canonicalName).forEach { asmModule ->
 			val containerId = asmModule.annotationInfo["containerId"] as ContainerId
 			val moduleId = asmModule.annotationInfo["moduleId"] as ModuleId
@@ -168,24 +170,22 @@ object ModuleManager : IModuleManager {
 		// Register event bus listeners
 		willLoadModules.forEach { module ->
 			activeContainer = loadedContainers[module.containerId]
-			// required cause otherwise Forge complains
-			val activeModContainer = Loader.instance().activeModContainer()
-			Loader.instance().setActiveModContainer(Loader.instance().indexedModList[activeContainer!!.annotation.modId])
 
-			module.eventBusSubscribers.forEach {
-				module.logger.debug("Registered event handler ${it.canonicalName}")
-				MinecraftForge.EVENT_BUS.register(it)
-			}
-			module.oreGenBusSubscriber.forEach {
-				module.logger.debug("Registered ore gen event handler ${it.canonicalName}")
-				MinecraftForge.ORE_GEN_BUS.register(it)
-			}
-			module.terrainGenBusSubscriber.forEach {
-				module.logger.debug("Registered terrain gen event handler ${it.canonicalName}")
-				MinecraftForge.TERRAIN_GEN_BUS.register(it)
+			modContainerContext(activeContainer!!.annotation.modId) {
+				module.eventBusSubscribers.forEach {
+					module.logger.debug("Registered event handler ${it.canonicalName}")
+					MinecraftForge.EVENT_BUS.register(it)
+				}
+				module.oreGenBusSubscriber.forEach {
+					module.logger.debug("Registered ore gen event handler ${it.canonicalName}")
+					MinecraftForge.ORE_GEN_BUS.register(it)
+				}
+				module.terrainGenBusSubscriber.forEach {
+					module.logger.debug("Registered terrain gen event handler ${it.canonicalName}")
+					MinecraftForge.TERRAIN_GEN_BUS.register(it)
+				}
 			}
 
-			Loader.instance().setActiveModContainer(activeModContainer)
 			activeContainer = null
 		}
 
@@ -205,13 +205,13 @@ object ModuleManager : IModuleManager {
 				return@let
 
 			if(stateEvent !is FMLConstructionEvent)
-				error("Somehow we still found uninitialised discovered module containers for mod ${mod.modId} during ${stateEvent.eventType}, containers: ${discoveredContainers.joinToString(", ", transform = { it.className })}. This shouldn't happen.")
+				error("Somehow we still found discovered module containers for mod ${mod.modId} during ${stateEvent.eventType}, containers: ${discoveredContainers.joinToString(", ", transform = { it.className })}. This shouldn't happen.")
 
-			Catalyx.LOGGER.debug("Initialising modules for mod ${mod.modId}")
+			Catalyx.LOGGER.debug("Instantiating modules for mod ${mod.modId}")
 
-			initialiseNewContainers(discoveredContainers, stateEvent.modClassLoader, mod)
+			instantiateNewContainers(discoveredContainers, stateEvent.modClassLoader, mod)
 
-			Catalyx.LOGGER.debug("Finished initialising modules for mod ${mod.modId}")
+			Catalyx.LOGGER.debug("Finished instantiating modules for mod ${mod.modId}")
 		}
 
 		// Call the corresponding state function for each module in each container for the given mod
@@ -248,44 +248,48 @@ object ModuleManager : IModuleManager {
 		activeContainer = null
 	}
 
-	private fun initialiseNewContainers(discoveredContainers: MutableList<ASMDataTable.ASMData>, loader: ModClassLoader, mod: ModContainer) {
+	private fun instantiateNewContainers(discoveredContainers: MutableList<ASMDataTable.ASMData>, loader: ModClassLoader, mod: ModContainer) {
 		val newContainers = hashMapOf<ContainerId, MutableList<ICatalyxModule>>()
 
-		discoveredContainers.forEach { asmContainer ->
-			Catalyx.LOGGER.debug("> Initialising Module Container ${asmContainer.className}")
+		val modId = mod.modId
+		modContainerContext(modId) {
+			discoveredContainers.forEach { asmContainer ->
+				Catalyx.LOGGER.debug("> Instantiating Module Container {}:{}", asmContainer.annotationInfo["modId"], asmContainer.className)
 
-			val container = loadClassAndCreateInstance<ICatalyxModuleContainer>(loader, asmContainer, "Module Container") ?: return@forEach
+				val container = loadClassAndCreateInstance<ICatalyxModuleContainer>(loader, asmContainer, "Module Container") ?: return@forEach
 
-			registerContainer(container)
-			activeContainer = container
-			Catalyx.LOGGER.debug("> Module Container ${asmContainer.className} initialised (id: ${container.id})")
+				registerContainer(container)
+				activeContainer = container
+				Catalyx.LOGGER.debug("> Module Container {}:{} instantiated ({})", modId, container.id, asmContainer.className)
 
-			val discoveredModules = discoveredModules[container.id]
-			if(discoveredModules.isNullOrEmpty()) {
-				Catalyx.LOGGER.debug("> Module Container ${asmContainer.className}, id ${container.id} has no dependent Modules")
-				return@forEach
+				val discoveredModules = discoveredModules[container.id]
+				if(discoveredModules.isNullOrEmpty()) {
+					Catalyx.LOGGER.debug("> Module Container {}:{} has no modules", modId, container.id)
+					return@forEach
+				}
+
+				Catalyx.LOGGER.debug("> Module Container {}:{} has {} dependent modules, will be instantiating all of them", modId, container.id, discoveredModules.size)
+				discoveredModules.sortByDescending { (it.annotationInfo["coreModule"] as Boolean?) ?: false }
+
+				val modules = mutableListOf<ICatalyxModule>()
+
+				discoveredModules.forEach { asmModule ->
+					Catalyx.LOGGER.debug("Instantiating Module {}:{}:{} ({})", modId, container.id, asmModule.annotationInfo["moduleId"], asmModule.className)
+
+					modules.add(loadClassAndCreateInstance<ICatalyxModule>(loader, asmModule, "Module") ?: return@forEach)
+
+					Catalyx.LOGGER.debug("Module {}:{}:{} instantiated ({})", modId, container.id, asmModule.annotationInfo["moduleId"], asmModule.className)
+				}
+
+				newContainers[container.id] = modules
+
+				this.discoveredModules.remove(container.id)
 			}
 
-			Catalyx.LOGGER.debug("> Module Container ${asmContainer.className}, id ${container.id} has ${discoveredModules.size} dependent Modules, will be loading all of them")
-			discoveredModules.sortByDescending { (it.annotationInfo["coreModule"] as Boolean?) ?: false }
+			this.discoveredContainers.remove(mod.modId)
 
-			val modules = mutableListOf<ICatalyxModule>()
-
-			discoveredModules.forEach { asmModule ->
-				Catalyx.LOGGER.debug("Initialising Module {} (id: {})", asmModule.className, asmModule.annotationInfo["moduleId"])
-				modules.add(loadClassAndCreateInstance<ICatalyxModule>(loader, asmModule, "Module") ?: return@forEach)
-
-				Catalyx.LOGGER.debug("Module ${asmModule.className} initialised")
-			}
-
-			newContainers[container.id] = modules
-
-			this.discoveredModules.remove(container.id)
+			registerModules(newContainers)
 		}
-
-		this.discoveredContainers.remove(mod.modId)
-
-		registerModules(newContainers)
 
 		activeContainer = null
 	}
@@ -322,7 +326,7 @@ object ModuleManager : IModuleManager {
 				is IllegalAccessException,
 				is InstantiationException,
 				is NoSuchMethodException -> {
-					Catalyx.LOGGER.error("Couldn't initialise $type Class ${asm.className}", e)
+					Catalyx.LOGGER.error("Couldn't instantiate $type Class ${asm.className}", e)
 					return null
 				}
 				else -> throw e
@@ -392,6 +396,13 @@ object ModuleManager : IModuleManager {
 	 */
 	private val ICatalyxModule.moduleId: ModuleId
 		inline get() = annotation.moduleId
+
+	private inline fun modContainerContext(modId: String, crossinline function: () -> Unit) {
+		val currentModContainer = Loader.instance().activeModContainer()
+		Loader.instance().setActiveModContainer(Loader.instance().indexedModList[modId])
+		function()
+		Loader.instance().setActiveModContainer(currentModContainer)
+	}
 }
 
 class ModuleIdentifier(
