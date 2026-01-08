@@ -21,6 +21,11 @@ interface ICatalyxModule {
 	 */
 	val logger: Logger
 
+	/**
+	 * Called before each of the other callbacks, but after the mod itself receives the event
+	 */
+	fun lifecycle(event: FMLStateEvent) {}
+
 	fun construction(event: FMLConstructionEvent) {}
 
 	fun preInit(event: FMLPreInitializationEvent) {}

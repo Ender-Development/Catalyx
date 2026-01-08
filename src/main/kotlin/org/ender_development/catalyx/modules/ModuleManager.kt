@@ -168,6 +168,10 @@ object ModuleManager : IModuleManager {
 		// Register event bus listeners
 		willLoadModules.forEach { module ->
 			activeContainer = loadedContainers[module.containerId]
+			// required cause otherwise Forge complains
+			val activeModContainer = Loader.instance().activeModContainer()
+			Loader.instance().setActiveModContainer(Loader.instance().indexedModList[activeContainer!!.annotation.modId])
+
 			module.eventBusSubscribers.forEach {
 				module.logger.debug("Registered event handler ${it.canonicalName}")
 				MinecraftForge.EVENT_BUS.register(it)
@@ -180,6 +184,8 @@ object ModuleManager : IModuleManager {
 				module.logger.debug("Registered terrain gen event handler ${it.canonicalName}")
 				MinecraftForge.TERRAIN_GEN_BUS.register(it)
 			}
+
+			Loader.instance().setActiveModContainer(activeModContainer)
 			activeContainer = null
 		}
 
@@ -211,8 +217,7 @@ object ModuleManager : IModuleManager {
 		// Call the corresponding state function for each module in each container for the given mod
 		// note: iterating like this here sucks
 		loadedContainers.values.forEach { container ->
-			val annotation = container::class.java.getAnnotation(CatalyxModuleContainer::class.java)
-			if(annotation.modId != mod.modId)
+			if(container.annotation.modId != mod.modId)
 				return@forEach
 
 			activeContainer = container
@@ -223,6 +228,7 @@ object ModuleManager : IModuleManager {
 
 				val name = stateEvent::class.java.simpleName.removeSurrounding("FML", "Event").replace("[A-Z]".toRegex()) { " ${it.value}" }.trimStart()
 				module.logger.debug("Starting $name stage")
+				module.lifecycle(stateEvent)
 				when(stateEvent) {
 					is FMLConstructionEvent -> module.construction(stateEvent)
 					is FMLPreInitializationEvent -> module.preInit(stateEvent)
@@ -362,6 +368,12 @@ object ModuleManager : IModuleManager {
 	 */
 	private val ICatalyxModule.annotation
 		inline get() = this::class.java.getAnnotation(CatalyxModule::class.java)
+
+	/**
+	 * @return the [CatalyxModuleContainer] annotation for this [ICatalyxModuleContainer]
+	 */
+	private val ICatalyxModuleContainer.annotation
+		inline get() = this::class.java.getAnnotation(CatalyxModuleContainer::class.java)
 
 	/**
 	 * @return a [ModuleIdentifier] for this [CatalyxModule]
