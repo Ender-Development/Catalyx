@@ -291,7 +291,7 @@ object ModuleManager : IModuleManager {
 			}
 
 			Catalyx.LOGGER.debug("> Module Container ${asmContainer.className}, id ${container.id} has ${discoveredModules.size} dependent Modules, will be loading all of them")
-			discoveredModules.sortByDescending { it.annotationInfo["coreModule"] as Boolean }
+			discoveredModules.sortByDescending { (it.annotationInfo["coreModule"] as Boolean?) ?: false }
 
 			val modules = mutableListOf<ICatalyxModule>()
 
@@ -360,6 +360,10 @@ object ModuleManager : IModuleManager {
 	 */
 	override fun isModuleEnabled(identifier: ModuleIdentifier) =
 		sortedModules.containsKey(identifier)
+
+	@Suppress("NOTHING_TO_INLINE")
+	internal inline fun isModuleEnabled(moduleId: String) =
+		isModuleEnabled(ModuleIdentifier(Reference.MODID, moduleId))
 
 	/**
 	 * @param module the module to get the comment for
