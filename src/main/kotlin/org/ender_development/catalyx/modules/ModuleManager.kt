@@ -3,7 +3,6 @@ package org.ender_development.catalyx.modules
 import it.unimi.dsi.fastutil.objects.Object2ReferenceLinkedOpenHashMap
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet
 import it.unimi.dsi.fastutil.objects.ReferenceLinkedOpenHashSet
-import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.common.config.Configuration
 import net.minecraftforge.fml.common.Loader
@@ -13,9 +12,6 @@ import net.minecraftforge.fml.common.discovery.ASMDataTable
 import net.minecraftforge.fml.common.event.*
 import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.Reference
-import org.ender_development.catalyx.modules.ModuleManager.configuration
-import org.ender_development.catalyx.modules.ModuleManager.discoveredContainers
-import org.ender_development.catalyx.modules.ModuleManager.discoveredModules
 import org.ender_development.catalyx.utils.Delegates
 import org.ender_development.catalyx.utils.DevUtils
 import org.ender_development.catalyx.utils.extensions.modLoaded
@@ -108,7 +104,6 @@ object ModuleManager : IModuleManager {
 		}
 	}
 
-	// TODO is this needed?
 	override fun registerContainer(container: ICatalyxModuleContainer) {
 		loadedContainers[container.id] = container
 	}
@@ -176,10 +171,12 @@ object ModuleManager : IModuleManager {
 					module.logger.debug("Registered event handler ${it.canonicalName}")
 					MinecraftForge.EVENT_BUS.register(it)
 				}
+
 				module.oreGenBusSubscriber.forEach {
 					module.logger.debug("Registered ore gen event handler ${it.canonicalName}")
 					MinecraftForge.ORE_GEN_BUS.register(it)
 				}
+
 				module.terrainGenBusSubscriber.forEach {
 					module.logger.debug("Registered terrain gen event handler ${it.canonicalName}")
 					MinecraftForge.TERRAIN_GEN_BUS.register(it)
@@ -216,6 +213,8 @@ object ModuleManager : IModuleManager {
 
 		// Call the corresponding state function for each module in each container for the given mod
 		// note: iterating like this here sucks
+		val stateName = stateEvent::class.java.simpleName.removeSurrounding("FML", "Event").replace("[A-Z]".toRegex()) { " ${it.value}" }.trimStart()
+
 		loadedContainers.values.forEach { container ->
 			if(container.annotation.modId != mod.modId)
 				return@forEach
@@ -226,8 +225,7 @@ object ModuleManager : IModuleManager {
 				if(module.containerId != container.id)
 					return@forEach
 
-				val name = stateEvent::class.java.simpleName.removeSurrounding("FML", "Event").replace("[A-Z]".toRegex()) { " ${it.value}" }.trimStart()
-				module.logger.debug("Starting $name stage")
+				module.logger.debug("Starting $stateName stage")
 				module.lifecycle(stateEvent)
 				when(stateEvent) {
 					is FMLConstructionEvent -> module.construction(stateEvent)
@@ -241,7 +239,7 @@ object ModuleManager : IModuleManager {
 					is FMLServerStoppingEvent -> module.serverStopping(stateEvent)
 					is FMLServerStoppedEvent -> module.serverStopped(stateEvent)
 				}
-				module.logger.debug("Completed $name stage")
+				module.logger.debug("Completed $stateName stage")
 			}
 		}
 

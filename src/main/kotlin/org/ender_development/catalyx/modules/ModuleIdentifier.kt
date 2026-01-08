@@ -2,13 +2,10 @@ package org.ender_development.catalyx.modules
 
 import net.minecraft.util.ResourceLocation
 
-private typealias ContainerId = String
-private typealias ModuleId = String
-
 class ModuleIdentifier(
 	@Suppress("unused")
-	val containerId: ContainerId,
+	val containerId: String,
 
 	@Suppress("unused")
-	val moduleId: ModuleId
+	val moduleId: String
 ) : ResourceLocation(containerId, moduleId)
