@@ -3,7 +3,7 @@ package org.ender_development.catalyx.integration
 import it.unimi.dsi.fastutil.objects.ObjectSets
 import org.ender_development.catalyx.Reference
 import org.ender_development.catalyx.modules.BaseCatalyxModule
-import org.ender_development.catalyx.modules.CatalyxModules
+import org.ender_development.catalyx.modules.catalyx.CatalyxModules
 import org.ender_development.catalyx.modules.ModuleIdentifier
 
 /**

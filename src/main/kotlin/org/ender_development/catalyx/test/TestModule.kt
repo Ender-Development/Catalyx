@@ -10,7 +10,7 @@ import org.ender_development.catalyx.blocks.multiblock.parts.CornerBlock
 import org.ender_development.catalyx.blocks.multiblock.parts.SideBlock
 import org.ender_development.catalyx.modules.BaseCatalyxModule
 import org.ender_development.catalyx.modules.CatalyxModule
-import org.ender_development.catalyx.modules.CatalyxModules
+import org.ender_development.catalyx.modules.catalyx.CatalyxModules
 import org.ender_development.catalyx.utils.LoggerUtils
 import org.ender_development.catalyx.utils.SideUtils
 

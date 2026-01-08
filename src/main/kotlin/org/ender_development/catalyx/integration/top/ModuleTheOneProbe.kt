@@ -7,7 +7,7 @@ import org.ender_development.catalyx.Reference
 import org.ender_development.catalyx.integration.IntegrationSubmodule
 import org.ender_development.catalyx.integration.Mods
 import org.ender_development.catalyx.modules.CatalyxModule
-import org.ender_development.catalyx.modules.CatalyxModules
+import org.ender_development.catalyx.modules.catalyx.CatalyxModules
 import org.ender_development.catalyx.utils.LoggerUtils
 
 @CatalyxModule(
