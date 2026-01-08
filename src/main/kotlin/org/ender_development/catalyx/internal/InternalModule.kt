@@ -6,6 +6,7 @@ import org.ender_development.catalyx.items.CopyPasteTool
 import org.ender_development.catalyx.modules.CatalyxModule
 import org.ender_development.catalyx.modules.catalyx.CatalyxModules
 import org.ender_development.catalyx.modules.ICatalyxModule
+import org.ender_development.catalyx.modules.ModuleIdentifier
 import org.ender_development.catalyx.utils.LoggerUtils
 
 @CatalyxModule(moduleId = CatalyxModules.MODULE_INTERNAL, containerId = Reference.MODID, name = "Internal Module", description = "An internal module for Catalyx, used for stuff that can can be used in all mods that use Catalyx.")

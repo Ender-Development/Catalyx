@@ -404,11 +404,3 @@ object ModuleManager : IModuleManager {
 		Loader.instance().setActiveModContainer(currentModContainer)
 	}
 }
-
-class ModuleIdentifier(
-	@Suppress("unused")
-	val containerId: ContainerId,
-
-	@Suppress("unused")
-	val moduleId: ModuleId
-) : ResourceLocation(containerId, moduleId)
