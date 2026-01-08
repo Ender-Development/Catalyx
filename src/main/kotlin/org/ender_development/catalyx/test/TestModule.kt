@@ -1,7 +1,5 @@
 package org.ender_development.catalyx.test
 
-import net.minecraft.block.state.IBlockState
-import net.minecraft.util.math.AxisAlignedBB
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 import org.apache.logging.log4j.Logger
 import org.ender_development.catalyx.Catalyx
@@ -15,11 +13,10 @@ import org.ender_development.catalyx.modules.CatalyxModule
 import org.ender_development.catalyx.modules.CatalyxModules
 import org.ender_development.catalyx.utils.LoggerUtils
 import org.ender_development.catalyx.utils.SideUtils
-import org.ender_development.catalyx.utils.extensions.rotateY
 
 @CatalyxModule(
-	moduleID = CatalyxModules.MODULE_TEST,
-	containerID = Reference.MODID,
+	moduleId = CatalyxModules.MODULE_TEST,
+	containerId = Reference.MODID,
 	name = "Test Module",
 	description = "A module for testing purposes. Will only work in a development environment.",
 	testModule = true

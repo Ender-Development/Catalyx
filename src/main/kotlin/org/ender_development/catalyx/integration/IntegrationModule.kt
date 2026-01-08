@@ -8,8 +8,8 @@ import org.ender_development.catalyx.modules.CatalyxModules
 import org.ender_development.catalyx.utils.LoggerUtils
 
 @CatalyxModule(
-	moduleID = CatalyxModules.MODULE_INTEGRATION,
-	containerID = Reference.MODID,
+	moduleId = CatalyxModules.MODULE_INTEGRATION,
+	containerId = Reference.MODID,
 	name = "Catalyx Integration Module",
 	description = "Adds integration with other mods. Disabling this will disable all integration submodules."
 )

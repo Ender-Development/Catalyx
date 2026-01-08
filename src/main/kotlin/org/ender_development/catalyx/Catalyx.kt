@@ -39,44 +39,10 @@ object Catalyx : ICatalyxMod {
 	@EventHandler
 	fun construction(e: FMLConstructionEvent) {
 		ModuleManager.setup(e.asmHarvestedData, e.modClassLoader)
-		ModuleManager.construction(e)
 	}
 
 	@EventHandler
 	fun preInit(e: FMLPreInitializationEvent) {
-		ModuleManager.preInit(e)
 		PacketHandler.init()
 	}
-
-	@EventHandler
-	fun init(e: FMLInitializationEvent) =
-		ModuleManager.init(e)
-
-	@EventHandler
-	fun postInit(e: FMLPostInitializationEvent) =
-		ModuleManager.postInit(e)
-
-	@EventHandler
-	fun loadComplete(e: FMLLoadCompleteEvent) =
-		ModuleManager.loadComplete(e)
-
-	@EventHandler
-	fun serverAboutToStart(e: FMLServerAboutToStartEvent) =
-		ModuleManager.serverAboutToStart(e)
-
-	@EventHandler
-	fun serverStarting(e: FMLServerStartingEvent) =
-		ModuleManager.serverStarting(e)
-
-	@EventHandler
-	fun serverStarted(e: FMLServerStartedEvent) =
-		ModuleManager.serverStarted(e)
-
-	@EventHandler
-	fun serverStopping(e: FMLServerStoppingEvent) =
-		ModuleManager.serverStopping(e)
-
-	@EventHandler
-	fun serverStopped(e: FMLServerStoppedEvent) =
-		ModuleManager.serverStopped(e)
 }

@@ -10,8 +10,8 @@ import org.ender_development.catalyx.modules.ICatalyxModule
 import org.ender_development.catalyx.utils.LoggerUtils
 
 @CatalyxModule(
-	moduleID = CatalyxModules.MODULE_CORE,
-	containerID = Reference.MODID,
+	moduleId = CatalyxModules.MODULE_CORE,
+	containerId = Reference.MODID,
 	name = "Core",
 	description = "The core module required by all other modules from Catalyx.",
 	coreModule = true

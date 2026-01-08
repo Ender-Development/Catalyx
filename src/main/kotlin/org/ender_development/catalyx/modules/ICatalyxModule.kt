@@ -1,6 +1,5 @@
 package org.ender_development.catalyx.modules
 
-import net.minecraft.util.ResourceLocation
 import net.minecraftforge.fml.common.event.*
 import org.apache.logging.log4j.Logger
 
@@ -11,10 +10,10 @@ import org.apache.logging.log4j.Logger
  */
 interface ICatalyxModule {
 	/**
-	 * What other modules this module depends on, e.g. `ResourceLocation("catalyx", "foo_module")`
+	 * What other modules this module depends on, e.g. `ModuleIdentifier("catalyx", "foo_module")`
 	 * represents a dependency on the module "foo_module" in the container "catalyx".
 	 */
-	val dependencyUids: Set<ResourceLocation>
+	val dependencyUids: Set<ModuleIdentifier>
 		get() = emptySet()
 
 	/**

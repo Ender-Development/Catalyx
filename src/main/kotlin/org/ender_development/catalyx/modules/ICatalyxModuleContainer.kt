@@ -2,7 +2,7 @@ package org.ender_development.catalyx.modules
 
 interface ICatalyxModuleContainer {
 	/**
-	 * The ID of this container. If this is your mod's only container, you should use your mod ID to prevent collisions.
+	 * The id of this container. If this is your mod's only container, you should use your mod id to prevent collisions.
 	 */
 	val id: String
 }

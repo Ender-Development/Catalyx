@@ -1,33 +1,21 @@
 package org.ender_development.catalyx.modules
 
-import net.minecraft.util.ResourceLocation
-import net.minecraftforge.fml.common.event.*
 import org.ender_development.catalyx.Reference
 
 interface IModuleManager {
-	fun isModuleEnabled(containerID: String, moduleID: String) =
-		isModuleEnabled(ResourceLocation(containerID, moduleID))
+	fun isModuleEnabled(containerId: String, moduleId: String) =
+		isModuleEnabled(ModuleIdentifier(containerId, moduleId))
 
-	fun isModuleEnabled(moduleID: String) =
-		isModuleEnabled(ResourceLocation(Reference.MODID, moduleID))
+	fun isModuleEnabled(identifier: ModuleIdentifier): Boolean
+	fun registerContainer(container: ICatalyxModuleContainer)
 
-	fun isModuleEnabled(id: ResourceLocation): Boolean
-	fun registerContainer(container: ICatalyxModuleContainer?)
-
-	val loadedContainer: ICatalyxModuleContainer?
+	val activeContainer: ICatalyxModuleContainer?
 	val moduleStage: ModuleStage
 
 	fun passedStage(stage: ModuleStage) =
-		moduleStage.ordinal > stage.ordinal
-
-	fun construction(event: FMLConstructionEvent)
-	fun preInit(event: FMLPreInitializationEvent)
-	fun init(event: FMLInitializationEvent)
-	fun postInit(event: FMLPostInitializationEvent)
-	fun loadComplete(event: FMLLoadCompleteEvent)
-	fun serverAboutToStart(event: FMLServerAboutToStartEvent)
-	fun serverStarting(event: FMLServerStartingEvent)
-	fun serverStarted(event: FMLServerStartedEvent)
-	fun serverStopping(event: FMLServerStoppingEvent)
-	fun serverStopped(event: FMLServerStoppedEvent)
+		moduleStage > stage
 }
+
+@Suppress("NOTHING_TO_INLINE")
+internal inline fun IModuleManager.isModuleEnabled(moduleId: String) =
+	isModuleEnabled(ModuleIdentifier(Reference.MODID, moduleId))
