@@ -13,9 +13,6 @@ import net.minecraftforge.fml.common.discovery.ASMDataTable
 import net.minecraftforge.fml.common.event.*
 import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.Reference
-import org.ender_development.catalyx.modules.ModuleManager.configuration
-import org.ender_development.catalyx.modules.ModuleManager.discoveredContainers
-import org.ender_development.catalyx.modules.ModuleManager.discoveredModules
 import org.ender_development.catalyx.utils.Delegates
 import org.ender_development.catalyx.utils.DevUtils
 import org.ender_development.catalyx.utils.extensions.modLoaded
@@ -30,9 +27,8 @@ object ModuleManager : IModuleManager {
 	const val MODULE_CFG_CATEGORY_NAME = "modules"
 	const val MODULE_CFG_FILE_NAME = "$MODULE_CFG_CATEGORY_NAME.cfg"
 
-	private val sortedModules = Object2ReferenceLinkedOpenHashMap<ModuleIdentifier, ICatalyxModule>()
 	private val loadedModules = ReferenceLinkedOpenHashSet<ICatalyxModule>()
-	private val loadedModuleIds = hashSetOf<ModuleIdentifier>() // ender, you can go and turn this into some fastutil bs later
+	private val loadedModuleIds = hashSetOf<ModuleIdentifier>() // ender, you can go and turn this into some fastutil bs
 	private val loadedContainers = Object2ReferenceLinkedOpenHashMap<ContainerId, ICatalyxModuleContainer>()
 
 	private lateinit var configDirectory: File
@@ -187,22 +183,6 @@ object ModuleManager : IModuleManager {
 			activeContainer = null
 		}
 
-		// Sort modules by their module dependencies
-		// todo: why? maps have no inherent order, and it doesn't seem to be used in any useful way
-		do {
-			var changed = false
-			val iterator = willLoadModules.iterator()
-			while(iterator.hasNext()) {
-				val module = iterator.next()
-				if(sortedModules.keys.containsAll(module.dependencyUids)) {
-					iterator.remove()
-					sortedModules[module.annotation.identifier] = module
-					changed = true
-					break
-				}
-			}
-		} while(changed)
-
 		if(configuration.hasChanged())
 			configuration.save()
 
@@ -349,7 +329,7 @@ object ModuleManager : IModuleManager {
 	 * @return true if the module is enabled, false otherwise
 	 */
 	override fun isModuleEnabled(identifier: ModuleIdentifier) =
-		sortedModules.containsKey(identifier)
+		loadedModuleIds.contains(identifier)
 
 	@Suppress("NOTHING_TO_INLINE")
 	internal inline fun isModuleEnabled(moduleId: String) =
