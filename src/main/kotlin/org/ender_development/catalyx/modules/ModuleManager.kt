@@ -43,13 +43,6 @@ object ModuleManager : IModuleManager {
 	override var activeContainer: ICatalyxModuleContainer? = null
 		private set
 
-	// TODO find a use or delete outright
-	/**
-	 * The current stage of the Module loading process
-	 */
-	override var moduleStage = ModuleStage.CONTAINER_SETUP
-		private set
-
 	/**
 	 * The configuration for the Module Manager
 	 */
@@ -72,7 +65,6 @@ object ModuleManager : IModuleManager {
 	fun setup(asmDataTable: ASMDataTable) {
 		discoverContainers(asmDataTable)
 
-		moduleStage = ModuleStage.MODULE_SETUP
 		configDirectory = File(Loader.instance().configDir, Reference.MODID)
 		discoverModules(asmDataTable)
 	}
@@ -120,10 +112,7 @@ object ModuleManager : IModuleManager {
 
 	// TODO is this needed?
 	override fun registerContainer(container: ICatalyxModuleContainer) {
-		when {
-			moduleStage != ModuleStage.CONTAINER_SETUP -> Catalyx.LOGGER.error("Failed to register container ${container.id}, as module loading has already begun!")
-			else -> loadedContainers[container.id] = container
-		}
+		loadedContainers[container.id] = container
 	}
 
 	/**
@@ -252,7 +241,8 @@ object ModuleManager : IModuleManager {
 				if(module.containerId != container.id)
 					return@forEach
 
-				module.logger.debug("Starting {} stage", moduleStage)
+				val name = stateEvent::class.java.simpleName.removeSurrounding("FML", "Event").replace("[A-Z]".toRegex()) { " ${it.value}" }.trimStart()
+				module.logger.debug("Starting $name stage")
 				when(stateEvent) {
 					is FMLConstructionEvent -> module.construction(stateEvent)
 					is FMLPreInitializationEvent -> module.preInit(stateEvent)
@@ -265,7 +255,7 @@ object ModuleManager : IModuleManager {
 					is FMLServerStoppingEvent -> module.serverStopping(stateEvent)
 					is FMLServerStoppedEvent -> module.serverStopped(stateEvent)
 				}
-				module.logger.debug("Completed {} stage")
+				module.logger.debug("Completed $name stage")
 			}
 		}
 

@@ -8,8 +8,4 @@ interface IModuleManager {
 	fun registerContainer(container: ICatalyxModuleContainer)
 
 	val activeContainer: ICatalyxModuleContainer?
-	val moduleStage: ModuleStage
-
-	fun passedStage(stage: ModuleStage) =
-		moduleStage > stage
 }
