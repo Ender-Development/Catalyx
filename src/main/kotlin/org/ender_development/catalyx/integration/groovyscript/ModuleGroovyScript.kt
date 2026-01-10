@@ -5,7 +5,7 @@ import com.cleanroommc.groovyscript.api.GroovyPlugin
 import com.cleanroommc.groovyscript.compat.mods.GroovyContainer
 import net.minecraftforge.fml.common.Optional
 import org.ender_development.catalyx.Reference
-import org.ender_development.catalyx.integration.IntegrationSubmodule
+import org.ender_development.catalyx.integration.IntegrationModule
 import org.ender_development.catalyx.integration.Mods
 import org.ender_development.catalyx.modules.CatalyxModule
 import org.ender_development.catalyx.modules.ModuleManager
@@ -18,9 +18,10 @@ import org.ender_development.catalyx.utils.extensions.subLogger
 	containerId = Reference.MODID,
 	modDependencies = [Mods.GROOVYSCRIPT],
 	name = "Catalyx GroovyScript Integration Module",
-	description = "Adds integration with GroovyScript"
+	description = "Adds integration with GroovyScript",
+	moduleDependencies = ["${Reference.MODID}:${CatalyxModules.MODULE_INTEGRATION}"]
 )
-internal class ModuleGroovyScript : IntegrationSubmodule(), GroovyPlugin {
+internal class ModuleGroovyScript : IntegrationModule(), GroovyPlugin {
 	override val logger = super.logger.subLogger("GroovyScript")
 
 	companion object {

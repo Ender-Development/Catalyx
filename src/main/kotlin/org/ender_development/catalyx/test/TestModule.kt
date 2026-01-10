@@ -17,6 +17,7 @@ import org.ender_development.catalyx.utils.extensions.subLogger
 	containerId = Reference.MODID,
 	name = "Test Module",
 	description = "A module for testing purposes. Will only work in a development environment.",
+	moduleDependencies = ["${Reference.MODID}:${CatalyxModules.MODULE_CORE}"],
 	testModule = true
 )
 internal class TestModule : BaseCatalyxModule() {

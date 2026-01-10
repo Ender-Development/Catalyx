@@ -29,6 +29,13 @@ annotation class CatalyxModule(
 	val modDependencies: Array<String> = [],
 
 	/**
+	 * A list of module identifiers this module depends on. If any module specified is not present, this module will not load.
+	 *
+	 * Format: "containerId:moduleId"
+	 */
+	val moduleDependencies: Array<String> = [],
+
+	/**
 	 * Whether this module is the "core" module for its container.
 	 * Each container must have exactly one core module, which will be loaded before all other modules in the container.
 	 *

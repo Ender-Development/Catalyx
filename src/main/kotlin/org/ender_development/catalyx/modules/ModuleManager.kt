@@ -142,23 +142,7 @@ object ModuleManager : IModuleManager {
 			}
 		}
 
-		// Remove modules with unmet dependencies
-		do {
-			var changed = false
-			val iterator = willLoadModules.iterator()
-			while(iterator.hasNext()) {
-				val module = iterator.next()
-				val dependencies = module.dependencyUids.filterNot { willLoadIds.contains(it) || loadedModuleIds.contains(it) }
-				// note: this can also happen if you depend on a module from a mod that loads *after* your mod, as it'll be in discoveredModules
-				if(dependencies.isNotEmpty()) {
-					iterator.remove()
-					changed = true
-					val identifier = module.annotation.identifier
-					willLoadIds.remove(identifier)
-					module.logger.info("Module $identifier is missing required dependencies: ${dependencies.joinToString(", ")}; skipping...")
-				}
-			}
-		} while(changed)
+		// todo sort modules by dependencies to instantiate and call [load()] on those first lol
 
 		loadedModules.addAll(willLoadModules)
 		loadedModuleIds.addAll(willLoadIds)
@@ -200,7 +184,7 @@ object ModuleManager : IModuleManager {
 	 */
 	internal fun stateEvent(mod: ModContainer, stateEvent: FMLStateEvent) {
 		// After a mod's construction, find and register any containers and modules
-		discoveredContainers[mod.modId]?.let { discoveredContainers ->
+		discoveredContainers.remove(mod.modId)?.let { discoveredContainers ->
 			if(discoveredContainers.isEmpty())
 				return@let
 
@@ -249,32 +233,63 @@ object ModuleManager : IModuleManager {
 		activeContainer = null
 	}
 
+	/**
+	 * Instantiates new containers and their modules.
+	 *
+	 * Helper function for [stateEvent] so it's less of a mess.
+	 */
 	private fun instantiateNewContainers(discoveredContainers: MutableList<ASMDataTable.ASMData>, loader: ModClassLoader, mod: ModContainer) {
 		val newContainers = hashMapOf<ContainerId, MutableList<ICatalyxModule>>()
 
 		val modId = mod.modId
 		modContainerContext(modId) {
 			discoveredContainers.forEach { asmContainer ->
-				Catalyx.LOGGER.debug("> Instantiating Module Container {}:{}", asmContainer.annotationInfo["modId"], asmContainer.className)
+				Catalyx.LOGGER.debug("> Instantiating Module Container {}:{}", modId, asmContainer.className)
 
 				val container = loadClassAndCreateInstance<ICatalyxModuleContainer>(loader, asmContainer, "Module Container") ?: return@forEach
 
 				registerContainer(container)
 				activeContainer = container
+
 				Catalyx.LOGGER.debug("> Module Container {}:{} instantiated ({})", modId, container.id, asmContainer.className)
 
-				val discoveredModules = discoveredModules[container.id]
+				val discoveredModules = discoveredModules.remove(container.id)
 				if(discoveredModules.isNullOrEmpty()) {
 					Catalyx.LOGGER.debug("> Module Container {}:{} has no modules", modId, container.id)
 					return@forEach
 				}
 
-				Catalyx.LOGGER.debug("> Module Container {}:{} has {} dependent modules, will be instantiating all of them", modId, container.id, discoveredModules.size)
-				discoveredModules.sortByDescending { (it.annotationInfo["coreModule"] as Boolean?) ?: false }
+				// Check module ids before instantiating modules
+				val willInstantiate = mutableListOf<ASMDataTable.ASMData>()
+				val willInstantiateIds = mutableListOf<ModuleIdentifier>()
+				do {
+					var changed = false
+					val iter = discoveredModules.iterator()
+					while(iter.hasNext()) {
+						val module = iter.next()
+						val moduleId = ModuleIdentifier(module.annotationInfo["containerId"] as String, module.annotationInfo["moduleId"] as String)
+						val unmetDependencies = (module.annotationInfo["moduleDependencies"] as Array<*>)
+							.filterIsInstance<String>()
+							.map(::ModuleIdentifier)
+							.filterNot { willInstantiateIds.contains(it) || loadedModuleIds.contains(it) }
+
+						if(unmetDependencies.isNotEmpty()) {
+							iter.remove()
+							changed = true
+							Catalyx.LOGGER.info("Module $moduleId is missing required module dependencies: ${unmetDependencies.joinToString(", ")}; skipping...")
+						} else {
+							willInstantiate.add(module)
+							willInstantiateIds.add(moduleId)
+						}
+					}
+				} while(changed)
+
+				Catalyx.LOGGER.debug("> Module Container {}:{} has {} dependent modules, but will be instantiating {} of them", modId, container.id, discoveredModules.size, willInstantiate.size)
+				willInstantiate.sortByDescending { (it.annotationInfo["coreModule"] as Boolean?) ?: false }
 
 				val modules = mutableListOf<ICatalyxModule>()
 
-				discoveredModules.forEach { asmModule ->
+				willInstantiate.forEach { asmModule ->
 					Catalyx.LOGGER.debug("Instantiating Module {}:{}:{} ({})", modId, container.id, asmModule.annotationInfo["moduleId"], asmModule.className)
 
 					modules.add(loadClassAndCreateInstance<ICatalyxModule>(loader, asmModule, "Module") ?: return@forEach)
@@ -283,11 +298,7 @@ object ModuleManager : IModuleManager {
 				}
 
 				newContainers[container.id] = modules
-
-				this.discoveredModules.remove(container.id)
 			}
-
-			this.discoveredContainers.remove(mod.modId)
 
 			registerModules(newContainers)
 		}
@@ -356,11 +367,11 @@ object ModuleManager : IModuleManager {
 	private fun getConfigComment(module: ICatalyxModule): String {
 		val annotation = module.annotation
 
-		var comment = annotation.description
-		comment += module.dependencyUids.joinToString(", ", "\nModule Dependencies: [ ", " ]")
-		comment += annotation.modDependencies.joinToString(", ", "\nMod Dependencies: [ ", " ]")
-
-		return comment
+		return buildString {
+			appendLine(annotation.description)
+			annotation.moduleDependencies.joinTo(this, separator = ", ", prefix = "Module Dependencies: [", postfix = "]\n")
+			annotation.modDependencies.joinTo(this, separator = ", ", prefix = "Mod Dependencies: [", postfix = "]")
+		}
 	}
 
 	private fun shouldModuleBeEnabled(module: ICatalyxModule): Boolean {
@@ -382,12 +393,6 @@ object ModuleManager : IModuleManager {
 	 */
 	private val ICatalyxModuleContainer.annotation
 		inline get() = this::class.java.getAnnotation(CatalyxModuleContainer::class.java)
-
-	/**
-	 * @return a [ModuleIdentifier] for this [CatalyxModule]
-	 */
-	private val CatalyxModule.identifier
-		inline get() = ModuleIdentifier(containerId, moduleId)
 
 	/**
 	 * @return the container id
