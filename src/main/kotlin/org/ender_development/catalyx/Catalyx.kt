@@ -5,10 +5,10 @@ import net.minecraft.util.ResourceLocation
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.Mod.EventHandler
 import net.minecraftforge.fml.common.event.*
+import org.apache.logging.log4j.LogManager
 import org.ender_development.catalyx.core.ICatalyxMod
 import org.ender_development.catalyx.modules.ModuleManager
 import org.ender_development.catalyx.network.PacketHandler
-import org.ender_development.catalyx.utils.LoggerUtils
 import org.ender_development.catalyx.utils.persistence.ConfigPersistentData
 import kotlin.random.Random
 
@@ -31,7 +31,7 @@ object Catalyx : ICatalyxMod {
 	 * The logger for the mod to use. We can't grep the logger from pre-init,
 	 * because some modules may want to use it in construction.
 	 */
-	internal val LOGGER = LoggerUtils.logger
+	internal val LOGGER = LogManager.getLogger(Reference.MOD_NAME)
 
 	override val creativeTab: CreativeTabs = CreativeTabs.MISC
 	internal val configPersistentData = ConfigPersistentData(ResourceLocation(Reference.MODID, "recipes"))

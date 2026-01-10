@@ -10,6 +10,5 @@ import org.ender_development.catalyx.modules.ModuleIdentifier
 internal open class BaseCatalyxModule : ICatalyxModule {
 	override val logger: Logger = Catalyx.LOGGER
 
-	override val dependencyUids: Set<ModuleIdentifier> =
-		ObjectSets.singleton(ModuleIdentifier(Reference.MODID, CatalyxModules.MODULE_CORE))
+	override val dependencyUids: Set<ModuleIdentifier> = ObjectSets.singleton(ModuleIdentifier(Reference.MODID, CatalyxModules.MODULE_CORE))
 }
