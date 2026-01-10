@@ -23,19 +23,13 @@ import org.ender_development.catalyx.utils.extensions.subLogger
 internal class TestModule : BaseCatalyxModule() {
 	override val logger = super.logger.subLogger("Development")
 
-	lateinit var testCorner: CornerBlock
-	lateinit var testSide: SideBlock
-	lateinit var testMultiBlock: CenterBlock<DummyClass1>
-	lateinit var testTesrBlock: IOTileBlock
+	val testCorner = CornerBlock(Catalyx, "test_corner")
+	val testSide = SideBlock(Catalyx, "test_side")
+	val testMultiBlock = CenterBlock(Catalyx, "test_middle", DummyClass1::class.java, 1, testCorner, testSide)
+	val testTesrBlock = IOTileBlock(Catalyx, "test_tesr", DummyClass2::class.java, 0)
 
-	override fun load() {
+	override fun load() =
 		logger.info("Detected deobfuscated environment, adding some testing features")
-
-		testCorner = CornerBlock(Catalyx, "test_corner")
-		testSide = SideBlock(Catalyx, "test_side")
-		testMultiBlock = CenterBlock(Catalyx, "test_middle", DummyClass1::class.java, 1, testCorner, testSide)
-		testTesrBlock = IOTileBlock(Catalyx, "test_tesr", DummyClass2::class.java, 0)
-	}
 
 	override val eventBusSubscribers: List<Class<*>> = if(SideUtils.isClient) listOf(TestEventHandler::class.java) else emptyList()
 }
