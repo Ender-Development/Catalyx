@@ -269,7 +269,7 @@ object ModuleManager : IModuleManager {
 					while(iter.hasNext()) {
 						val module = iter.next()
 						val moduleId = ModuleIdentifier(module.annotationInfo["containerId"] as String, module.annotationInfo["moduleId"] as String)
-						val unmetDependencies = (module.annotationInfo["moduleDependencies"] as Array<*>)
+						val unmetDependencies = (module.annotationInfo["moduleDependencies"] as List<*>? ?: emptyList<String>())
 							.filterIsInstance<String>()
 							.map(::ModuleIdentifier)
 							.filterNot { willInstantiateIds.contains(it) || loadedModuleIds.contains(it) }
