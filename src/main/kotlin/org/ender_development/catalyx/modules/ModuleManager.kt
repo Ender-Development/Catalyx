@@ -12,11 +12,9 @@ import net.minecraftforge.fml.common.discovery.ASMDataTable
 import net.minecraftforge.fml.common.event.*
 import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.Reference
-import org.ender_development.catalyx.modules.ModuleManager.annotation
 import org.ender_development.catalyx.utils.Delegates
 import org.ender_development.catalyx.utils.DevUtils
 import org.ender_development.catalyx.utils.extensions.modLoaded
-import scala.tools.nsc.interpreter.Power.`ReplUtilities$class`.module
 import java.io.File
 import java.util.*
 
