@@ -168,17 +168,17 @@ object ModuleManager : IModuleManager {
 
 			modContainerContext(activeContainer!!.annotation.modId) {
 				module.eventBusSubscribers.forEach {
-					module.logger.debug("Registered event handler ${it.canonicalName}")
+					module.logger.debug("Registered event handler {} ({}", it, it::class.java.canonicalName)
 					MinecraftForge.EVENT_BUS.register(it)
 				}
 
-				module.oreGenBusSubscriber.forEach {
-					module.logger.debug("Registered ore gen event handler ${it.canonicalName}")
+				module.oreGenBusSubscribers.forEach {
+					module.logger.debug("Registered ore gen event handler {} ({}", it, it::class.java.canonicalName)
 					MinecraftForge.ORE_GEN_BUS.register(it)
 				}
 
-				module.terrainGenBusSubscriber.forEach {
-					module.logger.debug("Registered terrain gen event handler ${it.canonicalName}")
+				module.terrainGenBusSubscribers.forEach {
+					module.logger.debug("Registered terrain gen event handler {} ({}", it, it::class.java.canonicalName)
 					MinecraftForge.TERRAIN_GEN_BUS.register(it)
 				}
 			}

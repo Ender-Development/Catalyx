@@ -47,32 +47,26 @@ interface ICatalyxModule {
 	fun serverStopped(event: FMLServerStoppedEvent) {}
 
 	/**
-	 * A list of classes to subscribe to the Forge Event Bus.
-	 * The class itself gets subscribed, instead of a class instance,
-	 * so event handlers **must** be `static`.
+	 * A list of classes to subscribe to the [Forge Event Bus][net.minecraftforge.common.MinecraftForge.EVENT_BUS].
 	 *
-	 * @see net.minecraftforge.common.MinecraftForge.EVENT_BUS
+	 * Like with registering yourself to the bus, you can pass a Class<*> for static functions, or a class instance for non-static functions.
 	 */
-	val eventBusSubscribers: List<Class<*>>
+	val eventBusSubscribers: Iterable<Any>
 		get() = emptyList()
 
 	/**
-	 * A list of classes to subscribe to the Forge Terrain Gen Bus.
-	 * The class itself gets subscribed, instead of a class instance,
-	 * so event handlers **must** be `static`.
+	 * A list of classes to subscribe to the [Forge Terrain Gen Bus][net.minecraftforge.common.MinecraftForge.TERRAIN_GEN_BUS].
 	 *
-	 * @see net.minecraftforge.common.MinecraftForge.TERRAIN_GEN_BUS
+	 * Like with registering yourself to the bus, you can pass a Class<*> for static functions, or a class instance for non-static functions.
 	 */
-	val terrainGenBusSubscriber: List<Class<*>>
+	val terrainGenBusSubscribers: Iterable<Any>
 		get() = emptyList()
 
 	/**
-	 * A list of classes to subscribe to the Forge Ore Gen Bus.
-	 * The class itself gets subscribed, instead of a class instance,
-	 * so event handlers **must** be `static`.
+	 * A list of classes to subscribe to the [Forge Ore Gen Bus][net.minecraftforge.common.MinecraftForge.ORE_GEN_BUS].
 	 *
-	 * @see net.minecraftforge.common.MinecraftForge.ORE_GEN_BUS
+	 * Like with registering yourself to the bus, you can pass a Class<*> for static functions, or a class instance for non-static functions.
 	 */
-	val oreGenBusSubscriber: List<Class<*>>
+	val oreGenBusSubscribers: Iterable<Any>
 		get() = emptyList()
 }
