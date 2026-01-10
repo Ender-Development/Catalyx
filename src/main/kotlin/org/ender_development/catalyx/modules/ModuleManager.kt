@@ -390,7 +390,7 @@ object ModuleManager : IModuleManager {
 		inline get() = this::class.java.getAnnotation(CatalyxModule::class.java)
 
 	/**
-	 * @return the [CatalyxModuleContainer] annotation for a Catalyx Module (supposedly anyways)
+	 * @return the [CatalyxModuleContainer] annotation for a Catalyx Module Container (supposedly anyways)
 	 */
 	private val Any.containerAnnotation
 		inline get() = this::class.java.getAnnotation(CatalyxModuleContainer::class.java)
