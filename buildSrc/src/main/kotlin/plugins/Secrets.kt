@@ -14,7 +14,7 @@ class Secrets : Plugin<Project> {
          *
          * @param name The name of the property to load from the secrets.properties file.
          */
-        fun get(name: String) = Loader.getPropertyFromFile(PROPERTIES_FILE, name)?.toString()
+        fun get(name: String) = Loader.getPropertyFromFile(PROPERTIES_FILE, name)
 
         /**
          * Loads properties from the specified properties file located in the resources' directory.
@@ -23,7 +23,7 @@ class Secrets : Plugin<Project> {
          * @param name The name of the property to load from the secrets.properties file or environment variables.
          * @return The value of the property or environment variable, or null if not found.
          */
-        fun getOrEnvironment(name: String) = get(name) ?: System.getenv(name)?.toString()
+        fun getOrEnvironment(name: String): String? = get(name) ?: System.getenv(name)
     }
 
     override fun apply(target: Project) {
@@ -42,7 +42,9 @@ class Secrets : Plugin<Project> {
 
 	    val secretsFile = when {
 		    rootSecrets.exists() -> {
-			    Logger.warn("Don't store secrets inside the repo tree BECAUSE IT IS FCKN DANGEROUS!")
+			    if (!getOrEnvironment("DISMISS_SECRET_FILE_WARNING").toBoolean()) {
+				    Logger.warn("Don't store secrets inside the repo tree BECAUSE IT IS FCKN DANGEROUS!")
+			    }
 				rootSecrets
 		    }
 		    userSecrets.exists() -> userSecrets
@@ -51,7 +53,7 @@ class Secrets : Plugin<Project> {
 
 	    if (secretsFile == null) {
 		    if (target.rootProject.file(EXAMPLE_FILE).exists()) {
-			    Logger.warn("No '$PROPERTIES_FILE' found. Please create one in project root or ~/.gradle based on '$EXAMPLE_FILE'.")
+			    Logger.warn("No '$PROPERTIES_FILE' found. Please create one in project root or even better in ~/.gradle based on '$EXAMPLE_FILE'.")
 
 				// Needed?
 				//println("WARNING: No '$PROPERTIES_FILE' found in project root or ~/.gradle. Please create one based on '$EXAMPLE_FILE'.")
