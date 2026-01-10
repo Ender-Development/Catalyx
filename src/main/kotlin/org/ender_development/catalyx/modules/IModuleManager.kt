@@ -5,6 +5,8 @@ interface IModuleManager {
 		isModuleEnabled(ModuleIdentifier(containerId, moduleId))
 
 	fun isModuleEnabled(identifier: ModuleIdentifier): Boolean
+	fun isModuleEnabled(module: ICatalyxModule): Boolean
+
 	fun registerContainer(container: ICatalyxModuleContainer)
 
 	val activeContainer: ICatalyxModuleContainer?

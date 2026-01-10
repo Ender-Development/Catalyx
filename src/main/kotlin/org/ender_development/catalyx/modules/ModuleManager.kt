@@ -126,7 +126,8 @@ object ModuleManager : IModuleManager {
 				if(idx == -1)
 					error("Could not find core module for container $containerId")
 
-				modules.add(0, modules.removeAt(idx))
+				if(idx != 0)
+					modules.add(0, modules.removeAt(idx))
 			}
 
 			// Add all but disabled modules to the load lists
@@ -167,6 +168,8 @@ object ModuleManager : IModuleManager {
 			activeContainer = loadedContainers[module.containerId]
 
 			modContainerContext(activeContainer!!.annotation.modId) {
+				module.load()
+
 				module.eventBusSubscribers.forEach {
 					module.logger.debug("Registered event handler {} ({}", it, it::class.java.canonicalName)
 					MinecraftForge.EVENT_BUS.register(it)
@@ -338,6 +341,9 @@ object ModuleManager : IModuleManager {
 	 */
 	override fun isModuleEnabled(identifier: ModuleIdentifier) =
 		loadedModuleIds.contains(identifier)
+
+	override fun isModuleEnabled(module: ICatalyxModule) =
+		loadedModules.contains(module)
 
 	@Suppress("NOTHING_TO_INLINE")
 	internal inline fun isModuleEnabled(moduleId: String) =

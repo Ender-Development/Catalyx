@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger
 /**
  * All modules must implement this interface.
  *
- * Provides methods for responding to FML lifecycle events and adding event bus subscriber classes.
+ * Provides methods for responding to FML lifecycle events and adding event bus subscribers.
  */
 interface ICatalyxModule {
 	/**
@@ -20,6 +20,23 @@ interface ICatalyxModule {
 	 * A logger to use for this module.
 	 */
 	val logger: Logger
+
+	/**
+	 * A boolean indicating whether this module is enabled.
+	 *
+	 * Note: because [dependencyUids] are checked after class instantiation, this property is valid only right before [load] is called. At any earlier point, it'll just be `false`. (see [ModuleManager][ModuleManager.registerModules])
+	 */
+	val enabled: Boolean
+		get() = ModuleManager.isModuleEnabled(this)
+
+	/**
+	 * Called when this module is loaded and all dependencies are checked
+	 *
+	 * Note: the class is instantiated before [dependencyUids] are checked, so keep note that class instantiation should not have any side-effects.
+	 *
+	 * Note: it's possible to disable any module through the Catalyx config, as such, if your mod calls into this module, it will be instantiated regardless, making the note above even more important.
+	 */
+	fun load() {}
 
 	/**
 	 * Called before each of the other callbacks, but after the mod itself receives the event
