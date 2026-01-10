@@ -28,14 +28,14 @@ object ModuleManager : IModuleManager {
 
 	private val loadedModules = ReferenceLinkedOpenHashSet<ICatalyxModule>()
 	private val loadedModuleIds = hashSetOf<ModuleIdentifier>() // ender, you can go and turn this into some fastutil bs
-	private val loadedContainers = Object2ReferenceLinkedOpenHashMap<ContainerId, ICatalyxModuleContainer>()
+	private val loadedContainers = Object2ReferenceLinkedOpenHashMap<ContainerId, Any>()
 
 	private val configDirectory = File(Loader.instance().configDir, Reference.MODID)
 
 	/**
 	 * The currently active Module Container
 	 */
-	override var activeContainer: ICatalyxModuleContainer? = null
+	override var activeContainer: Any? = null
 		private set
 
 	/**
@@ -104,8 +104,8 @@ object ModuleManager : IModuleManager {
 		}
 	}
 
-	override fun registerContainer(container: ICatalyxModuleContainer) {
-		loadedContainers[container.id] = container
+	override fun registerContainer(container: Any) {
+		loadedContainers[container.containerAnnotation.id] = container
 	}
 
 	/**
@@ -151,7 +151,7 @@ object ModuleManager : IModuleManager {
 		willLoadModules.forEach { module ->
 			activeContainer = loadedContainers[module.containerId]
 
-			modContainerContext(activeContainer!!.annotation.modId) {
+			modContainerContext(activeContainer!!.containerAnnotation.modId) {
 				module.load()
 
 				module.eventBusSubscribers.forEach {
@@ -203,13 +203,13 @@ object ModuleManager : IModuleManager {
 		val stateName = stateEvent::class.java.simpleName.removeSurrounding("FML", "Event").replace("[A-Z]".toRegex()) { " ${it.value}" }.trimStart()
 
 		loadedContainers.values.forEach { container ->
-			if(container.annotation.modId != mod.modId)
+			if(container.containerAnnotation.modId != mod.modId)
 				return@forEach
 
 			activeContainer = container
 
 			loadedModules.forEach { module ->
-				if(module.containerId != container.id)
+				if(module.containerId != container.containerAnnotation.id)
 					return@forEach
 
 				module.logger.debug("Starting $stateName stage")
@@ -246,16 +246,17 @@ object ModuleManager : IModuleManager {
 			discoveredContainers.forEach { asmContainer ->
 				Catalyx.LOGGER.debug("> Instantiating Module Container {}:{}", modId, asmContainer.className)
 
-				val container = loadClassAndCreateInstance<ICatalyxModuleContainer>(loader, asmContainer, "Module Container") ?: return@forEach
+				val container = loadClassAndCreateInstance<Any>(loader, asmContainer, "Module Container") ?: return@forEach
+				val containerId = container.containerAnnotation.id
 
 				registerContainer(container)
 				activeContainer = container
 
-				Catalyx.LOGGER.debug("> Module Container {}:{} instantiated ({})", modId, container.id, asmContainer.className)
+				Catalyx.LOGGER.debug("> Module Container {}:{} instantiated ({})", modId, containerId, asmContainer.className)
 
-				val discoveredModules = discoveredModules.remove(container.id)
+				val discoveredModules = discoveredModules.remove(containerId)
 				if(discoveredModules.isNullOrEmpty()) {
-					Catalyx.LOGGER.debug("> Module Container {}:{} has no modules", modId, container.id)
+					Catalyx.LOGGER.debug("> Module Container {}:{} has no modules", modId, containerId)
 					return@forEach
 				}
 
@@ -284,20 +285,20 @@ object ModuleManager : IModuleManager {
 					}
 				} while(changed)
 
-				Catalyx.LOGGER.debug("> Module Container {}:{} has {} dependent modules, but will be instantiating {} of them", modId, container.id, discoveredModules.size, willInstantiate.size)
+				Catalyx.LOGGER.debug("> Module Container {}:{} has {} dependent modules, but will be instantiating {} of them", modId, containerId, discoveredModules.size, willInstantiate.size)
 				willInstantiate.sortByDescending { (it.annotationInfo["coreModule"] as Boolean?) ?: false }
 
 				val modules = mutableListOf<ICatalyxModule>()
 
 				willInstantiate.forEach { asmModule ->
-					Catalyx.LOGGER.debug("Instantiating Module {}:{}:{} ({})", modId, container.id, asmModule.annotationInfo["moduleId"], asmModule.className)
+					Catalyx.LOGGER.debug("Instantiating Module {}:{}:{} ({})", modId, containerId, asmModule.annotationInfo["moduleId"], asmModule.className)
 
 					modules.add(loadClassAndCreateInstance<ICatalyxModule>(loader, asmModule, "Module") ?: return@forEach)
 
-					Catalyx.LOGGER.debug("Module {}:{}:{} instantiated ({})", modId, container.id, asmModule.annotationInfo["moduleId"], asmModule.className)
+					Catalyx.LOGGER.debug("Module {}:{}:{} instantiated ({})", modId, containerId, asmModule.annotationInfo["moduleId"], asmModule.className)
 				}
 
-				newContainers[container.id] = modules
+				newContainers[containerId] = modules
 			}
 
 			registerModules(newContainers)
@@ -389,9 +390,9 @@ object ModuleManager : IModuleManager {
 		inline get() = this::class.java.getAnnotation(CatalyxModule::class.java)
 
 	/**
-	 * @return the [CatalyxModuleContainer] annotation for this [ICatalyxModuleContainer]
+	 * @return the [CatalyxModuleContainer] annotation for a Catalyx Module (supposedly anyways)
 	 */
-	private val ICatalyxModuleContainer.annotation
+	private val Any.containerAnnotation
 		inline get() = this::class.java.getAnnotation(CatalyxModuleContainer::class.java)
 
 	/**

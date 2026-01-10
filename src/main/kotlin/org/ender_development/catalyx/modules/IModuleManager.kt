@@ -7,7 +7,7 @@ interface IModuleManager {
 	fun isModuleEnabled(identifier: ModuleIdentifier): Boolean
 	fun isModuleEnabled(module: ICatalyxModule): Boolean
 
-	fun registerContainer(container: ICatalyxModuleContainer)
+	fun registerContainer(container: Any)
 
-	val activeContainer: ICatalyxModuleContainer?
+	val activeContainer: Any?
 }
