@@ -12,9 +12,11 @@ import net.minecraftforge.fml.common.discovery.ASMDataTable
 import net.minecraftforge.fml.common.event.*
 import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.Reference
+import org.ender_development.catalyx.modules.ModuleManager.annotation
 import org.ender_development.catalyx.utils.Delegates
 import org.ender_development.catalyx.utils.DevUtils
 import org.ender_development.catalyx.utils.extensions.modLoaded
+import scala.tools.nsc.interpreter.Power.`ReplUtilities$class`.module
 import java.io.File
 import java.util.*
 
@@ -155,17 +157,17 @@ object ModuleManager : IModuleManager {
 				module.load()
 
 				module.eventBusSubscribers.forEach {
-					module.logger.debug("Registered event handler {} ({}", it, it::class.java.canonicalName)
+					module.logger.debug("Registered event handler {} ({})", it, it::class.java.canonicalName)
 					MinecraftForge.EVENT_BUS.register(it)
 				}
 
 				module.oreGenBusSubscribers.forEach {
-					module.logger.debug("Registered ore gen event handler {} ({}", it, it::class.java.canonicalName)
+					module.logger.debug("Registered ore gen event handler {} ({})", it, it::class.java.canonicalName)
 					MinecraftForge.ORE_GEN_BUS.register(it)
 				}
 
 				module.terrainGenBusSubscribers.forEach {
-					module.logger.debug("Registered terrain gen event handler {} ({}", it, it::class.java.canonicalName)
+					module.logger.debug("Registered terrain gen event handler {} ({})", it, it::class.java.canonicalName)
 					MinecraftForge.TERRAIN_GEN_BUS.register(it)
 				}
 			}
@@ -274,19 +276,20 @@ object ModuleManager : IModuleManager {
 							.map(::ModuleIdentifier)
 							.filterNot { willInstantiateIds.contains(it) || loadedModuleIds.contains(it) }
 
-						if(unmetDependencies.isNotEmpty()) {
+						if(unmetDependencies.isEmpty()) {
 							iter.remove()
 							changed = true
-							Catalyx.LOGGER.info("Module $moduleId is missing required module dependencies: ${unmetDependencies.joinToString(", ")}; skipping...")
-						} else {
 							willInstantiate.add(module)
 							willInstantiateIds.add(moduleId)
 						}
 					}
 				} while(changed)
 
-				Catalyx.LOGGER.debug("> Module Container {}:{} has {} dependent modules, but will be instantiating {} of them", modId, containerId, discoveredModules.size, willInstantiate.size)
-				willInstantiate.sortByDescending { (it.annotationInfo["coreModule"] as Boolean?) ?: false }
+				Catalyx.LOGGER.debug("> Module Container {}:{} has {} dependent modules, but will be instantiating {} of them", modId, containerId, willInstantiate.size + discoveredModules.size, willInstantiate.size)
+				willInstantiate.indexOfFirst { it.annotationInfo["coreModule"] as Boolean? ?: false }.let { idx ->
+					if(idx != -1 && idx != 0)
+						willInstantiate.add(0, willInstantiate.removeAt(idx))
+				}
 
 				val modules = mutableListOf<ICatalyxModule>()
 
