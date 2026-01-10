@@ -9,14 +9,14 @@ import org.ender_development.catalyx.Reference
 @Retention(AnnotationRetention.RUNTIME)
 annotation class CatalyxModule(
 	/**
-	 * The ID of this module. Must be unique within its container.
+	 * The id of this module. Must be unique within its container.
 	 */
-	val moduleID: String,
+	val moduleId: String,
 
 	/**
-	 * The ID of the container to associate this module with.
+	 * The id of the container to associate this module with.
 	 */
-	val containerID: String,
+	val containerId: String,
 
 	/**
 	 * A human-readable name for this module.
@@ -24,9 +24,16 @@ annotation class CatalyxModule(
 	val name: String,
 
 	/**
-	 * A list of mod IDs that this module depends on. If any mods specified are not present, the module will not load.
+	 * A list of mod ids that this module depends on. If any mods specified are not present, the module will not load.
 	 */
 	val modDependencies: Array<String> = [],
+
+	/**
+	 * A list of module identifiers this module depends on. If any module specified is not present, this module will not load.
+	 *
+	 * Format: "containerId:moduleId"
+	 */
+	val moduleDependencies: Array<String> = [],
 
 	/**
 	 * Whether this module is the "core" module for its container.

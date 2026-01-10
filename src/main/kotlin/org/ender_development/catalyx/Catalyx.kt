@@ -5,10 +5,10 @@ import net.minecraft.util.ResourceLocation
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.Mod.EventHandler
 import net.minecraftforge.fml.common.event.*
+import org.apache.logging.log4j.LogManager
 import org.ender_development.catalyx.core.ICatalyxMod
 import org.ender_development.catalyx.modules.ModuleManager
 import org.ender_development.catalyx.network.PacketHandler
-import org.ender_development.catalyx.utils.LoggerUtils
 import org.ender_development.catalyx.utils.persistence.ConfigPersistentData
 import kotlin.random.Random
 
@@ -31,52 +31,18 @@ object Catalyx : ICatalyxMod {
 	 * The logger for the mod to use. We can't grep the logger from pre-init,
 	 * because some modules may want to use it in construction.
 	 */
-	internal val LOGGER = LoggerUtils.logger
+	internal val LOGGER = LogManager.getLogger(Reference.MOD_NAME)
 
 	override val creativeTab: CreativeTabs = CreativeTabs.MISC
 	internal val configPersistentData = ConfigPersistentData(ResourceLocation(Reference.MODID, "recipes"))
 
 	@EventHandler
 	fun construction(e: FMLConstructionEvent) {
-		ModuleManager.setup(e.asmHarvestedData, e.modClassLoader)
-		ModuleManager.construction(e)
+		ModuleManager.setup(e.asmHarvestedData)
 	}
 
 	@EventHandler
 	fun preInit(e: FMLPreInitializationEvent) {
-		ModuleManager.preInit(e)
 		PacketHandler.init()
 	}
-
-	@EventHandler
-	fun init(e: FMLInitializationEvent) =
-		ModuleManager.init(e)
-
-	@EventHandler
-	fun postInit(e: FMLPostInitializationEvent) =
-		ModuleManager.postInit(e)
-
-	@EventHandler
-	fun loadComplete(e: FMLLoadCompleteEvent) =
-		ModuleManager.loadComplete(e)
-
-	@EventHandler
-	fun serverAboutToStart(e: FMLServerAboutToStartEvent) =
-		ModuleManager.serverAboutToStart(e)
-
-	@EventHandler
-	fun serverStarting(e: FMLServerStartingEvent) =
-		ModuleManager.serverStarting(e)
-
-	@EventHandler
-	fun serverStarted(e: FMLServerStartedEvent) =
-		ModuleManager.serverStarted(e)
-
-	@EventHandler
-	fun serverStopping(e: FMLServerStoppingEvent) =
-		ModuleManager.serverStopping(e)
-
-	@EventHandler
-	fun serverStopped(e: FMLServerStoppedEvent) =
-		ModuleManager.serverStopped(e)
 }

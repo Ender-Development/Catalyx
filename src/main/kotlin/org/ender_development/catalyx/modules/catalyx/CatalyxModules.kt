@@ -1,12 +1,11 @@
-package org.ender_development.catalyx.modules
+package org.ender_development.catalyx.modules.catalyx
 
 import org.ender_development.catalyx.Reference
 import org.ender_development.catalyx.integration.Mods
+import org.ender_development.catalyx.modules.CatalyxModuleContainer
 
-@CatalyxModuleContainer(Reference.MODID)
-internal object CatalyxModules : ICatalyxModuleContainer {
-	override val id = Reference.MODID
-
+@CatalyxModuleContainer(Reference.MODID, Reference.MODID)
+internal object CatalyxModules {
 	const val MODULE_CORE = "core"
 	const val MODULE_INTERNAL = "internal"
 	const val MODULE_TEST = "test"

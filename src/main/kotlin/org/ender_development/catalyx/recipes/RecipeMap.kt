@@ -8,7 +8,7 @@ import net.minecraft.util.SoundEvent
 import org.ender_development.catalyx.core.ICatalyxMod
 import org.ender_development.catalyx.integration.Mods
 import org.ender_development.catalyx.integration.groovyscript.VirtualizedRecipeMap
-import org.ender_development.catalyx.modules.CatalyxModules
+import org.ender_development.catalyx.modules.catalyx.CatalyxModules
 import org.ender_development.catalyx.modules.ModuleManager
 import org.ender_development.catalyx.recipes.chance.boost.IBoostFunction
 import org.ender_development.catalyx.recipes.ingredients.RecipeInput

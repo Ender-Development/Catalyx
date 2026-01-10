@@ -1,6 +1,6 @@
 package org.ender_development.catalyx.recipes.maps
 
-abstract class Either<L, R> private constructor() {
+sealed class Either<L, R> {
 	companion object {
 		fun <L, R> left(value: L): Either<L, R> =
 			Left(value)

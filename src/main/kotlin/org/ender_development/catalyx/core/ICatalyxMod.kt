@@ -13,7 +13,7 @@ interface ICatalyxMod {
 		  * - [Forgelin Continuous](https://github.com/ChAoSUnItY/Forgelin-Continuous) (for Kotlin support) - required
 		  * - [GroovyScript](https://github.com/CleanroomMC/GroovyScript) (for GroovyScript support) - optional
 		  */
-		 const val DEPENDENCIES = "required-after:forgelin_continuous@[${Reference.KOTLIN_VERSION},);after:groovyscript@[${Reference.GROOVYSCRIPT_VERSION},);"
+		 const val DEPENDENCIES = "required-after:forgelin_continuous@[${Reference.KOTLIN_VERSION},);required-after:mixinbooter;after:groovyscript@[${Reference.GROOVYSCRIPT_VERSION},);"
 
 		 /**
 		  * The full dependencies string to add to your `@Mod` annotation to depend on Catalyx.
