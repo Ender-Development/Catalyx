@@ -4,7 +4,7 @@ import net.minecraft.item.Item
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
-import org.ender_development.catalyx.Catalyx
+import org.ender_development.catalyx_.core.Catalyx
 import org.ender_development.catalyx.Reference
 import org.ender_development.catalyx.core.IItemProvider
 import org.ender_development.catalyx.utils.DevUtils

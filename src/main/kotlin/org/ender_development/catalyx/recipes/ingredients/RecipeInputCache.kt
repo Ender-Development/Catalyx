@@ -3,7 +3,7 @@ package org.ender_development.catalyx.recipes.ingredients
 import it.unimi.dsi.fastutil.Hash
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet
 import net.minecraft.nbt.NBTTagCompound
-import org.ender_development.catalyx.Catalyx
+import org.ender_development.catalyx_.core.Catalyx
 
 object RecipeInputCache {
 	const val MINIMUM_CACHE_SIZE = 1 shl 13

@@ -2,7 +2,7 @@ package org.ender_development.catalyx.utils.validation
 
 import org.apache.logging.log4j.Level
 import org.apache.logging.log4j.Logger
-import org.ender_development.catalyx.Catalyx
+import org.ender_development.catalyx_.core.Catalyx
 
 @Suppress("UNUSED")
 data class ValidationError(val field: String? = null, val message: String, val code: String? = null, val severity: Severity = Severity.ERROR) {

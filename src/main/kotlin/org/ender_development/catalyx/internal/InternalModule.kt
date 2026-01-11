@@ -1,6 +1,6 @@
 package org.ender_development.catalyx.internal
 
-import org.ender_development.catalyx.Catalyx
+import org.ender_development.catalyx_.core.Catalyx
 import org.ender_development.catalyx.Reference
 import org.ender_development.catalyx.items.CopyPasteTool
 import org.ender_development.catalyx.modules.CatalyxModule
