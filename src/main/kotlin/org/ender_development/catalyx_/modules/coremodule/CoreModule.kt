@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.core
+package org.ender_development.catalyx_.modules.coremodule
 
 import net.minecraftforge.client.event.RenderWorldLastEvent
 import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent

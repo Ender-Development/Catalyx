@@ -1,7 +1,6 @@
 package org.ender_development.catalyx.blocks
 
 import net.minecraft.block.BlockHorizontal
-import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
@@ -11,7 +10,7 @@ import net.minecraftforge.common.property.IExtendedBlockState
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import org.ender_development.catalyx.blocks.helper.IOProperty
-import org.ender_development.catalyx.core.ICatalyxMod
+import org.ender_development.catalyx_.modules.coremodule.ICatalyxMod
 import org.ender_development.catalyx.tiles.IOTile
 import org.ender_development.catalyx.tiles.helper.IPortRenderer
 

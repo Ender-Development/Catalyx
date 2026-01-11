@@ -5,7 +5,7 @@ import it.unimi.dsi.fastutil.objects.Object2ReferenceOpenHashMap
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import it.unimi.dsi.fastutil.objects.ObjectLists
 import net.minecraft.util.SoundEvent
-import org.ender_development.catalyx.core.ICatalyxMod
+import org.ender_development.catalyx_.modules.coremodule.ICatalyxMod
 import org.ender_development.catalyx.integration.Mods
 import org.ender_development.catalyx.integration.groovyscript.VirtualizedRecipeMap
 import org.ender_development.catalyx.modules.catalyx.CatalyxModules

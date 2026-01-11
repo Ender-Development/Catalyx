@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.core
+package org.ender_development.catalyx_.modules.coremodule
 
 import net.minecraftforge.common.config.Config
 import net.minecraftforge.common.config.ConfigManager
