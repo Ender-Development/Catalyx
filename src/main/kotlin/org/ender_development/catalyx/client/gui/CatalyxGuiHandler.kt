@@ -9,7 +9,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.fml.common.network.IGuiHandler
 import org.ender_development.catalyx.core.ICatalyxMod
-import org.ender_development.catalyx.utils.SideUtils
+import org.ender_development.catalyx_.core.utils.SideUtils
 
 /**
  * A GUI handler you can use for your machines

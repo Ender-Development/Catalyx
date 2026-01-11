@@ -12,8 +12,8 @@ import org.ender_development.catalyx.client.AreaHighlighter
 import org.ender_development.catalyx.modules.CatalyxModule
 import org.ender_development.catalyx.modules.ICatalyxModule
 import org.ender_development.catalyx.modules.catalyx.CatalyxModules
-import org.ender_development.catalyx.utils.extensions.subLogger
-import org.ender_development.catalyx.utils.persistence.WorldPersistentData
+import org.ender_development.catalyx_.core.utils.extensions.subLogger
+import org.ender_development.catalyx_.core.utils.persistence.WorldPersistentData
 
 @CatalyxModule(
 	moduleId = CatalyxModules.MODULE_CORE,

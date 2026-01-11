@@ -10,8 +10,8 @@ import org.ender_development.catalyx_.core.Catalyx
 import org.ender_development.catalyx.blocks.multiblock.IMultiblockEdge
 import org.ender_development.catalyx.blocks.multiblock.IMultiblockTile
 import org.ender_development.catalyx.core.ICatalyxMod
-import org.ender_development.catalyx.utils.DevUtils
-import org.ender_development.catalyx.utils.extensions.getHorizontalSurroundings
+import org.ender_development.catalyx_.core.utils.DevUtils
+import org.ender_development.catalyx_.core.utils.extensions.getHorizontalSurroundings
 
 open class CenterTile(mod: ICatalyxMod) : BaseTile(mod), IMultiblockTile {
 	internal constructor() : this(Catalyx) {

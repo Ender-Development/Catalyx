@@ -1,0 +1,85 @@
+package org.ender_development.catalyx_.core.utils.validation
+
+import org.ender_development.catalyx.config.ConfigParser
+
+@Suppress("UNUSED")
+object CommonValidators {
+	fun <T> notNull(): IValidator<T?> =
+		IValidator { it != null }
+
+	fun notBlank(): IValidator<String?> =
+		IValidator { !it.isNullOrBlank() }
+
+	fun notEmpty(): IValidator<String?> =
+		IValidator { !it.isNullOrEmpty() }
+
+	fun minLength(length: Int): IValidator<String?> =
+		IValidator { (it?.length ?: 0) >= length }
+
+	fun maxLength(length: Int): IValidator<String?> =
+		IValidator { (it?.length ?: 0) <= length }
+
+	fun range(min: Int, max: Int): IValidator<Int?> =
+		IValidator { it != null && it in min..max }
+
+	fun positive(): IValidator<Number?> =
+		IValidator { it != null && it.toDouble() > 0 }
+
+	fun negative(): IValidator<Number?> =
+		IValidator { it != null && it.toDouble() < 0 }
+
+	fun atLeast(value: Number): IValidator<Number?> =
+		IValidator { it != null && it.toDouble() >= value.toDouble() }
+
+	fun atMost(value: Number): IValidator<Number?> =
+		IValidator { it != null && it.toDouble() <= value.toDouble() }
+
+	fun <T> oneOf(vararg values: T): IValidator<T?> =
+		IValidator { it != null && values.contains(it) }
+
+	fun <T> listAll(elementValidator: IValidator<T?>): IValidator<List<T>?> =
+		IValidator { list ->
+			list != null && list.all { elementValidator.validate(it) }
+		}
+
+	fun <K, V> mapAll(keyValidator: IValidator<K?>, valueValidator: IValidator<V?>): IValidator<Map<K, V>?> =
+		IValidator { map ->
+			map != null && map.all { (key, value) ->
+				keyValidator.validate(key) && valueValidator.validate(value)
+			}
+		}
+
+	fun isItemStack(): IValidator<String?> = IValidator {
+		if(it == null)
+			return@IValidator false
+
+		return@IValidator try {
+			ConfigParser.ConfigItemStack(it).toItemStack()
+			true
+		} catch(_: Exception) {
+			false
+		}
+	}
+
+	fun isBlockState(): IValidator<String?> = IValidator {
+		if(it == null)
+			return@IValidator false
+
+		return@IValidator try {
+			ConfigParser.ConfigBlockState(it).state != null
+		} catch(_: Exception) {
+			false
+		}
+	}
+
+	fun isBlock(): IValidator<String?> = IValidator {
+		if(it == null)
+			return@IValidator false
+
+		return@IValidator try {
+			ConfigParser.ConfigBlockState(it).block != null
+		} catch(_: Exception) {
+			false
+		}
+	}
+}

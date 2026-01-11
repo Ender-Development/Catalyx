@@ -2,7 +2,7 @@ package org.ender_development.catalyx.recipes.chance.output
 
 import net.minecraft.item.ItemStack
 import net.minecraft.network.PacketBuffer
-import org.ender_development.catalyx.utils.NetworkUtils
+import org.ender_development.catalyx_.core.utils.NetworkUtils
 
 class ChancedItemOutput(ingredient: ItemStack, chance: Int, boost: Int) : BoostableChancedOutput<ItemStack>(ingredient, chance, boost) {
 	companion object {

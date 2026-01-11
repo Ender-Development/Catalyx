@@ -11,7 +11,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import org.ender_development.catalyx.blocks.BaseRotatableTileBlock
 import org.ender_development.catalyx.core.ICatalyxMod
-import org.ender_development.catalyx.utils.extensions.getHorizontalSurroundings
+import org.ender_development.catalyx_.core.utils.extensions.getHorizontalSurroundings
 
 open class CenterBlock<T>(mod: ICatalyxMod, name: String, tileClass: Class<T>, guiId: Int, vararg components: IMultiblockEdge) : BaseRotatableTileBlock(
 	mod, name, tileClass, guiId

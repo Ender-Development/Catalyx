@@ -13,7 +13,7 @@ import org.ender_development.catalyx_.core.Catalyx
 import org.ender_development.catalyx.client.gui.BaseGuiTyped
 import org.ender_development.catalyx.tiles.BaseTile
 import org.ender_development.catalyx.tiles.helper.ICopyPasteExtraTile
-import org.ender_development.catalyx.utils.DevUtils
+import org.ender_development.catalyx_.core.utils.DevUtils
 
 class CopyPasteTool() : BaseItem(Catalyx, "copy_paste_tool") {
 	private companion object {

@@ -11,12 +11,12 @@ import org.ender_development.catalyx.Reference
 import org.ender_development.catalyx.blocks.helper.IOType
 import org.ender_development.catalyx.tiles.BaseTile
 import org.ender_development.catalyx.tiles.helper.IPortRenderer
-import org.ender_development.catalyx.utils.RenderUtils
-import org.ender_development.catalyx.utils.RenderUtils.drawScaledCustomSizeModalRect
-import org.ender_development.catalyx.utils.extensions.glOffsetX
-import org.ender_development.catalyx.utils.extensions.glOffsetZ
-import org.ender_development.catalyx.utils.extensions.glRotate
-import org.ender_development.catalyx.utils.extensions.glRotationAngle
+import org.ender_development.catalyx_.core.utils.RenderUtils
+import org.ender_development.catalyx_.core.utils.RenderUtils.drawScaledCustomSizeModalRect
+import org.ender_development.catalyx_.core.utils.extensions.glOffsetX
+import org.ender_development.catalyx_.core.utils.extensions.glOffsetZ
+import org.ender_development.catalyx_.core.utils.extensions.glRotate
+import org.ender_development.catalyx_.core.utils.extensions.glRotationAngle
 import org.lwjgl.opengl.GL11
 
 @SideOnly(Side.CLIENT)

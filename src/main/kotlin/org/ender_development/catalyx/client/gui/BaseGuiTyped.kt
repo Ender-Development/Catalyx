@@ -17,10 +17,10 @@ import org.ender_development.catalyx.network.PacketHandler
 import org.ender_development.catalyx.tiles.BaseMachineTile
 import org.ender_development.catalyx.tiles.BaseTile
 import org.ender_development.catalyx.tiles.helper.IGuiTile
-import org.ender_development.catalyx.utils.RenderAlignment
-import org.ender_development.catalyx.utils.RenderUtils
-import org.ender_development.catalyx.utils.extensions.get
-import org.ender_development.catalyx.utils.extensions.translate
+import org.ender_development.catalyx_.core.utils.RenderAlignment
+import org.ender_development.catalyx_.core.utils.RenderUtils
+import org.ender_development.catalyx_.core.utils.extensions.get
+import org.ender_development.catalyx_.core.utils.extensions.translate
 
 // TODO fully rewrite this whole mess at some point
 abstract class BaseGuiTyped<T>(container: Container, val tileEntity: T) : GuiContainer(container) where T : IGuiTile, T : BaseTile, T : BaseGuiTyped.IDefaultButtonVariables {

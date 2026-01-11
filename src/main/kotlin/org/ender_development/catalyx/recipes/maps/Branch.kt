@@ -2,7 +2,7 @@ package org.ender_development.catalyx.recipes.maps
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import org.ender_development.catalyx.recipes.Recipe
-import org.ender_development.catalyx.utils.Delegates
+import org.ender_development.catalyx_.core.utils.Delegates
 
 class Branch {
 	// Keys on this have *(should)* unique hashcodes.

@@ -10,8 +10,8 @@ import org.ender_development.catalyx.core.ICatalyxMod
 import org.ender_development.catalyx.tiles.helper.HudInfoLine
 import org.ender_development.catalyx.tiles.helper.IHudInfoProvider
 import org.ender_development.catalyx.tiles.helper.ITESRTile
-import org.ender_development.catalyx.utils.extensions.relativeDirectionTo
-import org.ender_development.catalyx.utils.extensions.withAlpha
+import org.ender_development.catalyx_.core.utils.extensions.relativeDirectionTo
+import org.ender_development.catalyx_.core.utils.extensions.withAlpha
 import java.awt.Color
 
 open class TESRTile(mod: ICatalyxMod) : BaseTile(mod), ITESRTile, IHudInfoProvider {
