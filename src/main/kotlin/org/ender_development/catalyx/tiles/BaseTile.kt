@@ -30,7 +30,7 @@ import org.ender_development.catalyx.client.button.PauseButtonWrapper
 import org.ender_development.catalyx.client.button.RedstoneButtonWrapper
 import org.ender_development.catalyx.client.container.BaseContainer
 import org.ender_development.catalyx.client.gui.BaseGuiTyped
-import org.ender_development.catalyx.core.ICatalyxMod
+import org.ender_development.catalyx_.modules.coremodule.ICatalyxMod
 import org.ender_development.catalyx.tiles.helper.*
 
 /**

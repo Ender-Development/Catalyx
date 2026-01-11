@@ -6,7 +6,7 @@ import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import org.ender_development.catalyx.client.tesr.AbstractTESRenderer
 import org.ender_development.catalyx.client.tesr.HudInfoRenderer
-import org.ender_development.catalyx.core.ICatalyxMod
+import org.ender_development.catalyx_.modules.coremodule.ICatalyxMod
 import org.ender_development.catalyx.tiles.helper.HudInfoLine
 import org.ender_development.catalyx.tiles.helper.IHudInfoProvider
 import org.ender_development.catalyx.tiles.helper.ITESRTile

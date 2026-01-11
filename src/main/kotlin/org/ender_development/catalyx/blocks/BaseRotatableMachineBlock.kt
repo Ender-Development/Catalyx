@@ -9,7 +9,7 @@ import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
-import org.ender_development.catalyx.core.ICatalyxMod
+import org.ender_development.catalyx_.modules.coremodule.ICatalyxMod
 
 open class BaseRotatableMachineBlock : BaseMachineBlock {
 	constructor(mod: ICatalyxMod, name: String, tileClass: Class<out TileEntity>, guiId: Int) : super(mod, name, tileClass, guiId)

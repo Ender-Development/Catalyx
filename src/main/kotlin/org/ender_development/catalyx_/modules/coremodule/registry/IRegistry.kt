@@ -1,8 +1,8 @@
-package org.ender_development.catalyx.core.registry
+package org.ender_development.catalyx_.modules.coremodule.registry
 
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.registries.IForgeRegistryEntry
-import org.ender_development.catalyx.core.IProvider
+import org.ender_development.catalyx_.modules.coremodule.IProvider
 
 interface IRegistry<E : IForgeRegistryEntry<E>, P : IProvider<E>> {
 	/**

@@ -8,7 +8,7 @@ import org.ender_development.catalyx.blocks.multiblock.Facing
 import org.ender_development.catalyx.blocks.multiblock.Facing.Companion.binary
 import org.ender_development.catalyx.blocks.multiblock.Position
 import org.ender_development.catalyx.blocks.multiblock.with
-import org.ender_development.catalyx.core.ICatalyxMod
+import org.ender_development.catalyx_.modules.coremodule.ICatalyxMod
 
 open class SideBlock(mod: ICatalyxMod, name: String) : AbstractEdgeBlock(mod, name) {
 	override fun getCenter(pos: BlockPos, state: IBlockState): BlockPos =

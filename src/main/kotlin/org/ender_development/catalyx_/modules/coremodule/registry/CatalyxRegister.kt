@@ -1,7 +1,7 @@
-package org.ender_development.catalyx.core.registry
+package org.ender_development.catalyx_.modules.coremodule.registry
 
 import net.minecraft.util.ResourceLocation
-import org.ender_development.catalyx.core.IProvider
+import org.ender_development.catalyx_.modules.coremodule.IProvider
 import org.ender_development.catalyx_.core.utils.extensions.modLoaded
 
 class CatalyxRegister<V : IProvider<*>> : HashMap<ResourceLocation, Pair<V, Boolean>>() {

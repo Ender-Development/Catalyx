@@ -2,7 +2,7 @@ package org.ender_development.catalyx.recipes
 
 import net.minecraft.util.SoundEvent
 import org.ender_development.catalyx_.core.Catalyx
-import org.ender_development.catalyx.core.ICatalyxMod
+import org.ender_development.catalyx_.modules.coremodule.ICatalyxMod
 
 /**
  * A builder for creating a [RecipeMap]. Call [build] on it to return a RecipeMap instance.
