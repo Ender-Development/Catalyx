@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.animation
+package org.ender_development.catalyx_.core.animation
 
 import com.google.common.collect.ImmutableMap
 import net.minecraft.util.ResourceLocation
