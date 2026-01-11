@@ -5,7 +5,7 @@ import net.minecraft.block.state.IBlockState
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
-import org.ender_development.catalyx.utils.extensions.modLoaded
+import org.ender_development.catalyx_.core.utils.extensions.modLoaded
 import java.util.*
 
 /**

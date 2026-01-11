@@ -16,7 +16,7 @@ import org.ender_development.catalyx.recipes.maps.*
 import org.ender_development.catalyx.recipes.validation.Result
 import org.ender_development.catalyx.recipes.validation.ValidationState
 import org.ender_development.catalyx.recipes.validation.Validator
-import org.ender_development.catalyx.utils.Delegates
+import org.ender_development.catalyx_.core.utils.Delegates
 import java.lang.ref.WeakReference
 import java.util.*
 

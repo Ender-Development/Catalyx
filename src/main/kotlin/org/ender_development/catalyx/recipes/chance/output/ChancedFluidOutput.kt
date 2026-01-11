@@ -2,7 +2,7 @@ package org.ender_development.catalyx.recipes.chance.output
 
 import net.minecraft.network.PacketBuffer
 import net.minecraftforge.fluids.FluidStack
-import org.ender_development.catalyx.utils.NetworkUtils
+import org.ender_development.catalyx_.core.utils.NetworkUtils
 
 class ChancedFluidOutput(ingredient: FluidStack, chance: Int, boost: Int) : BoostableChancedOutput<FluidStack>(ingredient, chance, boost) {
 	companion object {

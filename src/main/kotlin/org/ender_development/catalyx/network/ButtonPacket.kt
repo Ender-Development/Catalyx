@@ -10,8 +10,8 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext
 import org.ender_development.catalyx_.core.Catalyx
 import org.ender_development.catalyx.client.button.AbstractButtonWrapper
 import org.ender_development.catalyx.tiles.helper.IButtonTile
-import org.ender_development.catalyx.utils.extensions.readString
-import org.ender_development.catalyx.utils.extensions.writeString
+import org.ender_development.catalyx_.core.utils.extensions.readString
+import org.ender_development.catalyx_.core.utils.extensions.writeString
 
 class ButtonPacket() : IMessage {
 	private lateinit var blockPos: BlockPos

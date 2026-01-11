@@ -8,7 +8,7 @@ import net.minecraftforge.event.RegistryEvent
 import org.ender_development.catalyx.core.ICatalyxMod
 import org.ender_development.catalyx.core.IItemProvider
 import org.ender_development.catalyx.core.register
-import org.ender_development.catalyx.utils.SideUtils
+import org.ender_development.catalyx_.core.utils.SideUtils
 
 /**
  * A base Catalyx item

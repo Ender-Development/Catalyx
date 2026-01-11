@@ -11,7 +11,7 @@ import net.minecraftforge.fml.relauncher.SideOnly
 import org.ender_development.catalyx.Reference
 import org.ender_development.catalyx.client.button.AbstractButtonWrapper.Companion.getWrapper
 import org.ender_development.catalyx.client.button.AbstractButtonWrapper.Companion.registerWrapper
-import org.ender_development.catalyx.utils.SideUtils
+import org.ender_development.catalyx_.core.utils.SideUtils
 
 /**
  * Wrapper class for stateful buttons sent from client-side to server-side

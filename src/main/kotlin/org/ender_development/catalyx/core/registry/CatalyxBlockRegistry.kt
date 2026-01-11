@@ -8,7 +8,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import org.ender_development.catalyx_.core.Catalyx
 import org.ender_development.catalyx.Reference
 import org.ender_development.catalyx.core.IBlockProvider
-import org.ender_development.catalyx.utils.DevUtils
+import org.ender_development.catalyx_.core.utils.DevUtils
 
 @Suppress("unused")
 @Mod.EventBusSubscriber(modid = Reference.MODID)

@@ -4,7 +4,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry
 import org.ender_development.catalyx.client.tesr.TileRenderer
 import org.ender_development.catalyx.core.ICatalyxMod
 import org.ender_development.catalyx.tiles.TESRTile
-import org.ender_development.catalyx.utils.SideUtils
+import org.ender_development.catalyx_.core.utils.SideUtils
 
 /**
  * A rotatable block that has a TESR. Binds the [TileRenderer] to the tile entity on the client side.

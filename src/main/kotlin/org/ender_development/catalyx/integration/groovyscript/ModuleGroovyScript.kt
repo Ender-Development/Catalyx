@@ -10,7 +10,7 @@ import org.ender_development.catalyx.integration.Mods
 import org.ender_development.catalyx.modules.CatalyxModule
 import org.ender_development.catalyx.modules.ModuleManager
 import org.ender_development.catalyx.modules.catalyx.CatalyxModules
-import org.ender_development.catalyx.utils.extensions.subLogger
+import org.ender_development.catalyx_.core.utils.extensions.subLogger
 
 @Optional.Interface(modid = Mods.GROOVYSCRIPT, iface = "com.cleanroommc.groovyscript.api.GroovyPlugin", striprefs = true)
 @CatalyxModule(

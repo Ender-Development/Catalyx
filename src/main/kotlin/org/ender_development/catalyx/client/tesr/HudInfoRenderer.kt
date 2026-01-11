@@ -7,10 +7,10 @@ import net.minecraftforge.fml.relauncher.SideOnly
 import org.ender_development.catalyx.tiles.BaseTile
 import org.ender_development.catalyx.tiles.helper.HudInfoLine
 import org.ender_development.catalyx.tiles.helper.IHudInfoProvider
-import org.ender_development.catalyx.utils.RenderUtils.FONT_RENDERER
-import org.ender_development.catalyx.utils.RenderUtils.drawRectangle
-import org.ender_development.catalyx.utils.extensions.getFacingFromEntity
-import org.ender_development.catalyx.utils.extensions.glRotate
+import org.ender_development.catalyx_.core.utils.RenderUtils.FONT_RENDERER
+import org.ender_development.catalyx_.core.utils.RenderUtils.drawRectangle
+import org.ender_development.catalyx_.core.utils.extensions.getFacingFromEntity
+import org.ender_development.catalyx_.core.utils.extensions.glRotate
 
 @SideOnly(Side.CLIENT)
 object HudInfoRenderer : AbstractTESRenderer() {

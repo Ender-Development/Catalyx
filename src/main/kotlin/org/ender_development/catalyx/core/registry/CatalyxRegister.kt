@@ -2,7 +2,7 @@ package org.ender_development.catalyx.core.registry
 
 import net.minecraft.util.ResourceLocation
 import org.ender_development.catalyx.core.IProvider
-import org.ender_development.catalyx.utils.extensions.modLoaded
+import org.ender_development.catalyx_.core.utils.extensions.modLoaded
 
 class CatalyxRegister<V : IProvider<*>> : HashMap<ResourceLocation, Pair<V, Boolean>>() {
 	fun add(provider: V): Boolean =

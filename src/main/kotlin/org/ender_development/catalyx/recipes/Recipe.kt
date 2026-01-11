@@ -13,8 +13,8 @@ import org.ender_development.catalyx.recipes.chance.output.ChancedItemOutput
 import org.ender_development.catalyx.recipes.chance.output.ChancedOutputList
 import org.ender_development.catalyx.recipes.ingredients.RecipeInput
 import org.ender_development.catalyx.recipes.ingredients.RecipeInputCache
-import org.ender_development.catalyx.utils.IItemStackHash
-import org.ender_development.catalyx.utils.extensions.copyOf
+import org.ender_development.catalyx_.core.utils.IItemStackHash
+import org.ender_development.catalyx_.core.utils.extensions.copyOf
 
 class Recipe(
 	inputs: List<RecipeInput?>,

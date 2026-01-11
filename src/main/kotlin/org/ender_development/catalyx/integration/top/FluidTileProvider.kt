@@ -7,7 +7,7 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.world.World
 import org.ender_development.catalyx.Reference
 import org.ender_development.catalyx.tiles.helper.IFluidTile
-import org.ender_development.catalyx.utils.extensions.getRealColor
+import org.ender_development.catalyx_.core.utils.extensions.getRealColor
 import java.awt.Color
 
 internal class FluidTileProvider : IProbeInfoProvider {

@@ -5,8 +5,8 @@ import net.minecraft.util.EnumFacing
 import net.minecraftforge.items.ItemStackHandler
 import org.ender_development.catalyx.tiles.BaseTile
 import org.ender_development.catalyx.tiles.BaseTile.Companion.ITEM_CAP
-import org.ender_development.catalyx.utils.extensions.get
-import org.ender_development.catalyx.utils.extensions.tryInsertInto
+import org.ender_development.catalyx_.core.utils.extensions.get
+import org.ender_development.catalyx_.core.utils.extensions.tryInsertInto
 
 open class TileStackHandler(size: Int, val tile: BaseTile) : ItemStackHandler() {
 	init {
