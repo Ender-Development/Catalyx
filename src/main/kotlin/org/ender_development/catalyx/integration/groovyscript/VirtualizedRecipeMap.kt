@@ -3,8 +3,8 @@ package org.ender_development.catalyx.integration.groovyscript
 import com.cleanroommc.groovyscript.helper.Alias
 import com.cleanroommc.groovyscript.registry.VirtualizedRegistry
 import com.google.common.base.CaseFormat
-import org.ender_development.catalyx.recipes.Recipe
-import org.ender_development.catalyx.recipes.RecipeMap
+import org.ender_development.catalyx_.core.recipes.Recipe
+import org.ender_development.catalyx_.core.recipes.RecipeMap
 
 class VirtualizedRecipeMap(val recipeMap: RecipeMap<*>) : VirtualizedRegistry<Recipe>(Alias.generateOf(recipeMap.unlocalizedName, CaseFormat.LOWER_UNDERSCORE)) {
 	override fun onReload() {

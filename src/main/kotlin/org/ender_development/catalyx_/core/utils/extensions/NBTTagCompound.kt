@@ -3,7 +3,7 @@ package org.ender_development.catalyx_.core.utils.extensions
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.nbt.NBTTagLongArray
 import net.minecraft.util.ReportedException
-import org.ender_development.catalyx.recipes.ingredients.nbt.TagType
+import org.ender_development.catalyx_.core.recipes.ingredients.nbt.TagType
 
 /**
  * Retrieves a long array using the specified key, or a zero-length array if no such key was stored.
