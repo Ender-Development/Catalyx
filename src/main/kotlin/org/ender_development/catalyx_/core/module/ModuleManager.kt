@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.modules
+package org.ender_development.catalyx_.core.module
 
 import it.unimi.dsi.fastutil.objects.Object2ReferenceLinkedOpenHashMap
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet

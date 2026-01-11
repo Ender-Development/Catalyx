@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.modules
+package org.ender_development.catalyx_.core.module
 
 interface IModuleManager {
 	fun isModuleEnabled(containerId: String, moduleId: String) =

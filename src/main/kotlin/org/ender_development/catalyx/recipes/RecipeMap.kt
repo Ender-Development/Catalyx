@@ -8,8 +8,8 @@ import net.minecraft.util.SoundEvent
 import org.ender_development.catalyx_.modules.coremodule.ICatalyxMod
 import org.ender_development.catalyx.integration.Mods
 import org.ender_development.catalyx.integration.groovyscript.VirtualizedRecipeMap
-import org.ender_development.catalyx.modules.catalyx.CatalyxModules
-import org.ender_development.catalyx.modules.ModuleManager
+import org.ender_development.catalyx_.modules.CatalyxBuiltinModuleContainer
+import org.ender_development.catalyx_.core.module.ModuleManager
 import org.ender_development.catalyx.recipes.chance.boost.IBoostFunction
 import org.ender_development.catalyx.recipes.ingredients.RecipeInput
 import org.ender_development.catalyx.recipes.maps.*
@@ -122,7 +122,7 @@ class RecipeMap<R : RecipeBuilder<R>> {
 		recipeBuilderSample = defaultRecipeBuilder
 		RECIPE_MAP_REGISTRY[unlocalizedName] = this
 
-		if(ModuleManager.isModuleEnabled(CatalyxModules.MODULE_GRS))
+		if(ModuleManager.isModuleEnabled(CatalyxBuiltinModuleContainer.MODULE_GRS))
 			grsVirtualizedRecipeMap = VirtualizedRecipeMap(this)
 	}
 

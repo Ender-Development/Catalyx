@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.modules
+package org.ender_development.catalyx_.core.module
 
 import net.minecraftforge.fml.common.event.*
 import org.apache.logging.log4j.Logger

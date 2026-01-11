@@ -9,14 +9,14 @@ import net.minecraftforge.fml.relauncher.SideOnly
 import org.ender_development.catalyx_.core.Catalyx
 import org.ender_development.catalyx.Reference
 import org.ender_development.catalyx.client.AreaHighlighter
-import org.ender_development.catalyx.modules.CatalyxModule
-import org.ender_development.catalyx.modules.ICatalyxModule
-import org.ender_development.catalyx.modules.catalyx.CatalyxModules
+import org.ender_development.catalyx_.core.module.CatalyxModule
+import org.ender_development.catalyx_.core.module.ICatalyxModule
+import org.ender_development.catalyx_.modules.CatalyxBuiltinModuleContainer
 import org.ender_development.catalyx_.core.utils.extensions.subLogger
 import org.ender_development.catalyx_.core.utils.persistence.WorldPersistentData
 
 @CatalyxModule(
-	moduleId = CatalyxModules.MODULE_CORE,
+	moduleId = CatalyxBuiltinModuleContainer.MODULE_CORE,
 	containerId = Reference.MODID,
 	name = "Core",
 	description = "The core module required by all other modules from Catalyx.",

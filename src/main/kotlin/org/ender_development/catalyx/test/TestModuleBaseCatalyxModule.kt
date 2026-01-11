@@ -6,21 +6,21 @@ import org.ender_development.catalyx.blocks.IOTileBlock
 import org.ender_development.catalyx.blocks.multiblock.CenterBlock
 import org.ender_development.catalyx.blocks.multiblock.parts.CornerBlock
 import org.ender_development.catalyx.blocks.multiblock.parts.SideBlock
-import org.ender_development.catalyx.modules.CatalyxModule
-import org.ender_development.catalyx.modules.catalyx.BaseCatalyxModule
-import org.ender_development.catalyx.modules.catalyx.CatalyxModules
+import org.ender_development.catalyx_.core.module.CatalyxModule
+import org.ender_development.catalyx_.modules.CatalyxModuleBase
+import org.ender_development.catalyx_.modules.CatalyxBuiltinModuleContainer
 import org.ender_development.catalyx_.core.utils.SideUtils
 import org.ender_development.catalyx_.core.utils.extensions.subLogger
 
 @CatalyxModule(
-	moduleId = CatalyxModules.MODULE_TEST,
+	moduleId = CatalyxBuiltinModuleContainer.MODULE_TEST,
 	containerId = Reference.MODID,
 	name = "Test Module",
 	description = "A module for testing purposes. Will only work in a development environment.",
-	moduleDependencies = ["${Reference.MODID}:${CatalyxModules.MODULE_CORE}"],
+	moduleDependencies = ["${Reference.MODID}:${CatalyxBuiltinModuleContainer.MODULE_CORE}"],
 	testModule = true
 )
-internal class TestModule : BaseCatalyxModule() {
+internal class TestModuleBaseCatalyxModule : CatalyxModuleBase() {
 	override val logger = super.logger.subLogger("Development")
 
 	val testCorner = CornerBlock(Catalyx, "test_corner")

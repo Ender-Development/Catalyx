@@ -1,17 +1,17 @@
 package org.ender_development.catalyx.integration
 
 import org.ender_development.catalyx.Reference
-import org.ender_development.catalyx.modules.CatalyxModule
-import org.ender_development.catalyx.modules.catalyx.BaseCatalyxModule
-import org.ender_development.catalyx.modules.catalyx.CatalyxModules
+import org.ender_development.catalyx_.core.module.CatalyxModule
+import org.ender_development.catalyx_.modules.CatalyxBuiltinModuleContainer
 import org.ender_development.catalyx_.core.utils.extensions.subLogger
+import org.ender_development.catalyx_.modules.CatalyxModuleBase
 
 @CatalyxModule(
-	moduleId = CatalyxModules.MODULE_INTEGRATION,
+	moduleId = CatalyxBuiltinModuleContainer.MODULE_INTEGRATION,
 	containerId = Reference.MODID,
 	name = "Catalyx Integration Module",
 	description = "Adds integration with other mods. Disabling this will disable all integration submodules."
 )
-internal open class IntegrationModule : BaseCatalyxModule() {
+internal open class IntegrationModule : CatalyxModuleBase() {
 	override val logger = super.logger.subLogger("Integration")
 }
