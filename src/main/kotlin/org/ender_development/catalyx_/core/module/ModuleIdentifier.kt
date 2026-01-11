@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.modules
+package org.ender_development.catalyx_.core.module
 
 import net.minecraft.util.ResourceLocation
 

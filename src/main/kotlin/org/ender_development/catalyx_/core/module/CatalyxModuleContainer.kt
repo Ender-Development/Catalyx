@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.modules
+package org.ender_development.catalyx_.core.module
 
 /**
  * Annotate your Module Containers with this for it to be automatically registered.
