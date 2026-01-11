@@ -6,7 +6,7 @@ import net.minecraftforge.fml.common.event.FMLServerStoppedEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
-import org.ender_development.catalyx.Catalyx
+import org.ender_development.catalyx_.core.Catalyx
 import org.ender_development.catalyx.Reference
 import org.ender_development.catalyx.client.AreaHighlighter
 import org.ender_development.catalyx.modules.CatalyxModule

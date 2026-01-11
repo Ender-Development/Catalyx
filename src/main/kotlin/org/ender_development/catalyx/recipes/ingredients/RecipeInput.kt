@@ -5,7 +5,7 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.nbt.NBTTagList
 import net.minecraftforge.common.util.Constants
 import net.minecraftforge.fluids.FluidStack
-import org.ender_development.catalyx.Catalyx
+import org.ender_development.catalyx_.core.Catalyx
 import org.ender_development.catalyx.recipes.ingredients.nbt.IMatcher
 import org.ender_development.catalyx.recipes.ingredients.nbt.NBTCondition
 

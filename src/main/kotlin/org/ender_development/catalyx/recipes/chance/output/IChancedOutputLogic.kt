@@ -1,6 +1,6 @@
 package org.ender_development.catalyx.recipes.chance.output
 
-import org.ender_development.catalyx.Catalyx.RANDOM
+import org.ender_development.catalyx_.core.Catalyx.RANDOM
 import org.ender_development.catalyx.Reference
 import org.ender_development.catalyx.recipes.chance.boost.IBoostFunction
 

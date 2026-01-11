@@ -4,7 +4,7 @@ import net.minecraft.nbt.CompressedStreamTools
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.fml.common.Loader
-import org.ender_development.catalyx.Catalyx
+import org.ender_development.catalyx_.core.Catalyx
 import org.ender_development.catalyx.Reference
 import org.ender_development.catalyx.utils.Delegates
 import java.io.IOException

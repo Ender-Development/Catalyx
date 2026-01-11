@@ -2,7 +2,7 @@ package org.ender_development.catalyx.config
 
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
-import org.ender_development.catalyx.Catalyx
+import org.ender_development.catalyx_.core.Catalyx
 
 class ConfigHandler<T : ConfigParser.ConfigItemStack>(configData: Iterable<String>, parser: (String) -> T) {
 	private val configItems = try {

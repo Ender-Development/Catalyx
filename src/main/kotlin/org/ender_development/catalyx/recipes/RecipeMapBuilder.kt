@@ -1,7 +1,7 @@
 package org.ender_development.catalyx.recipes
 
 import net.minecraft.util.SoundEvent
-import org.ender_development.catalyx.Catalyx
+import org.ender_development.catalyx_.core.Catalyx
 import org.ender_development.catalyx.core.ICatalyxMod
 
 /**

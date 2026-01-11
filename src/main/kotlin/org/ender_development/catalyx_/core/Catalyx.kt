@@ -1,11 +1,12 @@
-package org.ender_development.catalyx
+package org.ender_development.catalyx_.core
 
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.fml.common.Mod
-import net.minecraftforge.fml.common.Mod.EventHandler
-import net.minecraftforge.fml.common.event.*
+import net.minecraftforge.fml.common.event.FMLConstructionEvent
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 import org.apache.logging.log4j.LogManager
+import org.ender_development.catalyx.Reference
 import org.ender_development.catalyx.core.ICatalyxMod
 import org.ender_development.catalyx.modules.ModuleManager
 import org.ender_development.catalyx.network.PacketHandler
@@ -16,8 +17,8 @@ import kotlin.random.Random
 	modid = Reference.MODID,
 	name = Reference.MOD_NAME,
 	version = Reference.VERSION,
-	dependencies = ICatalyxMod.DEPENDENCIES,
-	modLanguageAdapter = ICatalyxMod.MOD_LANGUAGE_ADAPTER,
+	dependencies = ICatalyxMod.Companion.DEPENDENCIES,
+	modLanguageAdapter = ICatalyxMod.Companion.MOD_LANGUAGE_ADAPTER,
 	acceptableRemoteVersions = "*"
 )
 @Mod.EventBusSubscriber(modid = Reference.MODID)
@@ -36,12 +37,12 @@ object Catalyx : ICatalyxMod {
 	override val creativeTab: CreativeTabs = CreativeTabs.MISC
 	internal val configPersistentData = ConfigPersistentData(ResourceLocation(Reference.MODID, "recipes"))
 
-	@EventHandler
+	@Mod.EventHandler
 	fun construction(e: FMLConstructionEvent) {
 		ModuleManager.setup(e.asmHarvestedData)
 	}
 
-	@EventHandler
+	@Mod.EventHandler
 	fun preInit(e: FMLPreInitializationEvent) {
 		PacketHandler.init()
 	}
