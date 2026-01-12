@@ -6,8 +6,8 @@ import org.ender_development.catalyx.core.blocks.helper.IOType
 import org.ender_development.catalyx.core.tiles.CenterTile
 import org.ender_development.catalyx.core.tiles.IOTile
 
-class DummyClass1 : CenterTile()
-class DummyClass2 : IOTile(Catalyx) {
+internal class DummyClass1 : CenterTile()
+internal class DummyClass2 : IOTile(Catalyx) {
 	override fun getPortState(face: EnumFacing): IOType = when(face) {
 		EnumFacing.NORTH -> IOType.INPUT
 		EnumFacing.EAST  -> IOType.PULL

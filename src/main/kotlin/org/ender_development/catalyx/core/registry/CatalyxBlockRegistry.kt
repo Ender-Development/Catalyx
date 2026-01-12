@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.modules.coremodule.registry
+package org.ender_development.catalyx.core.registry
 
 import net.minecraft.block.Block
 import net.minecraft.item.Item
@@ -7,13 +7,12 @@ import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import org.ender_development.catalyx.core.Catalyx
 import org.ender_development.catalyx.core.Reference
-import org.ender_development.catalyx.modules.coremodule.IBlockProvider
 import org.ender_development.catalyx.core.utils.DevUtils
 
 @Suppress("unused")
 @Mod.EventBusSubscriber(modid = Reference.MODID)
-object CatalyxBlockRegistry : IRegistry<Block, IBlockProvider> {
-	override val registry = CatalyxRegister<IBlockProvider>()
+object CatalyxBlockRegistry : ICatalyxRegistry<Block, IBlockProvider> {
+	override val registry = CatalyxRegistry<IBlockProvider>()
 
 	@SubscribeEvent
 	override fun register(event: RegistryEvent.Register<Block>) {

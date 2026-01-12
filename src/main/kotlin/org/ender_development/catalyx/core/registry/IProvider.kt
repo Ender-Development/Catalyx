@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.modules.coremodule
+package org.ender_development.catalyx.core.registry
 
 import net.minecraft.block.Block
 import net.minecraft.item.Item

@@ -1,14 +1,14 @@
 package org.ender_development.catalyx.modules
 
 import org.ender_development.catalyx.core.Reference
-import org.ender_development.catalyx.modules.integration.Mods
+import org.ender_development.catalyx.core.utils.Mods
 import org.ender_development.catalyx.core.module.CatalyxModuleContainer
 
 /**
- * Module Container for all builtin Catalyx modules
+ * Module Container for all internal Catalyx modules
  */
 @CatalyxModuleContainer(Reference.MODID, Reference.MODID)
-object CatalyxBuiltinModuleContainer {
+object CatalyxInternalModuleContainer {
 	const val MODULE_CORE = "core"
 	const val MODULE_INTERNAL = "internal"
 	const val MODULE_TEST = "test"

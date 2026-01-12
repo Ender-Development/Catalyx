@@ -6,7 +6,7 @@ import org.ender_development.catalyx.core.client.button.AbstractButtonWrapper
 import org.ender_development.catalyx.core.client.button.PauseButtonWrapper
 import org.ender_development.catalyx.core.client.button.RedstoneButtonWrapper
 import org.ender_development.catalyx.core.client.gui.BaseGuiTyped
-import org.ender_development.catalyx.modules.coremodule.ICatalyxMod
+import org.ender_development.catalyx.core.ICatalyxMod
 import org.ender_development.catalyx.core.tiles.helper.IButtonTile
 import org.ender_development.catalyx.core.tiles.helper.IGuiTile
 import org.ender_development.catalyx.core.tiles.helper.IItemTile

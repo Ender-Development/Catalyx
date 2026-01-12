@@ -6,7 +6,6 @@ import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.event.FMLConstructionEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 import org.apache.logging.log4j.LogManager
-import org.ender_development.catalyx.modules.coremodule.ICatalyxMod
 import org.ender_development.catalyx.core.module.ModuleManager
 import org.ender_development.catalyx.core.network.PacketHandler
 import org.ender_development.catalyx.core.utils.persistence.ConfigPersistentData
@@ -16,8 +15,8 @@ import kotlin.random.Random
 	modid = Reference.MODID,
 	name = Reference.MOD_NAME,
 	version = Reference.VERSION,
-	dependencies = ICatalyxMod.Companion.DEPENDENCIES,
-	modLanguageAdapter = ICatalyxMod.Companion.MOD_LANGUAGE_ADAPTER,
+	dependencies = ICatalyxMod.DEPENDENCIES,
+	modLanguageAdapter = ICatalyxMod.MOD_LANGUAGE_ADAPTER,
 	acceptableRemoteVersions = "*"
 )
 @Mod.EventBusSubscriber(modid = Reference.MODID)

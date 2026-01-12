@@ -4,9 +4,9 @@ import net.minecraftforge.common.ForgeVersion
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin
 import zone.rong.mixinbooter.IEarlyMixinLoader
 
-@IFMLLoadingPlugin.Name("CatalyxCore")
+@IFMLLoadingPlugin.Name("CatalyxCoreMod")
 @IFMLLoadingPlugin.MCVersion(ForgeVersion.mcVersion)
-@IFMLLoadingPlugin.SortingIndex(-1)
+@IFMLLoadingPlugin.SortingIndex(1)
 class CatalyxCoreMod : IFMLLoadingPlugin, IEarlyMixinLoader {
 	override fun getASMTransformerClass() =
 		emptyArray<String>()

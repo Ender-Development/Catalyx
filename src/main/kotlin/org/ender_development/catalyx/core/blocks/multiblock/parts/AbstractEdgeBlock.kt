@@ -17,7 +17,7 @@ import net.minecraft.world.World
 import org.ender_development.catalyx.core.Catalyx
 import org.ender_development.catalyx.core.blocks.BaseBlock
 import org.ender_development.catalyx.core.blocks.multiblock.*
-import org.ender_development.catalyx.modules.coremodule.ICatalyxMod
+import org.ender_development.catalyx.core.ICatalyxMod
 
 abstract class AbstractEdgeBlock(mod: ICatalyxMod, val name: String) : BaseBlock(mod, name), IMultiblockEdge {
 	companion object {

@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.modules.coremodule
+package org.ender_development.catalyx.modules
 
 import net.minecraftforge.client.event.RenderWorldLastEvent
 import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent
@@ -11,30 +11,29 @@ import org.ender_development.catalyx.core.Reference
 import org.ender_development.catalyx.core.client.AreaHighlighter
 import org.ender_development.catalyx.core.module.CatalyxModule
 import org.ender_development.catalyx.core.module.ICatalyxModule
-import org.ender_development.catalyx.modules.CatalyxBuiltinModuleContainer
 import org.ender_development.catalyx.core.utils.extensions.subLogger
 import org.ender_development.catalyx.core.utils.persistence.WorldPersistentData
 
 @CatalyxModule(
-	moduleId = CatalyxBuiltinModuleContainer.MODULE_CORE,
+	moduleId = CatalyxInternalModuleContainer.MODULE_CORE,
 	containerId = Reference.MODID,
 	name = "Core",
 	description = "The core module required by all other modules from Catalyx.",
 	coreModule = true
 )
-internal class CoreModule : ICatalyxModule {
+internal class CatalyxCoreModule : ICatalyxModule {
 	override val logger = Catalyx.LOGGER.subLogger("Core")
 
 	override val eventBusSubscribers = listOf(this)
 
 	override fun serverAboutToStart(event: FMLServerAboutToStartEvent) =
-		WorldPersistentData.instances.forEach(WorldPersistentData::worldJoined)
+		WorldPersistentData.Companion.instances.forEach(WorldPersistentData::worldJoined)
 
 	override fun serverStopped(event: FMLServerStoppedEvent) =
-		WorldPersistentData.instances.forEach(WorldPersistentData::worldLeft)
+		WorldPersistentData.Companion.instances.forEach(WorldPersistentData::worldLeft)
 
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	fun renderWorldLast(event: RenderWorldLastEvent) =
-		AreaHighlighter.eventHandlers.forEach { it(event) }
+		AreaHighlighter.Companion.eventHandlers.forEach { it(event) }
 }

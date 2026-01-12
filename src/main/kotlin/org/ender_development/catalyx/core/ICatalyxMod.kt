@@ -1,10 +1,11 @@
-package org.ender_development.catalyx.modules.coremodule
+package org.ender_development.catalyx.core
 
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraftforge.fml.common.Mod
-import org.ender_development.catalyx.core.Reference
-import org.ender_development.catalyx.modules.coremodule.registry.CatalyxBlockRegistry
-import org.ender_development.catalyx.modules.coremodule.registry.CatalyxItemRegistry
+import org.ender_development.catalyx.core.registry.CatalyxBlockRegistry
+import org.ender_development.catalyx.core.registry.CatalyxItemRegistry
+import org.ender_development.catalyx.core.registry.IBlockProvider
+import org.ender_development.catalyx.core.registry.IItemProvider
 
 interface ICatalyxMod {
 	 companion object {
