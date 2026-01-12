@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.integration.top
+package org.ender_development.catalyx_.modules.integration.top
 
 import mcjty.theoneprobe.api.*
 import mcjty.theoneprobe.apiimpl.styles.ProgressStyle
