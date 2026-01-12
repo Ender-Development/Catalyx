@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.client
+package org.ender_development.catalyx_.core.client
 
 import io.netty.util.internal.ConcurrentSet
 import net.minecraft.client.Minecraft

@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.client.container
+package org.ender_development.catalyx_.core.client.container
 
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.Container

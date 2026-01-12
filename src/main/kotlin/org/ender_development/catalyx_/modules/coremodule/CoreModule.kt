@@ -8,7 +8,7 @@ import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import org.ender_development.catalyx_.core.Catalyx
 import org.ender_development.catalyx_.core.Reference
-import org.ender_development.catalyx.client.AreaHighlighter
+import org.ender_development.catalyx_.core.client.AreaHighlighter
 import org.ender_development.catalyx_.core.module.CatalyxModule
 import org.ender_development.catalyx_.core.module.ICatalyxModule
 import org.ender_development.catalyx_.modules.CatalyxBuiltinModuleContainer

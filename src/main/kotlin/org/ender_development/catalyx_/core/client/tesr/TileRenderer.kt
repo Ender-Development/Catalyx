@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.client.tesr
+package org.ender_development.catalyx_.core.client.tesr
 
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly

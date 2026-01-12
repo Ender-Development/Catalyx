@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.client.gui
+package org.ender_development.catalyx_.core.client.gui
 
 import net.minecraft.client.gui.inventory.GuiContainer
 import net.minecraft.entity.player.EntityPlayer

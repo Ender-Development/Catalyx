@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.client.gui.wrappers
+package org.ender_development.catalyx_.core.client.gui.wrappers
 
 import java.text.NumberFormat
 import java.util.Locale

@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.client.gui
+package org.ender_development.catalyx_.core.client.gui
 
 import net.minecraft.client.gui.GuiButton
 import net.minecraft.client.gui.inventory.GuiContainer
@@ -6,12 +6,12 @@ import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.inventory.Container
 import net.minecraft.util.ResourceLocation
 import org.ender_development.catalyx_.core.Reference
-import org.ender_development.catalyx.client.button.AbstractButtonWrapper
-import org.ender_development.catalyx.client.button.PauseButtonWrapper
-import org.ender_development.catalyx.client.button.RedstoneButtonWrapper
-import org.ender_development.catalyx.client.gui.wrappers.CapabilityDisplayWrapper
-import org.ender_development.catalyx.client.gui.wrappers.CapabilityEnergyDisplayWrapper
-import org.ender_development.catalyx.client.gui.wrappers.CapabilityFluidDisplayWrapper
+import org.ender_development.catalyx_.core.client.button.AbstractButtonWrapper
+import org.ender_development.catalyx_.core.client.button.PauseButtonWrapper
+import org.ender_development.catalyx_.core.client.button.RedstoneButtonWrapper
+import org.ender_development.catalyx_.core.client.gui.wrappers.CapabilityDisplayWrapper
+import org.ender_development.catalyx_.core.client.gui.wrappers.CapabilityEnergyDisplayWrapper
+import org.ender_development.catalyx_.core.client.gui.wrappers.CapabilityFluidDisplayWrapper
 import org.ender_development.catalyx.network.ButtonPacket
 import org.ender_development.catalyx.network.PacketHandler
 import org.ender_development.catalyx.tiles.BaseMachineTile
