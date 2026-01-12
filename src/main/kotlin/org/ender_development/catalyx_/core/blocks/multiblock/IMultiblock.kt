@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.blocks.multiblock
+package org.ender_development.catalyx_.core.blocks.multiblock
 
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer

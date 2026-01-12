@@ -1,23 +1,16 @@
-package org.ender_development.catalyx.blocks
+package org.ender_development.catalyx_.core.blocks
 
 import net.minecraft.block.BlockHorizontal
 import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.EntityLivingBase
-import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import org.ender_development.catalyx_.modules.coremodule.ICatalyxMod
 
-open class BaseRotatableTileBlock : BaseTileBlock {
-	constructor(mod: ICatalyxMod, name: String, tileClass: Class<out TileEntity>, guiId: Int) : super(mod, name, tileClass, guiId)
-	/**
-	 * Only use this constructor if you used a [org.ender_development.catalyx.client.gui.CatalyxGuiHandler] for the guiId
-	 */
-	constructor(mod: ICatalyxMod, name: String, guiId: Int) : super(mod, name, guiId)
-
+open class BaseRotatableBlock(mod: ICatalyxMod, name: String) : org.ender_development.catalyx_.core.blocks.BaseBlock(mod, name) {
 	init {
 		defaultState = blockState.baseState.withProperty(BlockHorizontal.FACING, EnumFacing.NORTH)
 	}

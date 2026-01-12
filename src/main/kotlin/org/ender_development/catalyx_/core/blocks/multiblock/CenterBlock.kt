@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.blocks.multiblock
+package org.ender_development.catalyx_.core.blocks.multiblock
 
 import net.minecraft.block.BlockHorizontal
 import net.minecraft.block.state.IBlockState
@@ -8,7 +8,7 @@ import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
-import org.ender_development.catalyx.blocks.BaseRotatableTileBlock
+import org.ender_development.catalyx_.core.blocks.BaseRotatableTileBlock
 import org.ender_development.catalyx_.modules.coremodule.ICatalyxMod
 import org.ender_development.catalyx_.core.utils.extensions.getHorizontalSurroundings
 

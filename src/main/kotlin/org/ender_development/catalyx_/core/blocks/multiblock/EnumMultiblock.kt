@@ -1,7 +1,7 @@
-package org.ender_development.catalyx.blocks.multiblock
+package org.ender_development.catalyx_.core.blocks.multiblock
 
 import net.minecraft.util.EnumFacing
-import org.ender_development.catalyx.blocks.multiblock.Facing.Companion.binary
+import org.ender_development.catalyx_.core.blocks.multiblock.Facing.Companion.binary
 
 enum class Position(val binary: Int) {
 	P0(0b00),

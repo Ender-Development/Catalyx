@@ -4,7 +4,7 @@ import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
-import org.ender_development.catalyx.blocks.helper.RelativeDirection
+import org.ender_development.catalyx_.core.blocks.helper.RelativeDirection
 import org.ender_development.catalyx_.core.utils.math.BlockPosRotate.rotateY
 
 val EnumFacing.glRotationAngle: Float

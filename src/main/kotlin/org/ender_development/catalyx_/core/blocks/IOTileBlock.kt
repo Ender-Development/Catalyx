@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.blocks
+package org.ender_development.catalyx_.core.blocks
 
 import net.minecraft.block.BlockHorizontal
 import net.minecraft.block.state.IBlockState
@@ -9,7 +9,7 @@ import net.minecraftforge.common.property.ExtendedBlockState
 import net.minecraftforge.common.property.IExtendedBlockState
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
-import org.ender_development.catalyx.blocks.helper.IOProperty
+import org.ender_development.catalyx_.core.blocks.helper.IOProperty
 import org.ender_development.catalyx_.modules.coremodule.ICatalyxMod
 import org.ender_development.catalyx.tiles.IOTile
 import org.ender_development.catalyx.tiles.helper.IPortRenderer

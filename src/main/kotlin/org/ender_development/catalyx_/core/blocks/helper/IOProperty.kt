@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.blocks.helper
+package org.ender_development.catalyx_.core.blocks.helper
 
 import net.minecraftforge.common.property.IUnlistedProperty
 

@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.blocks
+package org.ender_development.catalyx_.core.blocks
 
 import net.minecraft.block.Block
 import net.minecraft.block.material.Material
