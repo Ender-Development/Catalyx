@@ -1,6 +1,6 @@
 package org.ender_development.catalyx_.core.module
 
-import org.ender_development.catalyx.Reference
+import org.ender_development.catalyx_.core.Reference
 
 /**
  * All of your [ICatalyxModule] classes must be annotated with this to be registered.

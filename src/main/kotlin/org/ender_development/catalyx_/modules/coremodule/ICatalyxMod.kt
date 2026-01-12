@@ -2,7 +2,7 @@ package org.ender_development.catalyx_.modules.coremodule
 
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraftforge.fml.common.Mod
-import org.ender_development.catalyx.Reference
+import org.ender_development.catalyx_.core.Reference
 import org.ender_development.catalyx_.modules.coremodule.registry.CatalyxBlockRegistry
 import org.ender_development.catalyx_.modules.coremodule.registry.CatalyxItemRegistry
 

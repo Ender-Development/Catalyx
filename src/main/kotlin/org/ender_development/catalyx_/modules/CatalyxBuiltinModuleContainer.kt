@@ -1,6 +1,6 @@
 package org.ender_development.catalyx_.modules
 
-import org.ender_development.catalyx.Reference
+import org.ender_development.catalyx_.core.Reference
 import org.ender_development.catalyx.integration.Mods
 import org.ender_development.catalyx_.core.module.CatalyxModuleContainer
 

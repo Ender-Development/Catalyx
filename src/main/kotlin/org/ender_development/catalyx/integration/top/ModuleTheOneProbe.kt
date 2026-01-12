@@ -2,7 +2,7 @@ package org.ender_development.catalyx.integration.top
 
 import mcjty.theoneprobe.TheOneProbe
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
-import org.ender_development.catalyx.Reference
+import org.ender_development.catalyx_.core.Reference
 import org.ender_development.catalyx.integration.IntegrationModule
 import org.ender_development.catalyx.integration.Mods
 import org.ender_development.catalyx_.core.module.CatalyxModule

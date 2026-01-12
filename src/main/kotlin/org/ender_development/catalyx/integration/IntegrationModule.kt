@@ -1,6 +1,6 @@
 package org.ender_development.catalyx.integration
 
-import org.ender_development.catalyx.Reference
+import org.ender_development.catalyx_.core.Reference
 import org.ender_development.catalyx_.core.module.CatalyxModule
 import org.ender_development.catalyx_.modules.CatalyxBuiltinModuleContainer
 import org.ender_development.catalyx_.core.utils.extensions.subLogger

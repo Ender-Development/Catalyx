@@ -5,7 +5,7 @@ import net.minecraft.client.gui.inventory.GuiContainer
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.inventory.Container
 import net.minecraft.util.ResourceLocation
-import org.ender_development.catalyx.Reference
+import org.ender_development.catalyx_.core.Reference
 import org.ender_development.catalyx.client.button.AbstractButtonWrapper
 import org.ender_development.catalyx.client.button.PauseButtonWrapper
 import org.ender_development.catalyx.client.button.RedstoneButtonWrapper
