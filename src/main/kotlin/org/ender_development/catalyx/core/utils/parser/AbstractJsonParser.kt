@@ -3,7 +3,7 @@ package org.ender_development.catalyx.core.utils.parser
 import com.cleanroommc.groovyscript.helper.JsonHelper
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
-import org.ender_development.catalyx.core.Catalyx
+import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.core.utils.validation.ValidationError
 import org.ender_development.catalyx.core.utils.validation.ValidationResult
 import org.ender_development.catalyx.core.utils.extensions.getByMinSeverity

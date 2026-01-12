@@ -4,7 +4,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.PacketBuffer
 import net.minecraftforge.fluids.FluidStack
-import org.ender_development.catalyx.core.Catalyx
+import org.ender_development.catalyx.Catalyx
 import java.io.IOException
 
 /**

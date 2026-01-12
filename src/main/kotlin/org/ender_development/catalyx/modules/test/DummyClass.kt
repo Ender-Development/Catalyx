@@ -1,7 +1,7 @@
 package org.ender_development.catalyx.modules.test
 
 import net.minecraft.util.EnumFacing
-import org.ender_development.catalyx.core.Catalyx
+import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.core.blocks.helper.IOType
 import org.ender_development.catalyx.core.tiles.CenterTile
 import org.ender_development.catalyx.core.tiles.IOTile

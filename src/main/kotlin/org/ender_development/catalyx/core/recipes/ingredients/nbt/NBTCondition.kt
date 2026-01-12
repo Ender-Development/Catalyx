@@ -1,6 +1,6 @@
 package org.ender_development.catalyx.core.recipes.ingredients.nbt
 
-import org.ender_development.catalyx.core.Catalyx
+import org.ender_development.catalyx.Catalyx
 import java.util.*
 
 open class NBTCondition {

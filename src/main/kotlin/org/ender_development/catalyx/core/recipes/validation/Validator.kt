@@ -1,7 +1,7 @@
 package org.ender_development.catalyx.core.recipes.validation
 
 import org.apache.logging.log4j.Logger
-import org.ender_development.catalyx.core.Catalyx
+import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.core.utils.extensions.validateWith
 import org.ender_development.catalyx.core.utils.validation.ValidationError
 
