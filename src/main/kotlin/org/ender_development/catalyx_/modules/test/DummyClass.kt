@@ -3,8 +3,8 @@ package org.ender_development.catalyx_.modules.test
 import net.minecraft.util.EnumFacing
 import org.ender_development.catalyx_.core.Catalyx
 import org.ender_development.catalyx_.core.blocks.helper.IOType
-import org.ender_development.catalyx.tiles.CenterTile
-import org.ender_development.catalyx.tiles.IOTile
+import org.ender_development.catalyx_.core.tiles.CenterTile
+import org.ender_development.catalyx_.core.tiles.IOTile
 
 class DummyClass1 : CenterTile()
 class DummyClass2 : IOTile(Catalyx) {

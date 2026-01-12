@@ -2,8 +2,8 @@ package org.ender_development.catalyx_.core.client.tesr
 
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
-import org.ender_development.catalyx.tiles.BaseTile
-import org.ender_development.catalyx.tiles.helper.ITESRTile
+import org.ender_development.catalyx_.core.tiles.BaseTile
+import org.ender_development.catalyx_.core.tiles.helper.ITESRTile
 
 @SideOnly(Side.CLIENT)
 object TileRenderer : AbstractTESRenderer() {

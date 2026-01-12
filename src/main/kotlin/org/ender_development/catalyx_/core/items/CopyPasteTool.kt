@@ -11,8 +11,8 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import org.ender_development.catalyx_.core.Catalyx
 import org.ender_development.catalyx_.core.client.gui.BaseGuiTyped
-import org.ender_development.catalyx.tiles.BaseTile
-import org.ender_development.catalyx.tiles.helper.ICopyPasteExtraTile
+import org.ender_development.catalyx_.core.tiles.BaseTile
+import org.ender_development.catalyx_.core.tiles.helper.ICopyPasteExtraTile
 import org.ender_development.catalyx_.core.utils.DevUtils
 
 class CopyPasteTool() : BaseItem(Catalyx, "copy_paste_tool") {

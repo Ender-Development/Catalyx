@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.tiles
+package org.ender_development.catalyx_.core.tiles
 
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer

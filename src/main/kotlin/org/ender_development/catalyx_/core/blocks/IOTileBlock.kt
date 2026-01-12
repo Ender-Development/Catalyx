@@ -11,8 +11,8 @@ import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import org.ender_development.catalyx_.core.blocks.helper.IOProperty
 import org.ender_development.catalyx_.modules.coremodule.ICatalyxMod
-import org.ender_development.catalyx.tiles.IOTile
-import org.ender_development.catalyx.tiles.helper.IPortRenderer
+import org.ender_development.catalyx_.core.tiles.IOTile
+import org.ender_development.catalyx_.core.tiles.helper.IPortRenderer
 
 /**
  * NOTE: Please don't worry about the deprecated methods, they are overridden to provide correct rendering behavior.

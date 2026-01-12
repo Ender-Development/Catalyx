@@ -7,7 +7,7 @@ import net.minecraft.inventory.Slot
 import net.minecraft.item.ItemStack
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.SlotItemHandler
-import org.ender_development.catalyx.tiles.helper.IGuiTile
+import org.ender_development.catalyx_.core.tiles.helper.IGuiTile
 
 abstract class BaseContainer(playerInv: IInventory, val tileEntity: IBaseContainerCompat) : Container() {
 	init {
