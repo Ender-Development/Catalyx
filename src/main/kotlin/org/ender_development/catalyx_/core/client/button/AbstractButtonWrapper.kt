@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.client.button
+package org.ender_development.catalyx_.core.client.button
 
 import io.netty.buffer.ByteBuf
 import net.minecraft.client.Minecraft
@@ -9,8 +9,8 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import org.ender_development.catalyx_.core.Reference
-import org.ender_development.catalyx.client.button.AbstractButtonWrapper.Companion.getWrapper
-import org.ender_development.catalyx.client.button.AbstractButtonWrapper.Companion.registerWrapper
+import org.ender_development.catalyx_.core.client.button.AbstractButtonWrapper.Companion.getWrapper
+import org.ender_development.catalyx_.core.client.button.AbstractButtonWrapper.Companion.registerWrapper
 import org.ender_development.catalyx_.core.utils.SideUtils
 
 /**

@@ -4,7 +4,7 @@ import net.minecraft.client.Minecraft
 import net.minecraft.util.text.TextComponentString
 import net.minecraftforge.client.event.ClientChatEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
-import org.ender_development.catalyx.client.AreaHighlighter
+import org.ender_development.catalyx_.core.client.AreaHighlighter
 
 internal object TestEventHandler {
 	val areaHighlighter = AreaHighlighter()

@@ -25,11 +25,11 @@ import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 import net.minecraftforge.items.wrapper.CombinedInvWrapper
-import org.ender_development.catalyx.client.button.AbstractButtonWrapper
-import org.ender_development.catalyx.client.button.PauseButtonWrapper
-import org.ender_development.catalyx.client.button.RedstoneButtonWrapper
-import org.ender_development.catalyx.client.container.BaseContainer
-import org.ender_development.catalyx.client.gui.BaseGuiTyped
+import org.ender_development.catalyx_.core.client.button.AbstractButtonWrapper
+import org.ender_development.catalyx_.core.client.button.PauseButtonWrapper
+import org.ender_development.catalyx_.core.client.button.RedstoneButtonWrapper
+import org.ender_development.catalyx_.core.client.container.BaseContainer
+import org.ender_development.catalyx_.core.client.gui.BaseGuiTyped
 import org.ender_development.catalyx_.modules.coremodule.ICatalyxMod
 import org.ender_development.catalyx.tiles.helper.*
 

@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.client.gui.wrappers
+package org.ender_development.catalyx_.core.client.gui.wrappers
 
 import net.minecraftforge.energy.IEnergyStorage
 
