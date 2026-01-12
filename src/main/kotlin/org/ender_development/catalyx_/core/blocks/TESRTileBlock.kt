@@ -3,7 +3,7 @@ package org.ender_development.catalyx_.core.blocks
 import net.minecraftforge.fml.client.registry.ClientRegistry
 import org.ender_development.catalyx_.core.client.tesr.TileRenderer
 import org.ender_development.catalyx_.modules.coremodule.ICatalyxMod
-import org.ender_development.catalyx.tiles.TESRTile
+import org.ender_development.catalyx_.core.tiles.TESRTile
 import org.ender_development.catalyx_.core.utils.SideUtils
 
 /**

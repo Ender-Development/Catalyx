@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.tiles
+package org.ender_development.catalyx_.core.tiles
 
 import net.minecraft.block.BlockHorizontal
 import net.minecraft.block.state.IBlockState
@@ -31,7 +31,7 @@ import org.ender_development.catalyx_.core.client.button.RedstoneButtonWrapper
 import org.ender_development.catalyx_.core.client.container.BaseContainer
 import org.ender_development.catalyx_.core.client.gui.BaseGuiTyped
 import org.ender_development.catalyx_.modules.coremodule.ICatalyxMod
-import org.ender_development.catalyx.tiles.helper.*
+import org.ender_development.catalyx_.core.tiles.helper.*
 
 /**
  * A base TileEntity in Catalyx, implementing separate input and output inventories; saving/loading from NBT; energy, fluid and item capability handling

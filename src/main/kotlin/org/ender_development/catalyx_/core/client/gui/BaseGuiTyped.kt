@@ -14,9 +14,9 @@ import org.ender_development.catalyx_.core.client.gui.wrappers.CapabilityEnergyD
 import org.ender_development.catalyx_.core.client.gui.wrappers.CapabilityFluidDisplayWrapper
 import org.ender_development.catalyx_.core.network.ButtonPacket
 import org.ender_development.catalyx_.core.network.PacketHandler
-import org.ender_development.catalyx.tiles.BaseMachineTile
-import org.ender_development.catalyx.tiles.BaseTile
-import org.ender_development.catalyx.tiles.helper.IGuiTile
+import org.ender_development.catalyx_.core.tiles.BaseMachineTile
+import org.ender_development.catalyx_.core.tiles.BaseTile
+import org.ender_development.catalyx_.core.tiles.helper.IGuiTile
 import org.ender_development.catalyx_.core.utils.RenderAlignment
 import org.ender_development.catalyx_.core.utils.RenderUtils
 import org.ender_development.catalyx_.core.utils.extensions.get

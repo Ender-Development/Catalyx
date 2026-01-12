@@ -7,7 +7,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 import org.ender_development.catalyx_.modules.coremodule.ICatalyxMod
-import org.ender_development.catalyx.tiles.BaseTile
+import org.ender_development.catalyx_.core.tiles.BaseTile
 
 /**
  * A Catalyx Block interacting with a TileEntity and a GUI that also interacts with a Comparator

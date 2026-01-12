@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.tiles
+package org.ender_development.catalyx_.core.tiles
 
 import net.minecraft.client.Minecraft
 import net.minecraft.util.EnumFacing
@@ -7,9 +7,9 @@ import net.minecraftforge.fml.relauncher.SideOnly
 import org.ender_development.catalyx_.core.client.tesr.AbstractTESRenderer
 import org.ender_development.catalyx_.core.client.tesr.HudInfoRenderer
 import org.ender_development.catalyx_.modules.coremodule.ICatalyxMod
-import org.ender_development.catalyx.tiles.helper.HudInfoLine
-import org.ender_development.catalyx.tiles.helper.IHudInfoProvider
-import org.ender_development.catalyx.tiles.helper.ITESRTile
+import org.ender_development.catalyx_.core.tiles.helper.HudInfoLine
+import org.ender_development.catalyx_.core.tiles.helper.IHudInfoProvider
+import org.ender_development.catalyx_.core.tiles.helper.ITESRTile
 import org.ender_development.catalyx_.core.utils.extensions.relativeDirectionTo
 import org.ender_development.catalyx_.core.utils.extensions.withAlpha
 import java.awt.Color

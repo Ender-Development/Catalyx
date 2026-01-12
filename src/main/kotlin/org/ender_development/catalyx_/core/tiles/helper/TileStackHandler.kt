@@ -1,10 +1,10 @@
-package org.ender_development.catalyx.tiles.helper
+package org.ender_development.catalyx_.core.tiles.helper
 
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.items.ItemStackHandler
-import org.ender_development.catalyx.tiles.BaseTile
-import org.ender_development.catalyx.tiles.BaseTile.Companion.ITEM_CAP
+import org.ender_development.catalyx_.core.tiles.BaseTile
+import org.ender_development.catalyx_.core.tiles.BaseTile.Companion.ITEM_CAP
 import org.ender_development.catalyx_.core.utils.extensions.get
 import org.ender_development.catalyx_.core.utils.extensions.tryInsertInto
 

@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.tiles.helper
+package org.ender_development.catalyx_.core.tiles.helper
 
 import net.minecraftforge.energy.EnergyStorage
 

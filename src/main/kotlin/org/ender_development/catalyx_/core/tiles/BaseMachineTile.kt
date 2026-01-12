@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.tiles
+package org.ender_development.catalyx_.core.tiles
 
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.ITickable
@@ -7,9 +7,9 @@ import org.ender_development.catalyx_.core.client.button.PauseButtonWrapper
 import org.ender_development.catalyx_.core.client.button.RedstoneButtonWrapper
 import org.ender_development.catalyx_.core.client.gui.BaseGuiTyped
 import org.ender_development.catalyx_.modules.coremodule.ICatalyxMod
-import org.ender_development.catalyx.tiles.helper.IButtonTile
-import org.ender_development.catalyx.tiles.helper.IGuiTile
-import org.ender_development.catalyx.tiles.helper.IItemTile
+import org.ender_development.catalyx_.core.tiles.helper.IButtonTile
+import org.ender_development.catalyx_.core.tiles.helper.IGuiTile
+import org.ender_development.catalyx_.core.tiles.helper.IItemTile
 
 /**
  * A base Catalyx TileEntity with functions allowing you to create custom machines efficiently
