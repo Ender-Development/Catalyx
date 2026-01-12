@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.config
+package org.ender_development.catalyx_.core.config
 
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
