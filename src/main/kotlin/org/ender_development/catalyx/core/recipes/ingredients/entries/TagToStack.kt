@@ -26,6 +26,6 @@ class TagToStack : Object2ObjectMap.Entry<NBTTagCompound, ItemStack> {
 	override val key: NBTTagCompound?
 		get() = tag
 
-	override val value: ItemStack?
+	override val value: ItemStack
 		get() = stack
 }
