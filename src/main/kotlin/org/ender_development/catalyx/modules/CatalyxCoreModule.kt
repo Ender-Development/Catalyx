@@ -27,13 +27,13 @@ internal class CatalyxCoreModule : ICatalyxModule {
 	override val eventBusSubscribers = listOf(this)
 
 	override fun serverAboutToStart(event: FMLServerAboutToStartEvent) =
-		WorldPersistentData.Companion.instances.forEach(WorldPersistentData::worldJoined)
+		WorldPersistentData.instances.forEach(WorldPersistentData::worldJoined)
 
 	override fun serverStopped(event: FMLServerStoppedEvent) =
-		WorldPersistentData.Companion.instances.forEach(WorldPersistentData::worldLeft)
+		WorldPersistentData.instances.forEach(WorldPersistentData::worldLeft)
 
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	fun renderWorldLast(event: RenderWorldLastEvent) =
-		AreaHighlighter.Companion.eventHandlers.forEach { it(event) }
+		AreaHighlighter.eventHandlers.forEach { it(event) }
 }
