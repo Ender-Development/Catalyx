@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.test
+package org.ender_development.catalyx_.modules.test
 
 import net.minecraft.client.Minecraft
 import net.minecraft.util.text.TextComponentString

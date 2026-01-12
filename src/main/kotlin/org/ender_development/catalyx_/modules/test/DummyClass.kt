@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.test
+package org.ender_development.catalyx_.modules.test
 
 import net.minecraft.util.EnumFacing
 import org.ender_development.catalyx_.core.Catalyx
