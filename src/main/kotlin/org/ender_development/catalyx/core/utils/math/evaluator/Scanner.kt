@@ -27,9 +27,7 @@ internal class Scanner(private val source: String, private val mathContext: Math
 
 	private fun scanToken() {
 		start = current
-		val c = advance()
-
-		when(c) {
+		when(val c = advance()) {
 			' ', '\r', '\t' -> {                // Ignore whitespace.
 			}
 			'+' -> addToken(PLUS)
