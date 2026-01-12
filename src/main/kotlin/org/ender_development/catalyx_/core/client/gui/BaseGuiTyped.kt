@@ -12,8 +12,8 @@ import org.ender_development.catalyx_.core.client.button.RedstoneButtonWrapper
 import org.ender_development.catalyx_.core.client.gui.wrappers.CapabilityDisplayWrapper
 import org.ender_development.catalyx_.core.client.gui.wrappers.CapabilityEnergyDisplayWrapper
 import org.ender_development.catalyx_.core.client.gui.wrappers.CapabilityFluidDisplayWrapper
-import org.ender_development.catalyx.network.ButtonPacket
-import org.ender_development.catalyx.network.PacketHandler
+import org.ender_development.catalyx_.core.network.ButtonPacket
+import org.ender_development.catalyx_.core.network.PacketHandler
 import org.ender_development.catalyx.tiles.BaseMachineTile
 import org.ender_development.catalyx.tiles.BaseTile
 import org.ender_development.catalyx.tiles.helper.IGuiTile

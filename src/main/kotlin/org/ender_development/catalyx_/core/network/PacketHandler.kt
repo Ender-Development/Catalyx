@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.network
+package org.ender_development.catalyx_.core.network
 
 import net.minecraft.util.math.BlockPos
 import net.minecraftforge.fml.common.network.NetworkRegistry

@@ -6,10 +6,9 @@ import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.event.FMLConstructionEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 import org.apache.logging.log4j.LogManager
-import org.ender_development.catalyx_.core.Reference
 import org.ender_development.catalyx_.modules.coremodule.ICatalyxMod
 import org.ender_development.catalyx_.core.module.ModuleManager
-import org.ender_development.catalyx.network.PacketHandler
+import org.ender_development.catalyx_.core.network.PacketHandler
 import org.ender_development.catalyx_.core.utils.persistence.ConfigPersistentData
 import kotlin.random.Random
 
