@@ -138,12 +138,12 @@ object RenderUtils {
 		val tw = 1 / tileWidth
 		val th = 1 / tileHeight
 		val (red, green, blue, alpha) = color.destructFloat()
-		RenderUtils.BUFFER_BUILDER.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
-		RenderUtils.BUFFER_BUILDER.pos(x, y + height, zOffset).tex(u * tw, (v + vHeight) * th).color(red, green, blue, alpha).endVertex()
-		RenderUtils.BUFFER_BUILDER.pos(x + width, y + height, zOffset).tex((u + uWidth) * tw, (v + vHeight) * th).color(red, green, blue, alpha).endVertex()
-		RenderUtils.BUFFER_BUILDER.pos(x + width, y, zOffset).tex((u + uWidth) * tw, v * th).color(red, green, blue, alpha).endVertex()
-		RenderUtils.BUFFER_BUILDER.pos(x, y, zOffset).tex(u * tw, v * th).color(red, green, blue, alpha).endVertex()
-		RenderUtils.TESSELLATOR.draw()
+		BUFFER_BUILDER.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR)
+		BUFFER_BUILDER.pos(x, y + height, zOffset).tex(u * tw, (v + vHeight) * th).color(red, green, blue, alpha).endVertex()
+		BUFFER_BUILDER.pos(x + width, y + height, zOffset).tex((u + uWidth) * tw, (v + vHeight) * th).color(red, green, blue, alpha).endVertex()
+		BUFFER_BUILDER.pos(x + width, y, zOffset).tex((u + uWidth) * tw, v * th).color(red, green, blue, alpha).endVertex()
+		BUFFER_BUILDER.pos(x, y, zOffset).tex(u * tw, v * th).color(red, green, blue, alpha).endVertex()
+		TESSELLATOR.draw()
 	}
 
 	/**
@@ -157,23 +157,23 @@ object RenderUtils {
 		GlStateManager.pushMatrix()
 
 		if(!filled) {
-			RenderUtils.BUFFER_BUILDER.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR)
+			BUFFER_BUILDER.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR)
 
-			RenderUtils.BUFFER_BUILDER.pos(x, y, .0).color(red, green, blue, alpha).endVertex()
-			RenderUtils.BUFFER_BUILDER.pos(x, y + height, .0).color(red, green, blue, alpha).endVertex()
-			RenderUtils.BUFFER_BUILDER.pos(x, y + height, .0).color(red, green, blue, alpha).endVertex()
-			RenderUtils.BUFFER_BUILDER.pos(x + width, y + height, .0).color(red, green, blue, alpha).endVertex()
-			RenderUtils.BUFFER_BUILDER.pos(x + width, y + height, .0).color(red, green, blue, alpha).endVertex()
-			RenderUtils.BUFFER_BUILDER.pos(x + width, y, .0).color(red, green, blue, alpha).endVertex()
+			BUFFER_BUILDER.pos(x, y, .0).color(red, green, blue, alpha).endVertex()
+			BUFFER_BUILDER.pos(x, y + height, .0).color(red, green, blue, alpha).endVertex()
+			BUFFER_BUILDER.pos(x, y + height, .0).color(red, green, blue, alpha).endVertex()
+			BUFFER_BUILDER.pos(x + width, y + height, .0).color(red, green, blue, alpha).endVertex()
+			BUFFER_BUILDER.pos(x + width, y + height, .0).color(red, green, blue, alpha).endVertex()
 			BUFFER_BUILDER.pos(x + width, y, .0).color(red, green, blue, alpha).endVertex()
-			RenderUtils.BUFFER_BUILDER.pos(x, y, .0).color(red, green, blue, alpha).endVertex()
+			BUFFER_BUILDER.pos(x + width, y, .0).color(red, green, blue, alpha).endVertex()
+			BUFFER_BUILDER.pos(x, y, .0).color(red, green, blue, alpha).endVertex()
 		} else {
-			RenderUtils.BUFFER_BUILDER.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR)
+			BUFFER_BUILDER.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR)
 
-			RenderUtils.BUFFER_BUILDER.pos(x, y + 0, .0).color(red, green, blue, alpha).endVertex()
-			RenderUtils.BUFFER_BUILDER.pos(x, y + height, .0).color(red, green, blue, alpha).endVertex()
-			RenderUtils.BUFFER_BUILDER.pos(x + width, y + height, .0).color(red, green, blue, alpha).endVertex()
-			RenderUtils.BUFFER_BUILDER.pos(x + width, y + 0, .0).color(red, green, blue, alpha).endVertex()
+			BUFFER_BUILDER.pos(x, y + 0, .0).color(red, green, blue, alpha).endVertex()
+			BUFFER_BUILDER.pos(x, y + height, .0).color(red, green, blue, alpha).endVertex()
+			BUFFER_BUILDER.pos(x + width, y + height, .0).color(red, green, blue, alpha).endVertex()
+			BUFFER_BUILDER.pos(x + width, y + 0, .0).color(red, green, blue, alpha).endVertex()
 		}
 
 		GlStateManager.translate(.0, .0, zTranslate)
@@ -182,7 +182,7 @@ object RenderUtils {
 		GlStateManager.disableLighting()
 		GlStateManager.disableTexture2D()
 		GlStateManager.depthMask(false)
-		RenderUtils.TESSELLATOR.draw()
+		TESSELLATOR.draw()
 		GlStateManager.depthMask(true)
 		GlStateManager.enableTexture2D()
 		GlStateManager.enableLighting()
