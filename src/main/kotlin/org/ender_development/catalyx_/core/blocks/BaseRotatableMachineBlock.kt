@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.blocks
+package org.ender_development.catalyx_.core.blocks
 
 import net.minecraft.block.BlockHorizontal
 import net.minecraft.block.state.BlockStateContainer
@@ -11,7 +11,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import org.ender_development.catalyx_.modules.coremodule.ICatalyxMod
 
-open class BaseRotatableMachineBlock : BaseMachineBlock {
+open class BaseRotatableMachineBlock : org.ender_development.catalyx_.core.blocks.BaseMachineBlock {
 	constructor(mod: ICatalyxMod, name: String, tileClass: Class<out TileEntity>, guiId: Int) : super(mod, name, tileClass, guiId)
 	/**
 	 * Only use this constructor if you used a [org.ender_development.catalyx.client.gui.CatalyxGuiHandler] for the guiId

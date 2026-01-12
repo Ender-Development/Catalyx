@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.blocks
+package org.ender_development.catalyx_.core.blocks
 
 import net.minecraft.block.state.IBlockState
 import net.minecraft.tileentity.TileEntity
@@ -12,7 +12,7 @@ import org.ender_development.catalyx.tiles.BaseTile
 /**
  * A Catalyx Block interacting with a TileEntity and a GUI that also interacts with a Comparator
  */
-open class BaseMachineBlock : BaseTileBlock {
+open class BaseMachineBlock : org.ender_development.catalyx_.core.blocks.BaseTileBlock {
 	constructor(mod: ICatalyxMod, name: String, tileClass: Class<out TileEntity>, guiId: Int) : super(mod, name, tileClass, guiId)
 	/**
 	 * Only use this constructor if you used a [org.ender_development.catalyx.client.gui.CatalyxGuiHandler] for the guiId

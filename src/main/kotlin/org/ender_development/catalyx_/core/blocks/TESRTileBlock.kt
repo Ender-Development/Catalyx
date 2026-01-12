@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.blocks
+package org.ender_development.catalyx_.core.blocks
 
 import net.minecraftforge.fml.client.registry.ClientRegistry
 import org.ender_development.catalyx.client.tesr.TileRenderer
