@@ -5,6 +5,7 @@ import net.minecraft.block.state.IBlockState
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
+import org.ender_development.catalyx.core.config.ConfigParser.ConfigBlockState.Companion.IGNORE_META
 import org.ender_development.catalyx.core.utils.extensions.modLoaded
 import java.util.*
 

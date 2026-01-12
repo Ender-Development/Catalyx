@@ -6,9 +6,6 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import it.unimi.dsi.fastutil.objects.ObjectLists
 import net.minecraft.util.SoundEvent
 import org.ender_development.catalyx.core.ICatalyxMod
-import org.ender_development.catalyx.core.utils.Mods
-import org.ender_development.catalyx.modules.integration.groovyscript.VirtualizedRecipeMap
-import org.ender_development.catalyx.modules.CatalyxInternalModuleContainer
 import org.ender_development.catalyx.core.module.ModuleManager
 import org.ender_development.catalyx.core.recipes.chance.boost.IBoostFunction
 import org.ender_development.catalyx.core.recipes.ingredients.RecipeInput
@@ -17,6 +14,9 @@ import org.ender_development.catalyx.core.recipes.validation.Result
 import org.ender_development.catalyx.core.recipes.validation.ValidationState
 import org.ender_development.catalyx.core.recipes.validation.Validator
 import org.ender_development.catalyx.core.utils.Delegates
+import org.ender_development.catalyx.core.utils.Mods
+import org.ender_development.catalyx.modules.CatalyxInternalModuleContainer
+import org.ender_development.catalyx.modules.integration.groovyscript.VirtualizedRecipeMap
 import java.lang.ref.WeakReference
 import java.util.*
 

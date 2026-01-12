@@ -4,7 +4,6 @@ package org.ender_development.catalyx.core.utils.extensions
 
 import net.minecraft.block.Block
 import net.minecraft.client.resources.I18n
-import net.minecraft.init.Blocks
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.Ingredient

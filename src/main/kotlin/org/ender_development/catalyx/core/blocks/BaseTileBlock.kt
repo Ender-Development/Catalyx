@@ -16,8 +16,8 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 import net.minecraftforge.fml.common.registry.GameRegistry
-import org.ender_development.catalyx.core.client.gui.CatalyxGuiHandler
 import org.ender_development.catalyx.core.ICatalyxMod
+import org.ender_development.catalyx.core.client.gui.CatalyxGuiHandler
 import org.ender_development.catalyx.core.recipes.ingredients.nbt.TagType
 import org.ender_development.catalyx.core.tiles.BaseTile
 

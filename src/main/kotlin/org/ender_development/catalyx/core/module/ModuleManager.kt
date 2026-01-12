@@ -12,6 +12,10 @@ import net.minecraftforge.fml.common.discovery.ASMDataTable
 import net.minecraftforge.fml.common.event.*
 import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.core.Reference
+import org.ender_development.catalyx.core.module.ModuleManager.configuration
+import org.ender_development.catalyx.core.module.ModuleManager.discoveredContainers
+import org.ender_development.catalyx.core.module.ModuleManager.discoveredModules
+import org.ender_development.catalyx.core.module.ModuleManager.stateEvent
 import org.ender_development.catalyx.core.utils.Delegates
 import org.ender_development.catalyx.core.utils.DevUtils
 import org.ender_development.catalyx.core.utils.extensions.modLoaded

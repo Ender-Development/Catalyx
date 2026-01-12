@@ -5,8 +5,8 @@ import org.ender_development.catalyx.core.Reference
 import org.ender_development.catalyx.core.items.CopyPasteTool
 import org.ender_development.catalyx.core.module.CatalyxModule
 import org.ender_development.catalyx.core.module.ICatalyxModule
-import org.ender_development.catalyx.modules.CatalyxInternalModuleContainer
 import org.ender_development.catalyx.core.utils.extensions.subLogger
+import org.ender_development.catalyx.modules.CatalyxInternalModuleContainer
 
 // TODO rename, this name is silly, but couldn't come up with a better one right meow
 @CatalyxModule(

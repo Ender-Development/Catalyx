@@ -1,7 +1,7 @@
 package org.ender_development.catalyx.core.client.gui.wrappers
 
 import java.text.NumberFormat
-import java.util.Locale
+import java.util.*
 
 abstract class CapabilityDisplayWrapper(val x: Int, val y: Int, val width: Int, val height: Int) {
 	abstract val stored: Int

@@ -9,8 +9,8 @@ import net.minecraftforge.common.property.ExtendedBlockState
 import net.minecraftforge.common.property.IExtendedBlockState
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
-import org.ender_development.catalyx.core.blocks.helper.IOProperty
 import org.ender_development.catalyx.core.ICatalyxMod
+import org.ender_development.catalyx.core.blocks.helper.IOProperty
 import org.ender_development.catalyx.core.tiles.IOTile
 import org.ender_development.catalyx.core.tiles.helper.IPortRenderer
 

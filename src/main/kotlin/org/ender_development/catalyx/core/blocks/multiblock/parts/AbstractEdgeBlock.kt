@@ -15,9 +15,9 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.RayTraceResult
 import net.minecraft.world.World
 import org.ender_development.catalyx.Catalyx
+import org.ender_development.catalyx.core.ICatalyxMod
 import org.ender_development.catalyx.core.blocks.BaseBlock
 import org.ender_development.catalyx.core.blocks.multiblock.*
-import org.ender_development.catalyx.core.ICatalyxMod
 
 abstract class AbstractEdgeBlock(mod: ICatalyxMod, val name: String) : BaseBlock(mod, name), IMultiblockEdge {
 	companion object {

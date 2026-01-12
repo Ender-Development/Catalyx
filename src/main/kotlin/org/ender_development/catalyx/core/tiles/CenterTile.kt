@@ -7,9 +7,9 @@ import net.minecraft.util.EnumHand
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import org.ender_development.catalyx.Catalyx
+import org.ender_development.catalyx.core.ICatalyxMod
 import org.ender_development.catalyx.core.blocks.multiblock.IMultiblockEdge
 import org.ender_development.catalyx.core.blocks.multiblock.IMultiblockTile
-import org.ender_development.catalyx.core.ICatalyxMod
 import org.ender_development.catalyx.core.utils.DevUtils
 import org.ender_development.catalyx.core.utils.extensions.getHorizontalSurroundings
 
