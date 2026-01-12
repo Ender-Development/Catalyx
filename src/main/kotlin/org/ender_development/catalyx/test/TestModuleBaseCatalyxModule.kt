@@ -1,7 +1,7 @@
 package org.ender_development.catalyx.test
 
 import org.ender_development.catalyx_.core.Catalyx
-import org.ender_development.catalyx.Reference
+import org.ender_development.catalyx_.core.Reference
 import org.ender_development.catalyx.blocks.IOTileBlock
 import org.ender_development.catalyx.blocks.multiblock.CenterBlock
 import org.ender_development.catalyx.blocks.multiblock.parts.CornerBlock

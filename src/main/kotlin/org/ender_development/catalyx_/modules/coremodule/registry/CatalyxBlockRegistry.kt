@@ -6,7 +6,7 @@ import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import org.ender_development.catalyx_.core.Catalyx
-import org.ender_development.catalyx.Reference
+import org.ender_development.catalyx_.core.Reference
 import org.ender_development.catalyx_.modules.coremodule.IBlockProvider
 import org.ender_development.catalyx_.core.utils.DevUtils
 

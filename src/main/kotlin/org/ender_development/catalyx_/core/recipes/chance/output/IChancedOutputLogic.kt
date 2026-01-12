@@ -1,7 +1,7 @@
 package org.ender_development.catalyx_.core.recipes.chance.output
 
 import org.ender_development.catalyx_.core.Catalyx.RANDOM
-import org.ender_development.catalyx.Reference
+import org.ender_development.catalyx_.core.Reference
 import org.ender_development.catalyx_.core.recipes.chance.boost.IBoostFunction
 
 interface IChancedOutputLogic {
