@@ -9,7 +9,7 @@ import net.minecraft.world.World
 import org.ender_development.catalyx.core.Catalyx
 import org.ender_development.catalyx.core.blocks.multiblock.IMultiblockEdge
 import org.ender_development.catalyx.core.blocks.multiblock.IMultiblockTile
-import org.ender_development.catalyx.modules.coremodule.ICatalyxMod
+import org.ender_development.catalyx.core.ICatalyxMod
 import org.ender_development.catalyx.core.utils.DevUtils
 import org.ender_development.catalyx.core.utils.extensions.getHorizontalSurroundings
 

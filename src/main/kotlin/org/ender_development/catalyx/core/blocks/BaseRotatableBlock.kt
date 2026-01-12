@@ -8,9 +8,9 @@ import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
-import org.ender_development.catalyx.modules.coremodule.ICatalyxMod
+import org.ender_development.catalyx.core.ICatalyxMod
 
-open class BaseRotatableBlock(mod: ICatalyxMod, name: String) : org.ender_development.catalyx.core.blocks.BaseBlock(mod, name) {
+open class BaseRotatableBlock(mod: ICatalyxMod, name: String) : BaseBlock(mod, name) {
 	init {
 		defaultState = blockState.baseState.withProperty(BlockHorizontal.FACING, EnumFacing.NORTH)
 	}

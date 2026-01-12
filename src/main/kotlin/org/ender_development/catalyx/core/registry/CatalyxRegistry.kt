@@ -1,10 +1,9 @@
-package org.ender_development.catalyx.modules.coremodule.registry
+package org.ender_development.catalyx.core.registry
 
 import net.minecraft.util.ResourceLocation
-import org.ender_development.catalyx.modules.coremodule.IProvider
 import org.ender_development.catalyx.core.utils.extensions.modLoaded
 
-class CatalyxRegister<V : IProvider<*>> : HashMap<ResourceLocation, Pair<V, Boolean>>() {
+class CatalyxRegistry<V : IProvider<*>> : HashMap<ResourceLocation, Pair<V, Boolean>>() {
 	fun add(provider: V): Boolean =
 		provider.instance.registryName?.let {
 			this[it] = provider to (provider.isEnabled() && provider.modDependencies.evaluateModDependencies())

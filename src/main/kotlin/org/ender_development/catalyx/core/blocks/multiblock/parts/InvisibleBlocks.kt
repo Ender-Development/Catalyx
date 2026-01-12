@@ -5,7 +5,7 @@ import net.minecraft.util.BlockRenderLayer
 import net.minecraft.util.EnumBlockRenderType
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
-import org.ender_development.catalyx.modules.coremodule.ICatalyxMod
+import org.ender_development.catalyx.core.ICatalyxMod
 
 open class InvisibleCorner(mod: ICatalyxMod, name: String) : CornerBlock(mod, name) {
 	init {

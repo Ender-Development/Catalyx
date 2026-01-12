@@ -1,14 +1,13 @@
-package org.ender_development.catalyx.modules.coremodule.registry
+package org.ender_development.catalyx.core.registry
 
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.registries.IForgeRegistryEntry
-import org.ender_development.catalyx.modules.coremodule.IProvider
 
-interface IRegistry<E : IForgeRegistryEntry<E>, P : IProvider<E>> {
+interface ICatalyxRegistry<E : IForgeRegistryEntry<E>, P : IProvider<E>> {
 	/**
 	 * The set of providers to be registered.
 	 */
-	val registry: CatalyxRegister<P>
+	val registry: CatalyxRegistry<P>
 
 	/**
 	 * Register all enabled providers with the given event.

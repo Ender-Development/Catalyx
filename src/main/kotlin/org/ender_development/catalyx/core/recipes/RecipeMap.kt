@@ -5,10 +5,10 @@ import it.unimi.dsi.fastutil.objects.Object2ReferenceOpenHashMap
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import it.unimi.dsi.fastutil.objects.ObjectLists
 import net.minecraft.util.SoundEvent
-import org.ender_development.catalyx.modules.coremodule.ICatalyxMod
-import org.ender_development.catalyx.modules.integration.Mods
+import org.ender_development.catalyx.core.ICatalyxMod
+import org.ender_development.catalyx.core.utils.Mods
 import org.ender_development.catalyx.modules.integration.groovyscript.VirtualizedRecipeMap
-import org.ender_development.catalyx.modules.CatalyxBuiltinModuleContainer
+import org.ender_development.catalyx.modules.CatalyxInternalModuleContainer
 import org.ender_development.catalyx.core.module.ModuleManager
 import org.ender_development.catalyx.core.recipes.chance.boost.IBoostFunction
 import org.ender_development.catalyx.core.recipes.ingredients.RecipeInput
@@ -122,7 +122,7 @@ class RecipeMap<R : RecipeBuilder<R>> {
 		recipeBuilderSample = defaultRecipeBuilder
 		RECIPE_MAP_REGISTRY[unlocalizedName] = this
 
-		if(ModuleManager.isModuleEnabled(CatalyxBuiltinModuleContainer.MODULE_GRS))
+		if(ModuleManager.isModuleEnabled(CatalyxInternalModuleContainer.MODULE_GRS))
 			grsVirtualizedRecipeMap = VirtualizedRecipeMap(this)
 	}
 
