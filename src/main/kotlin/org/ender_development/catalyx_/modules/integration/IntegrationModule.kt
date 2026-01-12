@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.integration
+package org.ender_development.catalyx_.modules.integration
 
 import org.ender_development.catalyx_.core.Reference
 import org.ender_development.catalyx_.core.module.CatalyxModule

@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.integration.groovyscript
+package org.ender_development.catalyx_.modules.integration.groovyscript
 
 import com.cleanroommc.groovyscript.helper.Alias
 import com.cleanroommc.groovyscript.registry.VirtualizedRegistry

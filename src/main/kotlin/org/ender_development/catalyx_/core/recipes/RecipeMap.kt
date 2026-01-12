@@ -6,8 +6,8 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import it.unimi.dsi.fastutil.objects.ObjectLists
 import net.minecraft.util.SoundEvent
 import org.ender_development.catalyx_.modules.coremodule.ICatalyxMod
-import org.ender_development.catalyx.integration.Mods
-import org.ender_development.catalyx.integration.groovyscript.VirtualizedRecipeMap
+import org.ender_development.catalyx_.modules.integration.Mods
+import org.ender_development.catalyx_.modules.integration.groovyscript.VirtualizedRecipeMap
 import org.ender_development.catalyx_.modules.CatalyxBuiltinModuleContainer
 import org.ender_development.catalyx_.core.module.ModuleManager
 import org.ender_development.catalyx_.core.recipes.chance.boost.IBoostFunction

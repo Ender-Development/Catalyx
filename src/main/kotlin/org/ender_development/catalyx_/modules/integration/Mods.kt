@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.integration
+package org.ender_development.catalyx_.modules.integration
 
 object Mods {
 	const val GROOVYSCRIPT = "groovyscript"

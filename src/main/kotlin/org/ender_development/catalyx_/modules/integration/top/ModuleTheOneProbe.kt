@@ -1,10 +1,10 @@
-package org.ender_development.catalyx.integration.top
+package org.ender_development.catalyx_.modules.integration.top
 
 import mcjty.theoneprobe.TheOneProbe
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import org.ender_development.catalyx_.core.Reference
-import org.ender_development.catalyx.integration.IntegrationModule
-import org.ender_development.catalyx.integration.Mods
+import org.ender_development.catalyx_.modules.integration.IntegrationModule
+import org.ender_development.catalyx_.modules.integration.Mods
 import org.ender_development.catalyx_.core.module.CatalyxModule
 import org.ender_development.catalyx_.modules.CatalyxBuiltinModuleContainer
 import org.ender_development.catalyx_.core.utils.extensions.subLogger
