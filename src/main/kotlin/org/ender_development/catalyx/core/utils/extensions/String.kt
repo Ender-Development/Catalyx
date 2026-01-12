@@ -26,14 +26,7 @@ fun String.toStack(quantity: Int = 1, meta: Int = 0): ItemStack {
 	val meta = split.getOrNull(2)?.toInt() ?: meta
 	val location = if(split.size == 1) ResourceLocation(this) else ResourceLocation(split[0], split[1])
 
-	Item.REGISTRY.getObject(location)?.apply { return toStack(quantity, meta) }
-
-	// getObject annotated @Nonnull & implementation proofs that
-	val block: Block = Block.REGISTRY.getObject(location)
-	return if(block != null && block != Blocks.AIR && block != Blocks.WATER)
-		block.toStack(quantity, meta)
-	else
-		ItemStack.EMPTY
+	return Item.REGISTRY.registryObjects[location]?.toStack(quantity, meta) ?: Block.REGISTRY.registryObjects[location]?.toStack(quantity, meta) ?: ItemStack.EMPTY
 }
 
 inline fun String.toIngredient(meta: Int = 0): Ingredient =
