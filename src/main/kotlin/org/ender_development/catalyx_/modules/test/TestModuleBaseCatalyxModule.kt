@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.test
+package org.ender_development.catalyx_.modules.test
 
 import org.ender_development.catalyx_.core.Catalyx
 import org.ender_development.catalyx_.core.Reference
