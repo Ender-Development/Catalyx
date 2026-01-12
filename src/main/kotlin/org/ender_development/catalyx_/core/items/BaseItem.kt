@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.items
+package org.ender_development.catalyx_.core.items
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.item.Item

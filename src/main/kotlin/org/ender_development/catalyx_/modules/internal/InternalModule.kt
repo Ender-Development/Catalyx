@@ -2,7 +2,7 @@ package org.ender_development.catalyx_.modules.internal
 
 import org.ender_development.catalyx_.core.Catalyx
 import org.ender_development.catalyx_.core.Reference
-import org.ender_development.catalyx.items.CopyPasteTool
+import org.ender_development.catalyx_.core.items.CopyPasteTool
 import org.ender_development.catalyx_.core.module.CatalyxModule
 import org.ender_development.catalyx_.core.module.ICatalyxModule
 import org.ender_development.catalyx_.modules.CatalyxBuiltinModuleContainer

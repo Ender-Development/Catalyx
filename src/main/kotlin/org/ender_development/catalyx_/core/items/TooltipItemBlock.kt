@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.items
+package org.ender_development.catalyx_.core.items
 
 import net.minecraft.block.Block
 import net.minecraft.client.util.ITooltipFlag
