@@ -28,7 +28,8 @@ fun String.toStack(quantity: Int = 1, meta: Int = 0): ItemStack {
 
 	Item.REGISTRY.getObject(location)?.apply { return toStack(quantity, meta) }
 
-	val block: Block? = Block.REGISTRY.getObject(location)
+	// getObject annotated @Nonnull & implementation proofs that
+	val block: Block = Block.REGISTRY.getObject(location)
 	return if(block != null && block != Blocks.AIR && block != Blocks.WATER)
 		block.toStack(quantity, meta)
 	else
