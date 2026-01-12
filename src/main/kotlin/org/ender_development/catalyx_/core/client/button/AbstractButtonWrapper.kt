@@ -18,7 +18,7 @@ import org.ender_development.catalyx_.core.utils.SideUtils
  *
  * When creating a wrapper
  * - if your button/wrapper has any state that will need to be sent to the server-side, read it in [readExtraData] and write it in [writeExtraData] ([x], [y], [width], [height] are automatically sent)
- * - make sure your button has a constructor that takes ([x], [y], [width], [height]); ([x], [y]); or (), as that's how your class will be instantiated on server-side (see [org.ender_development.catalyx.network.ButtonPacket])
+ * - make sure your button has a constructor that takes ([x], [y], [width], [height]); ([x], [y]); or (), as that's how your class will be instantiated on server-side (see [org.ender_development.catalyx_.core.network.ButtonPacket])
  *
  * On client-side in GUIs
  * - add a button to the buttonList by instantiating this class and doing [net.minecraft.client.gui.GuiScreen.buttonList].add(instance.[button])

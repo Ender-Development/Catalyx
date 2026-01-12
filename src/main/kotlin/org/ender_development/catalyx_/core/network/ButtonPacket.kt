@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.network
+package org.ender_development.catalyx_.core.network
 
 import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
