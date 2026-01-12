@@ -4,7 +4,7 @@ import net.minecraft.client.Minecraft
 import net.minecraft.util.text.TextComponentString
 import net.minecraftforge.client.event.ClientChatEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
-import org.ender_development.catalyx.core.Catalyx
+import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.core.Reference
 import org.ender_development.catalyx.core.blocks.IOTileBlock
 import org.ender_development.catalyx.core.blocks.multiblock.CenterBlock
