@@ -1,6 +1,6 @@
 package org.ender_development.catalyx_.core.utils.validation
 
-import org.ender_development.catalyx.config.ConfigParser
+import org.ender_development.catalyx_.core.config.ConfigParser
 
 @Suppress("UNUSED")
 object CommonValidators {
