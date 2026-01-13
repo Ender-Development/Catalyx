@@ -25,6 +25,14 @@ object Modules {
 	/**
 	 * Factory for [IModuleManager], currently implemented by [ModuleIdentifier]
 	 */
-	fun newModuleIdentifier(identifier: String): IModuleIdentifier =
-		ModuleIdentifier(identifier)
+	fun newModuleIdentifier(identifier: String): IModuleIdentifier {
+		if(identifier.isBlank())
+			error("Identifier is blank")
+
+		val split = identifier.split(':')
+		if(split.size != 2)
+			error("Identifier does not follow the required format of 'containerId:moduleId'")
+
+		return ModuleIdentifier(split[0], split[1])
+	}
 }
