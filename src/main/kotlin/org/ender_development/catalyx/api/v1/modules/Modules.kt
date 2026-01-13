@@ -17,12 +17,14 @@ object Modules {
 	val moduleManager: IModuleManager = ModuleManager
 
 	/**
-	 * Factories for [IModuleIdentifier]
-	 * currently implemented by [ModuleIdentifier]
+	 * Factory for [IModuleManager], currently implemented by [ModuleIdentifier]
 	 */
 	fun newModuleIdentifier(containerId: String, moduleId: String): IModuleIdentifier =
 		ModuleIdentifier(containerId, moduleId)
 
+	/**
+	 * Factory for [IModuleManager], currently implemented by [ModuleIdentifier]
+	 */
 	fun newModuleIdentifier(identifier: String): IModuleIdentifier =
 		ModuleIdentifier(identifier)
 }
