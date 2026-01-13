@@ -20,7 +20,7 @@ class ModuleIdentifier : IModuleIdentifier {
 
 		val split = identifier.split(':')
 		if(split.size != 2)
-			error("Identifier does not follow the needed format of 'containerId:moduleId'")
+			error("Identifier does not follow the required format of 'containerId:moduleId'")
 
 		containerId = split[0]
 		moduleId = split[1]
