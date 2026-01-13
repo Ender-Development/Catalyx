@@ -3,6 +3,7 @@ package org.ender_development.catalyx.core.module
 import it.unimi.dsi.fastutil.objects.Object2ReferenceLinkedOpenHashMap
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet
 import it.unimi.dsi.fastutil.objects.ReferenceLinkedOpenHashSet
+import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.common.config.Configuration
 import net.minecraftforge.fml.common.Loader
@@ -16,6 +17,7 @@ import org.ender_development.catalyx.api.v1.annotations.module.CatalyxModuleCont
 import org.ender_development.catalyx.api.v1.interfaces.module.ICatalyxModule
 import org.ender_development.catalyx.api.v1.interfaces.module.IModuleIdentifier
 import org.ender_development.catalyx.api.v1.interfaces.module.IModuleManager
+import org.ender_development.catalyx.api.v1.newModuleIdentifier
 import org.ender_development.catalyx.core.Reference
 import org.ender_development.catalyx.core.module.ModuleManager.configuration
 import org.ender_development.catalyx.core.module.ModuleManager.discoveredContainers
@@ -263,33 +265,32 @@ object ModuleManager : IModuleManager {
 
 				Catalyx.LOGGER.debug("> Module Container {}:{} instantiated ({})", modId, containerId, asmContainer.className)
 
-				val discoveredModules = discoveredModules.remove(containerId)
-				if(discoveredModules.isNullOrEmpty()) {
-					Catalyx.LOGGER.debug("> Module Container {}:{} has no modules", modId, containerId)
+				var discoveredModules = discoveredModules.remove(containerId).orEmpty()
+				if(discoveredModules.isEmpty()) {
+					Catalyx.LOGGER.warn("> Module Container {}:{} has no modules", modId, containerId)
 					return@forEach
 				}
 
 				// Check module ids before instantiating modules
 				val willInstantiate = mutableListOf<ASMDataTable.ASMData>()
-				val willInstantiateIds = mutableListOf<ModuleIdentifier>()
+				val willInstantiateIds = mutableListOf<IModuleIdentifier>()
 				do {
 					var changed = false
-					val iter = discoveredModules.iterator()
-					while(iter.hasNext()) {
-						val module = iter.next()
-						val moduleId = ModuleIdentifier(module.annotationInfo["containerId"] as String, module.annotationInfo["moduleId"] as String)
+					discoveredModules = discoveredModules.filter { module ->
+						val moduleId = newModuleIdentifier(module.annotationInfo["containerId"] as String, module.annotationInfo["moduleId"] as String)
 						val unmetDependencies = (module.annotationInfo["moduleDependencies"] as List<*>? ?: emptyList<String>())
 							.filterIsInstance<String>()
-							.map(::ModuleIdentifier)
+							.map(ResourceLocation::splitObjectName)
+							.map{ newModuleIdentifier(it[0], it[1]) }
 							.filterNot { willInstantiateIds.contains(it) || loadedModuleIds.contains(it) }
 
-						if(unmetDependencies.isEmpty()) {
-							iter.remove()
+						return@filter if(unmetDependencies.isEmpty()) {
 							changed = true
 							willInstantiate.add(module)
 							willInstantiateIds.add(moduleId)
-						}
-					}
+							false
+						} else true
+					}.toMutableList()
 				} while(changed)
 
 				Catalyx.LOGGER.debug("> Module Container {}:{} has {} dependent modules, but will be instantiating {} of them", modId, containerId, willInstantiate.size + discoveredModules.size, willInstantiate.size)
