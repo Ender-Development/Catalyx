@@ -1,8 +1,8 @@
 package org.ender_development.catalyx.modules.internal
 
 import org.ender_development.catalyx.Catalyx
-import org.ender_development.catalyx.api.v1.annotations.module.CatalyxModule
-import org.ender_development.catalyx.api.v1.interfaces.module.ICatalyxModule
+import org.ender_development.catalyx.api.v1.modules.annotations.CatalyxModule
+import org.ender_development.catalyx.api.v1.modules.interfaces.ICatalyxModule
 import org.ender_development.catalyx.core.Reference
 import org.ender_development.catalyx.core.items.CopyPasteTool
 import org.ender_development.catalyx.core.utils.extensions.subLogger
