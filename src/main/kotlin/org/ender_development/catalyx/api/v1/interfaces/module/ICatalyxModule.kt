@@ -1,14 +1,17 @@
-package org.ender_development.catalyx.core.module
+package org.ender_development.catalyx.api.v1.interfaces.module
 
 import net.minecraftforge.fml.common.event.*
 import org.apache.logging.log4j.Logger
+import org.ender_development.catalyx.api.v1.moduleManager
 
 /**
  * All modules must implement this interface.
  *
  * Provides methods for responding to FML lifecycle events and adding event bus subscribers.
  *
- * Note: if your Module is an `object`, and other parts of your code access it, please don't have any side-effects in the class initialisation/instantiation, as any module can be disabled via the Catalyx config, or by its dependencies being unmet.
+ * Note: If your Module is a kotlin `object`, and other parts of your code access it,
+ * please don't have any side effects in the class initialisation/instantiation,
+ * as any module can be disabled via the Catalyx config, or by its dependencies being unmet.
  */
 interface ICatalyxModule {
 	/**
@@ -20,37 +23,37 @@ interface ICatalyxModule {
 	 * A boolean indicating whether this module is enabled.
 	 */
 	val enabled: Boolean
-		get() = ModuleManager.isModuleEnabled(this)
+		get() = moduleManager.isModuleEnabled(this)
 
 	/**
 	 * Called when this module is loaded.
 	 */
-	fun load() {}
+	fun load() = Unit
 
 	/**
 	 * Called before each of the other callbacks, but after the mod itself receives the event
 	 */
-	fun lifecycle(event: FMLStateEvent) {}
+	fun lifecycle(event: FMLStateEvent) = Unit
 
-	fun construction(event: FMLConstructionEvent) {}
+	fun construction(event: FMLConstructionEvent) = Unit
 
-	fun preInit(event: FMLPreInitializationEvent) {}
+	fun preInit(event: FMLPreInitializationEvent) = Unit
 
-	fun init(event: FMLInitializationEvent) {}
+	fun init(event: FMLInitializationEvent) = Unit
 
-	fun postInit(event: FMLPostInitializationEvent) {}
+	fun postInit(event: FMLPostInitializationEvent) = Unit
 
-	fun loadComplete(event: FMLLoadCompleteEvent) {}
+	fun loadComplete(event: FMLLoadCompleteEvent) = Unit
 
-	fun serverAboutToStart(event: FMLServerAboutToStartEvent) {}
+	fun serverAboutToStart(event: FMLServerAboutToStartEvent) = Unit
 
-	fun serverStarting(event: FMLServerStartingEvent) {}
+	fun serverStarting(event: FMLServerStartingEvent) = Unit
 
-	fun serverStarted(event: FMLServerStartedEvent) {}
+	fun serverStarted(event: FMLServerStartedEvent) = Unit
 
-	fun serverStopping(event: FMLServerStoppingEvent) {}
+	fun serverStopping(event: FMLServerStoppingEvent) = Unit
 
-	fun serverStopped(event: FMLServerStoppedEvent) {}
+	fun serverStopped(event: FMLServerStoppedEvent) = Unit
 
 	/**
 	 * A list of classes to subscribe to the [Forge Event Bus][net.minecraftforge.common.MinecraftForge.EVENT_BUS].

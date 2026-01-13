@@ -11,6 +11,11 @@ import net.minecraftforge.fml.common.ModContainer
 import net.minecraftforge.fml.common.discovery.ASMDataTable
 import net.minecraftforge.fml.common.event.*
 import org.ender_development.catalyx.Catalyx
+import org.ender_development.catalyx.api.v1.annotations.module.CatalyxModule
+import org.ender_development.catalyx.api.v1.annotations.module.CatalyxModuleContainer
+import org.ender_development.catalyx.api.v1.interfaces.module.ICatalyxModule
+import org.ender_development.catalyx.api.v1.interfaces.module.IModuleIdentifier
+import org.ender_development.catalyx.api.v1.interfaces.module.IModuleManager
 import org.ender_development.catalyx.core.Reference
 import org.ender_development.catalyx.core.module.ModuleManager.configuration
 import org.ender_development.catalyx.core.module.ModuleManager.discoveredContainers
@@ -31,7 +36,7 @@ object ModuleManager : IModuleManager {
 	const val MODULE_CFG_FILE_NAME = "$MODULE_CFG_CATEGORY_NAME.cfg"
 
 	private val loadedModules = ReferenceLinkedOpenHashSet<ICatalyxModule>()
-	private val loadedModuleIds = hashSetOf<ModuleIdentifier>() // ender, you can go and turn this into some fastutil bs
+	private val loadedModuleIds = hashSetOf<IModuleIdentifier>() // TODO: turn this into some fastutil bs
 	private val loadedContainers = Object2ReferenceLinkedOpenHashMap<ContainerId, Any>()
 
 	private val configDirectory = File(Loader.instance().configDir, Reference.MODID)
@@ -61,7 +66,7 @@ object ModuleManager : IModuleManager {
 	 *
 	 * @param asmDataTable the data table containing all the Module Container and Module classes
 	 */
-	fun setup(asmDataTable: ASMDataTable) {
+	internal fun setup(asmDataTable: ASMDataTable) {
 		discoverContainers(asmDataTable)
 		discoverModules(asmDataTable)
 	}
@@ -69,7 +74,7 @@ object ModuleManager : IModuleManager {
 	private val discoveredContainers = hashMapOf<ModId, MutableList<ASMDataTable.ASMData>>()
 
 	/**
-	 * Discovers [ModuleContainers][CatalyxModuleContainer] for registration after mod construction
+	 * Discovers [ModuleContainers][org.ender_development.catalyx.api.v1.annotations.module.CatalyxModuleContainer] for registration after mod construction
 	 *
 	 * @see [discoveredContainers]
 	 * @param asmDataTable the table containing the ModuleContainer data
@@ -84,7 +89,7 @@ object ModuleManager : IModuleManager {
 	private val discoveredModules = hashMapOf<ContainerId, MutableList<ASMDataTable.ASMData>>()
 
 	/**
-	 * Discovers [Modules][CatalyxModule] for registration after their container gets registered
+	 * Discovers [Modules][org.ender_development.catalyx.api.v1.annotations.module.CatalyxModule] for registration after their container gets registered
 	 *
 	 * @see discoveredModules
 	 * @param asmDataTable the ASM Data Table containing the module data
@@ -124,7 +129,7 @@ object ModuleManager : IModuleManager {
 		val willLoadIds = ObjectLinkedOpenHashSet<ModuleIdentifier>()
 		val willLoadModules = ReferenceLinkedOpenHashSet<ICatalyxModule>()
 
-		toRegister.forEach { containerId, modules ->
+		toRegister.forEach { (containerId, modules) ->
 			// Ensure core module exists and is first
 			modules.indexOfFirst { it.annotation.coreModule }.let { idx ->
 				if(idx == -1)
@@ -321,7 +326,7 @@ object ModuleManager : IModuleManager {
 	 * @param loader The loader to load the class with
 	 * @param asm The ASM class to load
 	 * @param type What is being loaded - used for error messages
-	 * @return An instance of [asm] casted to [I], or null if anything fails
+	 * @return An instance of [asm] cast to [I], or null if anything fails
 	 */
 	private inline fun <reified I> loadClassAndCreateInstance(loader: ModClassLoader, asm: ASMDataTable.ASMData, type: String): I? {
 		try {
@@ -356,7 +361,7 @@ object ModuleManager : IModuleManager {
 	 * @param identifier the id of the module to check
 	 * @return true if the module is enabled, false otherwise
 	 */
-	override fun isModuleEnabled(identifier: ModuleIdentifier) =
+	override fun isModuleEnabled(identifier: IModuleIdentifier) =
 		loadedModuleIds.contains(identifier)
 
 	override fun isModuleEnabled(module: ICatalyxModule) =
