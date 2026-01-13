@@ -19,5 +19,4 @@ val moduleManager: IModuleManager = ModuleManager
  * Factories for [IModuleIdentifier]
  * currently implemented by [ModuleIdentifier]
  */
-fun newModuleIdentifier(identifier: String): IModuleIdentifier = ModuleIdentifier(identifier)
 fun newModuleIdentifier(containerId: String, moduleId: String): IModuleIdentifier = ModuleIdentifier(containerId, moduleId)
