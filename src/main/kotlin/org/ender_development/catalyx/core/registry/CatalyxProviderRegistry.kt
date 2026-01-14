@@ -10,10 +10,7 @@ import org.ender_development.catalyx.core.utils.extensions.modLoaded
  *
  * @param V the Type of the Provider for the things that should be managed here
  */
-class CatalyxProviderRegistry<V : IProvider<*>> :
-	HashMap<ResourceLocation, Pair<V, Boolean>>(),
-	ICatalyxProviderRegistry<V> {
-
+class CatalyxProviderRegistry<V : IProvider<*>> : HashMap<ResourceLocation, Pair<V, Boolean>>(), ICatalyxProviderRegistry<V> {
 	override fun add(provider: V): Boolean =
 		provider.instance.registryName?.let {
 			this[it] = provider to (provider.isEnabled() && provider.modDependencies.evaluateModDependencies())
@@ -21,16 +18,12 @@ class CatalyxProviderRegistry<V : IProvider<*>> :
 		} ?: false
 
 	/**
-	 * Special expansion to evaluate modDependencies strings.
+	 * Special helper to evaluate modDependencies strings.
 	 *
-	 * @return true if valid
 	 * @see [IProvider.modDependencies]
 	 */
-	fun String.evaluateModDependencies(): Boolean =
-		isEmpty() || split(',', ';').all {
-			if(it[0] == '!')
-				!it.substring(1).modLoaded()
-			else
-				it.modLoaded()
+	fun Iterable<String>.evaluateModDependencies() =
+		all {
+			it.removePrefix("!").modLoaded() != it.startsWith('!')
 		}
 }

@@ -36,7 +36,8 @@ open class BaseBlock(val mod: ICatalyxMod, name: String, material: Material = Ma
 
 	override val instance = this
 
-	override var modDependencies = ""
+	final override var modDependencies: Iterable<String> = emptyList()
+		private set
 
 	override val item = ItemBlock(this)
 
@@ -53,14 +54,14 @@ open class BaseBlock(val mod: ICatalyxMod, name: String, material: Material = Ma
 			ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(registryName!!, "inventory"))
 	}
 
-	override fun requires(modDependencies: String): Block {
+	override fun requires(modDependencies: Iterable<String>): Block {
 		this.modDependencies = modDependencies
 		mod.register(this)
 		return this
 	}
 
 	init {
-		// TODO: why do we have 2 init blocks?
+		// TODO: why do we have 2 init blocks? => so you ask questions /j; nah actually, just because of initialisation order, this made more sense
 		mod.register(this)
 	}
 

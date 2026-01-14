@@ -41,9 +41,4 @@ object Catalyx : ICatalyxMod {
 	fun construction(e: FMLConstructionEvent) {
 		ModuleManager.setup(e.asmHarvestedData)
 	}
-
-	@Mod.EventHandler
-	fun preInit(e: FMLPreInitializationEvent) {
-		PacketHandler.init()
-	}
 }

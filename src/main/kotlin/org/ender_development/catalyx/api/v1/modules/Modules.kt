@@ -2,7 +2,7 @@ package org.ender_development.catalyx.api.v1.modules
 
 /**
  * API-Status: NOT-FROZEN
- * Be aware
+ * Beware
  */
 
 import org.ender_development.catalyx.api.v1.modules.interfaces.IModuleIdentifier

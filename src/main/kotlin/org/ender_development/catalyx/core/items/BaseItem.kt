@@ -25,9 +25,10 @@ open class BaseItem(val mod: ICatalyxMod, val name: String) : Item(), IItemProvi
 	override fun isEnabled() =
 		true
 
-	override var modDependencies = ""
+	final override var modDependencies: Iterable<String> = emptyList()
+		private set
 
-	override fun requires(modDependencies: String): Item {
+	override fun requires(modDependencies: Iterable<String>): Item {
 		this.modDependencies = modDependencies
 		mod.register(this)
 		return this
