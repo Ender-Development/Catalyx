@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.core.registry
+package org.ender_development.catalyx.api.v1.registry
 
 import net.minecraft.block.Block
 import net.minecraft.item.Item
@@ -18,9 +18,12 @@ interface IProvider<T : IForgeRegistryEntry<T>> {
 	 * The mod ID(s) required for this provider to be enabled, separated by semicolons. Prefixes of "!" can be used to indicate that a mod must NOT be present.
 	 *
 	 * Default is an empty string, meaning no dependencies.
+	 *
+	 * @see [org.ender_development.catalyx.core.registry.CatalyxProviderRegistry.evaluateModDependencies]
 	 */
-	var modDependencies: String
+	var modDependencies: String // TODO: shouldn't it be a list or HashMap<String, Boolean>(mod, mod-must-NOT-be-present) or something?
 
+	//                                                               cold not open this link ↴ so why? ~Klebi
 	// Note to self: do not make this a `val` as we wanna enforce a getter here (https://discord.com/channels/@me/1232745201009819749/1423296686691717220)
 	/**
 	 * Whether this provider is enabled and should be registered.

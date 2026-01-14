@@ -5,9 +5,9 @@ import net.minecraft.item.Item
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.event.RegistryEvent
+import org.ender_development.catalyx.api.v1.registry.IItemProvider
 import org.ender_development.catalyx.core.ICatalyxMod
 import org.ender_development.catalyx.core.register
-import org.ender_development.catalyx.core.registry.IItemProvider
 import org.ender_development.catalyx.core.utils.SideUtils
 
 /**

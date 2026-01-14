@@ -5,13 +5,15 @@ import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import org.ender_development.catalyx.Catalyx
+import org.ender_development.catalyx.api.v1.registry.ICatalyxRegistry
+import org.ender_development.catalyx.api.v1.registry.IItemProvider
 import org.ender_development.catalyx.core.Reference
 import org.ender_development.catalyx.core.utils.DevUtils
 
 @Suppress("unused")
 @Mod.EventBusSubscriber(modid = Reference.MODID)
 object CatalyxItemRegistry : ICatalyxRegistry<Item, IItemProvider> {
-	override val registry = CatalyxRegistry<IItemProvider>()
+	override val registry = CatalyxProviderRegistry<IItemProvider>()
 
 	@SubscribeEvent
 	override fun register(event: RegistryEvent.Register<Item>) {
