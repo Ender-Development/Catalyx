@@ -15,3 +15,13 @@ interface IModuleIdentifier {
 	fun toResourceLocation() =
 		ResourceLocation(containerId, moduleId)
 }
+
+/*
+// TODO: Discuss that the flowing cloud be a batter solution, that cold replace the ModuleIdentifier BS:
+typealias ModuleIdentifier = ResourceLocation
+inline val ModuleIdentifier.containerId: String?
+	get() = this.namespace
+
+inline val ModuleIdentifier.moduleId: String?
+	get() = this.path
+*/
