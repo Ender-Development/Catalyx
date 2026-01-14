@@ -10,6 +10,7 @@ import org.ender_development.catalyx.api.v1.registry.IBlockProvider
 import org.ender_development.catalyx.api.v1.registry.ICatalyxRegistry
 import org.ender_development.catalyx.core.Reference
 import org.ender_development.catalyx.core.utils.DevUtils
+import org.ender_development.catalyx.core.utils.extensions.plural
 
 @Suppress("unused")
 @Mod.EventBusSubscriber(modid = Reference.MODID)
@@ -18,7 +19,7 @@ object CatalyxBlockRegistry : ICatalyxRegistry<Block, IBlockProvider> {
 
 	@SubscribeEvent
 	override fun register(event: RegistryEvent.Register<Block>) {
-		Catalyx.LOGGER.debug("Block Registry has ${registry.size} entries, but only gonna register ${registry.enabled.size} block${registry.plural}")
+		Catalyx.LOGGER.debug("Block Registry has ${registry.size} entries, but only gonna register ${registry.enabled.size} block${registry.size.plural}")
 		registry.enabled.forEach {
 			it.register(event)
 			if(DevUtils.isDeobfuscated)
@@ -28,7 +29,7 @@ object CatalyxBlockRegistry : ICatalyxRegistry<Block, IBlockProvider> {
 
 	@SubscribeEvent
 	fun registerItemBlocks(event: RegistryEvent.Register<Item>) {
-		Catalyx.LOGGER.debug("Item Block Registry has ${registry.size} entries, but only gonna register ${registry.enabled.size} block item${registry.plural}")
+		Catalyx.LOGGER.debug("Item Block Registry has ${registry.size} entries, but only gonna register ${registry.enabled.size} block item${registry.size.plural}")
 		registry.enabled.forEach {
 			it.registerItemBlock(event)
 			if(DevUtils.isDeobfuscated)

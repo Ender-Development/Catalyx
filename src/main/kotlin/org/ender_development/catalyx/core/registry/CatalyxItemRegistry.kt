@@ -9,6 +9,7 @@ import org.ender_development.catalyx.api.v1.registry.ICatalyxRegistry
 import org.ender_development.catalyx.api.v1.registry.IItemProvider
 import org.ender_development.catalyx.core.Reference
 import org.ender_development.catalyx.core.utils.DevUtils
+import org.ender_development.catalyx.core.utils.extensions.plural
 
 @Suppress("unused")
 @Mod.EventBusSubscriber(modid = Reference.MODID)
@@ -17,7 +18,7 @@ object CatalyxItemRegistry : ICatalyxRegistry<Item, IItemProvider> {
 
 	@SubscribeEvent
 	override fun register(event: RegistryEvent.Register<Item>) {
-		Catalyx.LOGGER.debug("Item Registry has ${registry.size} entries, but only gonna register ${registry.enabled.size} item${registry.plural}")
+		Catalyx.LOGGER.debug("Item Registry has ${registry.size} entries, but only gonna register ${registry.enabled.size} item${registry.size.plural}")
 		registry.enabled.forEach {
 			it.register(event)
 			if(DevUtils.isDeobfuscated)
