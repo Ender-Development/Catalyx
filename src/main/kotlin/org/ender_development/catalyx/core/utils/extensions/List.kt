@@ -1,3 +1,5 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package org.ender_development.catalyx.core.utils.extensions
 
 import com.google.common.collect.ImmutableList
@@ -21,7 +23,7 @@ fun <T> List<T>.validateEach(validator: (idx: Int, T) -> ValidationResult<T>) =
 	mapIndexed(validator)
 
 @JvmName("copyOfIS")
-fun List<ItemStack>.copyOf() =
+inline fun List<ItemStack>.copyOf() =
 	map {
 		if(it.isEmpty)
 			ItemStack.EMPTY
@@ -30,8 +32,8 @@ fun List<ItemStack>.copyOf() =
 	}
 
 @JvmName("copyOfFS")
-fun List<FluidStack>.copyOf() =
-	map { it.copy() }
+inline fun List<FluidStack>.copyOf() =
+	map(FluidStack::copy)
 
 inline fun <T, R> List<T>.mapUnique(transform: (T) -> R) =
 	mapTo(hashSetOf(), transform)
@@ -41,3 +43,12 @@ fun List<ValidationError>.getBySeverity(severity: ValidationError.Severity) =
 
 fun List<ValidationError>.getByMinSeverity(severity: ValidationError.Severity) =
 	filter { it.severity >= severity }
+
+/**
+ * Get the specified [index][idx] in the list and apply the [mapper] function, or return the [default]
+ */
+inline fun <T, R> List<T>.getApplyOrDefault(idx: Int, crossinline mapper: (T) -> R, crossinline default: () -> R) =
+	if(idx in indices)
+		mapper(this[idx])
+	else
+		default()

@@ -22,7 +22,7 @@ inline fun String.toOre() =
 
 fun String.toStack(quantity: Int = 1, meta: Int = 0): ItemStack {
 	val split = split(':')
-	val meta = split.getOrNull(2)?.toInt() ?: meta
+	val meta = split.getApplyOrDefault(2, String::toInt) { meta }
 	val location = if(split.size == 1) ResourceLocation(this) else ResourceLocation(split[0], split[1])
 
 	return Item.REGISTRY.registryObjects[location]?.toStack(quantity, meta) ?: Block.REGISTRY.registryObjects[location]?.toStack(quantity, meta) ?: ItemStack.EMPTY

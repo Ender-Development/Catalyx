@@ -35,7 +35,7 @@ inline fun BlockPos.getFacingFromEntity(entity: Entity): EnumFacing =
 	getFacingFromEntityPosition(entity.posX.toFloat(), entity.posZ.toFloat())
 
 /**
- * @see org.ender_development.catalyx.blocks.multiblock.parts.AbstractEdgeBlock
+ * @see org.ender_development.catalyx.core.blocks.multiblock.parts.AbstractEdgeBlock
  */
 fun BlockPos.getHorizontalSurroundings() = arrayOf(
 	north().west(), north(), north().east(),
