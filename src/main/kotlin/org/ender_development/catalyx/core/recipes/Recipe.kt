@@ -16,7 +16,7 @@ import org.ender_development.catalyx.core.utils.IItemStackHash
 import org.ender_development.catalyx.core.utils.extensions.copyOf
 import org.ender_development.catalyx.modules.integration.groovyscript.ModuleGroovyScript
 
-class Recipe(
+class Recipe (
 	inputs: List<RecipeInput?>,
 	val outputs: List<ItemStack>,
 	val chancedOutputs: ChancedOutputList<ItemStack, ChancedItemOutput>,
@@ -30,7 +30,11 @@ class Recipe(
 ) {
 	val inputs = RecipeInputCache.deduplicateInputs(inputs)
 	val fluidInputs = RecipeInputCache.deduplicateInputs(fluidInputs)
-	val hashCode = makeHashCode()
+	val hashCode = let{
+		var hash = 31 * this.inputs.hashItemList()
+		hash = 31 * hash + this.fluidInputs.hashFluidList()
+		hash
+	}
 	val groovyRecipe = ModuleGroovyScript.isRunning
 
 	companion object {
@@ -61,28 +65,41 @@ class Recipe(
 			return currentRecipe
 		}
 
-		fun hashFluidList(fluidList: List<RecipeInput>): Int {
-			var hash = 1
-			fluidList.forEach {
-				hash = 31 * hash + it.hashCode()
-			}
-			return hash
+		fun List<RecipeInput>.hashFluidList() = this.fold(1) { hash, it ->
+			31 * hash + it.hashCode()
 		}
 
-		fun hashItemList(itemList: List<RecipeInput>): Int {
-			var hash = 1
-			itemList.forEach {
-				when {
-					!it.isOreDict() -> it.getInputStacks()?.forEach { stack -> hash = 31 * hash + IItemStackHash.comparingAll.hashCode(stack) }
-					else -> hash = 31 * hash + it.getOreDict()
+		fun List<RecipeInput>.hashItemList() = this.fold(1) { hash, it ->
+			return if (!it.isOreDict()) {
+				it.getInputStacks().orEmpty().fold(hash) { hash, stack ->
+					31 * hash + IItemStackHash.comparingAll.hashCode(stack)
 				}
+			} else {
+				31 * hash + it.getOreDict()
 			}
-			return hash
 		}
 	}
 
+	/**
+	 * Copy constructor
+	 *
+	 * @param other the object to copy data from
+	 */
+	constructor(other: Recipe) : this(
+		other.inputs,
+		other.outputs,
+		other.chancedOutputs,
+		other.fluidInputs,
+		other.fluidOutputs,
+		other.chancedFluidOutputs,
+		other.duration,
+		other.energyPerTick,
+		other.hidden,
+		other.recipeCategory
+	)
+
 	fun copy() =
-		Recipe(inputs, outputs, chancedOutputs, fluidInputs, fluidOutputs, chancedFluidOutputs, duration, energyPerTick, hidden, recipeCategory)
+		Recipe(this)
 
 	override fun equals(other: Any?) =
 		this === other || (other is Recipe && hasSameInputs(other) && hasSameFluidInputs(other))
@@ -92,12 +109,6 @@ class Recipe(
 
 	override fun hashCode() =
 		hashCode
-
-	private fun makeHashCode(): Int {
-		var hash = 31 * hashItemList(inputs)
-		hash = 31 * hash + hashFluidList(fluidInputs)
-		return hash
-	}
 
 	private fun hasSameInputs(other: Recipe): Boolean {
 		val otherStackList = ObjectArrayList<ItemStack>(other.inputs.size)

@@ -80,7 +80,7 @@ object RecipeInputCache {
 		if(inputs.isEmpty())
 			return inputs
 
-		return inputs.map { deduplicate(it) }
+		return inputs.map(::deduplicate)
 	}
 
 	/**
