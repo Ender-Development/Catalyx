@@ -48,12 +48,12 @@ class RecipeBuilder<R : RecipeBuilder<R>> {
 	var recipeStatus: ValidationState = ValidationState.VALID
 
 	private constructor() {
-		this.inputs = ArrayList<RecipeInput?>()
-		this.outputs = ArrayList<ItemStack?>()
-		this.chancedOutputs = ArrayList<ChancedItemOutput?>()
-		this.fluidInputs = ArrayList<RecipeInput?>()
-		this.fluidOutputs = ArrayList<FluidStack?>()
-		this.chancedFluidOutputs = ArrayList<ChancedFluidOutput?>()
+		this.inputs = mutableListOf()
+		this.outputs = mutableListOf()
+		this.chancedOutputs = mutableListOf()
+		this.fluidInputs = mutableListOf()
+		this.fluidOutputs = mutableListOf()
+		this.chancedFluidOutputs = mutableListOf()
 	}
 
 	constructor(recipe: Recipe, recipeMap: RecipeMap<R>) {

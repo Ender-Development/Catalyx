@@ -30,11 +30,7 @@ class Recipe (
 ) {
 	val inputs = RecipeInputCache.deduplicateInputs(inputs)
 	val fluidInputs = RecipeInputCache.deduplicateInputs(fluidInputs)
-	val hashCode = let{
-		var hash = 31 * this.inputs.hashItemList()
-		hash = 31 * hash + this.fluidInputs.hashFluidList()
-		hash
-	}
+	private val hashCode = 31 * this.inputs.hashItemList() + this.fluidInputs.hashFluidList()
 	val groovyRecipe = ModuleGroovyScript.isRunning
 
 	companion object {
@@ -65,19 +61,20 @@ class Recipe (
 			return currentRecipe
 		}
 
-		fun List<RecipeInput>.hashFluidList() = this.fold(1) { hash, it ->
-			31 * hash + it.hashCode()
-		}
-
-		fun List<RecipeInput>.hashItemList() = this.fold(1) { hash, it ->
-			return if (!it.isOreDict()) {
-				it.getInputStacks().orEmpty().fold(hash) { hash, stack ->
-					31 * hash + IItemStackHash.comparingAll.hashCode(stack)
-				}
-			} else {
-				31 * hash + it.getOreDict()
+		private fun List<RecipeInput>.hashFluidList() =
+			fold(0) { hash, it ->
+				31 * hash + it.hashCode()
 			}
-		}
+
+		private fun List<RecipeInput>.hashItemList() =
+			fold(0) { hash, it ->
+				if(it.isOreDict())
+					31 * hash + it.getOreDict()
+				else
+					it.getInputStacks().orEmpty().fold(hash) { hash, stack ->
+						31 * hash + IItemStackHash.comparingAll.hashCode(stack)
+					}
+			}
 	}
 
 	/**
