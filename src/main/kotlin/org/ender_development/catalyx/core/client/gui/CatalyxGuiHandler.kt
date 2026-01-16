@@ -24,7 +24,7 @@ class CatalyxGuiHandler(mod: ICatalyxMod) : IGuiHandler {
 	internal val tileEntities = mutableListOf<Class<out TileEntity>>()
 
 	init {
-		instances.put(mod, this)
+		instances[mod] = this
 	}
 
 	fun registerId(te: Class<out TileEntity>, container: Class<out Container>, gui: () -> Class<out GuiContainer>): Int {

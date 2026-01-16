@@ -26,7 +26,7 @@ class ConfigHandler<T : ConfigParser.ConfigItemStack>(configData: Iterable<Strin
 	 * @return True if the player has any of the items equipped, false otherwise.
 	 */
 	fun equipped(player: EntityPlayer) =
-		player.equipmentAndArmor.any { contains(it) }
+		player.equipmentAndArmor.any(::contains)
 
 	/**
 	 * Get the first equipped config item that matches any of the items in the list.
@@ -34,7 +34,7 @@ class ConfigHandler<T : ConfigParser.ConfigItemStack>(configData: Iterable<Strin
 	 * @return The first matching ConfigItem, or null if none found.
 	 */
 	fun getEquipped(player: EntityPlayer) =
-		player.equipmentAndArmor.firstOrNull { contains(it) }?.let { get(it) }
+		player.equipmentAndArmor.firstOrNull(::contains)?.let(::get)
 
 	/**
 	 * Get the first config item in the list that matches the given item stack.
