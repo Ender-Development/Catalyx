@@ -26,7 +26,7 @@ class RecipeMap<R : RecipeBuilder<R>> {
 		internal val RECIPE_DURATION_THEN_ENERGY = Comparator<Recipe>
 			.comparingInt(Recipe::duration)
 			.thenComparingLong(Recipe::energyPerTick)
-			.thenComparingInt { it.hashCode }
+			.thenComparingInt(Recipe::hashCode)
 		internal val INGREDIENT_ROOT = WeakHashMap<AbstractMapIngredient, WeakReference<AbstractMapIngredient>>()
 		internal var foundInvalidRecipe = false
 
