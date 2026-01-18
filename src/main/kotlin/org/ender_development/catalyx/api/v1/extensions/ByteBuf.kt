@@ -1,6 +1,6 @@
 @file:Suppress("NOTHING_TO_INLINE")
 
-package org.ender_development.catalyx.core.utils.extensions
+package org.ender_development.catalyx.api.v1.extensions
 
 import io.netty.buffer.ByteBuf
 import net.minecraft.item.ItemStack

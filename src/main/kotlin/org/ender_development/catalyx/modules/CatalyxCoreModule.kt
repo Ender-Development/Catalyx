@@ -8,12 +8,12 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import org.ender_development.catalyx.Catalyx
+import org.ender_development.catalyx.api.v1.extensions.subLogger
 import org.ender_development.catalyx.api.v1.modules.annotations.CatalyxModule
 import org.ender_development.catalyx.api.v1.modules.interfaces.ICatalyxModule
 import org.ender_development.catalyx.core.Reference
 import org.ender_development.catalyx.core.client.AreaHighlighter
 import org.ender_development.catalyx.core.network.PacketHandler
-import org.ender_development.catalyx.core.utils.extensions.subLogger
 import org.ender_development.catalyx.core.utils.persistence.WorldPersistentData
 
 @CatalyxModule(

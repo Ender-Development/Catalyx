@@ -12,7 +12,7 @@ import net.minecraft.util.ResourceLocation
 import net.minecraftforge.fluids.Fluid
 import net.minecraftforge.fluids.FluidStack
 import net.minecraftforge.fluids.FluidTank
-import org.ender_development.catalyx.core.utils.extensions.destructFloat
+import org.ender_development.catalyx.api.v1.extensions.destructFloat
 import org.lwjgl.opengl.GL11
 import java.awt.Color
 

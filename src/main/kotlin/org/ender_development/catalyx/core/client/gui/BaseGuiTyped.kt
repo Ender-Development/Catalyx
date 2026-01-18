@@ -5,6 +5,8 @@ import net.minecraft.client.gui.inventory.GuiContainer
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.inventory.Container
 import net.minecraft.util.ResourceLocation
+import org.ender_development.catalyx.api.v1.extensions.get
+import org.ender_development.catalyx.api.v1.extensions.translate
 import org.ender_development.catalyx.core.Reference
 import org.ender_development.catalyx.core.client.button.AbstractButtonWrapper
 import org.ender_development.catalyx.core.client.button.PauseButtonWrapper
@@ -19,8 +21,6 @@ import org.ender_development.catalyx.core.tiles.BaseTile
 import org.ender_development.catalyx.core.tiles.helper.IGuiTile
 import org.ender_development.catalyx.core.utils.RenderAlignment
 import org.ender_development.catalyx.core.utils.RenderUtils
-import org.ender_development.catalyx.core.utils.extensions.get
-import org.ender_development.catalyx.core.utils.extensions.translate
 
 // TODO fully rewrite this whole mess at some point
 abstract class BaseGuiTyped<T>(container: Container, val tileEntity: T) : GuiContainer(container) where T : IGuiTile, T : BaseTile, T : BaseGuiTyped.IDefaultButtonVariables {

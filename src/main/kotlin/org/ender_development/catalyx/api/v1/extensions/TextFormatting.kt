@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.core.utils.extensions
+package org.ender_development.catalyx.api.v1.extensions
 
 import net.minecraft.util.text.TextFormatting
 import org.ender_development.catalyx.core.utils.ColorMapping

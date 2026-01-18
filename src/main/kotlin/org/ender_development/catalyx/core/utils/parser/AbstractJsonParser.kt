@@ -4,8 +4,8 @@ import com.cleanroommc.groovyscript.helper.JsonHelper
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import org.ender_development.catalyx.Catalyx
-import org.ender_development.catalyx.core.utils.extensions.getByMinSeverity
-import org.ender_development.catalyx.core.utils.extensions.getBySeverity
+import org.ender_development.catalyx.api.v1.extensions.getByMinSeverity
+import org.ender_development.catalyx.api.v1.extensions.getBySeverity
 import org.ender_development.catalyx.core.utils.validation.ValidationError
 import org.ender_development.catalyx.core.utils.validation.ValidationResult
 import java.io.File

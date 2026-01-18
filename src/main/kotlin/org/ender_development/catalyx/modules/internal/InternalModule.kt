@@ -1,11 +1,11 @@
 package org.ender_development.catalyx.modules.internal
 
 import org.ender_development.catalyx.Catalyx
+import org.ender_development.catalyx.api.v1.extensions.subLogger
 import org.ender_development.catalyx.api.v1.modules.annotations.CatalyxModule
 import org.ender_development.catalyx.api.v1.modules.interfaces.ICatalyxModule
 import org.ender_development.catalyx.core.Reference
 import org.ender_development.catalyx.core.items.CopyPasteTool
-import org.ender_development.catalyx.core.utils.extensions.subLogger
 import org.ender_development.catalyx.modules.CatalyxInternalModuleContainer
 
 // TODO rename, this name is silly, but couldn't come up with a better one right meow
