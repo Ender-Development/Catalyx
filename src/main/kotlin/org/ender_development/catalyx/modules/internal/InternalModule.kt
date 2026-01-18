@@ -1,7 +1,7 @@
 package org.ender_development.catalyx.modules.internal
 
 import org.ender_development.catalyx.Catalyx
-import org.ender_development.catalyx.api.v1.extensions.subLogger
+import org.ender_development.catalyx.api.v1.common.extensions.subLogger
 import org.ender_development.catalyx.api.v1.modules.annotations.CatalyxModule
 import org.ender_development.catalyx.api.v1.modules.interfaces.ICatalyxModule
 import org.ender_development.catalyx.core.Reference

@@ -5,7 +5,7 @@ import mcjty.theoneprobe.apiimpl.styles.ProgressStyle
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.world.World
-import org.ender_development.catalyx.api.v1.extensions.getRealColor
+import org.ender_development.catalyx.api.v1.common.extensions.getRealColor
 import org.ender_development.catalyx.core.Reference
 import org.ender_development.catalyx.core.tiles.helper.IFluidTile
 import java.awt.Color

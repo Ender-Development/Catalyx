@@ -6,10 +6,10 @@ import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
-import org.ender_development.catalyx.api.v1.extensions.glOffsetX
-import org.ender_development.catalyx.api.v1.extensions.glOffsetZ
-import org.ender_development.catalyx.api.v1.extensions.glRotate
-import org.ender_development.catalyx.api.v1.extensions.glRotationAngle
+import org.ender_development.catalyx.api.v1.common.extensions.glOffsetX
+import org.ender_development.catalyx.api.v1.common.extensions.glOffsetZ
+import org.ender_development.catalyx.api.v1.common.extensions.glRotate
+import org.ender_development.catalyx.api.v1.common.extensions.glRotationAngle
 import org.ender_development.catalyx.core.Reference
 import org.ender_development.catalyx.core.blocks.helper.IOType
 import org.ender_development.catalyx.core.tiles.BaseTile

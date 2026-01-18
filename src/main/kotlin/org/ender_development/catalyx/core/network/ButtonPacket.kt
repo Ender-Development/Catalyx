@@ -8,8 +8,8 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext
 import org.ender_development.catalyx.Catalyx
-import org.ender_development.catalyx.api.v1.extensions.readString
-import org.ender_development.catalyx.api.v1.extensions.writeString
+import org.ender_development.catalyx.api.v1.common.extensions.readString
+import org.ender_development.catalyx.api.v1.common.extensions.writeString
 import org.ender_development.catalyx.core.client.button.AbstractButtonWrapper
 import org.ender_development.catalyx.core.tiles.helper.IButtonTile
 

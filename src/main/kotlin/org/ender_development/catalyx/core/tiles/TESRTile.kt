@@ -4,8 +4,8 @@ import net.minecraft.client.Minecraft
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
-import org.ender_development.catalyx.api.v1.extensions.relativeDirectionTo
-import org.ender_development.catalyx.api.v1.extensions.withAlpha
+import org.ender_development.catalyx.api.v1.common.extensions.relativeDirectionTo
+import org.ender_development.catalyx.api.v1.common.extensions.withAlpha
 import org.ender_development.catalyx.core.ICatalyxMod
 import org.ender_development.catalyx.core.client.tesr.AbstractTESRenderer
 import org.ender_development.catalyx.core.client.tesr.HudInfoRenderer

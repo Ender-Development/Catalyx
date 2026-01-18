@@ -4,10 +4,12 @@ import com.cleanroommc.groovyscript.helper.JsonHelper
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import org.ender_development.catalyx.Catalyx
-import org.ender_development.catalyx.api.v1.extensions.getByMinSeverity
-import org.ender_development.catalyx.api.v1.extensions.getBySeverity
-import org.ender_development.catalyx.core.utils.validation.ValidationError
-import org.ender_development.catalyx.core.utils.validation.ValidationResult
+import org.ender_development.catalyx.api.v1.common.Severity
+import org.ender_development.catalyx.api.v1.common.extensions.getByMinSeverity
+import org.ender_development.catalyx.api.v1.common.extensions.getBySeverity
+import org.ender_development.catalyx.api.v1.validation.Validation.newValidationError
+import org.ender_development.catalyx.api.v1.validation.interfaces.IValidationError
+import org.ender_development.catalyx.core.validation.ValidationResult
 import java.io.File
 import java.io.FileReader
 import java.io.FileWriter
@@ -35,18 +37,22 @@ abstract class AbstractJsonParser<TRaw, TSanitized> : IParser<TSanitized> {
 
 		val results = rawData.map(::sanitize)
 		val successfulItems = mutableListOf<TSanitized>()
-		val allErrors = mutableListOf<ValidationError>()
-		val allWarnings = mutableListOf<ValidationError>()
+		val allErrors = mutableListOf<IValidationError>()
+		val allWarnings = mutableListOf<IValidationError>()
 
 		results.forEachIndexed { idx, result ->
 			when {
 				result.success -> successfulItems.add(result.data!!)
 				result.failure -> {
-					val errors = result.errors.getByMinSeverity(ValidationError.Severity.ERROR)
-					val warnings = result.errors.getBySeverity(ValidationError.Severity.WARNING)
+					val errors = result.errors.getByMinSeverity(Severity.ERROR)
+					val warnings = result.errors.getBySeverity(Severity.WARNING)
 
-					val contextualErrors = errors.map { it.copy(message = "Item #$idx: ${it.message}") }
-					val contextualWarnings = warnings.map { it.copy(message = "Item #$idx: ${it.message}") }
+					val contextualErrors = errors.map {
+						newValidationError(it.field, "Item #$idx: ${it.message}", it.code, it.severity)
+					}
+					val contextualWarnings = warnings.map {
+						newValidationError(it.field, "Item #$idx: ${it.message}", it.code, it.severity)
+					}
 					allErrors.addAll(contextualErrors)
 					allWarnings.addAll(contextualWarnings)
 					logValidationIssues(idx, contextualErrors, contextualWarnings)
@@ -70,7 +76,7 @@ abstract class AbstractJsonParser<TRaw, TSanitized> : IParser<TSanitized> {
 	override val stats: ParsingStats
 		get() = lastParsingStats
 
-	private fun logValidationIssues(itemIndex: Int, errors: List<ValidationError>, warnings: List<ValidationError>) {
+	private fun logValidationIssues(itemIndex: Int, errors: List<IValidationError>, warnings: List<IValidationError>) {
 		if(errors.isNotEmpty()) {
 			Catalyx.LOGGER.error("❌ Failed to parse item $itemIndex from $filePath:")
 			errors.forEach { Catalyx.LOGGER.error("   $it") }
@@ -94,8 +100,8 @@ abstract class AbstractJsonParser<TRaw, TSanitized> : IParser<TSanitized> {
 
 		if(stats.hasErrors) {
 			Catalyx.LOGGER.info("   🔍 Validation errors: ${stats.errors.size}")
-			val criticalErrors = stats.errors.getBySeverity(ValidationError.Severity.CRITICAL)
-			val regularErrors = stats.errors.getBySeverity(ValidationError.Severity.ERROR)
+			val criticalErrors = stats.errors.getBySeverity(Severity.CRITICAL)
+			val regularErrors = stats.errors.getBySeverity(Severity.ERROR)
 
 			if(criticalErrors.isNotEmpty())
 				Catalyx.LOGGER.info("     🚨 Critical: ${criticalErrors.size}")
