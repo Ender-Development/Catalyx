@@ -26,7 +26,7 @@ import org.ender_development.catalyx.core.tiles.BaseTile
  */
 open class BaseTileBlock(mod: ICatalyxMod, name: String, val tileClass: Class<out TileEntity>, val guiId: Int) : BaseBlock(mod, name), ITileEntityProvider {
 	/**
-	 * Only use this constructor if you used a [org.ender_development.catalyx.client.gui.CatalyxGuiHandler] for the guiId
+	 * Only use this constructor if you used a [org.ender_development.catalyx.core.client.gui.CatalyxGuiHandler] for the guiId
 	 */
 	constructor(mod: ICatalyxMod, name: String, guiId: Int) : this(mod, name, CatalyxGuiHandler.instances[mod]?.tileEntities[guiId] ?: error("Tried to use the BaseTileBlock constructor without a tileClass without using a CatalyxGuiHandler to register the GUI handler"), guiId)
 

@@ -54,7 +54,8 @@ abstract class BaseMachineTile<T>(mod: ICatalyxMod) : BaseTile(mod), ITickable, 
 	/**
 	 * Check if the recipe progress should reset if shouldProcess() is false
 	 */
-	open fun shouldResetProgress() = true
+	open fun shouldResetProgress() =
+		true
 
 	/**
 	 * Called every tick when the machine is idle.
@@ -63,10 +64,14 @@ abstract class BaseMachineTile<T>(mod: ICatalyxMod) : BaseTile(mod), ITickable, 
 	open fun onIdleTick() = updateRecipe()
 
 	override fun update() {
-		if(world.isRemote) return
+		if(world.isRemote)
+			return
+
 		markDirtyGUIEvery(5)
 
-		if(isPaused || needsRedstonePower != this.world.isBlockPowered(this.pos)) return
+		if(isPaused || needsRedstonePower != world.isBlockPowered(pos))
+			return
+
 		if(!shouldTick()) {
 			progressTicks = 0
 			return

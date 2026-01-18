@@ -15,7 +15,7 @@ import org.ender_development.catalyx.core.tiles.BaseTile
 open class BaseMachineBlock : BaseTileBlock {
 	constructor(mod: ICatalyxMod, name: String, tileClass: Class<out TileEntity>, guiId: Int) : super(mod, name, tileClass, guiId)
 	/**
-	 * Only use this constructor if you used a [org.ender_development.catalyx.client.gui.CatalyxGuiHandler] for the guiId
+	 * Only use this constructor if you used a [org.ender_development.catalyx.core.client.gui.CatalyxGuiHandler] for the guiId
 	 */
 	constructor(mod: ICatalyxMod, name: String, guiId: Int) : super(mod, name, guiId)
 

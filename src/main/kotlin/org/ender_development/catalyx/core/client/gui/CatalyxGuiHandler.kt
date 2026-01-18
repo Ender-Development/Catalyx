@@ -14,7 +14,7 @@ import org.ender_development.catalyx.core.utils.SideUtils
 /**
  * A GUI handler you can use for your machines
  *
- * Use the return value of [registerId] in the [org.ender_development.catalyx.blocks.BaseTileBlock.guiId] field
+ * Use the return value of [registerId] in the [org.ender_development.catalyx.core.blocks.BaseTileBlock.guiId] field
  *
  * Remember to register it with [net.minecraftforge.fml.common.network.NetworkRegistry.registerGuiHandler]
  */

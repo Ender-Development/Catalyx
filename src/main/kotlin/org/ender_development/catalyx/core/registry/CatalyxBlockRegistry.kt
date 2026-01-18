@@ -12,7 +12,6 @@ import org.ender_development.catalyx.core.Reference
 import org.ender_development.catalyx.core.utils.DevUtils
 import org.ender_development.catalyx.core.utils.extensions.plural
 
-@Suppress("unused")
 @Mod.EventBusSubscriber(modid = Reference.MODID)
 object CatalyxBlockRegistry : ICatalyxRegistry<Block, IBlockProvider> {
 	override val registry = CatalyxProviderRegistry<IBlockProvider>()

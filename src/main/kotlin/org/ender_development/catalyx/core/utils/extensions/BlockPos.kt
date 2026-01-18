@@ -25,7 +25,7 @@ inline operator fun BlockPos.plus(other: BlockPos): BlockPos =
 inline operator fun BlockPos.times(scalar: Int) =
 	BlockPos(x * scalar, y * scalar, z * scalar)
 
-inline fun Pair<BlockPos, BlockPos>.getAllInBox() =
+inline fun Pair<BlockPos, BlockPos>.getAllInBox(): Iterable<BlockPos> =
 	BlockPos.getAllInBox(first, second)
 
 inline fun BlockPos.getFacingFromEntityPosition(entityX: Float, entityZ: Float): EnumFacing =

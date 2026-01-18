@@ -5,7 +5,7 @@ import org.ender_development.catalyx.api.v1.modules.Modules
 /**
  * Interface for the actual [ModuleManager][org.ender_development.catalyx.core.module.ModuleManager]
  *
- * @see [org.ender_development.catalyx.api.v1.modules.moduleManager]
+ * @see [org.ender_development.catalyx.api.v1.modules.Modules.moduleManager]
  */
 interface IModuleManager {
 	/**

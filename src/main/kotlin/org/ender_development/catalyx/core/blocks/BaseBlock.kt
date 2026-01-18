@@ -75,7 +75,8 @@ open class BaseBlock(val mod: ICatalyxMod, name: String, material: Material = Ma
 	 * @param state The block state of the edge block.
 	 * @return The AABB of the edge block.
 	 */
-	open fun getAABB(state: IBlockState): AxisAlignedBB = FULL_BLOCK_AABB
+	open fun getAABB(state: IBlockState): AxisAlignedBB =
+		FULL_BLOCK_AABB
 
 	// We override these methods with a AABB check instead of hardcoding its return value
 	@Deprecated("Implementation is fine.")
