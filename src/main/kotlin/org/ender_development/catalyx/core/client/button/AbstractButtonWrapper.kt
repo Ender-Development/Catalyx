@@ -47,7 +47,6 @@ abstract class AbstractButtonWrapper(x: Int, y: Int, width: Int = 16, height: In
 			if(!hovered)
 				return
 
-			GlStateManager.color(1f, 1f, 1f)
 			// +1/-1 to account for the border and only highlight the contents
 			drawRect(x + 1, y + 1, x + width - 1, y + height - 1, 0x64ffffff)
 		}
