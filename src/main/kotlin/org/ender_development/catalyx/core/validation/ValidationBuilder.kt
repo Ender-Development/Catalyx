@@ -28,7 +28,7 @@ class ValidationBuilder<T> : IValidationBuilder<T> {
         }
 
     fun rule(condition: Boolean, message: String, severity: Severity = Severity.ERROR) {
-        if (!condition)
+        if(!condition)
             errors.add(ValidationError(null, message, null, severity))
     }
 
@@ -38,17 +38,16 @@ class ValidationBuilder<T> : IValidationBuilder<T> {
 	fun addWarning(field: String? = null, message: String, code: String? = null) =
         addError(field, message, code, Severity.WARNING)
 
-	@Suppress("UNCHECKED_CAST")
 	fun build(data: T?): ValidationResult<T> {
         val onlyWarnings = errors.none { it.severity != Severity.WARNING }
 
-        return if (onlyWarnings && data != null)
+        return if(onlyWarnings && data != null)
             ValidationResult.success(data)
         else {
-            if (data == null && errors.isEmpty())
+            if(data == null && errors.isEmpty())
                 errors.add(ValidationError(message = "Data construction failed"))
             ValidationResult.failure(errors)
-        } as ValidationResult<T>
+        }
     }
 
 	fun hasErrors(): Boolean =

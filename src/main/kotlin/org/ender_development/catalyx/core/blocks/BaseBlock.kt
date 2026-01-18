@@ -98,12 +98,12 @@ open class BaseBlock(val mod: ICatalyxMod, name: String, material: Material = Ma
 	override fun getBlockFaceShape(worldIn: IBlockAccess, state: IBlockState, pos: BlockPos, face: EnumFacing): BlockFaceShape {
 		val aabb = getAABB(state)
 		return when (face) {
-			EnumFacing.UP -> if (aabb.maxY >= 1.0) BlockFaceShape.SOLID else BlockFaceShape.UNDEFINED
-			EnumFacing.DOWN -> if (aabb.minY <= 0.0) BlockFaceShape.SOLID else BlockFaceShape.UNDEFINED
-			EnumFacing.NORTH -> if (aabb.minZ <= 0.0) BlockFaceShape.SOLID else BlockFaceShape.UNDEFINED
-			EnumFacing.SOUTH -> if (aabb.maxZ >= 1.0) BlockFaceShape.SOLID else BlockFaceShape.UNDEFINED
-			EnumFacing.WEST -> if (aabb.minX <= 0.0) BlockFaceShape.SOLID else BlockFaceShape.UNDEFINED
-			EnumFacing.EAST -> if (aabb.maxX >= 1.0) BlockFaceShape.SOLID else BlockFaceShape.UNDEFINED
+			EnumFacing.UP -> if(aabb.maxY >= 1.0) BlockFaceShape.SOLID else BlockFaceShape.UNDEFINED
+			EnumFacing.DOWN -> if(aabb.minY <= .0) BlockFaceShape.SOLID else BlockFaceShape.UNDEFINED
+			EnumFacing.NORTH -> if(aabb.minZ <= .0) BlockFaceShape.SOLID else BlockFaceShape.UNDEFINED
+			EnumFacing.SOUTH -> if(aabb.maxZ >= 1.0) BlockFaceShape.SOLID else BlockFaceShape.UNDEFINED
+			EnumFacing.WEST -> if(aabb.minX <= .0) BlockFaceShape.SOLID else BlockFaceShape.UNDEFINED
+			EnumFacing.EAST -> if(aabb.maxX >= 1.0) BlockFaceShape.SOLID else BlockFaceShape.UNDEFINED
 		}
 	}
 }
