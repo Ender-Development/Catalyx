@@ -6,16 +6,16 @@ import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
+import org.ender_development.catalyx.api.v1.extensions.glOffsetX
+import org.ender_development.catalyx.api.v1.extensions.glOffsetZ
+import org.ender_development.catalyx.api.v1.extensions.glRotate
+import org.ender_development.catalyx.api.v1.extensions.glRotationAngle
 import org.ender_development.catalyx.core.Reference
 import org.ender_development.catalyx.core.blocks.helper.IOType
 import org.ender_development.catalyx.core.tiles.BaseTile
 import org.ender_development.catalyx.core.tiles.helper.IPortRenderer
 import org.ender_development.catalyx.core.utils.RenderUtils
 import org.ender_development.catalyx.core.utils.RenderUtils.drawScaledCustomSizeModalRect
-import org.ender_development.catalyx.core.utils.extensions.glOffsetX
-import org.ender_development.catalyx.core.utils.extensions.glOffsetZ
-import org.ender_development.catalyx.core.utils.extensions.glRotate
-import org.ender_development.catalyx.core.utils.extensions.glRotationAngle
 import org.lwjgl.opengl.GL11
 
 @SideOnly(Side.CLIENT)

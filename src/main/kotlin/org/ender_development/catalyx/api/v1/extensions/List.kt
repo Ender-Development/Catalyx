@@ -1,6 +1,6 @@
 @file:Suppress("NOTHING_TO_INLINE")
 
-package org.ender_development.catalyx.core.utils.extensions
+package org.ender_development.catalyx.api.v1.extensions
 
 import com.google.common.collect.ImmutableList
 import it.unimi.dsi.fastutil.objects.ObjectLists

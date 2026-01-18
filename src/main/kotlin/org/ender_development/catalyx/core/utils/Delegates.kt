@@ -1,6 +1,6 @@
 package org.ender_development.catalyx.core.utils
 
-import org.ender_development.catalyx.core.utils.extensions.modLoaded
+import org.ender_development.catalyx.api.v1.extensions.modLoaded
 import kotlin.properties.ReadOnlyProperty
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty

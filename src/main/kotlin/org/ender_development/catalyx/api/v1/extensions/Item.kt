@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.core.utils.extensions
+package org.ender_development.catalyx.api.v1.extensions
 
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack

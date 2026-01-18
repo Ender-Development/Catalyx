@@ -1,9 +1,9 @@
 package org.ender_development.catalyx.core.utils.math
 
 import net.minecraft.util.math.BlockPos
-import org.ender_development.catalyx.core.utils.extensions.minus
-import org.ender_development.catalyx.core.utils.extensions.plus
-import org.ender_development.catalyx.core.utils.extensions.rotateY
+import org.ender_development.catalyx.api.v1.extensions.minus
+import org.ender_development.catalyx.api.v1.extensions.plus
+import org.ender_development.catalyx.api.v1.extensions.rotateY
 
 object BlockPosUtils {
 	/**

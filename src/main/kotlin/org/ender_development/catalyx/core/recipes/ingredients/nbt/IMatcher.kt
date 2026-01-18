@@ -3,7 +3,7 @@ package org.ender_development.catalyx.core.recipes.ingredients.nbt
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraftforge.fluids.FluidStack
-import org.ender_development.catalyx.core.utils.extensions.getLongArray
+import org.ender_development.catalyx.api.v1.extensions.getLongArray
 
 interface IMatcher {
 	companion object {

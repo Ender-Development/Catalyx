@@ -1,9 +1,9 @@
 package org.ender_development.catalyx.core.registry
 
 import net.minecraft.util.ResourceLocation
+import org.ender_development.catalyx.api.v1.extensions.modLoaded
 import org.ender_development.catalyx.api.v1.registry.ICatalyxProviderRegistry
 import org.ender_development.catalyx.api.v1.registry.IProvider
-import org.ender_development.catalyx.core.utils.extensions.modLoaded
 
 /**
  * Collection of all [IProvider] of a given type

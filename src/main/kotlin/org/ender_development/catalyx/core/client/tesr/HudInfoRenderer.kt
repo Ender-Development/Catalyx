@@ -4,13 +4,13 @@ import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
+import org.ender_development.catalyx.api.v1.extensions.getFacingFromEntity
+import org.ender_development.catalyx.api.v1.extensions.glRotate
 import org.ender_development.catalyx.core.tiles.BaseTile
 import org.ender_development.catalyx.core.tiles.helper.HudInfoLine
 import org.ender_development.catalyx.core.tiles.helper.IHudInfoProvider
 import org.ender_development.catalyx.core.utils.RenderUtils.FONT_RENDERER
 import org.ender_development.catalyx.core.utils.RenderUtils.drawRectangle
-import org.ender_development.catalyx.core.utils.extensions.getFacingFromEntity
-import org.ender_development.catalyx.core.utils.extensions.glRotate
 
 @SideOnly(Side.CLIENT)
 object HudInfoRenderer : AbstractTESRenderer() {

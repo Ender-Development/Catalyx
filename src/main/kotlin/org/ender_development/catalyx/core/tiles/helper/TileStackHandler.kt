@@ -3,10 +3,10 @@ package org.ender_development.catalyx.core.tiles.helper
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.items.ItemStackHandler
+import org.ender_development.catalyx.api.v1.extensions.get
+import org.ender_development.catalyx.api.v1.extensions.tryInsertInto
 import org.ender_development.catalyx.core.tiles.BaseTile
 import org.ender_development.catalyx.core.tiles.BaseTile.Companion.ITEM_CAP
-import org.ender_development.catalyx.core.utils.extensions.get
-import org.ender_development.catalyx.core.utils.extensions.tryInsertInto
 
 open class TileStackHandler(size: Int, val tile: BaseTile) : ItemStackHandler() {
 	init {

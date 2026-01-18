@@ -11,6 +11,7 @@ import net.minecraftforge.fml.common.ModContainer
 import net.minecraftforge.fml.common.discovery.ASMDataTable
 import net.minecraftforge.fml.common.event.*
 import org.ender_development.catalyx.Catalyx
+import org.ender_development.catalyx.api.v1.extensions.modLoaded
 import org.ender_development.catalyx.api.v1.modules.Modules
 import org.ender_development.catalyx.api.v1.modules.annotations.CatalyxModule
 import org.ender_development.catalyx.api.v1.modules.annotations.CatalyxModuleContainer
@@ -24,7 +25,6 @@ import org.ender_development.catalyx.core.module.ModuleManager.discoveredModules
 import org.ender_development.catalyx.core.module.ModuleManager.stateEvent
 import org.ender_development.catalyx.core.utils.Delegates
 import org.ender_development.catalyx.core.utils.DevUtils
-import org.ender_development.catalyx.core.utils.extensions.modLoaded
 import java.io.File
 import java.util.*
 
