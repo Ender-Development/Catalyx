@@ -7,7 +7,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 import net.minecraftforge.items.ItemHandlerHelper
 import net.minecraftforge.oredict.OreDictionary
-import org.ender_development.catalyx.api.v1.extensions.copyOf
+import org.ender_development.catalyx.api.v1.common.extensions.copyOf
 import org.ender_development.catalyx.core.recipes.chance.output.ChancedFluidOutput
 import org.ender_development.catalyx.core.recipes.chance.output.ChancedItemOutput
 import org.ender_development.catalyx.core.recipes.chance.output.ChancedOutputList

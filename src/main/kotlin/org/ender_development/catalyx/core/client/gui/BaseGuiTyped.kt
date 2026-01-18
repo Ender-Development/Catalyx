@@ -5,8 +5,8 @@ import net.minecraft.client.gui.inventory.GuiContainer
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.inventory.Container
 import net.minecraft.util.ResourceLocation
-import org.ender_development.catalyx.api.v1.extensions.get
-import org.ender_development.catalyx.api.v1.extensions.translate
+import org.ender_development.catalyx.api.v1.common.extensions.get
+import org.ender_development.catalyx.api.v1.common.extensions.translate
 import org.ender_development.catalyx.core.Reference
 import org.ender_development.catalyx.core.client.button.AbstractButtonWrapper
 import org.ender_development.catalyx.core.client.button.PauseButtonWrapper

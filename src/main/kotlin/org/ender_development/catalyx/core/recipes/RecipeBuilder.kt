@@ -4,7 +4,7 @@ import com.cleanroommc.groovyscript.api.GroovyLog
 import net.minecraft.item.ItemStack
 import net.minecraftforge.fluids.FluidStack
 import net.minecraftforge.fml.common.Optional
-import org.ender_development.catalyx.api.v1.extensions.plural
+import org.ender_development.catalyx.api.v1.common.extensions.plural
 import org.ender_development.catalyx.core.recipes.chance.output.ChancedFluidOutput
 import org.ender_development.catalyx.core.recipes.chance.output.ChancedItemOutput
 import org.ender_development.catalyx.core.recipes.chance.output.ChancedOutputList

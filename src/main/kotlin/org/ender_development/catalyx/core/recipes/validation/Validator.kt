@@ -2,11 +2,11 @@ package org.ender_development.catalyx.core.recipes.validation
 
 import org.apache.logging.log4j.Logger
 import org.ender_development.catalyx.Catalyx
-import org.ender_development.catalyx.api.v1.extensions.validateWith
-import org.ender_development.catalyx.core.utils.validation.ValidationError
+import org.ender_development.catalyx.api.v1.common.extensions.validateWith
+import org.ender_development.catalyx.api.v1.validation.interfaces.IValidationError
 
 class Validator {
-	private val errors = mutableListOf<ValidationError>()
+	private val errors = mutableListOf<IValidationError>()
 
 	fun error(condition: Boolean, message: String) =
 		errors.addAll(message.validateWith({ !condition }).errors)

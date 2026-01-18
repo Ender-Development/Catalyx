@@ -4,7 +4,7 @@ import com.cleanroommc.groovyscript.GroovyScript
 import com.cleanroommc.groovyscript.api.GroovyPlugin
 import com.cleanroommc.groovyscript.compat.mods.GroovyContainer
 import net.minecraftforge.fml.common.Optional
-import org.ender_development.catalyx.api.v1.extensions.subLogger
+import org.ender_development.catalyx.api.v1.common.extensions.subLogger
 import org.ender_development.catalyx.api.v1.modules.annotations.CatalyxModule
 import org.ender_development.catalyx.core.Reference
 import org.ender_development.catalyx.core.module.ModuleManager

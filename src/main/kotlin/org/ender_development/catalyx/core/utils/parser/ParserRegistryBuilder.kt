@@ -1,7 +1,7 @@
 package org.ender_development.catalyx.core.utils.parser
 
 import com.google.gson.reflect.TypeToken
-import org.ender_development.catalyx.core.utils.validation.ValidationResult
+import org.ender_development.catalyx.core.validation.ValidationResult
 
 class ParserRegistryBuilder {
 	private val registry = ParserRegistry()

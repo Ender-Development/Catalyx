@@ -8,7 +8,7 @@ import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
-import org.ender_development.catalyx.api.v1.extensions.getHorizontalSurroundings
+import org.ender_development.catalyx.api.v1.common.extensions.getHorizontalSurroundings
 import org.ender_development.catalyx.core.ICatalyxMod
 import org.ender_development.catalyx.core.blocks.BaseRotatableTileBlock
 
