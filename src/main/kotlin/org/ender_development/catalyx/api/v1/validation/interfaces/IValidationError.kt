@@ -1,5 +1,6 @@
 package org.ender_development.catalyx.api.v1.validation.interfaces
 
+import org.apache.logging.log4j.Logger
 import org.ender_development.catalyx.api.v1.common.Severity
 
 interface IValidationError {
@@ -7,4 +8,7 @@ interface IValidationError {
 	val message: String
 	val code: String?
 	val severity: Severity
+
+	fun log(logger: Logger) =
+		logger.log(severity.loggerLevel, toString())
 }

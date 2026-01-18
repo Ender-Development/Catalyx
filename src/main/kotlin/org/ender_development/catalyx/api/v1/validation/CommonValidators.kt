@@ -35,12 +35,12 @@ object CommonValidators {
 	fun atMost(value: Number): IValidator<Number?> =
 		IValidator { it != null && it.toDouble() <= value.toDouble() }
 
-	fun <T> oneOf(vararg values: T): IValidator<T?> =
-		IValidator { it != null && values.contains(it) }
+	fun <T> oneOf(vararg allowed: T): IValidator<T?> =
+		IValidator { it != null && it in allowed }
 
 	fun <T> listAll(elementValidator: IValidator<T?>): IValidator<List<T>?> =
 		IValidator { list ->
-			list != null && list.all { elementValidator.validate(it) }
+			list != null && list.all(elementValidator::validate)
 		}
 
 	fun <K, V> mapAll(keyValidator: IValidator<K?>, valueValidator: IValidator<V?>): IValidator<Map<K, V>?> =
