@@ -64,11 +64,11 @@ abstract class BaseContainer(playerInv: IInventory, val tileEntity: IBaseContain
 		val stack = slot.stack
 
 		// transfer TE Container -> Anywhere else (Player Inventory)
-		if(index < tileEntity.SIZE) {
-			if(!mergeItemStack(stack, tileEntity.SIZE, inventorySlots.size, true))
+		if(index < tileEntity.inventorySlotCount) {
+			if(!mergeItemStack(stack, tileEntity.inventorySlotCount, inventorySlots.size, true))
 				return ItemStack.EMPTY
 		// transfer Anywhere else (Player Inventory) -> TE Container
-		} else if(!mergeItemStack(stack, 0, tileEntity.SIZE, false))
+		} else if(!mergeItemStack(stack, 0, tileEntity.inventorySlotCount, false))
 			return ItemStack.EMPTY
 
 		if(stack.isEmpty)
@@ -80,8 +80,7 @@ abstract class BaseContainer(playerInv: IInventory, val tileEntity: IBaseContain
 	}
 
 	interface IBaseContainerCompat : IGuiTile {
-		// TODO rename someday
-		val SIZE: Int
+		val inventorySlotCount: Int
 		fun canInteractWith(player: EntityPlayer): Boolean
 	}
 }

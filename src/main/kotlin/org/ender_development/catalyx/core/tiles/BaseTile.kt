@@ -40,7 +40,7 @@ import org.ender_development.catalyx.core.tiles.helper.*
 abstract class BaseTile(open val mod: ICatalyxMod) : TileEntity(), BaseContainer.IBaseContainerCompat {
 	var inputSlots = 0
 	var outputSlots = 0
-	override val SIZE
+	override val inventorySlotCount
 		get() = inventory.slots
 	var dirtyTicks = 0
 
