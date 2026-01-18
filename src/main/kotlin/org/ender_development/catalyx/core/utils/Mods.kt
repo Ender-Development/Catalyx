@@ -2,6 +2,9 @@ package org.ender_development.catalyx.core.utils
 
 import org.ender_development.catalyx.core.Reference
 
+/**
+ * ModID Database
+ */
 object Mods {
 	const val CATALYX = Reference.MODID
 	const val GROOVYSCRIPT = "groovyscript"
