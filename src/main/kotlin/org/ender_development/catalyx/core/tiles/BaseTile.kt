@@ -36,7 +36,7 @@ import org.ender_development.catalyx.core.tiles.helper.*
 /**
  * A base TileEntity in Catalyx, implementing separate input and output inventories; saving/loading from NBT; energy, fluid and item capability handling
  */
-@Suppress("UNUSED")
+@Suppress("unused")
 abstract class BaseTile(open val mod: ICatalyxMod) : TileEntity(), BaseContainer.IBaseContainerCompat {
 	var inputSlots = 0
 	var outputSlots = 0
@@ -62,11 +62,9 @@ abstract class BaseTile(open val mod: ICatalyxMod) : TileEntity(), BaseContainer
 	open val facing: EnumFacing
 		get() = world.getBlockState(pos).properties.getOrDefault(BlockHorizontal.FACING, EnumFacing.NORTH) as EnumFacing
 
-	open val inventory: IItemHandler
-		get() = CombinedInvWrapper(input, output)
+	open val inventory: IItemHandler = CombinedInvWrapper(input, output)
 
-	open val automationInvHandler: CombinedInvWrapper
-		get() = CombinedInvWrapper(automationInput, automationOutput)
+	open val automationInvHandler = CombinedInvWrapper(automationInput, automationOutput)
 
 	override fun canInteractWith(player: EntityPlayer) =
 		!isInvalid && player.getDistanceSq(pos.add(.5, .5, .5)) <= 64
