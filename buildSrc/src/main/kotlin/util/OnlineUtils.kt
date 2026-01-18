@@ -36,7 +36,7 @@ object OnlineUtils {
      * Checks if the current project is the template project by examining the Git remote URL.
      * @return `true` if the project is the template project, `false` otherwise.
      */
-    private fun isTemplateProject(): Boolean {
+    fun isTemplateProject(): Boolean {
         val repo = FileRepositoryBuilder()
             .setGitDir(File(".git"))
             .readEnvironment()
@@ -79,7 +79,7 @@ object OnlineUtils {
         val connection = URI.create(url).toURL().openConnection()
         connection.connectTimeout = CONNECTION_TIMEOUT
         connection.readTimeout = CONNECTION_TIMEOUT
-        connection.getInputStream().readBytes().toString(Charsets.UTF_8)
+        connection.inputStream.use { it.readBytes().toString(Charsets.UTF_8) }
     } catch (e: Exception) {
         Logger.error("Error fetching file from '$url': ${e.message}")
         null

@@ -22,6 +22,7 @@ plugins {
     id("catalyx.propsync")
     id("catalyx.buildfilesync")
     id("catalyx.referencecreator") apply false
+    id("catalyx.ijscopecreator")
     id("java")
     id("java-library")
     id("maven-publish")
@@ -244,8 +245,8 @@ tasks.withType<Jar> {
             if (propertyBoolean("coremod_includes_mod")) {
                 attributeMap["FMLCorePluginContainsFMLMod"] = "true"
                 val currentTask = gradle.startParameter.taskNames
-                val validTasks = listOf("build", "prepareObfModsFolder", "runObfClient")
-                if (currentTask[0] in validTasks) attributeMap["ForceLoadAsMod"] = "true"
+                val validTasks = arrayOf("build", "prepareObfModsFolder", "runObfClient")
+                if (!currentTask.isEmpty() && currentTask[0] in validTasks) attributeMap["ForceLoadAsMod"] = "true"
             }
         }
         if (propertyBoolean("use_access_transformer")) {
