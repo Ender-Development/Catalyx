@@ -8,7 +8,7 @@ interface ICopyPasteExtraTile {
 	/**
 	 * Write data into the NBT Tag to be copied and stored
 	 *
-	 * Note: if your TE implements [org.ender_development.catalyx.client.gui.BaseGuiTyped.IDefaultButtonVariables] (like [org.ender_development.catalyx.tiles.BaseMachineTile] does), the `isPaused` and `needsRedstonePower` fields are already copied
+	 * Note: if your TE implements [org.ender_development.catalyx.core.client.gui.BaseGuiTyped.IDefaultButtonVariables] (like [org.ender_development.catalyx.core.tiles.BaseMachineTile] does), the `isPaused` and `needsRedstonePower` fields are already copied
 	 */
 	fun copyData(tag: NBTTagCompound)
 
