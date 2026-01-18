@@ -26,7 +26,7 @@ class RecipeMap<R : RecipeBuilder<R>> {
 		internal val RECIPE_DURATION_THEN_ENERGY = Comparator<Recipe>
 			.comparingInt(Recipe::duration)
 			.thenComparingLong(Recipe::energyPerTick)
-			.thenComparingInt { it.hashCode }
+			.thenComparingInt(Recipe::hashCode)
 		internal val INGREDIENT_ROOT = WeakHashMap<AbstractMapIngredient, WeakReference<AbstractMapIngredient>>()
 		internal var foundInvalidRecipe = false
 
@@ -214,7 +214,7 @@ class RecipeMap<R : RecipeBuilder<R>> {
 				ingredients.indices.forEach { i ->
 					val mappedIngredient = ingredients[i]
 					// attempt to use the cached version if it exists, otherwise cache it
-					INGREDIENT_ROOT.get(mappedIngredient)?.get()?.let { ingredients[i] = it } ?: run {
+					INGREDIENT_ROOT[mappedIngredient]?.get()?.let { ingredients[i] = it } ?: run {
 						INGREDIENT_ROOT[mappedIngredient] = WeakReference(mappedIngredient)
 					}
 				}

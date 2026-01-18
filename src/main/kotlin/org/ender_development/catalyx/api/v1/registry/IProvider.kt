@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.core.registry
+package org.ender_development.catalyx.api.v1.registry
 
 import net.minecraft.block.Block
 import net.minecraft.item.Item
@@ -15,13 +15,15 @@ interface IProvider<T : IForgeRegistryEntry<T>> {
 	val instance: T
 
 	/**
-	 * The mod ID(s) required for this provider to be enabled, separated by semicolons. Prefixes of "!" can be used to indicate that a mod must NOT be present.
+	 * The mod ID(s) required for this provider to be enabled. Prefixes of "!" can be used to indicate that a mod must NOT be present.
 	 *
-	 * Default is an empty string, meaning no dependencies.
+	 * Default is an empty list, meaning no dependencies.
+	 *
+	 * @see [org.ender_development.catalyx.core.registry.CatalyxProviderRegistry.evaluateModDependencies]
 	 */
-	var modDependencies: String
+	val modDependencies: Iterable<String>
 
-	// Note to self: do not make this a `val` as we wanna enforce a getter here (https://discord.com/channels/@me/1232745201009819749/1423296686691717220)
+	// Note: do not make this a `val` as we wanna enforce a getter here
 	/**
 	 * Whether this provider is enabled and should be registered.
 	 */
@@ -35,12 +37,11 @@ interface IProvider<T : IForgeRegistryEntry<T>> {
 	fun register(event: RegistryEvent.Register<T>)
 
 	/**
-	 * Specify that this provider requires the given mod dependency to be present.
+	 * Specify that this provider requires the given mod dependencies to be present.
 	 *
-	 * @param modDependencies The mod ID(s) required, separated by semicolons. Prefixes of "!" can be used to indicate that a mod must NOT be present.
-	 * @return This instance, for chaining.
+	 * @see IProvider.modDependencies for format
 	 */
-	fun requires(modDependencies: String): T
+	fun requires(modDependencies: Iterable<String>): T
 }
 
 interface IItemProvider : IProvider<Item>

@@ -25,7 +25,7 @@ inline operator fun BlockPos.plus(other: BlockPos): BlockPos =
 inline operator fun BlockPos.times(scalar: Int) =
 	BlockPos(x * scalar, y * scalar, z * scalar)
 
-inline fun Pair<BlockPos, BlockPos>.getAllInBox() =
+inline fun Pair<BlockPos, BlockPos>.getAllInBox(): Iterable<BlockPos> =
 	BlockPos.getAllInBox(first, second)
 
 inline fun BlockPos.getFacingFromEntityPosition(entityX: Float, entityZ: Float): EnumFacing =
@@ -35,7 +35,7 @@ inline fun BlockPos.getFacingFromEntity(entity: Entity): EnumFacing =
 	getFacingFromEntityPosition(entity.posX.toFloat(), entity.posZ.toFloat())
 
 /**
- * @see org.ender_development.catalyx.blocks.multiblock.parts.AbstractEdgeBlock
+ * @see org.ender_development.catalyx.core.blocks.multiblock.parts.AbstractEdgeBlock
  */
 fun BlockPos.getHorizontalSurroundings() = arrayOf(
 	north().west(), north(), north().east(),

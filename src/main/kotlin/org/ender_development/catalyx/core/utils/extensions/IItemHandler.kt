@@ -9,36 +9,40 @@ operator fun IItemHandler.get(idx: Int) =
 fun IItemHandler.tryInsertInto(otherHandler: IItemHandler): Boolean {
 	for(i in 0..<otherHandler.slots) {
 		for(j in 0..<slots) {
-			if(!this.getStackInSlot(j).isEmpty) {
-				val stackSize = this.getStackInSlot(j).count
-				if(otherHandler.insertItem(i, this.extractItem(j, stackSize, true), true).isEmpty) {
-					otherHandler.insertItem(i, this.extractItem(j, stackSize, false), false)
-					return true
-				}
+			val stack = this[j]
+			if(stack.isEmpty)
+				continue
+
+			val stackSize = stack.count
+			if(otherHandler.insertItem(i, extractItem(j, stackSize, true), true).isEmpty) {
+				otherHandler.insertItem(i, extractItem(j, stackSize, false), false)
+				return true
 			}
 		}
 	}
 	return false
 }
 
-/** This function *will* modify the ItemStack passed in! */
+/** This function will not modify the ItemStack passed in */
 fun IItemHandler.tryInsert(stack: ItemStack): ItemStack {
+	if(stack.isEmpty)
+		return ItemStack.EMPTY
+
+	var stack = stack.copy()
+
 	for(i in 0..<slots) {
-		val inserted = insertItem(i, stack, true)
-		if(inserted.isEmpty || inserted.count < stack.count) {
-			insertItem(i, stack, false)
-			if(inserted.isEmpty)
-				return inserted
-			else
-				stack.shrink(inserted.count)
-		}
+		val remainder = insertItem(i, stack, false)
+		if(remainder.isEmpty)
+			return ItemStack.EMPTY
+
+		stack = remainder
 	}
+
 	return stack
 }
 
-fun IItemHandler.toStackList(): List<ItemStack> {
-	return (0..<slots).map {
+fun IItemHandler.toStackList() =
+	(0..<slots).map {
 		val stack = this[it]
 		if(stack.isEmpty) ItemStack.EMPTY else stack
 	}
-}

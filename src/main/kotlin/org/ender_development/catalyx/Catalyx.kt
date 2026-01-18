@@ -4,12 +4,10 @@ import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.event.FMLConstructionEvent
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 import org.apache.logging.log4j.LogManager
 import org.ender_development.catalyx.core.ICatalyxMod
 import org.ender_development.catalyx.core.Reference
 import org.ender_development.catalyx.core.module.ModuleManager
-import org.ender_development.catalyx.core.network.PacketHandler
 import org.ender_development.catalyx.core.utils.persistence.ConfigPersistentData
 import kotlin.random.Random
 
@@ -40,10 +38,5 @@ object Catalyx : ICatalyxMod {
 	@Mod.EventHandler
 	fun construction(e: FMLConstructionEvent) {
 		ModuleManager.setup(e.asmHarvestedData)
-	}
-
-	@Mod.EventHandler
-	fun preInit(e: FMLPreInitializationEvent) {
-		PacketHandler.init()
 	}
 }

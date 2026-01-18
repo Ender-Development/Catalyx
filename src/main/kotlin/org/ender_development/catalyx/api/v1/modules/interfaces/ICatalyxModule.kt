@@ -1,14 +1,17 @@
-package org.ender_development.catalyx.core.module
+package org.ender_development.catalyx.api.v1.modules.interfaces
 
 import net.minecraftforge.fml.common.event.*
 import org.apache.logging.log4j.Logger
+import org.ender_development.catalyx.api.v1.modules.Modules
 
 /**
  * All modules must implement this interface.
  *
  * Provides methods for responding to FML lifecycle events and adding event bus subscribers.
  *
- * Note: if your Module is an `object`, and other parts of your code access it, please don't have any side-effects in the class initialisation/instantiation, as any module can be disabled via the Catalyx config, or by its dependencies being unmet.
+ * Note: If your Module is a Kotlin `object`, and other parts of your code access it,
+ * please don't have any side effects in the class initialisation/instantiation,
+ * as any module can be disabled via the Catalyx config, or by its dependencies being unmet.
  */
 interface ICatalyxModule {
 	/**
@@ -20,7 +23,7 @@ interface ICatalyxModule {
 	 * A boolean indicating whether this module is enabled.
 	 */
 	val enabled: Boolean
-		get() = ModuleManager.isModuleEnabled(this)
+		get() = Modules.moduleManager.isModuleEnabled(this)
 
 	/**
 	 * Called when this module is loaded.

@@ -13,6 +13,7 @@ import org.ender_development.catalyx.core.recipes.validation.Result
 import org.ender_development.catalyx.core.recipes.validation.ValidationState
 import org.ender_development.catalyx.core.recipes.validation.Validator
 import org.ender_development.catalyx.core.utils.Mods
+import org.ender_development.catalyx.core.utils.extensions.plural
 import org.ender_development.catalyx.modules.integration.groovyscript.ModuleGroovyScript
 import java.util.function.Supplier
 
@@ -21,10 +22,8 @@ class RecipeBuilder<R : RecipeBuilder<R>> {
 		fun getRequiredString(max: Int, found: Int, type: String): String {
 			if(max <= 0)
 				return "No ${type}s allowed, but found $found"
-			var out = "Must have at most $max $type"
-			if(max != 1)
-				out += "s"
-			return "$out, but found $found"
+
+			return "Must have at most $max $type${max.plural}, but found $found"
 		}
 	}
 
@@ -49,12 +48,12 @@ class RecipeBuilder<R : RecipeBuilder<R>> {
 	var recipeStatus: ValidationState = ValidationState.VALID
 
 	private constructor() {
-		this.inputs = ArrayList<RecipeInput?>()
-		this.outputs = ArrayList<ItemStack?>()
-		this.chancedOutputs = ArrayList<ChancedItemOutput?>()
-		this.fluidInputs = ArrayList<RecipeInput?>()
-		this.fluidOutputs = ArrayList<FluidStack?>()
-		this.chancedFluidOutputs = ArrayList<ChancedFluidOutput?>()
+		this.inputs = mutableListOf()
+		this.outputs = mutableListOf()
+		this.chancedOutputs = mutableListOf()
+		this.fluidInputs = mutableListOf()
+		this.fluidOutputs = mutableListOf()
+		this.chancedFluidOutputs = mutableListOf()
 	}
 
 	constructor(recipe: Recipe, recipeMap: RecipeMap<R>) {

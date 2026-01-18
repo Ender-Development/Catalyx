@@ -14,7 +14,7 @@ import org.ender_development.catalyx.core.utils.SideUtils
 /**
  * A GUI handler you can use for your machines
  *
- * Use the return value of [registerId] in the [org.ender_development.catalyx.blocks.BaseTileBlock.guiId] field
+ * Use the return value of [registerId] in the [org.ender_development.catalyx.core.blocks.BaseTileBlock.guiId] field
  *
  * Remember to register it with [net.minecraftforge.fml.common.network.NetworkRegistry.registerGuiHandler]
  */
@@ -24,7 +24,7 @@ class CatalyxGuiHandler(mod: ICatalyxMod) : IGuiHandler {
 	internal val tileEntities = mutableListOf<Class<out TileEntity>>()
 
 	init {
-		instances.put(mod, this)
+		instances[mod] = this
 	}
 
 	fun registerId(te: Class<out TileEntity>, container: Class<out Container>, gui: () -> Class<out GuiContainer>): Int {

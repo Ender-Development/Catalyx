@@ -2,7 +2,7 @@ package org.ender_development.catalyx.modules
 
 import org.apache.logging.log4j.Logger
 import org.ender_development.catalyx.Catalyx
-import org.ender_development.catalyx.core.module.ICatalyxModule
+import org.ender_development.catalyx.api.v1.modules.interfaces.ICatalyxModule
 
 /**
  * Abstract base class for all builtin Catalyx modules

@@ -1,7 +1,7 @@
 package org.ender_development.catalyx.modules.integration
 
+import org.ender_development.catalyx.api.v1.modules.annotations.CatalyxModule
 import org.ender_development.catalyx.core.Reference
-import org.ender_development.catalyx.core.module.CatalyxModule
 import org.ender_development.catalyx.core.utils.extensions.subLogger
 import org.ender_development.catalyx.modules.CatalyxInternalModuleContainer
 import org.ender_development.catalyx.modules.CatalyxModuleBase

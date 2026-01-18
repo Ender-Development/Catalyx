@@ -14,9 +14,9 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.event.RegistryEvent
+import org.ender_development.catalyx.api.v1.registry.IBlockProvider
 import org.ender_development.catalyx.core.ICatalyxMod
 import org.ender_development.catalyx.core.register
-import org.ender_development.catalyx.core.registry.IBlockProvider
 import org.ender_development.catalyx.core.utils.SideUtils
 
 /**
@@ -36,7 +36,8 @@ open class BaseBlock(val mod: ICatalyxMod, name: String, material: Material = Ma
 
 	override val instance = this
 
-	override var modDependencies = ""
+	final override var modDependencies: Iterable<String> = emptyList()
+		private set
 
 	override val item = ItemBlock(this)
 
@@ -53,14 +54,14 @@ open class BaseBlock(val mod: ICatalyxMod, name: String, material: Material = Ma
 			ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(registryName!!, "inventory"))
 	}
 
-	override fun requires(modDependencies: String): Block {
+	override fun requires(modDependencies: Iterable<String>): Block {
 		this.modDependencies = modDependencies
 		mod.register(this)
 		return this
 	}
 
 	init {
-		// TODO: why do we have 2 init blocks?
+		// TODO: why do we have 2 init blocks? => so you ask questions /j; nah actually, just because of initialisation order, this made more sense
 		mod.register(this)
 	}
 
@@ -74,7 +75,8 @@ open class BaseBlock(val mod: ICatalyxMod, name: String, material: Material = Ma
 	 * @param state The block state of the edge block.
 	 * @return The AABB of the edge block.
 	 */
-	open fun getAABB(state: IBlockState): AxisAlignedBB = FULL_BLOCK_AABB
+	open fun getAABB(state: IBlockState): AxisAlignedBB =
+		FULL_BLOCK_AABB
 
 	// We override these methods with a AABB check instead of hardcoding its return value
 	@Deprecated("Implementation is fine.")

@@ -11,6 +11,12 @@ import net.minecraftforge.fml.common.ModContainer
 import net.minecraftforge.fml.common.discovery.ASMDataTable
 import net.minecraftforge.fml.common.event.*
 import org.ender_development.catalyx.Catalyx
+import org.ender_development.catalyx.api.v1.modules.Modules
+import org.ender_development.catalyx.api.v1.modules.annotations.CatalyxModule
+import org.ender_development.catalyx.api.v1.modules.annotations.CatalyxModuleContainer
+import org.ender_development.catalyx.api.v1.modules.interfaces.ICatalyxModule
+import org.ender_development.catalyx.api.v1.modules.interfaces.IModuleIdentifier
+import org.ender_development.catalyx.api.v1.modules.interfaces.IModuleManager
 import org.ender_development.catalyx.core.Reference
 import org.ender_development.catalyx.core.module.ModuleManager.configuration
 import org.ender_development.catalyx.core.module.ModuleManager.discoveredContainers
@@ -31,7 +37,7 @@ object ModuleManager : IModuleManager {
 	const val MODULE_CFG_FILE_NAME = "$MODULE_CFG_CATEGORY_NAME.cfg"
 
 	private val loadedModules = ReferenceLinkedOpenHashSet<ICatalyxModule>()
-	private val loadedModuleIds = hashSetOf<ModuleIdentifier>() // ender, you can go and turn this into some fastutil bs
+	private val loadedModuleIds = hashSetOf<IModuleIdentifier>() // TODO: turn this into some fastutil bs
 	private val loadedContainers = Object2ReferenceLinkedOpenHashMap<ContainerId, Any>()
 
 	private val configDirectory = File(Loader.instance().configDir, Reference.MODID)
@@ -61,7 +67,7 @@ object ModuleManager : IModuleManager {
 	 *
 	 * @param asmDataTable the data table containing all the Module Container and Module classes
 	 */
-	fun setup(asmDataTable: ASMDataTable) {
+	internal fun setup(asmDataTable: ASMDataTable) {
 		discoverContainers(asmDataTable)
 		discoverModules(asmDataTable)
 	}
@@ -260,30 +266,27 @@ object ModuleManager : IModuleManager {
 
 				val discoveredModules = discoveredModules.remove(containerId)
 				if(discoveredModules.isNullOrEmpty()) {
-					Catalyx.LOGGER.debug("> Module Container {}:{} has no modules", modId, containerId)
+					Catalyx.LOGGER.warn("> Module Container {}:{} has no modules", modId, containerId)
 					return@forEach
 				}
 
-				// Check module ids before instantiating modules
+				// Check module dependencies before instantiating
 				val willInstantiate = mutableListOf<ASMDataTable.ASMData>()
-				val willInstantiateIds = mutableListOf<ModuleIdentifier>()
+				val willInstantiateIds = mutableListOf<IModuleIdentifier>()
 				do {
-					var changed = false
-					val iter = discoveredModules.iterator()
-					while(iter.hasNext()) {
-						val module = iter.next()
-						val moduleId = ModuleIdentifier(module.annotationInfo["containerId"] as String, module.annotationInfo["moduleId"] as String)
+					val changed = discoveredModules.removeIf { module ->
+						val moduleId = Modules.newModuleIdentifier(module.annotationInfo["containerId"] as String, module.annotationInfo["moduleId"] as String)
 						val unmetDependencies = (module.annotationInfo["moduleDependencies"] as List<*>? ?: emptyList<String>())
 							.filterIsInstance<String>()
-							.map(::ModuleIdentifier)
+							.map(Modules::newModuleIdentifier)
 							.filterNot { willInstantiateIds.contains(it) || loadedModuleIds.contains(it) }
 
 						if(unmetDependencies.isEmpty()) {
-							iter.remove()
-							changed = true
 							willInstantiate.add(module)
 							willInstantiateIds.add(moduleId)
-						}
+							true
+						} else
+							false
 					}
 				} while(changed)
 
@@ -321,7 +324,7 @@ object ModuleManager : IModuleManager {
 	 * @param loader The loader to load the class with
 	 * @param asm The ASM class to load
 	 * @param type What is being loaded - used for error messages
-	 * @return An instance of [asm] casted to [I], or null if anything fails
+	 * @return An instance of [asm] cast to [I], or null if anything fails
 	 */
 	private inline fun <reified I> loadClassAndCreateInstance(loader: ModClassLoader, asm: ASMDataTable.ASMData, type: String): I? {
 		try {
@@ -356,7 +359,7 @@ object ModuleManager : IModuleManager {
 	 * @param identifier the id of the module to check
 	 * @return true if the module is enabled, false otherwise
 	 */
-	override fun isModuleEnabled(identifier: ModuleIdentifier) =
+	override fun isModuleEnabled(identifier: IModuleIdentifier) =
 		loadedModuleIds.contains(identifier)
 
 	override fun isModuleEnabled(module: ICatalyxModule) =

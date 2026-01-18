@@ -1,9 +1,10 @@
-package org.ender_development.catalyx.core.module
+package org.ender_development.catalyx.api.v1.modules.annotations
 
 import org.ender_development.catalyx.core.Reference
 
 /**
- * All of your [ICatalyxModule] classes must be annotated with this to be registered.
+ * All of your [org.ender_development.catalyx.api.v1.modules.interfaces.ICatalyxModule]
+ * classes must be annotated with this to be registered.
  */
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
