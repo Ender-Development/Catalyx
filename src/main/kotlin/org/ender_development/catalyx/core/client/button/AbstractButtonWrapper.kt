@@ -3,15 +3,14 @@ package org.ender_development.catalyx.core.client.button
 import io.netty.buffer.ByteBuf
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiButton
-import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
+import org.ender_development.catalyx.api.v1.utils.SideUtils
 import org.ender_development.catalyx.core.Reference
 import org.ender_development.catalyx.core.client.button.AbstractButtonWrapper.Companion.getWrapper
 import org.ender_development.catalyx.core.client.button.AbstractButtonWrapper.Companion.registerWrapper
-import org.ender_development.catalyx.core.utils.SideUtils
 
 /**
  * Wrapper class for stateful buttons sent from client-side to server-side

@@ -1,10 +1,10 @@
 package org.ender_development.catalyx.core.blocks
 
 import net.minecraftforge.fml.client.registry.ClientRegistry
+import org.ender_development.catalyx.api.v1.utils.SideUtils
 import org.ender_development.catalyx.core.ICatalyxMod
 import org.ender_development.catalyx.core.client.tesr.TileRenderer
 import org.ender_development.catalyx.core.tiles.TESRTile
-import org.ender_development.catalyx.core.utils.SideUtils
 
 /**
  * A rotatable block that has a TESR. Binds the [TileRenderer] to the tile entity on the client side.

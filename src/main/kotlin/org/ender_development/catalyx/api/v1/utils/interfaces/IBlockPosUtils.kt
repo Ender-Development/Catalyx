@@ -1,11 +1,8 @@
-package org.ender_development.catalyx.core.utils.math
+package org.ender_development.catalyx.api.v1.utils.interfaces
 
 import net.minecraft.util.math.BlockPos
-import org.ender_development.catalyx.api.v1.common.extensions.minus
-import org.ender_development.catalyx.api.v1.common.extensions.plus
-import org.ender_development.catalyx.api.v1.common.extensions.rotateY
 
-object BlockPosUtils {
+interface IBlockPosUtils {
 	/**
 	 * Creates a wall shape centered at [center] with radius [r] and height [h].
 	 *
@@ -17,23 +14,7 @@ object BlockPosUtils {
 	 * @param shrink Reduces wall width by shrink blocks on its far end to avoid corner overlaps.
 	 * @return A [Pair] of [BlockPos] representing the minimum and maximum corners of the wall.
 	 */
-	fun wall(center: BlockPos, r: Int, h: Int, offset: Int = 0, degrees: Int = 0, shrink: Int = 0): Pair<BlockPos, BlockPos> {
-		val baseOrigin = BlockPos(center.x - r, center.y, center.z + r + offset)
-		val v1 = BlockPos(2 * r - shrink, 0, 0)
-		val v2 = BlockPos(0, h, 0)
-
-		val origin = (baseOrigin - center).rotateY(degrees) + center
-		val v1Rot = v1.rotateY(degrees)
-
-		val corners = listOf(
-			origin,
-			origin + v1Rot,
-			origin + v2,
-			origin + v1Rot + v2
-		)
-
-		return BlockPos(corners.minOf { it.x }, corners.minOf { it.y }, corners.minOf { it.z }) to BlockPos(corners.maxOf { it.x }, corners.maxOf { it.y }, corners.maxOf { it.z })
-	}
+	fun wall(center: BlockPos, r: Int, h: Int, offset: Int = 0, degrees: Int = 0, shrink: Int = 0): Pair<BlockPos, BlockPos>
 
 	/**
 	 * Creates a hollow cuboid shape centered at [center] with radius [r] and height [h].
@@ -45,8 +26,5 @@ object BlockPosUtils {
 	 * @param offset An optional vertical offset to apply to the base of the cuboid.
 	 * @return A [List] of [Pair]`s` of [BlockPos] representing the minimum and maximum corners of each wall.
 	 */
-	fun hollowCuboid(center: BlockPos, r: Int, h: Int, offset: Int = 1, shrink: Int = 1) =
-		(0..3).map {
-			wall(center, r, h, offset, it * 90, shrink)
-		}
+	fun hollowCuboid(center: BlockPos, r: Int, h: Int, offset: Int = 1, shrink: Int = 1): List<Pair<BlockPos, BlockPos>>
 }
