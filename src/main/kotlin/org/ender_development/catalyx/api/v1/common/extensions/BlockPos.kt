@@ -5,16 +5,42 @@ package org.ender_development.catalyx.api.v1.common.extensions
 import net.minecraft.entity.Entity
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
-import org.ender_development.catalyx.core.utils.math.BlockPosRotate
+import kotlin.math.cos
+import kotlin.math.roundToInt
+import kotlin.math.sin
 
-inline fun BlockPos.rotateX(degrees: Int) =
-	BlockPosRotate.rotateX(this, degrees)
+fun BlockPos.rotateX(degrees: Int): BlockPos {
+	val rad = Math.toRadians(degrees.toDouble())
+	val cos = cos(rad)
+	val sin = sin(rad)
+	return BlockPos(
+		this.x,
+		(this.y * cos - this.z * sin).roundToInt(),
+		(this.y * sin + this.z * cos).roundToInt()
+	)
+}
 
-inline fun BlockPos.rotateY(degrees: Int) =
-	BlockPosRotate.rotateY(this, degrees)
+fun BlockPos.rotateY(degrees: Int): BlockPos {
+	val rad = Math.toRadians(degrees.toDouble())
+	val cos = cos(rad)
+	val sin = sin(rad)
+	return BlockPos(
+		(this.x * cos - this.z * sin).roundToInt(),
+		this.y,
+		(this.x * sin + this.z * cos).roundToInt()
+	)
+}
 
-inline fun BlockPos.rotateZ(degrees: Int) =
-	BlockPosRotate.rotateZ(this, degrees)
+fun BlockPos.rotateZ(degrees: Int): BlockPos {
+	val rad = Math.toRadians(degrees.toDouble())
+	val cos = cos(rad)
+	val sin = sin(rad)
+	return BlockPos(
+		(this.x * cos - this.y * sin).roundToInt(),
+		(this.x * sin + this.y * cos).roundToInt(),
+		this.z
+	)
+}
 
 inline operator fun BlockPos.minus(other: BlockPos): BlockPos =
 	subtract(other)

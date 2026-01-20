@@ -15,9 +15,9 @@ import net.minecraft.world.IBlockAccess
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.event.RegistryEvent
 import org.ender_development.catalyx.api.v1.registry.IBlockProvider
+import org.ender_development.catalyx.api.v1.utils.SideUtils
 import org.ender_development.catalyx.core.ICatalyxMod
 import org.ender_development.catalyx.core.register
-import org.ender_development.catalyx.core.utils.SideUtils
 
 /**
  * A base Catalyx Block

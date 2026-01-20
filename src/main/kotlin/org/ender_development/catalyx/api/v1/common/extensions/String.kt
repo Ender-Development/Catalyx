@@ -12,7 +12,7 @@ import net.minecraft.util.ResourceLocation
 import net.minecraftforge.fml.common.Loader
 import net.minecraftforge.oredict.OreDictionary
 import net.minecraftforge.oredict.OreIngredient
-import org.ender_development.catalyx.core.utils.SideUtils
+import org.ender_development.catalyx.api.v1.utils.SideUtils
 
 inline fun String.toPotion(): Potion =
 	Potion.getPotionFromResourceLocation(this)!!

@@ -1,8 +1,8 @@
 package org.ender_development.catalyx.modules
 
+import org.ender_development.catalyx.api.v1.common.Mods
 import org.ender_development.catalyx.api.v1.modules.annotations.CatalyxModuleContainer
 import org.ender_development.catalyx.core.Reference
-import org.ender_development.catalyx.core.utils.Mods
 
 /**
  * Module Container for all internal Catalyx modules

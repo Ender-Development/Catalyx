@@ -6,11 +6,11 @@ import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import org.ender_development.catalyx.Catalyx
+import org.ender_development.catalyx.api.v1.common.DevUtils
 import org.ender_development.catalyx.api.v1.common.extensions.plural
 import org.ender_development.catalyx.api.v1.registry.IBlockProvider
 import org.ender_development.catalyx.api.v1.registry.ICatalyxRegistry
 import org.ender_development.catalyx.core.Reference
-import org.ender_development.catalyx.core.utils.DevUtils
 
 @Mod.EventBusSubscriber(modid = Reference.MODID)
 object CatalyxBlockRegistry : ICatalyxRegistry<Block, IBlockProvider> {

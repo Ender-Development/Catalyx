@@ -1,7 +1,12 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package org.ender_development.catalyx.api.v1.common.extensions
 
 import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.Ingredient
+
+inline fun ItemStack?.orEmpty(): ItemStack =
+	this ?: ItemStack.EMPTY
 
 fun ItemStack.areStacksEqualIgnoreQuantity(other: ItemStack) =
 	item === other.item && metadata == other.metadata && ItemStack.areItemStackTagsEqual(this, other)
@@ -12,7 +17,7 @@ fun ItemStack.canMergeWith(target: ItemStack, allowEmpty: Boolean) =
 	else
 		item === target.item && count + target.count <= maxStackSize && itemDamage == target.itemDamage && tagCompound == target.tagCompound
 
-fun ItemStack.toIngredient(): Ingredient =
+inline fun ItemStack.toIngredient(): Ingredient =
 	Ingredient.fromStacks(this)
 
 fun ItemStack.equalsIgnoreMeta(other: ItemStack) =

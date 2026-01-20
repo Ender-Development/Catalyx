@@ -1,6 +1,6 @@
 @file:Suppress("NOTHING_TO_INLINE")
 
-package org.ender_development.catalyx.core.utils
+package org.ender_development.catalyx.api.v1.common
 
 import net.minecraft.item.EnumDyeColor
 import net.minecraft.item.EnumRarity

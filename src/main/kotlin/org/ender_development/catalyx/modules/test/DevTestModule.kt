@@ -7,13 +7,13 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.api.v1.common.extensions.subLogger
 import org.ender_development.catalyx.api.v1.modules.annotations.CatalyxModule
+import org.ender_development.catalyx.api.v1.utils.SideUtils
 import org.ender_development.catalyx.core.Reference
 import org.ender_development.catalyx.core.blocks.IOTileBlock
 import org.ender_development.catalyx.core.blocks.multiblock.CenterBlock
 import org.ender_development.catalyx.core.blocks.multiblock.parts.CornerBlock
 import org.ender_development.catalyx.core.blocks.multiblock.parts.SideBlock
 import org.ender_development.catalyx.core.client.AreaHighlighter
-import org.ender_development.catalyx.core.utils.SideUtils
 import org.ender_development.catalyx.modules.CatalyxInternalModuleContainer
 import org.ender_development.catalyx.modules.CatalyxModuleBase
 
