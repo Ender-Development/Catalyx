@@ -3,7 +3,7 @@ package org.ender_development.catalyx.api.v1.common
 import org.ender_development.catalyx.core.Reference
 
 /**
- * ModID Database
+ * Common mod ids for integration and other things
  */
 object Mods {
 	const val CATALYX = Reference.MODID

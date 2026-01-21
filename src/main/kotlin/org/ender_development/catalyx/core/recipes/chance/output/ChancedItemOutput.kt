@@ -2,15 +2,15 @@ package org.ender_development.catalyx.core.recipes.chance.output
 
 import net.minecraft.item.ItemStack
 import net.minecraft.network.PacketBuffer
-import org.ender_development.catalyx.api.v1.utils.Utils
+import org.ender_development.catalyx.api.v1.common.extensions.readItemStackOrEmpty
 
 class ChancedItemOutput(ingredient: ItemStack, chance: Int, boost: Int) : BoostableChancedOutput<ItemStack>(ingredient, chance, boost) {
 	companion object {
 		fun fromBuffer(buffer: PacketBuffer) =
-			ChancedItemOutput(Utils.forNetwork.readItemStack(buffer), buffer.readVarInt(), buffer.readVarInt())
+			ChancedItemOutput(buffer.readItemStackOrEmpty(), buffer.readVarInt(), buffer.readVarInt())
 
 		fun toBuffer(buffer: PacketBuffer, output: ChancedItemOutput) {
-			Utils.forNetwork.writeItemStack(buffer, output.ingredient)
+			buffer.writeItemStack(output.ingredient)
 			buffer.writeVarInt(output.chance)
 			buffer.writeVarInt(output.boost)
 		}

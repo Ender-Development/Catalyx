@@ -15,7 +15,7 @@ object BlockPosUtils : IBlockPosUtils {
 		val origin = (baseOrigin - center).rotateY(degrees) + center
 		val v1Rot = v1.rotateY(degrees)
 
-		val corners = listOf(
+		val corners = arrayOf(
 			origin,
 			origin + v1Rot,
 			origin + v2,
@@ -26,7 +26,7 @@ object BlockPosUtils : IBlockPosUtils {
 	}
 
 	override fun hollowCuboid(center: BlockPos, r: Int, h: Int, offset: Int, shrink: Int) =
-		(0..3).map {
+		Array(4) {
 			wall(center, r, h, offset, it * 90, shrink)
 		}
 }
