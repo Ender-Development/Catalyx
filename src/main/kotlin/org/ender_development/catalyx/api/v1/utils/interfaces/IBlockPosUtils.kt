@@ -24,7 +24,7 @@ interface IBlockPosUtils {
 	 * @param r The radius from the center to the edges of the cuboid.
 	 * @param h The height of the cuboid.
 	 * @param offset An optional vertical offset to apply to the base of the cuboid.
-	 * @return A [List] of [Pair]`s` of [BlockPos] representing the minimum and maximum corners of each wall.
+	 * @return A length 4 array of [Pair]s of [BlockPos] representing the minimum and maximum corners of each wall, see [BlockPosUtils#wall][wall].
 	 */
-	fun hollowCuboid(center: BlockPos, r: Int, h: Int, offset: Int = 1, shrink: Int = 1): List<Pair<BlockPos, BlockPos>>
+	fun hollowCuboid(center: BlockPos, r: Int, h: Int, offset: Int = 1, shrink: Int = 1): Array<Pair<BlockPos, BlockPos>>
 }

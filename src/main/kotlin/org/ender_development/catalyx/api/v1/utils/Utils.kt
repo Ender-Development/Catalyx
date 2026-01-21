@@ -6,16 +6,11 @@ import net.minecraftforge.fluids.FluidStack
 import net.minecraftforge.fluids.FluidTank
 import org.ender_development.catalyx.api.v1.utils.interfaces.IBlockPosUtils
 import org.ender_development.catalyx.api.v1.utils.interfaces.IFluidTankUtils
-import org.ender_development.catalyx.api.v1.utils.interfaces.INetworkUtils
 import org.ender_development.catalyx.core.utils.BlockPosUtils
-import org.ender_development.catalyx.core.utils.NetworkUtils
 
 object Utils {
 	val forBlockPos: IBlockPosUtils =
 		BlockPosUtils
-
-	val forNetwork: INetworkUtils =
-		NetworkUtils
 
 	// bruh...
 	// TODO fund am abstraction
