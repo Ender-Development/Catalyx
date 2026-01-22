@@ -25,6 +25,7 @@ import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 import net.minecraftforge.items.wrapper.CombinedInvWrapper
+import org.ender_development.catalyx.api.v1.common.extensions.orIfNotEmpty
 import org.ender_development.catalyx.core.ICatalyxMod
 import org.ender_development.catalyx.core.client.button.AbstractButtonWrapper
 import org.ender_development.catalyx.core.client.button.PauseButtonWrapper
@@ -82,16 +83,18 @@ abstract class BaseTile(open val mod: ICatalyxMod) : TileEntity(), BaseContainer
 
 		initInventoryInputCapability()
 		automationInput = object : WrappedItemHandler(input) {
-			override fun extractItem(slot: Int, amount: Int, simulate: Boolean) = ItemStack.EMPTY
+			override fun extractItem(slot: Int, amount: Int, simulate: Boolean) =
+				ItemStack.EMPTY
 		}
 
 		output = object : TileStackHandler(outputSlots, this) {
-			override fun insertItem(slot: Int, stack: ItemStack, simulate: Boolean) = stack
+			override fun insertItem(slot: Int, stack: ItemStack, simulate: Boolean) =
+				stack
 		}
 
 		automationOutput = object : WrappedItemHandler(output) {
 			override fun extractItem(slot: Int, amount: Int, simulate: Boolean) =
-				if(!getStackInSlot(slot).isEmpty) super.extractItem(slot, amount, simulate) else ItemStack.EMPTY
+				getStackInSlot(slot).orIfNotEmpty { super.extractItem(slot, amount, simulate) }
 		}
 	}
 

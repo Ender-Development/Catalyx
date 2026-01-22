@@ -1,9 +1,11 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package org.ender_development.catalyx.api.v1.common.extensions
 
 import net.minecraft.item.ItemStack
 import net.minecraftforge.items.IItemHandler
 
-operator fun IItemHandler.get(idx: Int) =
+inline operator fun IItemHandler.get(idx: Int) =
 	getStackInSlot(idx)
 
 fun IItemHandler.tryInsertInto(otherHandler: IItemHandler): Boolean {
@@ -43,6 +45,5 @@ fun IItemHandler.tryInsert(stack: ItemStack): ItemStack {
 
 fun IItemHandler.toStackList() =
 	(0..<slots).map {
-		val stack = this[it]
-		if(stack.isEmpty) ItemStack.EMPTY else stack
+		this[it].orEmpty()
 	}
