@@ -5,7 +5,6 @@ import net.minecraftforge.fluids.Fluid
 import net.minecraftforge.fluids.FluidStack
 import net.minecraftforge.fluids.FluidTank
 import org.ender_development.catalyx.api.v1.utils.interfaces.IBlockPosUtils
-import org.ender_development.catalyx.api.v1.utils.interfaces.IFluidTankUtils
 import org.ender_development.catalyx.core.utils.BlockPosUtils
 
 object Utils {
@@ -13,8 +12,9 @@ object Utils {
 		BlockPosUtils
 
 	// bruh...
-	// TODO fund am abstraction
-	val forFluidTanks = object : IFluidTankUtils {
+	// TODO find an abstraction
+	@Suppress("ClassName")
+	object forFluidTanks {
 		// These cannot be an extension as there's currently no way to create a static extension for a JVM class afact (see https://youtrack.jetbrains.com/issue/KT-11968)
 
 		inline fun create(tile: TileEntity, capacity: Int, canFill: Boolean, canDrain: Boolean, crossinline onContentsChangedCallback: () -> Unit) =
