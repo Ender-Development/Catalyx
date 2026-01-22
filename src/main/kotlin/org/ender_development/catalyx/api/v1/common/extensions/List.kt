@@ -26,10 +26,7 @@ fun <T> List<T>.validateEach(validator: (idx: Int, T) -> IValidationResult<T>) =
 @JvmName("copyOfIS")
 inline fun List<ItemStack>.copyOf() =
 	map {
-		if(it.isEmpty)
-			ItemStack.EMPTY
-		else
-			it.copy()
+		it.orIfNotEmpty(ItemStack::copy)
 	}
 
 @JvmName("copyOfFS")

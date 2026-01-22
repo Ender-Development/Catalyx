@@ -6,7 +6,13 @@ import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.Ingredient
 
 inline fun ItemStack?.orEmpty(): ItemStack =
-	this ?: ItemStack.EMPTY
+	this?.takeIf { !isEmpty } ?: ItemStack.EMPTY
+
+inline fun ItemStack.orIfNotEmpty(crossinline notEmpty: (ItemStack) -> ItemStack): ItemStack =
+	if(isEmpty)
+		ItemStack.EMPTY
+	else
+		notEmpty(this)
 
 fun ItemStack.areStacksEqualIgnoreQuantity(other: ItemStack) =
 	item === other.item && metadata == other.metadata && ItemStack.areItemStackTagsEqual(this, other)

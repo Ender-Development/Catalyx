@@ -4,6 +4,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.items.ItemStackHandler
 import org.ender_development.catalyx.api.v1.common.extensions.get
+import org.ender_development.catalyx.api.v1.common.extensions.orEmpty
 import org.ender_development.catalyx.api.v1.common.extensions.tryInsertInto
 import org.ender_development.catalyx.core.tiles.BaseTile
 import org.ender_development.catalyx.core.tiles.BaseTile.Companion.ITEM_CAP
@@ -18,7 +19,10 @@ open class TileStackHandler(size: Int, val tile: BaseTile) : ItemStackHandler() 
 		tile.markDirty()
 	}
 
-	fun clear() = (0..<slots).forEach { setStackInSlot(it, ItemStack.EMPTY) }
+	fun clear() =
+		repeat(slots) {
+			setStackInSlot(it, ItemStack.EMPTY)
+		}
 
 	fun incrementSlot(slot: Int, amountToAdd: Int) {
 		val temp = this[slot]
@@ -50,7 +54,7 @@ open class TileStackHandler(size: Int, val tile: BaseTile) : ItemStackHandler() 
 				if(increaseBy > 0) {
 					incrementSlot(slot, increaseBy)
 					stack.shrink(increaseBy)
-					if(stack.count <= 0 || stack.isEmpty)
+					if(stack.isEmpty)
 						return ItemStack.EMPTY
 				}
 			}
@@ -64,8 +68,7 @@ open class TileStackHandler(size: Int, val tile: BaseTile) : ItemStackHandler() 
 		if(temp.count - amount < 0) return
 
 		temp.shrink(amount)
-		if(temp.count <= 0) this.setStackInSlot(slot, ItemStack.EMPTY)
-		else this.setStackInSlot(slot, temp)
+		setStackInSlot(slot, temp.orEmpty())
 	}
 
 	fun eject(direction: EnumFacing): Boolean {

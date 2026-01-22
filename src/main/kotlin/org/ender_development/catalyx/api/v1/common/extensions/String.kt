@@ -25,7 +25,7 @@ fun String.toStack(quantity: Int = 1, meta: Int = 0): ItemStack {
 	val meta = split.getApplyOrDefault(2, String::toInt) { meta }
 	val location = if(split.size == 1) ResourceLocation(this) else ResourceLocation(split[0], split[1])
 
-	return Item.REGISTRY.registryObjects[location]?.toStack(quantity, meta) ?: Block.REGISTRY.registryObjects[location]?.toStack(quantity, meta) ?: ItemStack.EMPTY
+	return Item.REGISTRY.registryObjects[location]?.toStack(quantity, meta) ?: Block.REGISTRY.registryObjects[location]?.toStack(quantity, meta).orEmpty()
 }
 
 inline fun String.toIngredient(meta: Int = 0): Ingredient =
@@ -35,7 +35,7 @@ inline fun String.toDict(prefix: String) =
 	"$prefix${replaceFirstChar(Char::uppercaseChar)}"
 
 inline fun String.firstOre(): ItemStack =
-	OreDictionary.getOres(this).firstOrNull() ?: ItemStack.EMPTY
+	OreDictionary.getOres(this).firstOrNull().orEmpty()
 
 fun String.translate(vararg format: Any): String =
 	if(SideUtils.isServer)
