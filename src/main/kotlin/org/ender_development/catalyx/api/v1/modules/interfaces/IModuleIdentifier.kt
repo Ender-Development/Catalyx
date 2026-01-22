@@ -15,15 +15,3 @@ interface IModuleIdentifier {
 	fun toResourceLocation() =
 		ResourceLocation(containerId, moduleId)
 }
-
-/*
-// TODO: Discuss whether the following woule be better than the current ModuleIdentifier bs
-typealias ModuleIdentifier = ResourceLocation
-inline val ModuleIdentifier.containerId: String
-	get() = this.namespace
-
-inline val ModuleIdentifier.moduleId: String
-	get() = this.path
-
-// roz: nah ;p
-*/
