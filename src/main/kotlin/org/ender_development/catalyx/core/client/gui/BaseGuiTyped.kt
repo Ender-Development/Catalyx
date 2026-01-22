@@ -108,11 +108,11 @@ abstract class BaseGuiTyped<T>(container: Container, val tileEntity: T) : GuiCon
 			PacketHandler.channel.sendToServer(ButtonPacket(tileEntity.pos, button.wrapper))
 	}
 
-	fun drawFluidTank(wrapper: CapabilityFluidDisplayWrapper, x: Int, y: Int, width: Int = 16, height: Int = 70) {
+	open fun drawFluidTank(wrapper: CapabilityFluidDisplayWrapper, x: Int, y: Int, width: Int = 16, height: Int = 70) {
 		// draw the actual fluid texture
 		if(wrapper.stored > 5) {
 			RenderUtils.bindBlockTexture()
-			RenderUtils.renderGuiTank(wrapper.fluid, wrapper.capacity, wrapper.stored, x.toDouble(), y.toDouble(), zLevel.toDouble(), width.toDouble(), height.toDouble())
+			RenderUtils.renderGuiTank(wrapper.fluid, wrapper.capacity, x.toDouble(), y.toDouble(), width.toDouble(), height.toDouble())
 		}
 
 		// draw the empty tank overlay overtop
@@ -155,7 +155,7 @@ abstract class BaseGuiTyped<T>(container: Container, val tileEntity: T) : GuiCon
 		}
 	}
 
-	fun isHovered(x: Int, y: Int, width: Int, height: Int, mouseX: Int, mouseY: Int) =
+	open fun isHovered(x: Int, y: Int, width: Int, height: Int, mouseX: Int, mouseY: Int) =
 		mouseX >= x && mouseX < x + width && mouseY >= y && mouseY < y + height
 
 	interface IDefaultButtonVariables {

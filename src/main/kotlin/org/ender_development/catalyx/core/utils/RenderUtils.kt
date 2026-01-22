@@ -1,3 +1,5 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package org.ender_development.catalyx.core.utils
 
 import net.minecraft.client.Minecraft
@@ -5,6 +7,7 @@ import net.minecraft.client.gui.FontRenderer
 import net.minecraft.client.renderer.BufferBuilder
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.Tessellator
+import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.client.renderer.texture.TextureManager
 import net.minecraft.client.renderer.texture.TextureMap
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
@@ -13,82 +16,62 @@ import net.minecraftforge.fluids.Fluid
 import net.minecraftforge.fluids.FluidStack
 import net.minecraftforge.fluids.FluidTank
 import org.ender_development.catalyx.api.v1.common.extensions.destructFloat
+import org.ender_development.catalyx.api.v1.common.extensions.getColor
 import org.lwjgl.opengl.GL11
 import java.awt.Color
 
 object RenderUtils {
 	val minecraft: Minecraft = Minecraft.getMinecraft()
 
-	val TESSELLATOR: Tessellator = Tessellator.getInstance()
-	val BUFFER_BUILDER: BufferBuilder = TESSELLATOR.buffer
-	val FONT_RENDERER: FontRenderer = minecraft.fontRenderer
-	val renderEngine: TextureManager = minecraft.renderEngine
+	val tessellator: Tessellator = Tessellator.getInstance()
+	val bufferBuilder: BufferBuilder = tessellator.buffer
+	val fontRenderer: FontRenderer = minecraft.fontRenderer
+	val textureManager: TextureManager = minecraft.renderEngine
 
-	val BLOCK_TEX: ResourceLocation = TextureMap.LOCATION_BLOCKS_TEXTURE
+	val blockTexture: ResourceLocation = TextureMap.LOCATION_BLOCKS_TEXTURE
 
-	fun bindBlockTexture() =
-		renderEngine.bindTexture(BLOCK_TEX)
+	inline fun bindBlockTexture() =
+		bindTexture(blockTexture)
 
-	fun bindTexture(string: String) =
-		renderEngine.bindTexture(ResourceLocation(string))
-
-	fun bindTexture(tex: ResourceLocation) =
-		renderEngine.bindTexture(tex)
+	inline fun bindTexture(tex: ResourceLocation) =
+		textureManager.bindTexture(tex)
 
 	fun getStillTexture(fluid: FluidStack?) =
-		fluid?.fluid?.let {
-			getStillTexture(it)
-		}
+		fluid?.fluid?.let(::getStillTexture)
 
 	fun getStillTexture(fluid: Fluid) =
-		fluid.still?.let {
-			minecraft.textureMapBlocks.getTextureExtry("$it")
-		}
+		fluid.still?.toString()?.let(minecraft.textureMapBlocks::getTextureExtry)
 
-	fun renderGuiTank(tank: FluidTank, x: Double, y: Double, zLevel: Double, width: Double, height: Double) =
-		renderGuiTank(tank.fluid, tank.capacity, tank.fluidAmount, x, y, zLevel, width, height)
+	inline fun renderGuiTank(tank: FluidTank, x: Double, y: Double, width: Double, height: Double) =
+		renderGuiTank(tank.fluid, tank.capacity, x, y, width, height)
 
-	fun renderGuiTank(fluid: FluidStack?, capacity: Int, amount: Int, x: Double, y: Double, zLevel: Double, width: Double, height: Double) {
-		if(fluid == null || fluid.fluid == null || fluid.amount <= 0)
+	fun renderGuiTank(fluid: FluidStack?, capacity: Int, x: Double, y: Double, width: Double, height: Double) {
+		if(fluid == null || fluid.amount <= 0)
 			return
 
-		val icon = getStillTexture(fluid) ?: return
+		val sprite = getStillTexture(fluid) ?: return
 
-		val renderAmount = (amount * height / capacity).coerceIn(.0, height)
-		val posY = (y + height - renderAmount)
+		val bottomY = y + height
+		val topY = bottomY - height * fluid.amount.coerceAtMost(capacity) / capacity
+
+		val (red, green, blue) = Color(fluid.getColor()).destructFloat()
+		GlStateManager.color(red, green, blue, 1f)
+		GlStateManager.enableBlend()
 
 		bindBlockTexture()
-		val color = fluid.fluid.getColor(fluid)
-		GL11.glColor3ub((color shr 16 and 0xFF).toByte(), (color shr 8 and 0xFF).toByte(), (color and 0xFF).toByte())
 
-		// TODO clean up this mess
-		GlStateManager.enableBlend()
-		var i = 0
-		while(i < width) {
-			var j = 0
-			while(j < renderAmount) {
-				val drawWidth = (width - i).coerceAtMost(16.0)
-				val drawHeight = (renderAmount - j).coerceAtMost(16.0)
+		// in any normal programming language, this would just be something like `for(double drawY = topY; drawY < bottomY; drawY += 16)`
+		var drawY = topY
+		while(drawY < bottomY) {
+			var xOffset = 0
+			while(xOffset < width) {
+				val drawWidth = (width - xOffset).coerceAtMost(16.0)
+				val drawHeight = (bottomY - drawY).coerceAtMost(16.0)
 
-				val drawX = x + i
-				val drawY = posY + j
-
-				val minU = icon.minU.toDouble()
-				val maxU = icon.maxU.toDouble()
-				val minV = icon.minV.toDouble()
-				val maxV = icon.maxV.toDouble()
-
-				val tessellator = Tessellator.getInstance()
-				val tes = tessellator.buffer
-				tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX)
-				tes.pos(drawX, drawY + drawHeight, 0.0).tex(minU, minV + (maxV - minV) * drawHeight / 16f).endVertex()
-				tes.pos(drawX + drawWidth, drawY + drawHeight, 0.0).tex(minU + (maxU - minU) * drawWidth / 16f, minV + (maxV - minV) * drawHeight / 16f).endVertex()
-				tes.pos(drawX + drawWidth, drawY, 0.0).tex(minU + (maxU - minU) * drawWidth / 16f, minV).endVertex()
-				tes.pos(drawX, drawY, 0.0).tex(minU, minV).endVertex()
-				tessellator.draw()
-				j += 16
+				drawTexturedModalRect(x + xOffset, drawY, sprite, drawWidth, drawHeight)
+				xOffset += 16
 			}
-			i += 16
+			drawY += 16
 		}
 		GlStateManager.disableBlend()
 	}
@@ -105,7 +88,7 @@ object RenderUtils {
 		GlStateManager.pushMatrix()
 		GlStateManager.translate(x, y, .0)
 		GlStateManager.scale(scale, scale, .0)
-		FONT_RENDERER.drawString(text, 0f, 0f, color, shadow)
+		fontRenderer.drawString(text, 0f, 0f, color, shadow)
 		GlStateManager.popMatrix()
 	}
 
@@ -138,12 +121,12 @@ object RenderUtils {
 		val tw = 1 / tileWidth
 		val th = 1 / tileHeight
 		val (red, green, blue, alpha) = color.destructFloat()
-		BUFFER_BUILDER.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR)
-		BUFFER_BUILDER.pos(x, y + height, zOffset).tex(u * tw, (v + vHeight) * th).color(red, green, blue, alpha).endVertex()
-		BUFFER_BUILDER.pos(x + width, y + height, zOffset).tex((u + uWidth) * tw, (v + vHeight) * th).color(red, green, blue, alpha).endVertex()
-		BUFFER_BUILDER.pos(x + width, y, zOffset).tex((u + uWidth) * tw, v * th).color(red, green, blue, alpha).endVertex()
-		BUFFER_BUILDER.pos(x, y, zOffset).tex(u * tw, v * th).color(red, green, blue, alpha).endVertex()
-		TESSELLATOR.draw()
+		bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR)
+		bufferBuilder.pos(x, y + height, zOffset).tex(u * tw, (v + vHeight) * th).color(red, green, blue, alpha).endVertex()
+		bufferBuilder.pos(x + width, y + height, zOffset).tex((u + uWidth) * tw, (v + vHeight) * th).color(red, green, blue, alpha).endVertex()
+		bufferBuilder.pos(x + width, y, zOffset).tex((u + uWidth) * tw, v * th).color(red, green, blue, alpha).endVertex()
+		bufferBuilder.pos(x, y, zOffset).tex(u * tw, v * th).color(red, green, blue, alpha).endVertex()
+		tessellator.draw()
 	}
 
 	/**
@@ -157,23 +140,23 @@ object RenderUtils {
 		GlStateManager.pushMatrix()
 
 		if(!filled) {
-			BUFFER_BUILDER.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR)
+			bufferBuilder.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR)
 
-			BUFFER_BUILDER.pos(x, y, .0).color(red, green, blue, alpha).endVertex()
-			BUFFER_BUILDER.pos(x, y + height, .0).color(red, green, blue, alpha).endVertex()
-			BUFFER_BUILDER.pos(x, y + height, .0).color(red, green, blue, alpha).endVertex()
-			BUFFER_BUILDER.pos(x + width, y + height, .0).color(red, green, blue, alpha).endVertex()
-			BUFFER_BUILDER.pos(x + width, y + height, .0).color(red, green, blue, alpha).endVertex()
-			BUFFER_BUILDER.pos(x + width, y, .0).color(red, green, blue, alpha).endVertex()
-			BUFFER_BUILDER.pos(x + width, y, .0).color(red, green, blue, alpha).endVertex()
-			BUFFER_BUILDER.pos(x, y, .0).color(red, green, blue, alpha).endVertex()
+			bufferBuilder.pos(x, y, .0).color(red, green, blue, alpha).endVertex()
+			bufferBuilder.pos(x, y + height, .0).color(red, green, blue, alpha).endVertex()
+			bufferBuilder.pos(x, y + height, .0).color(red, green, blue, alpha).endVertex()
+			bufferBuilder.pos(x + width, y + height, .0).color(red, green, blue, alpha).endVertex()
+			bufferBuilder.pos(x + width, y + height, .0).color(red, green, blue, alpha).endVertex()
+			bufferBuilder.pos(x + width, y, .0).color(red, green, blue, alpha).endVertex()
+			bufferBuilder.pos(x + width, y, .0).color(red, green, blue, alpha).endVertex()
+			bufferBuilder.pos(x, y, .0).color(red, green, blue, alpha).endVertex()
 		} else {
-			BUFFER_BUILDER.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR)
+			bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR)
 
-			BUFFER_BUILDER.pos(x, y + 0, .0).color(red, green, blue, alpha).endVertex()
-			BUFFER_BUILDER.pos(x, y + height, .0).color(red, green, blue, alpha).endVertex()
-			BUFFER_BUILDER.pos(x + width, y + height, .0).color(red, green, blue, alpha).endVertex()
-			BUFFER_BUILDER.pos(x + width, y + 0, .0).color(red, green, blue, alpha).endVertex()
+			bufferBuilder.pos(x, y + 0, .0).color(red, green, blue, alpha).endVertex()
+			bufferBuilder.pos(x, y + height, .0).color(red, green, blue, alpha).endVertex()
+			bufferBuilder.pos(x + width, y + height, .0).color(red, green, blue, alpha).endVertex()
+			bufferBuilder.pos(x + width, y + 0, .0).color(red, green, blue, alpha).endVertex()
 		}
 
 		GlStateManager.translate(.0, .0, zTranslate)
@@ -182,7 +165,7 @@ object RenderUtils {
 		GlStateManager.disableLighting()
 		GlStateManager.disableTexture2D()
 		GlStateManager.depthMask(false)
-		TESSELLATOR.draw()
+		tessellator.draw()
 		GlStateManager.depthMask(true)
 		GlStateManager.enableTexture2D()
 		GlStateManager.enableLighting()
@@ -190,17 +173,36 @@ object RenderUtils {
 		GlStateManager.popMatrix()
 	}
 	
-	const val MAGIC_NUMBER = 0.00390625
+	const val MAGIC_NUMBER = 1.0 / 256.0
 
 	/**
 	 * Draw a 2D textured rectangle. Adapted from [Gui#drawTexturedModalRect][net.minecraft.client.gui.Gui.drawTexturedModalRect].
 	 */
 	fun drawTexturedModalRect(x: Double, y: Double, u: Float, v: Float, width: Double, height: Double, zLevel: Double = .0) {
-		BUFFER_BUILDER.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX)
-		BUFFER_BUILDER.pos(x, y + height, zLevel).tex(u * MAGIC_NUMBER, (v + height) * MAGIC_NUMBER).endVertex()
-		BUFFER_BUILDER.pos(x + width, y + height, zLevel).tex((u + width) * MAGIC_NUMBER, (v + height) * MAGIC_NUMBER).endVertex()
-		BUFFER_BUILDER.pos(x + width, y, zLevel).tex((u + width) * MAGIC_NUMBER, v * MAGIC_NUMBER).endVertex()
-		BUFFER_BUILDER.pos(x, y, zLevel).tex(u * MAGIC_NUMBER, v * MAGIC_NUMBER).endVertex()
-		TESSELLATOR.draw()
+		bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX)
+		bufferBuilder.pos(x, y + height, zLevel).tex(u * MAGIC_NUMBER, (v + height) * MAGIC_NUMBER).endVertex()
+		bufferBuilder.pos(x + width, y + height, zLevel).tex((u + width) * MAGIC_NUMBER, (v + height) * MAGIC_NUMBER).endVertex()
+		bufferBuilder.pos(x + width, y, zLevel).tex((u + width) * MAGIC_NUMBER, v * MAGIC_NUMBER).endVertex()
+		bufferBuilder.pos(x, y, zLevel).tex(u * MAGIC_NUMBER, v * MAGIC_NUMBER).endVertex()
+		tessellator.draw()
+	}
+
+	/**
+	 * Draw a textured rectangle using the [sprite]. Adapted from [Gui#drawTexturedModalRect][net.minecraft.client.gui.Gui.drawTexturedModalRect]
+	 *
+	 * @param sprite Sprite to render
+	 * @param zLevel Z level to render at
+	 */
+	fun drawTexturedModalRect(x: Double, y: Double, sprite: TextureAtlasSprite, width: Double, height: Double, zLevel: Double = .0) {
+		val minU = sprite.minU.toDouble()
+		val maxU = sprite.maxU.toDouble()
+		val minV = sprite.minV.toDouble()
+		val maxV = sprite.maxV.toDouble()
+		bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX)
+		bufferBuilder.pos(x, y + height, zLevel).tex(minU, maxV).endVertex()
+		bufferBuilder.pos(x + width, y + height, zLevel).tex(maxU, maxV).endVertex()
+		bufferBuilder.pos(x + width, y, zLevel).tex(maxU, minV).endVertex()
+		bufferBuilder.pos(x, y, zLevel).tex(minU, minV).endVertex()
+		tessellator.draw()
 	}
 }

@@ -62,9 +62,13 @@ abstract class BaseTile(open val mod: ICatalyxMod) : TileEntity(), BaseContainer
 	open val facing: EnumFacing
 		get() = world.getBlockState(pos).properties.getOrDefault(BlockHorizontal.FACING, EnumFacing.NORTH) as EnumFacing
 
-	open val inventory: IItemHandler = CombinedInvWrapper(input, output)
+	// note: this has to be a getter
+	open val inventory
+		get() = CombinedInvWrapper(input, output)
 
-	open val automationInvHandler = CombinedInvWrapper(automationInput, automationOutput)
+	// note: this has to be a getter
+	open val automationInvHandler
+		get() = CombinedInvWrapper(automationInput, automationOutput)
 
 	override fun canInteractWith(player: EntityPlayer) =
 		!isInvalid && player.getDistanceSq(pos.add(.5, .5, .5)) <= 64
