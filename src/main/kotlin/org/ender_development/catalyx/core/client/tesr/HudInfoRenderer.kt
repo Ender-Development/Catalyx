@@ -9,7 +9,6 @@ import org.ender_development.catalyx.api.v1.common.extensions.glRotate
 import org.ender_development.catalyx.core.tiles.BaseTile
 import org.ender_development.catalyx.core.tiles.helper.HudInfoLine
 import org.ender_development.catalyx.core.tiles.helper.IHudInfoProvider
-import org.ender_development.catalyx.core.utils.RenderUtils.FONT_RENDERER
 import org.ender_development.catalyx.core.utils.RenderUtils.drawRectangle
 
 @SideOnly(Side.CLIENT)
@@ -70,17 +69,17 @@ object HudInfoRenderer : AbstractTESRenderer() {
 				drawRectangle(padding, y, blockSize, height, message.border, false, -.01)
 
 			val maxWidth = blockSize.toInt() - 2
-			val line = FONT_RENDERER.trimStringToWidth(message.text, maxWidth)
+			val line = fontRenderer.trimStringToWidth(message.text, maxWidth)
 			val colour = message.color?.let { it.rgb and 0xFFFFFF } ?: 0xFFFFFF
 			println("colour=$colour; GlSM state={r=${GlStateManager.colorState.red}; g=${GlStateManager.colorState.green}; b=${GlStateManager.colorState.blue}; a=${GlStateManager.colorState.alpha}}")
 			if(message.alignment == HudInfoLine.TextAlign.LEFT)
-				FONT_RENDERER.drawString(line, padding.toInt() + 1, y.toInt() + 2, colour)
+				fontRenderer.drawString(line, padding.toInt() + 1, y.toInt() + 2, colour)
 			else {
-				var x = FONT_RENDERER.getStringWidth(line).coerceAtMost(maxWidth)
+				var x = fontRenderer.getStringWidth(line).coerceAtMost(maxWidth)
 				if(message.alignment == HudInfoLine.TextAlign.CENTER)
 					x = x shr 1
 
-				FONT_RENDERER.drawString(line, x, y.toInt() + 2, colour)
+				fontRenderer.drawString(line, x, y.toInt() + 2, colour)
 			}
 			y += height
 		}
