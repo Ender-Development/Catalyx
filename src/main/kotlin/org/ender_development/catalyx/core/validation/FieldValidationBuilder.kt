@@ -17,9 +17,9 @@ class FieldValidationBuilder<V>(value: V?, private val fieldName: String, privat
 
 	override fun withMessage(message: String): FieldValidationBuilder<V> {
         // Remove the last error and replace with custom message
-		parentBuilder.getErrors().lastOrNull()?.let {
+		parentBuilder.errors.lastOrNull()?.let {
 			if(it.field == fieldName) {
-				parentBuilder.errors.removeLast()
+				parentBuilder.mutableErrors.removeLast()
 				parentBuilder.addError(fieldName, message)
 			}
 		}
