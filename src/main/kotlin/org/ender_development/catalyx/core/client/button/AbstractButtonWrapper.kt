@@ -7,7 +7,7 @@ import net.minecraft.util.ResourceLocation
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
-import org.ender_development.catalyx.api.v1.utils.SideUtils
+import org.ender_development.catalyx.api.v1.utils.Utils
 import org.ender_development.catalyx.core.Reference
 import org.ender_development.catalyx.core.client.button.AbstractButtonWrapper.Companion.getWrapper
 import org.ender_development.catalyx.core.client.button.AbstractButtonWrapper.Companion.registerWrapper
@@ -80,7 +80,7 @@ abstract class AbstractButtonWrapper(x: Int, y: Int, width: Int = 16, height: In
 		}
 
 	/** Guaranteed to be non-null on client-side */
-	open val button = if(SideUtils.isClient)
+	open val button = if(Utils.side.isClient)
 		WrappedGuiButton(x, y, width, height, this)
 	else
 		null

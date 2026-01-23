@@ -8,7 +8,7 @@ import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.fml.common.network.IGuiHandler
-import org.ender_development.catalyx.api.v1.utils.SideUtils
+import org.ender_development.catalyx.api.v1.utils.Utils
 import org.ender_development.catalyx.core.ICatalyxMod
 
 /**
@@ -30,7 +30,7 @@ class CatalyxGuiHandler(mod: ICatalyxMod) : IGuiHandler {
 	fun registerId(te: Class<out TileEntity>, container: Class<out Container>, gui: () -> Class<out GuiContainer>): Int {
 		tileEntities.add(te)
 		containers.add(container)
-		if(SideUtils.isClient)
+		if(Utils.side.isClient)
 			guis.add(gui())
 		return tileEntities.size - 1
 	}

@@ -6,7 +6,7 @@ import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.event.RegistryEvent
 import org.ender_development.catalyx.api.v1.registry.IItemProvider
-import org.ender_development.catalyx.api.v1.utils.SideUtils
+import org.ender_development.catalyx.api.v1.utils.Utils
 import org.ender_development.catalyx.core.ICatalyxMod
 import org.ender_development.catalyx.core.register
 
@@ -36,7 +36,7 @@ open class BaseItem(val mod: ICatalyxMod, val name: String) : Item(), IItemProvi
 
 	override fun register(event: RegistryEvent.Register<Item>) {
 		event.registry.register(this)
-		if(SideUtils.isClient)
+		if(Utils.side.isClient)
 			ModelLoader.setCustomModelResourceLocation(this, 0, ModelResourceLocation(registryName!!, "inventory"))
 	}
 

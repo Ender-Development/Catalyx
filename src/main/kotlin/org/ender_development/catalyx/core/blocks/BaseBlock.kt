@@ -15,7 +15,7 @@ import net.minecraft.world.IBlockAccess
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.event.RegistryEvent
 import org.ender_development.catalyx.api.v1.registry.IBlockProvider
-import org.ender_development.catalyx.api.v1.utils.SideUtils
+import org.ender_development.catalyx.api.v1.utils.Utils
 import org.ender_development.catalyx.core.ICatalyxMod
 import org.ender_development.catalyx.core.register
 
@@ -50,7 +50,7 @@ open class BaseBlock(val mod: ICatalyxMod, name: String, material: Material = Ma
 	override fun registerItemBlock(event: RegistryEvent.Register<Item>) {
 		item.registryName = registryName
 		event.registry.register(item)
-		if(SideUtils.isClient)
+		if(Utils.side.isClient)
 			ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(registryName!!, "inventory"))
 	}
 

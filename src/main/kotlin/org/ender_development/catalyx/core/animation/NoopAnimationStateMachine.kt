@@ -5,12 +5,12 @@ import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.model.ModelLoaderRegistry
 import net.minecraftforge.common.animation.ITimeValue
 import net.minecraftforge.common.model.animation.IAnimationStateMachine
-import org.ender_development.catalyx.api.v1.utils.SideUtils
+import org.ender_development.catalyx.api.v1.utils.Utils
 
 class NoopAnimationStateMachine() : IAnimationStateMachine {
 	companion object {
 		fun loadASM(location: ResourceLocation, customParameters: Map<String, ITimeValue>): IAnimationStateMachine =
-			if(SideUtils.isDedicatedServer)
+			if(Utils.side.isDedicatedServer)
 				NoopAnimationStateMachine()
 			else
 				ModelLoaderRegistry.loadASM(location, ImmutableMap.copyOf(customParameters))
