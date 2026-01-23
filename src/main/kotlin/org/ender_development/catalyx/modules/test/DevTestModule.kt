@@ -7,7 +7,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.api.v1.common.extensions.subLogger
 import org.ender_development.catalyx.api.v1.modules.annotations.CatalyxModule
-import org.ender_development.catalyx.api.v1.utils.SideUtils
+import org.ender_development.catalyx.api.v1.utils.Utils
 import org.ender_development.catalyx.core.Reference
 import org.ender_development.catalyx.core.blocks.IOTileBlock
 import org.ender_development.catalyx.core.blocks.multiblock.CenterBlock
@@ -36,7 +36,7 @@ internal class DevTestModule : CatalyxModuleBase() {
 	override fun load() =
 		logger.info("Detected deobfuscated environment, adding some testing features")
 
-	override val eventBusSubscribers = if(SideUtils.isClient) listOf(TestEventHandler()) else emptyList()
+	override val eventBusSubscribers = if(Utils.side.isClient) listOf(TestEventHandler()) else emptyList()
 
 	class TestEventHandler {
 		val areaHighlighter = AreaHighlighter()

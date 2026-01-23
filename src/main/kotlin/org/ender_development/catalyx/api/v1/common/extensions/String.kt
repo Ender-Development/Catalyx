@@ -12,7 +12,7 @@ import net.minecraft.util.ResourceLocation
 import net.minecraftforge.fml.common.Loader
 import net.minecraftforge.oredict.OreDictionary
 import net.minecraftforge.oredict.OreIngredient
-import org.ender_development.catalyx.api.v1.utils.SideUtils
+import org.ender_development.catalyx.api.v1.utils.Utils
 
 inline fun String.toPotion(): Potion =
 	Potion.getPotionFromResourceLocation(this)!!
@@ -38,7 +38,7 @@ inline fun String.firstOre(): ItemStack =
 	OreDictionary.getOres(this).firstOrNull().orEmpty()
 
 fun String.translate(vararg format: Any): String =
-	if(SideUtils.isServer)
+	if(Utils.side.isServer)
 		this
 	else
 		I18n.format(this, *format)
