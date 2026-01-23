@@ -56,6 +56,6 @@ class ValidationBuilder<T> : IValidationBuilder<T> {
     fun hasWarnings(): Boolean =
 		errors.any { it.severity == Severity.WARNING }
 
-    fun getErrors(): List<ValidationError> =
+    fun getErrors(): List<ValidationError> = // TODO replace with new kt 2.3.0 feature
 		errors
 }
