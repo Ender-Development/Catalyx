@@ -5,11 +5,14 @@ import net.minecraftforge.fluids.Fluid
 import net.minecraftforge.fluids.FluidStack
 import net.minecraftforge.fluids.FluidTank
 import org.ender_development.catalyx.api.v1.utils.interfaces.IBlockPosUtils
+import org.ender_development.catalyx.api.v1.utils.interfaces.ISideUtils
 import org.ender_development.catalyx.core.utils.BlockPosUtils
+import org.ender_development.catalyx.core.utils.SideUtils
 
 object Utils {
-	val forBlockPos: IBlockPosUtils =
-		BlockPosUtils
+	val forBlockPos: IBlockPosUtils = BlockPosUtils
+
+	val side: ISideUtils = SideUtils
 
 	// bruh...
 	// TODO find an abstraction
