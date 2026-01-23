@@ -63,7 +63,12 @@ checkSubPropertiesExist("use_groovyscript", "groovyscript_version")
 checkSubPropertiesExist("use_hei", "hei_version")
 checkSubPropertiesExist("use_top", "top_version")
 
-kotlin { jvmToolchain(8) }
+kotlin {
+	jvmToolchain(8)
+	compilerOptions {
+		freeCompilerArgs.add("-Xexplicit-backing-fields")
+	}
+}
 
 minecraft {
     mcVersion = propertyString("minecraft_version")

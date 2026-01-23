@@ -6,8 +6,11 @@ import org.ender_development.catalyx.api.v1.validation.interfaces.IValidator
 
 @Suppress("UNUSED")
 class ValidationBuilder<T> : IValidationBuilder<T> {
-	internal val errors = mutableListOf<ValidationError>()
+	val errors: List<ValidationError>
+		field = mutableListOf<ValidationError>()
 	private var target: T? = null
+
+	internal val mutableErrors: MutableList<ValidationError> = errors
 
 	fun <V> field(value: V?, fieldName: String, vararg validators: IValidator<V?>): FieldValidationBuilder<V> =
 		FieldValidationBuilder(value, fieldName, this).apply {
@@ -39,7 +42,7 @@ class ValidationBuilder<T> : IValidationBuilder<T> {
         addError(field, message, code, Severity.WARNING)
 
 	fun build(data: T?): ValidationResult<T> {
-        val onlyWarnings = errors.none { it.severity != Severity.WARNING }
+        val onlyWarnings = !errors.any { it.severity != Severity.WARNING }
 
         return if(onlyWarnings && data != null)
             ValidationResult.success(data)
@@ -55,7 +58,4 @@ class ValidationBuilder<T> : IValidationBuilder<T> {
 
     fun hasWarnings(): Boolean =
 		errors.any { it.severity == Severity.WARNING }
-
-    fun getErrors(): List<ValidationError> = // TODO replace with new kt 2.3.0 feature
-		errors
 }
