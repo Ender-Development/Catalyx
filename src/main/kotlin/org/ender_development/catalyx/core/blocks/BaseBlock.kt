@@ -50,7 +50,7 @@ open class BaseBlock(val mod: ICatalyxMod, name: String, material: Material = Ma
 	override fun registerItemBlock(event: RegistryEvent.Register<Item>) {
 		item.registryName = registryName
 		event.registry.register(item)
-		if(Utils.side.isClient)
+		if(Utils.environment.isClient)
 			ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(registryName!!, "inventory"))
 	}
 

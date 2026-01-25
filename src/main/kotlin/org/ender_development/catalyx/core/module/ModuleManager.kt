@@ -11,7 +11,6 @@ import net.minecraftforge.fml.common.ModContainer
 import net.minecraftforge.fml.common.discovery.ASMDataTable
 import net.minecraftforge.fml.common.event.*
 import org.ender_development.catalyx.Catalyx
-import org.ender_development.catalyx.api.v1.common.DevUtils
 import org.ender_development.catalyx.api.v1.common.extensions.modLoaded
 import org.ender_development.catalyx.api.v1.modules.Modules
 import org.ender_development.catalyx.api.v1.modules.annotations.CatalyxModule
@@ -19,6 +18,7 @@ import org.ender_development.catalyx.api.v1.modules.annotations.CatalyxModuleCon
 import org.ender_development.catalyx.api.v1.modules.interfaces.ICatalyxModule
 import org.ender_development.catalyx.api.v1.modules.interfaces.IModuleIdentifier
 import org.ender_development.catalyx.api.v1.modules.interfaces.IModuleManager
+import org.ender_development.catalyx.api.v1.utils.Utils
 import org.ender_development.catalyx.core.Reference
 import org.ender_development.catalyx.core.module.ModuleManager.configuration
 import org.ender_development.catalyx.core.module.ModuleManager.discoveredContainers
@@ -386,7 +386,7 @@ object ModuleManager : IModuleManager {
 	private fun shouldModuleBeEnabled(module: ICatalyxModule): Boolean {
 		val annotation = module.annotation
 		val prop = configuration.get(MODULE_CFG_CATEGORY_NAME, "${annotation.containerId}:${annotation.moduleId}", true, getConfigComment(module))
-		return prop.boolean && (!annotation.testModule || DevUtils.isDeobfuscated)
+		return prop.boolean && (!annotation.testModule || Utils.environment.isDeobfuscated)
 	}
 
 	// --- Helper properties ---

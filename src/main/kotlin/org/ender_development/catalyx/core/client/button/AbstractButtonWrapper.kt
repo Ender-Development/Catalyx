@@ -80,7 +80,7 @@ abstract class AbstractButtonWrapper(x: Int, y: Int, width: Int = 16, height: In
 		}
 
 	/** Guaranteed to be non-null on client-side */
-	open val button = if(Utils.side.isClient)
+	open val button = if(Utils.environment.isClient)
 		WrappedGuiButton(x, y, width, height, this)
 	else
 		null
