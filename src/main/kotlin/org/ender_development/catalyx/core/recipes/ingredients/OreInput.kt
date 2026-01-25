@@ -2,6 +2,7 @@ package org.ender_development.catalyx.core.recipes.ingredients
 
 import net.minecraft.item.ItemStack
 import net.minecraftforge.oredict.OreDictionary
+import org.ender_development.catalyx.api.v1.common.extensions.isNullOrEmpty
 import java.util.*
 
 class OreInput : RecipeInput {
@@ -65,7 +66,7 @@ class OreInput : RecipeInput {
 		ore
 
 	override fun acceptsStack(stack: ItemStack?): Boolean {
-		if(stack == null || stack.isEmpty)
+		if(stack.isNullOrEmpty())
 			return false
 
 		nbtMatcher?.let { matcher ->

@@ -2,6 +2,7 @@ package org.ender_development.catalyx.core.utils
 
 import it.unimi.dsi.fastutil.Hash
 import net.minecraft.item.ItemStack
+import org.ender_development.catalyx.api.v1.common.extensions.isNullOrEmpty
 import java.util.*
 
 /**
@@ -17,42 +18,33 @@ interface IItemStackHash : Hash.Strategy<ItemStack> {
 			inline get() = Builder()
 
 		/**
-		 * Generates an [IItemStackHash] instance configured to compare every aspect of ItemStacks.
-		 *
-		 * @return a new [IItemStackHash] instance as described above.
+		 * An [IItemStackHash] instance configured to compare every aspect of ItemStacks.
 		 */
-		val comparingAll: IItemStackHash
-			inline get() = builder.apply {
-				item = true
-				meta = true
-				damage = true
-				nbt = true
-				amount = true
-			}.build()
+		val comparingAll = builder.apply {
+			item = true
+			meta = true
+			damage = true
+			nbt = true
+			amount = true
+		}.build()
 
 		/**
-		 * Generates an [IItemStackHash] instance configured to compare every aspect of ItemStacks except the quantity and meta.
-		 *
-		 * @return a new [IItemStackHash] instance as described above.
+		 * An [IItemStackHash] instance configured to compare item type, damage and NBT (ergo everything except quantity and meta).
 		 */
-		val comparingAllButCount: IItemStackHash
-			inline get() = builder.apply {
-				item = true
-				damage = true
-				nbt = true
-			}.build()
+		val comparingAllButCount = builder.apply {
+			item = true
+			damage = true
+			nbt = true
+		}.build()
 
 		/**
-		 * Generates an [IItemStackHash] instance configured to compare Item type and metadata only.
-		 *
-		 * @return a new [IItemStackHash] instance as described above.
+		 * An [IItemStackHash] instance configured to compare item type, damage and quantity.
 		 */
-		val comparingItemDamageCount: IItemStackHash
-			inline get() = builder.apply {
-				item = true
-				damage = true
-				amount = true
-			}.build()
+		val comparingItemDamageCount = builder.apply {
+			item = true
+			damage = true
+			amount = true
+		}.build()
 	}
 
 	/**
@@ -89,7 +81,7 @@ interface IItemStackHash : Hash.Strategy<ItemStack> {
 			}
 
 			override fun hashCode(stack: ItemStack?): Int {
-				if(stack == null || stack.isEmpty)
+				if(stack.isNullOrEmpty())
 					return 0
 
 				return Objects.hash(
