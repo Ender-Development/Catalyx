@@ -5,6 +5,7 @@ import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.item.ItemStack
 import net.minecraft.util.NonNullList
 import net.minecraftforge.oredict.OreDictionary
+import org.ender_development.catalyx.api.v1.common.extensions.isNullOrEmpty
 import org.ender_development.catalyx.core.recipes.ingredients.entries.ItemToMetaList
 import java.util.*
 
@@ -68,7 +69,7 @@ class ItemInput : RecipeInput {
 		inputStacks
 
 	override fun acceptsStack(stack: ItemStack?): Boolean {
-		if(stack == null || stack.isEmpty)
+		if(stack.isNullOrEmpty())
 			return false
 
 		itemList.forEach { metaList ->

@@ -8,6 +8,7 @@ import net.minecraftforge.items.IItemHandlerModifiable
 import net.minecraftforge.items.ItemHandlerHelper
 import net.minecraftforge.oredict.OreDictionary
 import org.ender_development.catalyx.api.v1.common.extensions.copyOf
+import org.ender_development.catalyx.api.v1.common.extensions.isNullOrEmpty
 import org.ender_development.catalyx.core.recipes.chance.output.ChancedFluidOutput
 import org.ender_development.catalyx.core.recipes.chance.output.ChancedItemOutput
 import org.ender_development.catalyx.core.recipes.chance.output.ChancedOutputList
@@ -154,10 +155,10 @@ class Recipe (
 				val inputStack = inputs[i]
 				if(i == indexed) {
 					++indexed
-					itemAmountInSlot[i] = if(inputStack?.isEmpty != false) 0 else inputStack.count
+					itemAmountInSlot[i] = if(inputStack.isNullOrEmpty()) 0 else inputStack.count
 				}
 
-				if(inputStack?.isEmpty != false || !it.acceptsStack(inputStack))
+				if(inputStack.isNullOrEmpty() || !it.acceptsStack(inputStack))
 					continue
 
 				val itemAmountToConsume = itemAmountInSlot[i].coerceAtMost(ingredientAmount)
@@ -428,7 +429,7 @@ class Recipe (
 
 		inputs.forEachIndexed { index, itemStack ->
 			val itemAmount = itemAmountInSlot[index]
-			if(itemStack?.isEmpty != false || itemStack.count == itemAmount)
+			if(itemStack.isNullOrEmpty() || itemStack.count == itemAmount)
 				return@forEachIndexed
 
 			itemStack.count = itemAmount
