@@ -4,6 +4,10 @@ package org.ender_development.catalyx.api.v1.common.extensions
 
 import net.minecraft.inventory.Container
 import net.minecraft.inventory.Slot
+import net.minecraft.item.ItemStack
 
 inline operator fun Container.get(slotId: Int): Slot =
 	getSlot(slotId)
+
+inline operator fun Container.set(slotId: Int, stack: ItemStack) =
+	putStackInSlot(slotId, stack)
