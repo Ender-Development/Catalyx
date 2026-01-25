@@ -18,7 +18,7 @@ object Utils {
 	// TODO find an abstraction
 	@Suppress("ClassName")
 	object forFluidTanks {
-		// These cannot be an extension as there's currently no way to create a static extension for a JVM class afact (see https://youtrack.jetbrains.com/issue/KT-11968)
+		// These cannot be an extension as there's currently no way to create a static extension for a JVM class afaict (see https://youtrack.jetbrains.com/issue/KT-11968)
 
 		inline fun create(tile: TileEntity, capacity: Int, canFill: Boolean, canDrain: Boolean, crossinline onContentsChangedCallback: () -> Unit) =
 			object : FluidTank(capacity) {
