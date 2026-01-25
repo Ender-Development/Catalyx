@@ -36,7 +36,7 @@ internal class DevTestModule : CatalyxModuleBase() {
 	override fun load() =
 		logger.info("Detected deobfuscated environment, adding some testing features")
 
-	override val eventBusSubscribers = if(Utils.side.isClient) listOf(TestEventHandler()) else emptyList()
+	override val eventBusSubscribers = if(Utils.environment.isClient) listOf(TestEventHandler()) else emptyList()
 
 	class TestEventHandler {
 		val areaHighlighter = AreaHighlighter()

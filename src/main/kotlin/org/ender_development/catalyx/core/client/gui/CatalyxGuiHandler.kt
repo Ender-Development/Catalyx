@@ -30,7 +30,7 @@ class CatalyxGuiHandler(mod: ICatalyxMod) : IGuiHandler {
 	fun registerId(te: Class<out TileEntity>, container: Class<out Container>, gui: () -> Class<out GuiContainer>): Int {
 		tileEntities.add(te)
 		containers.add(container)
-		if(Utils.side.isClient)
+		if(Utils.environment.isClient)
 			guis.add(gui())
 		return tileEntities.size - 1
 	}

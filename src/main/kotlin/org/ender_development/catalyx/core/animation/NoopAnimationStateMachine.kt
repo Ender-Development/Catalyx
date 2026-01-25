@@ -10,7 +10,7 @@ import org.ender_development.catalyx.api.v1.utils.Utils
 class NoopAnimationStateMachine() : IAnimationStateMachine {
 	companion object {
 		fun loadASM(location: ResourceLocation, customParameters: Map<String, ITimeValue>): IAnimationStateMachine =
-			if(Utils.side.isDedicatedServer)
+			if(Utils.environment.isDedicatedServer)
 				NoopAnimationStateMachine()
 			else
 				ModelLoaderRegistry.loadASM(location, ImmutableMap.copyOf(customParameters))

@@ -38,7 +38,7 @@ inline fun String.firstOre(): ItemStack =
 	OreDictionary.getOres(this).firstOrNull().orEmpty()
 
 fun String.translate(vararg format: Any): String =
-	if(Utils.side.isServer)
+	if(Utils.environment.isServer)
 		this
 	else
 		I18n.format(this, *format)

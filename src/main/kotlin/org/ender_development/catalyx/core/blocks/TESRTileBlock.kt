@@ -11,7 +11,7 @@ import org.ender_development.catalyx.core.tiles.TESRTile
  */
 open class TESRTileBlock(mod: ICatalyxMod, name: String, tileClass: Class<out TESRTile>, guiId: Int) : BaseRotatableTileBlock(mod, name, tileClass, guiId) {
 	init {
-		if(Utils.side.isClient)
+		if(Utils.environment.isClient)
 			ClientRegistry.bindTileEntitySpecialRenderer(tileClass, TileRenderer)
 	}
 }

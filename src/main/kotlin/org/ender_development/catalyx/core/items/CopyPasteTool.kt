@@ -10,7 +10,7 @@ import net.minecraft.util.EnumHand
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import org.ender_development.catalyx.Catalyx
-import org.ender_development.catalyx.api.v1.common.DevUtils
+import org.ender_development.catalyx.api.v1.utils.Utils
 import org.ender_development.catalyx.core.client.gui.BaseGuiTyped
 import org.ender_development.catalyx.core.tiles.BaseTile
 import org.ender_development.catalyx.core.tiles.helper.ICopyPasteExtraTile
@@ -82,7 +82,7 @@ class CopyPasteTool() : BaseItem(Catalyx, "copy_paste_tool") {
 		tooltip as MutableList
 		tooltip.add("TODO ;p")
 
-		if(DevUtils.isDeobfuscated) {
+		if(Utils.environment.isDeobfuscated) {
 			tooltip.add("")
 			tooltip.add("${stack.tagCompound?.getString(NBT_COPIED_BLOCK_KEY)}")
 			tooltip.add("${stack.tagCompound?.getCompoundTag(NBT_COPIED_DATA_KEY)}")
@@ -94,5 +94,5 @@ class CopyPasteTool() : BaseItem(Catalyx, "copy_paste_tool") {
 	 * TODO tooltip, name translation, maybe signify what blocks you can actually copy across ;p
 	 */
 	override fun isEnabled() =
-		DevUtils.isDeobfuscated
+		Utils.environment.isDeobfuscated
 }

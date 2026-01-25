@@ -5,10 +5,10 @@ import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import org.ender_development.catalyx.Catalyx
-import org.ender_development.catalyx.api.v1.common.DevUtils
 import org.ender_development.catalyx.api.v1.common.extensions.plural
 import org.ender_development.catalyx.api.v1.registry.ICatalyxRegistry
 import org.ender_development.catalyx.api.v1.registry.IItemProvider
+import org.ender_development.catalyx.api.v1.utils.Utils
 import org.ender_development.catalyx.core.Reference
 
 @Mod.EventBusSubscriber(modid = Reference.MODID)
@@ -20,7 +20,7 @@ object CatalyxItemRegistry : ICatalyxRegistry<Item, IItemProvider> {
 		Catalyx.LOGGER.debug("Item Registry has ${registry.size} entries, but only gonna register ${registry.enabled.size} item${registry.size.plural}")
 		registry.enabled.forEach {
 			it.register(event)
-			if(DevUtils.isDeobfuscated)
+			if(Utils.environment.isDeobfuscated)
 				Catalyx.LOGGER.debug("Registered item: {}", it.instance.registryName)
 		}
 	}

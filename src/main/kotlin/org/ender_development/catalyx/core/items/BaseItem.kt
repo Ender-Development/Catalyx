@@ -36,7 +36,7 @@ open class BaseItem(val mod: ICatalyxMod, val name: String) : Item(), IItemProvi
 
 	override fun register(event: RegistryEvent.Register<Item>) {
 		event.registry.register(this)
-		if(Utils.side.isClient)
+		if(Utils.environment.isClient)
 			ModelLoader.setCustomModelResourceLocation(this, 0, ModelResourceLocation(registryName!!, "inventory"))
 	}
 
