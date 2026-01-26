@@ -16,11 +16,9 @@ enum class TagType(val typeId: Int) {
 	LONG_ARRAY(12),
 	NUMBER(99);
 
-	companion object {
-		fun isNumeric(tagType: TagType) =
-			when(tagType) {
-				BOOLEAN, BYTE, SHORT, INT, LONG, FLOAT, DOUBLE, NUMBER -> true
-				else -> false
-			}
-	}
+	fun isNumeric() =
+		when(this) {
+			BOOLEAN, BYTE, SHORT, INT, LONG, FLOAT, DOUBLE, NUMBER -> true
+			else -> false
+		}
 }
