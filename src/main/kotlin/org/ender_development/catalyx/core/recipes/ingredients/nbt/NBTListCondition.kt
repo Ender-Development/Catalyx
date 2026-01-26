@@ -22,5 +22,5 @@ class NBTListCondition : NBTCondition {
 		Objects.hash(tagType, nbtKey, value, listTagType)
 
 	override fun equals(other: Any?) =
-		this === other || (other is NBTListCondition && tagType == other.tagType && nbtKey.equals(other.nbtKey) && value == other.value && listTagType == other.listTagType)
+		this === other || (other is NBTListCondition && tagType == other.tagType && nbtKey == other.nbtKey && value == other.value && listTagType == other.listTagType)
 }
