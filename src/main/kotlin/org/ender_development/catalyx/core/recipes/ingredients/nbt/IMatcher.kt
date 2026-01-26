@@ -32,7 +32,7 @@ interface IMatcher {
 			if(tag == null || condition == null || condition.tagType == null)
 				return false
 
-			if(!TagType.isNumeric(condition.tagType) || !hasKey(tag, condition.nbtKey!!, condition.tagType.typeId))
+			if(!condition.tagType.isNumeric() || !hasKey(tag, condition.nbtKey!!, condition.tagType.typeId))
 				return false
 
 			return inequality(tag.getLong(condition.nbtKey), (condition.value as Number).toLong())
@@ -73,10 +73,7 @@ interface IMatcher {
 			tagValue >= conditionValue
 	}
 
-	/**
-	 * Check if the NBT tag contains the key specified in the condition and if its value is equal to the value specified in the condition.
-	 */
-	object EQUAL_TO : IMatcher {
+	private interface EqualityBase : IMatcher {
 		override fun evaluate(tag: NBTTagCompound?, condition: NBTCondition?): Boolean {
 			if(tag == null || condition == null || condition.tagType == null)
 				return false
@@ -84,7 +81,7 @@ interface IMatcher {
 			if(!hasKey(tag, condition.nbtKey!!, condition.tagType.typeId))
 				return false
 
-			return if(TagType.isNumeric(condition.tagType))
+			return if(condition.tagType.isNumeric())
 				tag.getLong(condition.nbtKey) == (condition.value as Number).toLong()
 			else
 				when(condition.tagType) {
@@ -93,39 +90,31 @@ interface IMatcher {
 					TagType.LONG_ARRAY -> tag.getLongArray(condition.nbtKey) contentEquals condition.value as LongArray
 					TagType.LIST -> condition is NBTListCondition && tag.getTagList(condition.nbtKey, condition.listTagType.typeId).tagList == condition.value
 					TagType.STRING -> tag.getString(condition.nbtKey) == condition.value
-					TagType.COMPOUND -> tag.getCompoundTag(condition.nbtKey) == condition.value
-					else -> throw IllegalStateException("TagType#isNumeric returned false on a numeric TagType")
+					TagType.COMPOUND -> compound(tag, condition)
+					else -> error("TagType#isNumeric returned false on a numeric TagType")
 				}
 		}
+
+		fun compound(tag: NBTTagCompound, condition: NBTCondition): Boolean
+	}
+
+	/**
+	 * Check if the NBT tag contains the key specified in the condition and if its value is equal to the value specified in the condition.
+	 */
+	object EQUAL_TO : EqualityBase {
+		override fun compound(tag: NBTTagCompound, condition: NBTCondition) =
+			tag.getCompoundTag(condition.nbtKey!!) == condition.value
 	}
 
 	/**
 	 * Check if the NBT tag contains the key specified in the condition and if its value is equal to the value specified in the condition.
 	 * If the value is a compound tag, it will recursively check if all keys and values match.
 	 */
-	object RECURSIVE_EQUAL_TO : IMatcher { // TODO: this and EQUAL_TO are basically the same matcher except for TagType.COMPOUND, could abstract them away to not basically duplicate the same code twice
-		override fun evaluate(tag: NBTTagCompound?, condition: NBTCondition?): Boolean {
-			if(tag == null || condition == null || condition.tagType == null)
-				return false
-
-			if(!hasKey(tag, condition.nbtKey!!, condition.tagType.typeId))
-				return false
-
-			return if(TagType.isNumeric(condition.tagType))
-				tag.getLong(condition.nbtKey) == (condition.value as Number).toLong()
-			else
-				when(condition.tagType) {
-					TagType.BYTE_ARRAY -> tag.getByteArray(condition.nbtKey) contentEquals condition.value as ByteArray
-					TagType.INT_ARRAY -> tag.getIntArray(condition.nbtKey) contentEquals condition.value as IntArray
-					TagType.LONG_ARRAY -> tag.getLongArray(condition.nbtKey) contentEquals condition.value as LongArray
-					TagType.LIST -> condition is NBTListCondition && tag.getTagList(condition.nbtKey, condition.listTagType.typeId).tagList == condition.value
-					TagType.STRING -> tag.getString(condition.nbtKey).equals(condition.value as String)
-					TagType.COMPOUND -> tag.getCompoundTag(condition.nbtKey).let { tag ->
-						condition.value is NBTCondition && evaluate(tag, condition.value) || tag == condition.value
-					}
-					else -> throw IllegalStateException("TagType#isNumeric returned false on a numeric TagType")
-				}
-		}
+	object RECURSIVE_EQUAL_TO : EqualityBase {
+		override fun compound(tag: NBTTagCompound, condition: NBTCondition) =
+			tag.getCompoundTag(condition.nbtKey!!).let { tag ->
+				condition.value is NBTCondition && evaluate(tag, condition.value) || tag == condition.value
+			}
 	}
 
 	/**
@@ -140,7 +129,7 @@ interface IMatcher {
 			if(!hasKey(tag, condition.nbtKey!!, condition.tagType.typeId))
 				return true
 
-			return if(TagType.isNumeric(condition.tagType))
+			return if(condition.tagType.isNumeric())
 				tag.getLong(condition.nbtKey) == 0L
 			else {
 				when(condition.tagType) {
@@ -150,7 +139,7 @@ interface IMatcher {
 					TagType.LIST -> condition is NBTListCondition && tag.getTagList(condition.nbtKey, condition.listTagType.typeId).isEmpty
 					TagType.STRING -> tag.getString(condition.nbtKey).isEmpty()
 					TagType.COMPOUND -> tag.getCompoundTag(condition.nbtKey).isEmpty
-					else -> throw IllegalStateException("TagType#isNumeric returned false on a numeric TagType")
+					else -> error("TagType#isNumeric returned false on a numeric TagType")
 				}
 			}
 		}

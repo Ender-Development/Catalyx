@@ -24,7 +24,7 @@ object Delegates {
 
 	private class OnlyIfFalse<V : Any>(val modName: String) : ReadWriteProperty<Any?, V> {
 		override fun getValue(thisRef: Any?, property: KProperty<*>): V {
-			throw IllegalStateException("Tried to get property '${property.name}' without mod '$modName' being loaded")
+			error("Tried to get property '${property.name}' without mod '$modName' being loaded")
 		}
 
 		override fun setValue(thisRef: Any?, property: KProperty<*>, value: V) {}
@@ -34,7 +34,7 @@ object Delegates {
 		var value: V? = null
 
 		override fun getValue(thisRef: Any?, property: KProperty<*>): V {
-			return value ?: throw IllegalStateException("Tried to get property '${property.name}' before initializing it")
+			return value ?: error("Tried to get property '${property.name}' before initializing it")
 		}
 
 		override fun setValue(thisRef: Any?, property: KProperty<*>, value: V) {

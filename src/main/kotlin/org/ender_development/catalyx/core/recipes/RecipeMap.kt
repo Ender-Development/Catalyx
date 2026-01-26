@@ -272,7 +272,7 @@ class RecipeMap<R : RecipeBuilder<R>> {
 			return true
 
 		if(index >= ingredients.size)
-			throw IllegalStateException("Index $index is out of bounds for ingredients list of size ${ingredients.size}")
+			error("Index $index is out of bounds for ingredients list of size ${ingredients.size}")
 
 		val current = ingredients[index]
 		val branchRight = Branch()
