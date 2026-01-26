@@ -64,12 +64,12 @@ checkSubPropertiesExist("use_hei", "hei_version")
 checkSubPropertiesExist("use_top", "top_version")
 
 kotlin {
-	jvmToolchain(8)
-	compilerOptions {
-		freeCompilerArgs.add("-Xexplicit-backing-fields")
-		freeCompilerArgs.add("-Xcontext-sensitive-resolution")
-		extraWarnings.set(true)
-	}
+    jvmToolchain(8)
+    compilerOptions {
+        freeCompilerArgs.add("-Xexplicit-backing-fields")
+        freeCompilerArgs.add("-Xcontext-sensitive-resolution")
+        extraWarnings.set(true)
+    }
 }
 
 minecraft {
