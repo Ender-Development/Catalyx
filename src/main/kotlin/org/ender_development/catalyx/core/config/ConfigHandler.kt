@@ -18,7 +18,7 @@ class ConfigHandler<T : ConfigParser.ConfigItemStack>(configData: Iterable<Strin
 	 * @return True if the list contains the item stack, false otherwise.
 	 */
 	fun contains(stack: ItemStack) =
-		configItems.any { it.compare(stack) }
+		configItems.any { it == stack }
 
 	/**
 	 * Check if the player has any of the items in the list equipped.
@@ -42,5 +42,5 @@ class ConfigHandler<T : ConfigParser.ConfigItemStack>(configData: Iterable<Strin
 	 * @return The first matching ConfigItem, or null if none found.
 	 */
 	operator fun get(stack: ItemStack) =
-		configItems.firstOrNull { it.compare(stack) }
+		configItems.firstOrNull { it == stack }
 }

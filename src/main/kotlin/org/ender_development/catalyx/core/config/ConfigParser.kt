@@ -21,8 +21,8 @@ object ConfigParser {
 			internal const val IGNORE_META = -1
 		}
 
-		protected var modid: String? = null
-		protected var itemid: String? = null
+		protected var modId: String? = null
+		protected var itemId: String? = null
 		protected var item: Item? = null
 		protected var meta: Int = IGNORE_META
 
@@ -46,43 +46,46 @@ object ConfigParser {
 			validateConfigItem()
 		}
 
-		open fun compare(other: Any?) =
+		override fun equals(other: Any?) =
 			when(other) {
 				is ItemStack ->
 					if(meta == IGNORE_META)
 						other.isItemEqualIgnoreDurability(toItemStack())
 					else
 						other.isItemEqual(toItemStack())
-				is ConfigItemStack -> modid == other.modid && itemid == other.itemid && meta == other.meta
-				else -> super.equals(other)
+				is ConfigItemStack -> modId == other.modId && itemId == other.itemId && meta == other.meta
+				else -> this === other
 			}
 
 		open fun toItemStack() =
-			ItemStack(item ?: throw NullPointerException("Item not found: $modid:$itemid"), 1, meta)
+			ItemStack(item ?: throw NullPointerException("Item not found: $modId:$itemId"), 1, meta)
 
 		protected fun parseConfigString(configString: String) {
 			val parts = configString.split(":")
 			if(parts.size != 2 && parts.size != 3)
 				throw IllegalArgumentException("Invalid config string format: $configString")
 
-			modid = parts[0]
-			itemid = parts[1]
+			modId = parts[0]
+			itemId = parts[1]
 			if(parts.size == 3)
 				meta = parts[2].toInt()
 
-			item = Item.getByNameOrId("$modid:$itemid") // check this in validateConfigItem?
+			item = Item.getByNameOrId("$modId:$itemId") // check this in validateConfigItem?
 		}
 
 		protected fun validateConfigItem() {
-			if(modid == null || itemid == null)
+			if(modId == null || itemId == null)
 				throw IllegalArgumentException("Mod ID and item name cannot be null")
 
-			if(!modid.modLoaded())
-				throw IllegalArgumentException("Mod ID is not loaded: $modid")
+			if(!modId.modLoaded())
+				throw IllegalArgumentException("Mod ID is not loaded: $modId")
 
 			if(meta < IGNORE_META)
 				throw IllegalArgumentException("Meta value cannot be negative")
 		}
+
+		override fun hashCode() =
+			Objects.hash(modId, itemId, meta)
 	}
 
 	/**
@@ -131,17 +134,12 @@ object ConfigParser {
 			internal const val IGNORE_META = -1
 		}
 
-		private var modId: String? = null
-		private var blockId: String? = null
-		private var meta: Int = IGNORE_META
+		protected var modId: String? = null
+		protected var blockId: String? = null
+		protected var meta: Int = IGNORE_META
 
-		open val block: Block?
-			get() {
-				val id = ResourceLocation(modId ?: return null, blockId ?: return null)
-				if(!Block.REGISTRY.containsKey(id))
-					return null
-				return Block.REGISTRY.getObject(id)
-			}
+		open val block: Block? // my IJ might say this (v) is an error, but this is actually allowed by default since Kotlin 2.3
+			get() = Block.REGISTRY.registryObjects[ResourceLocation(modId ?: return null, blockId ?: return null)]
 
 		open val state: IBlockState?
 			@Suppress("DEPRECATION")

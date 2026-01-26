@@ -34,5 +34,5 @@ open class NBTCondition {
 		Objects.hash(tagType, nbtKey, value)
 
 	override fun equals(other: Any?) =
-		this === other || (other is NBTCondition && tagType == other.tagType && nbtKey.equals(other.nbtKey) && value == other.value)
+		this === other || (other is NBTCondition && tagType == other.tagType && nbtKey == other.nbtKey && value == other.value)
 }

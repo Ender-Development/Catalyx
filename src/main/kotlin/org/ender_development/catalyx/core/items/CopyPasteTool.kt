@@ -84,7 +84,7 @@ class CopyPasteTool() : BaseItem(Catalyx, "copy_paste_tool") {
 
 		if(Utils.environment.isDeobfuscated) {
 			tooltip.add("")
-			tooltip.add("${stack.tagCompound?.getString(NBT_COPIED_BLOCK_KEY)}")
+			tooltip.add(stack.tagCompound?.getString(NBT_COPIED_BLOCK_KEY))
 			tooltip.add("${stack.tagCompound?.getCompoundTag(NBT_COPIED_DATA_KEY)}")
 		}
 	}
