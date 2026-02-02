@@ -95,8 +95,8 @@ class CopyPasteTool : BaseItem(Catalyx, "copy_paste_tool"), IAutoModel {
 	 * don't register if this isn't a dev environment, as this item is not finished
 	 * TODO tooltip, name translation, maybe signify what blocks you can actually copy across ;p
 	 */
-	override val enabled: () -> Boolean
-		get() = { Utils.environment.isDeobfuscated }
+	override fun isEnabled() =
+		Utils.environment.isDeobfuscated
 
 	override val textureLocation: ResourceLocation =
 		ResourceLocation(mod.modId, "logo")

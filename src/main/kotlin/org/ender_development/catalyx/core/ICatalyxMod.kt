@@ -1,6 +1,9 @@
+@file:Suppress("NOTHING_TO_INLINE", "UnusedReceiverParameter")
+
 package org.ender_development.catalyx.core
 
 import net.minecraft.creativetab.CreativeTabs
+import net.minecraft.util.ResourceLocation
 import net.minecraftforge.fml.common.Mod
 import org.ender_development.catalyx.api.v1.registry.IBlockProvider
 import org.ender_development.catalyx.api.v1.registry.IItemProvider
@@ -36,18 +39,14 @@ interface ICatalyxMod {
 }
 
 // helper functions
-@Suppress("NOTHING_TO_INLINE")
 inline fun ICatalyxMod.register(item: IItemProvider) =
 	CatalyxItemRegistry.registry.add(item)
 
-@Suppress("NOTHING_TO_INLINE")
 inline fun ICatalyxMod.register(block: IBlockProvider) =
 	CatalyxBlockRegistry.registry.add(block)
 
-@Suppress("NOTHING_TO_INLINE")
-inline fun ICatalyxMod.toRL(name: String): ResourceLocation =
-	ResourceLocation(it.modId, name)
+inline fun ICatalyxMod.toResourceLocation(name: String) =
+	ResourceLocation(modId, name)
 
-@Suppress("NOTHING_TO_INLINE")
-inline fun ICatalyxMod.toLK(langKey: String): String =
-	"${it.modId}.$langKey"
+inline fun ICatalyxMod.toLanguageKey(langKey: String) =
+	"$modId.$langKey"
