@@ -7,15 +7,17 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumActionResult
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
+import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.api.v1.utils.Utils
+import org.ender_development.catalyx.core.client.IAutoModel
 import org.ender_development.catalyx.core.client.gui.BaseGuiTyped
 import org.ender_development.catalyx.core.tiles.BaseTile
 import org.ender_development.catalyx.core.tiles.helper.ICopyPasteExtraTile
 
-class CopyPasteTool() : BaseItem(Catalyx, "copy_paste_tool") {
+class CopyPasteTool : BaseItem(Catalyx, "copy_paste_tool"), IAutoModel {
 	private companion object {
 		const val NBT_COPIED_BLOCK_KEY = "CopiedBlock"
 		const val NBT_COPIED_DATA_KEY = "CopiedData"
@@ -93,6 +95,9 @@ class CopyPasteTool() : BaseItem(Catalyx, "copy_paste_tool") {
 	 * don't register if this isn't a dev environment, as this item is not finished
 	 * TODO tooltip, name translation, maybe signify what blocks you can actually copy across ;p
 	 */
-	override fun isEnabled() =
-		Utils.environment.isDeobfuscated
+	override val enabled: () -> Boolean
+		get() = { Utils.environment.isDeobfuscated }
+
+	override val textureLocation: ResourceLocation =
+		ResourceLocation(mod.modId, "logo")
 }

@@ -4,18 +4,12 @@ import net.minecraft.block.Block
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.BlockFaceShape
 import net.minecraft.block.state.IBlockState
-import net.minecraft.client.renderer.block.model.ModelResourceLocation
-import net.minecraft.item.Item
-import net.minecraft.item.ItemBlock
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
-import net.minecraftforge.client.model.ModelLoader
-import net.minecraftforge.event.RegistryEvent
 import org.ender_development.catalyx.api.v1.registry.IBlockProvider
-import org.ender_development.catalyx.api.v1.utils.Utils
 import org.ender_development.catalyx.core.ICatalyxMod
 import org.ender_development.catalyx.core.register
 
@@ -25,7 +19,7 @@ import org.ender_development.catalyx.core.register
 open class BaseBlock(val mod: ICatalyxMod, name: String, material: Material = Material.ROCK, hardness: Float = 3f) : Block(material), IBlockProvider {
 	init {
 		registryName = ResourceLocation(mod.modId, name)
-		translationKey = "$registryName"
+		translationKey = "${mod.modId}.$name"
 		blockHardness = hardness
 		creativeTab = mod.creativeTab
 	}
@@ -36,32 +30,7 @@ open class BaseBlock(val mod: ICatalyxMod, name: String, material: Material = Ma
 
 	override val instance = this
 
-	final override var modDependencies: Iterable<String> = emptyList()
-		private set
-
-	override val item = ItemBlock(this)
-
-	override fun isEnabled() =
-		true
-
-	override fun register(event: RegistryEvent.Register<Block>) =
-		event.registry.register(this)
-
-	override fun registerItemBlock(event: RegistryEvent.Register<Item>) {
-		item.registryName = registryName
-		event.registry.register(item)
-		if(Utils.environment.isClient)
-			ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(registryName!!, "inventory"))
-	}
-
-	override fun requires(modDependencies: Iterable<String>): Block {
-		this.modDependencies = modDependencies
-		mod.register(this)
-		return this
-	}
-
 	init {
-		// TODO: why do we have 2 init blocks? => so you ask questions /j; nah actually, just because of initialisation order, this made more sense
 		mod.register(this)
 	}
 

@@ -1,10 +1,9 @@
 {
 	"forge_marker": 1,
 	"defaults": {
-		"model": "catalyx:layered_cube_all",
+		"model": "minecraft:cube_all",
 		"textures": {
-			"bot_all": "catalyx:blocks/mb_inner",
-			"top_all": "catalyx:blocks/mb_inner"
+			"all": "catalyx:blocks/mb_inner"
 		}
 	},
 	"variants": {

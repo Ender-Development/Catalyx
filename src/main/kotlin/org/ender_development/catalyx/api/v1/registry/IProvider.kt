@@ -1,8 +1,15 @@
 package org.ender_development.catalyx.api.v1.registry
 
 import net.minecraft.block.Block
+import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.item.Item
+import net.minecraft.item.ItemBlock
+import net.minecraft.util.ResourceLocation
+import net.minecraftforge.client.event.ModelRegistryEvent
+import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.event.RegistryEvent
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.registries.IForgeRegistryEntry
 
 /**
@@ -15,47 +22,85 @@ interface IProvider<T : IForgeRegistryEntry<T>> {
 	val instance: T
 
 	/**
-	 * The mod ID(s) required for this provider to be enabled. Prefixes of "!" can be used to indicate that a mod must NOT be present.
-	 *
-	 * Default is an empty list, meaning no dependencies.
-	 *
-	 * @see [org.ender_development.catalyx.core.registry.CatalyxProviderRegistry.evaluateModDependencies]
-	 */
-	val modDependencies: Iterable<String>
-
-	// Note: do not make this a `val` as we wanna enforce a getter here
-	/**
 	 * Whether this provider is enabled and should be registered.
 	 */
-	fun isEnabled(): Boolean
+	val enabled: () -> Boolean
+		get() = { true }
 
 	/**
 	 * Register this provider's item/block with the given event.
+	 * This will only be called, when the provider is [enabled].
 	 *
 	 * @param event The registry event.
 	 */
-	fun register(event: RegistryEvent.Register<T>)
+	fun register(event: RegistryEvent.Register<T>) =
+		event.registry.register(instance)
 
 	/**
-	 * Specify that this provider requires the given mod dependencies to be present.
+	 * Register this provider's model, this comes with a default implementation.
 	 *
-	 * @see IProvider.modDependencies for format
+	 * @param event The registry event.
 	 */
-	fun requires(modDependencies: Iterable<String>): T
+	@SideOnly(Side.CLIENT)
+	fun registerModel(event: ModelRegistryEvent)
+
+	/**
+	 * [ResourceLocation] of the model parent
+	 */
+	val modelParent: ResourceLocation
+
+	/**
+	 * [ResourceLocation] of the model file
+	 */
+	val modelLocation: ResourceLocation
+
+	/**
+	 * [ResourceLocation] of the texture file
+	 */
+	val textureLocation: ResourceLocation
 }
 
-interface IItemProvider : IProvider<Item>
+interface IItemProvider : IProvider<Item> {
+	@SideOnly(Side.CLIENT)
+	override fun registerModel(event: ModelRegistryEvent) =
+		ModelLoader.setCustomModelResourceLocation(instance, 0, ModelResourceLocation(instance.registryName!!, "inventory"))
+
+	override val modelParent: ResourceLocation
+		get() = ResourceLocation("minecraft", "item/generated")
+
+	override val modelLocation: ResourceLocation
+		get() = ResourceLocation(instance.registryName!!.namespace, "item/${instance.registryName!!.path}")
+
+	override val textureLocation: ResourceLocation
+		get() = ResourceLocation(instance.registryName!!.namespace, "items/${instance.registryName!!.path}")
+}
 
 interface IBlockProvider : IProvider<Block> {
 	/**
 	 * Override this instead of [registerItemBlock] if you only want to change the registered Item associated with this Block (like with a [org.ender_development.catalyx.core.items.TooltipItemBlock])
 	 */
 	val item: Item
+		get() = ItemBlock(instance).setRegistryName(instance.registryName)
 
 	/**
 	 * Register the Item for this Block with the given event.
+	 * This will only be called, when the provider is [enabled].
 	 *
 	 * @param event The registry event for Items.
 	 */
-	fun registerItemBlock(event: RegistryEvent.Register<Item>)
+	fun registerItemBlock(event: RegistryEvent.Register<Item>) =
+		event.registry.register(item)
+
+	@SideOnly(Side.CLIENT)
+	override fun registerModel(event: ModelRegistryEvent) =
+		ModelLoader.setCustomModelResourceLocation(item, 0, ModelResourceLocation(item.registryName!!, "inventory"))
+
+	override val textureLocation: ResourceLocation
+		get() = ResourceLocation(instance.registryName!!.namespace, "blocks/${instance.registryName!!.path}")
+
+	override val modelLocation: ResourceLocation
+		get() = ResourceLocation(instance.registryName!!.namespace, "block/${instance.registryName!!.path}")
+
+	override val modelParent: ResourceLocation
+		get() = ResourceLocation("minecraft", "block/cube_all")
 }

@@ -14,12 +14,12 @@ object Utils {
 
 	val environment: IEnvironmentUtils = EnvironmentUtils
 
-	// bruh...
 	// TODO find an abstraction
+	/**
+	 * [This can't be an extension as of right now there is no way to create a static extension of a JVM class.](https://youtrack.jetbrains.com/issue/KT-11968)
+	 */
 	@Suppress("ClassName")
 	object forFluidTanks {
-		// These cannot be an extension as there's currently no way to create a static extension for a JVM class afaict (see https://youtrack.jetbrains.com/issue/KT-11968)
-
 		inline fun create(tile: TileEntity, capacity: Int, canFill: Boolean, canDrain: Boolean, crossinline onContentsChangedCallback: () -> Unit) =
 			object : FluidTank(capacity) {
 				init {

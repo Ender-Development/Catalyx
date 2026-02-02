@@ -1,15 +1,9 @@
 {
 	"forge_marker": 1,
 	"defaults": {
-		"model": "catalyx:layered_cube_merged",
+		"model": "minecraft:cube_all",
 		"textures": {
-			"particle": "catalyx:blocks/mb_inner",
-			"down": "",
-			"up": "",
-			"north": "",
-			"east": "",
-			"south": "",
-			"west": ""
+			"all": "catalyx:blocks/mb_inner"
 		}
 	},
 	"variants": {
@@ -23,7 +17,7 @@
 		},
 		"position": {
 			"0": {
-				"model": "catalyx:layered_cube_merged",
+				"model": "catalyx:cat_cube",
 				"textures": {
 					"down": "catalyx:blocks/mb_down_right_lower",
 					"up": "catalyx:blocks/mb_top_right_upper",
@@ -34,7 +28,7 @@
 				}
 			},
 			"1": {
-				"model": "catalyx:layered_cube_merged",
+				"model": "catalyx:cat_cube",
 				"textures": {
 					"down": "catalyx:blocks/mb_down_right_upper",
 					"up": "catalyx:blocks/mb_top_right_lower",
@@ -45,7 +39,7 @@
 				}
 			},
 			"2": {
-				"model": "catalyx:layered_cube_merged",
+				"model": "catalyx:cat_cube",
 				"textures": {
 					"down": "catalyx:blocks/mb_down_left_upper",
 					"up": "catalyx:blocks/mb_top_left_lower",
@@ -56,7 +50,7 @@
 				}
 			},
 			"3": {
-				"model": "catalyx:layered_cube_merged",
+				"model": "catalyx:cat_cube",
 				"textures": {
 					"down": "catalyx:blocks/mb_down_left_lower",
 					"up": "catalyx:blocks/mb_top_left_upper",
