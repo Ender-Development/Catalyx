@@ -43,3 +43,11 @@ inline fun ICatalyxMod.register(item: IItemProvider) =
 @Suppress("NOTHING_TO_INLINE")
 inline fun ICatalyxMod.register(block: IBlockProvider) =
 	CatalyxBlockRegistry.registry.add(block)
+
+@Suppress("NOTHING_TO_INLINE")
+inline fun ICatalyxMod.toRL(name: String): ResourceLocation =
+	ResourceLocation(it.modId, name)
+
+@Suppress("NOTHING_TO_INLINE")
+inline fun ICatalyxMod.toLK(langKey: String): String =
+	"${it.modId}.$langKey"
