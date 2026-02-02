@@ -35,9 +35,11 @@ internal class ModuleGroovyScript : IntegrationModule(), GroovyPlugin {
 		modSupportContainer = container!!
 	}
 
+	@Optional.Method(modid = Mods.GROOVYSCRIPT)
 	override fun getModId() =
 		Reference.MODID
 
+	@Optional.Method(modid = Mods.GROOVYSCRIPT)
 	override fun getContainerName() =
 		Reference.MOD_NAME
 }

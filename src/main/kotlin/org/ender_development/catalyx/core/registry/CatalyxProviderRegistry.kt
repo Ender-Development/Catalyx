@@ -4,6 +4,7 @@ import net.minecraft.util.ResourceLocation
 import org.ender_development.catalyx.api.v1.common.extensions.modLoaded
 import org.ender_development.catalyx.api.v1.registry.ICatalyxProviderRegistry
 import org.ender_development.catalyx.api.v1.registry.IProvider
+import kotlin.let
 
 /**
  * Collection of all [IProvider] of a given type
@@ -13,17 +14,7 @@ import org.ender_development.catalyx.api.v1.registry.IProvider
 class CatalyxProviderRegistry<V : IProvider<*>> : HashMap<ResourceLocation, Pair<V, Boolean>>(), ICatalyxProviderRegistry<V> {
 	override fun add(provider: V): Boolean =
 		provider.instance.registryName?.let {
-			this[it] = provider to (provider.isEnabled() && provider.modDependencies.evaluateModDependencies())
+			this[it] = provider to provider.enabled()
 			true
 		} ?: false
-
-	/**
-	 * Special helper to evaluate modDependencies strings.
-	 *
-	 * @see [IProvider.modDependencies]
-	 */
-	fun Iterable<String>.evaluateModDependencies() =
-		all {
-			it.removePrefix("!").modLoaded() != it.startsWith('!')
-		}
 }

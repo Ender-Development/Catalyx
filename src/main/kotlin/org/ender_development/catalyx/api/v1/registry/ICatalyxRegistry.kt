@@ -1,6 +1,11 @@
 package org.ender_development.catalyx.api.v1.registry
 
+import net.minecraftforge.client.event.ModelBakeEvent
+import net.minecraftforge.client.event.ModelRegistryEvent
+import net.minecraftforge.client.event.TextureStitchEvent
 import net.minecraftforge.event.RegistryEvent
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.registries.IForgeRegistryEntry
 import org.ender_development.catalyx.core.registry.CatalyxProviderRegistry
 
@@ -21,5 +26,14 @@ interface ICatalyxRegistry<E : IForgeRegistryEntry<E>, P : IProvider<E>> {
 	 *
 	 * @param event The registry event.
 	 */
-	fun register(event: RegistryEvent.Register<E>)
+	fun registerProvider(event: RegistryEvent.Register<E>)
+
+	@SideOnly(Side.CLIENT)
+	fun registerModel(event: ModelRegistryEvent)
+
+	@SideOnly(Side.CLIENT)
+	fun bakeModel(event: ModelBakeEvent)
+
+	@SideOnly(Side.CLIENT)
+	fun stitchTexture(event: TextureStitchEvent.Pre)
 }

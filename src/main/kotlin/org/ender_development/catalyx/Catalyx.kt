@@ -2,11 +2,12 @@ package org.ender_development.catalyx
 
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.util.ResourceLocation
+import net.minecraftforge.common.ForgeVersion
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.event.FMLConstructionEvent
 import org.apache.logging.log4j.LogManager
-import org.ender_development.catalyx.core.ICatalyxMod
 import org.ender_development.catalyx.core.Reference
+import org.ender_development.catalyx.core.ICatalyxMod
 import org.ender_development.catalyx.core.module.ModuleManager
 import org.ender_development.catalyx.core.utils.persistence.ConfigPersistentData
 import kotlin.random.Random
@@ -17,6 +18,7 @@ import kotlin.random.Random
 	version = Reference.VERSION,
 	dependencies = ICatalyxMod.DEPENDENCIES,
 	modLanguageAdapter = ICatalyxMod.MOD_LANGUAGE_ADAPTER,
+	acceptedMinecraftVersions = ForgeVersion.mcVersion,
 	acceptableRemoteVersions = "*"
 )
 @Mod.EventBusSubscriber(modid = Reference.MODID)
