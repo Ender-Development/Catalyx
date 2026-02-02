@@ -10,7 +10,7 @@ import org.ender_development.catalyx.core.utils.BlockPosUtils
 import org.ender_development.catalyx.core.utils.EnvironmentUtils
 
 object Utils {
-	val forBlockPos: IBlockPosUtils = BlockPosUtils
+	val blockPos: IBlockPosUtils = BlockPosUtils
 
 	val environment: IEnvironmentUtils = EnvironmentUtils
 
@@ -19,7 +19,7 @@ object Utils {
 	 * [This can't be an extension as of right now there is no way to create a static extension of a JVM class.](https://youtrack.jetbrains.com/issue/KT-11968)
 	 */
 	@Suppress("ClassName")
-	object forFluidTanks {
+	object fluidTank {
 		inline fun create(tile: TileEntity, capacity: Int, canFill: Boolean, canDrain: Boolean, crossinline onContentsChangedCallback: () -> Unit) =
 			object : FluidTank(capacity) {
 				init {

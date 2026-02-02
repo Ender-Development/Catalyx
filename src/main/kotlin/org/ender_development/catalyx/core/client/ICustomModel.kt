@@ -25,8 +25,7 @@ interface ICustomModel {
 interface IAutoModel : ICustomModel, IItemProvider {
 	@SideOnly(Side.CLIENT)
 	override fun onTextureStitch(event: TextureStitchEvent.Pre) {
-		val sprite = DefaultSprite(textureLocation)
-		event.map.setTextureEntry(sprite)
+		event.map.setTextureEntry(DefaultSprite(textureLocation))
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -37,8 +36,8 @@ interface IAutoModel : ICustomModel, IItemProvider {
 			val bakedModel = retexturedModel.bake(ModelRotation.X0_Y0, DefaultVertexFormats.ITEM, ModelLoader.defaultTextureGetter())
 			val bakedModelLoc = ModelResourceLocation(instance.delegate.name(), "inventory")
 			event.modelRegistry.putObject(bakedModelLoc, bakedModel)
-		} catch (e: Exception) {
-			Catalyx.LOGGER.error(e.stackTrace)
+		} catch(e: Throwable) {
+			Catalyx.LOGGER.catching(e)
 		}
 	}
 }

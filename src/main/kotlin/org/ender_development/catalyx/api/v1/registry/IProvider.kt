@@ -24,12 +24,12 @@ interface IProvider<T : IForgeRegistryEntry<T>> {
 	/**
 	 * Whether this provider is enabled and should be registered.
 	 */
-	val enabled: () -> Boolean
-		get() = { true }
+	fun isEnabled() =
+		true
 
 	/**
 	 * Register this provider's item/block with the given event.
-	 * This will only be called, when the provider is [enabled].
+	 * This will only be called when the provider is [enabled][isEnabled].
 	 *
 	 * @param event The registry event.
 	 */
@@ -84,7 +84,7 @@ interface IBlockProvider : IProvider<Block> {
 
 	/**
 	 * Register the Item for this Block with the given event.
-	 * This will only be called, when the provider is [enabled].
+	 * This will only be called, when the provider is [enabled][isEnabled].
 	 *
 	 * @param event The registry event for Items.
 	 */

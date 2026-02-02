@@ -15,10 +15,10 @@ import kotlin.properties.Delegates
 	containerId = Reference.MODID,
 	modDependencies = [Mods.CRAFTTWEAKER],
 	name = "Catalyx CraftTweaker Integration Module",
-	description = "Adds CT bindings to content creation functions.",
+	description = "Adds CT bindings to content creation functions",
 	moduleDependencies = ["${Reference.MODID}:${CatalyxInternalModuleContainer.MODULE_INTEGRATION}"]
 )
-internal class ModuleCraftTweaker: IntegrationModule() {
+internal class ModuleCraftTweaker : IntegrationModule() {
 	override val logger = super.logger.subLogger("CraftTweaker")
 
 	var scriptsSuccessful by Delegates.notNull<Boolean>()
