@@ -2,6 +2,7 @@ package org.ender_development.catalyx.api.v1.client.interfaces
 
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Vec3d
+import org.ender_development.catalyx.api.v1.common.extensions.mapToArray
 
 /**
  * A helper allowing you to highlight an area, block or blocks in 3D space
@@ -67,7 +68,7 @@ interface IAreaHighlighter {
 	 * Highlight the specified [blocks][blockPositions] with a specific colour ([red][r], [green][g], [blue][b]) for a specified [time] in milliseconds
 	 */
 	fun highlightBlocks(blockPositions: Array<BlockPos>, r: Float, g: Float, b: Float, time: Int) =
-		highlightAreas(Array(blockPositions.size) { blockPositions[it].area() }, r, g, b, time)
+		highlightAreas(blockPositions.mapToArray(BlockPos::area), r, g, b, time)
 
 	/**
 	 * Highlight the specified [areas] with a specific colour ([red][r], [green][g], [blue][b]) for a specified [time] in milliseconds
