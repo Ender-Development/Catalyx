@@ -50,3 +50,6 @@ inline fun <T, R> List<T>.getApplyOrDefault(idx: Int, crossinline mapper: (T) ->
 		mapper(this[idx])
 	else
 		default()
+
+inline fun <T, reified R> List<T>.mapToArray(crossinline mapper: (T) -> R) =
+	Array(size) { mapper(this[it]) }
