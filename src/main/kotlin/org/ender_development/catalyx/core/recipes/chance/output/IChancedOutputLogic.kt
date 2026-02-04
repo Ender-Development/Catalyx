@@ -43,7 +43,7 @@ interface IChancedOutputLogic {
 		override fun <I, T : ChancedOutput<I>> roll(chancedEntries: List<T>, boostFunction: IBoostFunction, baseTier: Int, machineTier: Int) =
 			null
 
-		override val translationKey = "${Reference.MODID}.chance_logic.none"
+		override val translationKey = "chance_logic.${Reference.MODID}:none"
 
 		override fun toString() =
 			"ChancedOutputLogic{type=NONE}"
@@ -58,7 +58,7 @@ interface IChancedOutputLogic {
 				passesChance(getChance(it, boostFunction, baseTier, machineTier))
 			}
 
-		override val translationKey = "${Reference.MODID}.chance_logic.or"
+		override val translationKey = "chance_logic.${Reference.MODID}:or"
 
 		override fun toString() =
 			"ChancedOutputLogic{type=OR}"
@@ -76,7 +76,7 @@ interface IChancedOutputLogic {
 			else
 				null
 
-		override val translationKey = "${Reference.MODID}.chance_logic.and"
+		override val translationKey = "chance_logic.${Reference.MODID}:and"
 
 		override fun toString() =
 			"ChancedOutputLogic{type=AND}"
@@ -94,7 +94,7 @@ interface IChancedOutputLogic {
 					null
 			}
 
-		override val translationKey = "${Reference.MODID}.chance_logic.first"
+		override val translationKey = "chance_logic.${Reference.MODID}:first"
 
 		override fun toString() =
 			"ChancedOutputLogic{type=FIRST}"

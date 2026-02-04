@@ -114,7 +114,7 @@ class RecipeMap<R : RecipeBuilder<R>> {
 		this.maxFluidInputs = maxFluidInputs
 		this.maxOutputs = maxOutputs
 		this.maxFluidOutputs = maxFluidOutputs
-		translationKey = "recipemap.${mod.modId}.$unlocalizedName.name"
+		translationKey = "recipemap.${mod.modId}:$unlocalizedName.name"
 		primaryRecipeCategory = RecipeCategory.create(mod.modId, unlocalizedName, translationKey, this)
 
 		defaultRecipeBuilder.recipeMap = this

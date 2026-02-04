@@ -1,5 +1,7 @@
 package org.ender_development.catalyx.core.items
 
+import net.minecraft.block.Block
+import net.minecraft.client.gui.GuiScreen
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
@@ -9,16 +11,21 @@ import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.BlockPos
+import net.minecraft.util.text.Style
+import net.minecraft.util.text.TextComponentString
+import net.minecraft.util.text.TextFormatting
 import net.minecraft.world.World
 import org.ender_development.catalyx.Catalyx
+import org.ender_development.catalyx.api.v1.common.extensions.translate
 import org.ender_development.catalyx.api.v1.utils.Utils
+import org.ender_development.catalyx.core.Reference
 import org.ender_development.catalyx.core.client.IAutoModel
 import org.ender_development.catalyx.core.client.gui.BaseGuiTyped
 import org.ender_development.catalyx.core.tiles.BaseTile
-import org.ender_development.catalyx.core.tiles.helper.ICopyPasteExtraTile
+import org.ender_development.catalyx.core.tiles.helper.ICopyPasteExtraDataTile
 
 class CopyPasteTool : BaseItem(Catalyx, "copy_paste_tool"), IAutoModel {
-	private companion object {
+	companion object {
 		const val NBT_COPIED_BLOCK_KEY = "CopiedBlock"
 		const val NBT_COPIED_DATA_KEY = "CopiedData"
 		const val NBT_IS_PAUSED_KEY = "IsPaused"
@@ -32,7 +39,7 @@ class CopyPasteTool : BaseItem(Catalyx, "copy_paste_tool"), IAutoModel {
 		val clickedBlockId = world.getBlockState(pos).block.registryName!!.toString()
 		val copy = player.isSneaking
 
-		if(!copy && (copiedBlock.isEmpty() || copiedBlock != clickedBlockId))
+		if(!copy && (copiedBlock.isBlank() || copiedBlock != clickedBlockId))
 			return EnumActionResult.PASS
 
 		val te = world.getTileEntity(pos)
@@ -47,11 +54,13 @@ class CopyPasteTool : BaseItem(Catalyx, "copy_paste_tool"), IAutoModel {
 				copyTag.setBoolean(NBT_NEEDS_REDSTONE_KEY, te.needsRedstonePower)
 			}
 
-			if(te is ICopyPasteExtraTile)
+			if(te is ICopyPasteExtraDataTile)
 				te.copyData(copyTag)
 
-			if(copyTag.isEmpty) // don't copy emptiness
+			if(copyTag.isEmpty) { // don't copy emptiness
+				player.sendMessage(TextComponentString("Couldn't copy anything from this block").setStyle(Style().setColor(TextFormatting.RED)))
 				return EnumActionResult.PASS
+			}
 
 			tag.setTag(NBT_COPIED_DATA_KEY, copyTag)
 			tag.setString(NBT_COPIED_BLOCK_KEY, clickedBlockId)
@@ -70,11 +79,11 @@ class CopyPasteTool : BaseItem(Catalyx, "copy_paste_tool"), IAutoModel {
 					te.needsRedstonePower = pasteTag.getBoolean(NBT_NEEDS_REDSTONE_KEY)
 			}
 
-			if(te is ICopyPasteExtraTile)
+			if(te is ICopyPasteExtraDataTile)
 				te.pasteData(pasteTag, player)
 		}
 
-		if(!stack.hasTagCompound())
+		if(!stack.hasTagCompound() && !tag.isEmpty)
 			stack.tagCompound = tag
 
 		return EnumActionResult.SUCCESS
@@ -82,22 +91,31 @@ class CopyPasteTool : BaseItem(Catalyx, "copy_paste_tool"), IAutoModel {
 
 	override fun addInformation(stack: ItemStack, world: World?, tooltip: List<String?>, flag: ITooltipFlag) {
 		tooltip as MutableList
-		tooltip.add("TODO ;p")
+		tooltip.add("$translationKey.desc.1".translate())
+		tooltip.add("$translationKey.desc.2".translate())
 
-		if(Utils.environment.isDeobfuscated) {
-			tooltip.add("")
-			tooltip.add(stack.tagCompound?.getString(NBT_COPIED_BLOCK_KEY).toString())
-			tooltip.add("${stack.tagCompound?.getCompoundTag(NBT_COPIED_DATA_KEY)}")
+		val tag = stack.tagCompound
+		val copiedBlock = tag?.getString(NBT_COPIED_BLOCK_KEY)
+		if(tag == null || copiedBlock.isNullOrBlank()) {
+			tooltip.add("$translationKey.desc.empty".translate())
+			return
 		}
+
+		val shift = GuiScreen.isShiftKeyDown()
+
+		val block = Block.REGISTRY.registryObjects[ResourceLocation(copiedBlock)]
+		tooltip.add("$translationKey.desc.copying".translate(if(shift || block == null) copiedBlock else block.localizedName))
+
+		if(shift)
+			tooltip.add(tag.getCompoundTag(NBT_COPIED_DATA_KEY).toString())
 	}
 
 	/**
 	 * don't register if this isn't a dev environment, as this item is not finished
-	 * TODO tooltip, name translation, maybe signify what blocks you can actually copy across ;p
+	 * TODO texture
 	 */
 	override fun isEnabled() =
 		Utils.environment.isDeobfuscated
 
-	override val textureLocation: ResourceLocation =
-		ResourceLocation(mod.modId, "logo")
+	override val textureLocation = ResourceLocation(Reference.MODID, "logo")
 }

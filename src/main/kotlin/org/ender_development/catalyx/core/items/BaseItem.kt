@@ -12,7 +12,7 @@ import org.ender_development.catalyx.core.register
 open class BaseItem(val mod: ICatalyxMod, val name: String) : Item(), IItemProvider {
 	init {
 		registryName = ResourceLocation(mod.modId, name)
-		translationKey = "${mod.modId}.$name"
+		translationKey = "${mod.modId}:$name"
 		creativeTab = mod.creativeTab
 	}
 

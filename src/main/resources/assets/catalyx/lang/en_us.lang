@@ -1,3 +1,9 @@
+item.catalyx:copy_paste_tool.name=Copy-Paste Tool
+item.catalyx:copy_paste_tool.desc.1=Allows you to copy-paste settings and other data between supported blocks
+item.catalyx:copy_paste_tool.desc.2=Shift+right-click to copy, right-click to paste
+item.catalyx:copy_paste_tool.desc.copying=Copying data from %s - shift to see data
+item.catalyx:copy_paste_tool.desc.empty=Not copying any data
+
 tooltip.catalyx:running=Click to pause
 tooltip.catalyx:paused=Click to resume
 tooltip.catalyx:redstone_high=Works with a redstone signal

@@ -19,7 +19,7 @@ import org.ender_development.catalyx.core.register
 open class BaseBlock(val mod: ICatalyxMod, name: String, material: Material = Material.ROCK, hardness: Float = 3f) : Block(material), IBlockProvider {
 	init {
 		registryName = ResourceLocation(mod.modId, name)
-		translationKey = "${mod.modId}.$name"
+		translationKey = "${mod.modId}:$name"
 		blockHardness = hardness
 		creativeTab = mod.creativeTab
 	}
