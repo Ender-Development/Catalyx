@@ -11,7 +11,7 @@ import org.ender_development.catalyx.core.tiles.helper.IFluidTile
 import java.awt.Color
 
 internal class FluidTileProvider : IProbeInfoProvider {
-	override fun getID() = "${Reference.MODID}.auto.ifluidtile_provider"
+	override fun getID() = "${Reference.MODID}:auto.ifluidtile_provider"
 
 	override fun addProbeInfo(mode: ProbeMode, info: IProbeInfo, player: EntityPlayer, world: World, state: IBlockState, data: IProbeHitData) {
 		val tile = world.getTileEntity(data.pos) as? IFluidTile ?: return

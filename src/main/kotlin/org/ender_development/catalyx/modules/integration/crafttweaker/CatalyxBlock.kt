@@ -16,7 +16,7 @@ import stanhebben.zenscript.annotations.ZenMethod
 class CatalyxBlock(private val block: Block) {
 	companion object {
 		private fun init(block: Block, name: String): CatalyxBlock =
-			CatalyxBlock(block.setRegistryName(Reference.MODID, name).setTranslationKey("tile.${Reference.MODID}.$name.name"))
+			CatalyxBlock(block.setRegistryName(Reference.MODID, name).setTranslationKey("tile.${Reference.MODID}:$name.name"))
 
 		@ZenMethod
 		fun createBlock(name: String, material: IMaterial): CatalyxBlock =
