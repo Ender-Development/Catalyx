@@ -3,6 +3,7 @@
 package org.ender_development.catalyx.api.v1.common.extensions
 
 import net.minecraft.block.Block
+import net.minecraft.block.state.IBlockState
 import net.minecraft.client.resources.I18n
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
@@ -20,12 +21,29 @@ inline fun String.toPotion(): Potion =
 inline fun String.toOre() =
 	OreIngredient(this)
 
+fun String.toResourceLocation(): ResourceLocation {
+	val split = split(':')
+	return if(split.size == 1) ResourceLocation(this) else ResourceLocation(split[0], split[1])
+}
+
 fun String.toStack(quantity: Int = 1, meta: Int = 0): ItemStack {
 	val split = split(':')
 	val meta = split.getApplyOrDefault(2, String::toInt) { meta }
-	val location = if(split.size == 1) ResourceLocation(this) else ResourceLocation(split[0], split[1])
 
-	return Item.REGISTRY.registryObjects[location]?.toStack(quantity, meta) ?: Block.REGISTRY.registryObjects[location]?.toStack(quantity, meta).orEmpty()
+	return toItem()?.toStack(quantity, meta) ?: toBlock()?.toStack(quantity, meta).orEmpty()
+}
+
+inline fun String.toItem(): Item? =
+	Item.REGISTRY.registryObjects[toResourceLocation()]
+
+inline fun String.toBlock(): Block? =
+	Block.REGISTRY.registryObjects[toResourceLocation()]
+
+fun String.toBlockState(meta: Int = 0): IBlockState? {
+	val split = split(':')
+	val meta = split.getApplyOrDefault(2, String::toInt) { meta }
+	@Suppress("DEPRECATION")
+	return toBlock()?.getStateFromMeta(meta)
 }
 
 inline fun String.toIngredient(meta: Int = 0): Ingredient =
@@ -39,7 +57,8 @@ inline fun String.firstOre(): ItemStack =
 
 fun String.translate(vararg format: Any): String =
 	if(Utils.environment.isServer)
-		this
+		@Suppress("DEPRECATION")
+		net.minecraft.util.text.translation.I18n.translateToLocalFormatted(this, *format)
 	else
 		I18n.format(this, *format)
 

@@ -5,12 +5,12 @@ import org.ender_development.catalyx.api.v1.modules.annotations.CatalyxModuleCon
 import org.ender_development.catalyx.core.Reference
 
 /**
- * Module Container for all internal Catalyx modules
+ * Module Container for all modules inside Catalyx
  */
 @CatalyxModuleContainer(Reference.MODID, Reference.MODID)
 object CatalyxInternalModuleContainer {
 	const val MODULE_CORE = "core"
-	const val MODULE_INTERNAL = "internal"
+	const val MODULE_COMMON = "common"
 	const val MODULE_TEST = "test"
 	const val MODULE_INTEGRATION = "integration"
 

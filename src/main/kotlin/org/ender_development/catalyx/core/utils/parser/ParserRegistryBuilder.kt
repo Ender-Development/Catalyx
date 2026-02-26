@@ -11,7 +11,7 @@ class ParserRegistryBuilder {
 
 	fun <T : Any> jsonParser(key: String, filePath: String, defaultData: () -> List<T>, sanitizer: (T) -> ValidationResult<T>) {
 		val parser = object : AbstractJsonParser<T, T>() {
-			override val filePath = filePath
+			override val input = filePath
 
 			override val defaultRawData: List<T>
 				get() = defaultData()

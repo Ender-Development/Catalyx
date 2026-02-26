@@ -1,4 +1,4 @@
-package org.ender_development.catalyx.modules.internal
+package org.ender_development.catalyx.modules.common
 
 import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.api.v1.common.extensions.subLogger
@@ -8,14 +8,13 @@ import org.ender_development.catalyx.core.Reference
 import org.ender_development.catalyx.core.items.CopyPasteTool
 import org.ender_development.catalyx.modules.CatalyxInternalModuleContainer
 
-// TODO rename, this name is silly, but couldn't come up with a better one right meow
 @CatalyxModule(
-	moduleId = CatalyxInternalModuleContainer.MODULE_INTERNAL,
+	moduleId = CatalyxInternalModuleContainer.MODULE_COMMON,
 	containerId = Reference.MODID,
-	name = "Internal",
-	description = "An internal module for Catalyx, used for stuff that can can be used in all mods that use Catalyx."
+	name = "Common",
+	description = "The default module for Catalyx, used for stuff that can can be used in all mods that use Catalyx."
 )
-class InternalModule() : ICatalyxModule {
+class CommonModule() : ICatalyxModule {
 	override val logger = Catalyx.LOGGER.subLogger("Internal")
 
 	val copyPasteTool = CopyPasteTool()
