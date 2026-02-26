@@ -1,5 +1,10 @@
 package org.ender_development.catalyx.api.v1.validation
 
+import net.minecraft.item.ItemStack
+import org.ender_development.catalyx.api.v1.common.extensions.toBlock
+import org.ender_development.catalyx.api.v1.common.extensions.toBlockState
+import org.ender_development.catalyx.api.v1.common.extensions.toItem
+import org.ender_development.catalyx.api.v1.common.extensions.toStack
 import org.ender_development.catalyx.api.v1.validation.interfaces.IValidator
 import org.ender_development.catalyx.core.config.ConfigParser
 
@@ -50,37 +55,15 @@ object CommonValidators {
 			}
 		}
 
-	fun isItemStack(): IValidator<String?> = IValidator {
-		if(it == null)
-			return@IValidator false
+	fun isItemStack(): IValidator<String?> =
+		IValidator { it != null && it.toStack() != ItemStack.EMPTY }
 
-		return@IValidator try {
-			ConfigParser.ConfigItemStack(it).toItemStack()
-			true
-		} catch(_: Exception) {
-			false
-		}
-	}
+	fun isBlockState(): IValidator<String?> =
+		IValidator { it != null && it.toBlockState() != null }
 
-	fun isBlockState(): IValidator<String?> = IValidator {
-		if(it == null)
-			return@IValidator false
+	fun isBlock(): IValidator<String?> =
+		IValidator { it != null && it.toBlock() != null }
 
-		return@IValidator try {
-			ConfigParser.ConfigBlockState(it).state != null
-		} catch(_: Exception) {
-			false
-		}
-	}
-
-	fun isBlock(): IValidator<String?> = IValidator {
-		if(it == null)
-			return@IValidator false
-
-		return@IValidator try {
-			ConfigParser.ConfigBlockState(it).block != null
-		} catch(_: Exception) {
-			false
-		}
-	}
+	fun isItem(): IValidator<String?> =
+		IValidator { it != null && it.toItem() != null }
 }

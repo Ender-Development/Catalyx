@@ -23,7 +23,7 @@ abstract class AbstractJsonParser<TRaw, TSanitized> : IParser<TSanitized> {
 	abstract fun sanitize(rawData: TRaw): ValidationResult<TSanitized>
 
 	override fun parse(): List<TSanitized> {
-		val file = File(filePath)
+		val file = File(input)
 
 		if(!file.exists())
 			createDefaultFile(file)
@@ -78,12 +78,12 @@ abstract class AbstractJsonParser<TRaw, TSanitized> : IParser<TSanitized> {
 
 	private fun logValidationIssues(itemIndex: Int, errors: List<IValidationError>, warnings: List<IValidationError>) {
 		if(errors.isNotEmpty()) {
-			Catalyx.LOGGER.error("❌ Failed to parse item $itemIndex from $filePath:")
+			Catalyx.LOGGER.error("❌ Failed to parse item $itemIndex from $input:")
 			errors.forEach { Catalyx.LOGGER.error("   $it") }
 		}
 
 		if(warnings.isNotEmpty()) {
-			Catalyx.LOGGER.warn("⚠️ Warnings for item $itemIndex from $filePath:")
+			Catalyx.LOGGER.warn("⚠️ Warnings for item $itemIndex from $input:")
 			warnings.forEach { Catalyx.LOGGER.warn("   $it") }
 		}
 	}
@@ -92,7 +92,7 @@ abstract class AbstractJsonParser<TRaw, TSanitized> : IParser<TSanitized> {
 		val stats = lastParsingStats
 		val successRate = stats.successRate * 100
 
-		Catalyx.LOGGER.info("📊 Parsing Summary for $filePath:")
+		Catalyx.LOGGER.info("📊 Parsing Summary for $input:")
 		Catalyx.LOGGER.info("   Total items: ${stats.totalItems}")
 		Catalyx.LOGGER.info("   ✅ Successful: ${stats.successfulItems}")
 		Catalyx.LOGGER.info("   ❌ Failed: ${stats.failedItems}")
