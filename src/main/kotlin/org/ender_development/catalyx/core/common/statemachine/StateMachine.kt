@@ -3,10 +3,12 @@ package org.ender_development.catalyx.core.common.statemachine
 import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.core.utils.EnvironmentUtils
 
-typealias StateTransition<S, E> = (S, E) -> S?
-typealias StateAction<S> = (S) -> Unit
+// S, E - State, Event
 
-class StateMachine<S: Any, E: Any>(initialState: S) {
+typealias StateTransition<S, E> = (state: S, event: E) -> S?
+typealias StateAction<S> = (state: S) -> Unit
+
+class StateMachine<S : Any, E : Any>(initialState: S) {
 	private val transitions = mutableMapOf<Pair<S, E>, StateTransition<S, E>>()
 	private val onEnterActions = mutableMapOf<S, MutableList<StateAction<S>>>()
 	private val onExitActions = mutableMapOf<S, MutableList<StateAction<S>>>()
@@ -23,29 +25,32 @@ class StateMachine<S: Any, E: Any>(initialState: S) {
 	}
 
 	fun onEnter(state: S, action: StateAction<S>) {
-		onEnterActions.getOrPut(state) { mutableListOf() }.add(action)
+		onEnterActions.getOrPut(state, ::mutableListOf).add(action)
 	}
 
 	fun onExit(state: S, action: StateAction<S>) {
-		onExitActions.getOrPut(state) { mutableListOf() }.add(action)
+		onExitActions.getOrPut(state, ::mutableListOf).add(action)
 	}
 
 	fun sendEvent(event: E): Boolean {
 		val transition = transitions[currentState to event]
 		val newState = transition?.invoke(currentState, event)
 
-		return if(newState != null && newState != currentState) {
-			// Exit current state
-			onExitActions[currentState]?.forEach { it(currentState) }
+		if(newState == null || newState == currentState)
+			return false
 
-			val previousState = currentState
-			currentState = newState
+		// Exit current state
+		onExitActions[currentState]?.forEach { it(currentState) }
 
-			// Enter new state
-			onEnterActions[currentState]?.forEach { it(currentState) }
-			if(EnvironmentUtils.isDeobfuscated)
-				Catalyx.LOGGER.debug("Transition: $previousState -> $event -> $currentState")
-			true
-		} else false
+		val previousState = currentState
+		currentState = newState
+
+		// Enter new state
+		onEnterActions[currentState]?.forEach { it(currentState) }
+
+		if(EnvironmentUtils.isDeobfuscated)
+			Catalyx.LOGGER.debug("State Machine Transition: {} by {} -> {}", previousState, event, currentState)
+
+		return true
 	}
 }
