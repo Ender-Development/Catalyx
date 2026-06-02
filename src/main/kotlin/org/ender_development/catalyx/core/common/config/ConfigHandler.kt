@@ -4,10 +4,10 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import org.ender_development.catalyx.Catalyx
 
-class ConfigHandler<T: GenericConfigEntry<*>>(configData: Iterable<String>, parser: (String) -> T) {
+class ConfigHandler<T : GenericConfigEntry<*>>(configData: Iterable<String>, parser: (String) -> T) {
 	private val configEntries = try {
-	    configData.map { parser }
-	} catch (e: Exception) {
+		configData.map(parser)
+	} catch(e: Throwable) {
 		Catalyx.LOGGER.error("Error parsing config data", e)
 		emptyList()
 	}
@@ -15,9 +15,9 @@ class ConfigHandler<T: GenericConfigEntry<*>>(configData: Iterable<String>, pars
 	/**
 	 * Check if the list contains the given input.
 	 * @param stack The object to check.
-	 * @return True if the list contains the item stack, false otherwise.
+	 * @return true if the list contains the item stack, false otherwise.
 	 */
-	fun contains(stack: Any) =
+	operator fun contains(stack: ItemStack) =
 		configEntries.any { it == stack }
 
 	/**
@@ -43,5 +43,4 @@ class ConfigHandler<T: GenericConfigEntry<*>>(configData: Iterable<String>, pars
 	 */
 	operator fun get(stack: ItemStack) =
 		configEntries.firstOrNull { it == stack }
-
 }
