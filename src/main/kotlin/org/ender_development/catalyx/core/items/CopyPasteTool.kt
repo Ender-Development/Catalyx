@@ -1,6 +1,5 @@
 package org.ender_development.catalyx.core.items
 
-import net.minecraft.block.Block
 import net.minecraft.client.gui.GuiScreen
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.entity.player.EntityPlayer
@@ -16,6 +15,7 @@ import net.minecraft.util.text.TextComponentString
 import net.minecraft.util.text.TextFormatting
 import net.minecraft.world.World
 import org.ender_development.catalyx.Catalyx
+import org.ender_development.catalyx.api.v1.common.extensions.toBlock
 import org.ender_development.catalyx.api.v1.common.extensions.translate
 import org.ender_development.catalyx.api.v1.utils.Utils
 import org.ender_development.catalyx.core.Reference
@@ -103,7 +103,7 @@ class CopyPasteTool : BaseItem(Catalyx, "copy_paste_tool"), IAutoModel {
 
 		val shift = GuiScreen.isShiftKeyDown()
 
-		val block = Block.REGISTRY.registryObjects[ResourceLocation(copiedBlock)]
+		val block = copiedBlock.toBlock()
 		tooltip.add("$translationKey.desc.copying".translate(if(shift || block == null) copiedBlock else block.localizedName))
 
 		if(shift)
