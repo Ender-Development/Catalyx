@@ -6,7 +6,6 @@ import org.ender_development.catalyx.api.v1.common.extensions.toBlockState
 import org.ender_development.catalyx.api.v1.common.extensions.toItem
 import org.ender_development.catalyx.api.v1.common.extensions.toStack
 import org.ender_development.catalyx.api.v1.validation.interfaces.IValidator
-import org.ender_development.catalyx.core.config.ConfigParser
 
 @Suppress("UNUSED")
 object CommonValidators {
