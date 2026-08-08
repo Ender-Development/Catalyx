@@ -1,3 +1,4 @@
+@file:Suppress("Unused")
 package org.ender_development.catalyx.core.common.config
 
 import net.minecraft.block.Block

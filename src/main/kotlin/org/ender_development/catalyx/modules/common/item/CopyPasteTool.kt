@@ -1,5 +1,6 @@
-package org.ender_development.catalyx.core.items
+package org.ender_development.catalyx.modules.common.item
 
+import net.minecraft.block.Block
 import net.minecraft.client.gui.GuiScreen
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.entity.player.EntityPlayer
@@ -15,12 +16,12 @@ import net.minecraft.util.text.TextComponentString
 import net.minecraft.util.text.TextFormatting
 import net.minecraft.world.World
 import org.ender_development.catalyx.Catalyx
-import org.ender_development.catalyx.api.v1.common.extensions.toBlock
 import org.ender_development.catalyx.api.v1.common.extensions.translate
 import org.ender_development.catalyx.api.v1.utils.Utils
 import org.ender_development.catalyx.core.Reference
 import org.ender_development.catalyx.core.client.IAutoModel
 import org.ender_development.catalyx.core.client.gui.BaseGuiTyped
+import org.ender_development.catalyx.core.items.BaseItem
 import org.ender_development.catalyx.core.tiles.BaseTile
 import org.ender_development.catalyx.core.tiles.helper.ICopyPasteExtraDataTile
 
@@ -58,7 +59,10 @@ class CopyPasteTool : BaseItem(Catalyx, "copy_paste_tool"), IAutoModel {
 				te.copyData(copyTag)
 
 			if(copyTag.isEmpty) { // don't copy emptiness
-				player.sendMessage(TextComponentString("Couldn't copy anything from this block").setStyle(Style().setColor(TextFormatting.RED)))
+				player.sendMessage(
+                    TextComponentString("Couldn't copy anything from this block").setStyle(
+                        Style().setColor(
+                            TextFormatting.RED)))
 				return EnumActionResult.PASS
 			}
 
@@ -103,7 +107,7 @@ class CopyPasteTool : BaseItem(Catalyx, "copy_paste_tool"), IAutoModel {
 
 		val shift = GuiScreen.isShiftKeyDown()
 
-		val block = copiedBlock.toBlock()
+		val block = Block.REGISTRY.registryObjects[ResourceLocation(copiedBlock)]
 		tooltip.add("$translationKey.desc.copying".translate(if(shift || block == null) copiedBlock else block.localizedName))
 
 		if(shift)

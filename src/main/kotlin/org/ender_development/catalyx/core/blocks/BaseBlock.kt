@@ -55,7 +55,7 @@ open class BaseBlock(val mod: ICatalyxMod, name: String, material: Material = Ma
 	// We override these methods with a AABB check instead of hardcoding its return value
 	@Deprecated("Implementation is fine.")
 	override fun isFullBlock(state: IBlockState): Boolean =
-		getAABB(state) == FULL_BLOCK_AABB
+		getAABB(state) == FULL_BLOCK_AABB && this.defaultState.isOpaqueCube
 
 	// Doesn't change behavior as we default to FULL_BLOCK_AABB
 	@Deprecated("Implementation is fine")

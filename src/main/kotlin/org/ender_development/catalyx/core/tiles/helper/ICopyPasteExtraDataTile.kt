@@ -5,7 +5,7 @@ import net.minecraft.nbt.NBTTagCompound
 
 // TODO move somewhere into API
 /**
- * An interface for Tile Entities to implement if they want to copy/paste extra data with the Catalyx [CopyPasteTool][org.ender_development.catalyx.core.items.CopyPasteTool]
+ * An interface for Tile Entities to implement if they want to copy/paste extra data with the Catalyx [CopyPasteTool][org.ender_development.catalyx.modules.common.item.CopyPasteTool]
  */
 interface ICopyPasteExtraDataTile {
 	/**

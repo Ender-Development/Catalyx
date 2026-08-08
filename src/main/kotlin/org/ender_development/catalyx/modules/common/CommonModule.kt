@@ -5,7 +5,7 @@ import org.ender_development.catalyx.api.v1.common.extensions.subLogger
 import org.ender_development.catalyx.api.v1.modules.annotations.CatalyxModule
 import org.ender_development.catalyx.api.v1.modules.interfaces.ICatalyxModule
 import org.ender_development.catalyx.core.Reference
-import org.ender_development.catalyx.core.items.CopyPasteTool
+import org.ender_development.catalyx.modules.common.item.CopyPasteTool
 import org.ender_development.catalyx.modules.CatalyxInternalModuleContainer
 
 @CatalyxModule(

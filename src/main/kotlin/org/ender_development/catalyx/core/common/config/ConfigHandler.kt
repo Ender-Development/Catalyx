@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import org.ender_development.catalyx.Catalyx
 
+@Suppress("Unused")
 class ConfigHandler<T : GenericConfigEntry<*>>(configData: Iterable<String>, parser: (String) -> T) {
 	private val configEntries = try {
 		configData.map(parser)
@@ -43,4 +44,5 @@ class ConfigHandler<T : GenericConfigEntry<*>>(configData: Iterable<String>, par
 	 */
 	operator fun get(stack: ItemStack) =
 		configEntries.firstOrNull { it == stack }
+
 }
