@@ -64,11 +64,11 @@ abstract class BaseTile(open val mod: ICatalyxMod) : TileEntity(), BaseContainer
 		get() = world.getBlockState(pos).properties.getOrDefault(BlockHorizontal.FACING, EnumFacing.NORTH) as EnumFacing
 
 	// note: this has to be a getter
-	open val inventory
+	open val inventory: IItemHandler
 		get() = CombinedInvWrapper(input, output)
 
 	// note: this has to be a getter
-	open val automationInvHandler
+	open val automationInvHandler: IItemHandler
 		get() = CombinedInvWrapper(automationInput, automationOutput)
 
 	override fun canInteractWith(player: EntityPlayer) =
