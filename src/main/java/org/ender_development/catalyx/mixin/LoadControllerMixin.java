@@ -15,6 +15,6 @@ public class LoadControllerMixin {
 	@Inject(method = "sendEventToModContainer", at = @At("TAIL"))
 	public void sendEventToModContainer(FMLEvent stateEvent, ModContainer mc, CallbackInfo ci) {
 		if(stateEvent instanceof FMLStateEvent)
-			ModuleManager.INSTANCE.stateEvent$catalyx(mc, (FMLStateEvent) stateEvent);
+			ModuleManager.INSTANCE.stateEvent$org_ender_development_catalyx(mc, (FMLStateEvent) stateEvent);
 	}
 }
