@@ -14,6 +14,8 @@ import net.minecraftforge.fml.common.Loader
 import net.minecraftforge.oredict.OreDictionary
 import net.minecraftforge.oredict.OreIngredient
 import org.ender_development.catalyx.api.v1.utils.Utils
+import org.ender_development.catalyx.core.utils.math.evaluator.Evaluator
+import org.ender_development.catalyx.core.utils.math.evaluator.Expressions
 
 inline fun String.toPotion(): Potion =
 	Potion.getPotionFromResourceLocation(this)!!
@@ -64,3 +66,6 @@ fun String.translate(vararg format: Any): String =
 
 inline fun String?.modLoaded(): Boolean =
 	this != null && Loader.isModLoaded(this)
+
+inline fun String.eval(): String =
+	Expressions().evalToString(this)

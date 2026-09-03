@@ -77,7 +77,7 @@ interface IItemProvider : IProvider<Item> {
 
 interface IBlockProvider : IProvider<Block> {
 	/**
-	 * Override this instead of [registerItemBlock] if you only want to change the registered Item associated with this Block (like with a [org.ender_development.catalyx.core.items.TooltipItemBlock])
+	 * Override this instead of [registerItemBlock] if you only want to change the registered Item associated with this Block (like with a [org.ender_development.catalyx.core.common.items.TooltipItemBlock])
 	 */
 	val item: Item
 		get() = ItemBlock(instance).setRegistryName(instance.registryName)

@@ -7,7 +7,7 @@ import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.minecraftforge.registries.IForgeRegistryEntry
-import org.ender_development.catalyx.core.registry.CatalyxProviderRegistry
+import org.ender_development.catalyx.core.common.registry.CatalyxProviderRegistry
 
 /**
  * A hook for a [CatalyxProviderRegistry] that lets register their content

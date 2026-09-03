@@ -61,10 +61,15 @@ inline fun BlockPos.getFacingFromEntity(entity: Entity): EnumFacing =
 	getFacingFromEntityPosition(entity.posX.toFloat(), entity.posZ.toFloat())
 
 /**
- * @see org.ender_development.catalyx.core.blocks.multiblock.parts.AbstractEdgeBlock
+ * @see org.ender_development.catalyx.core.common.blocks.multiblock.parts.AbstractEdgeBlock
  */
-fun BlockPos.getHorizontalSurroundings() = arrayOf(
-	north().west(), north(), north().east(),
-	west(),        /* us */  east(),
-	south().west(), south(), south().east()
-)
+fun BlockPos.getHorizontalSurroundings(radius: Int = 1): Array<BlockPos> {
+	val positions = mutableListOf<BlockPos>()
+	for (dz in -radius..radius) {
+		for (dx in -radius..radius) {
+			if (dx == 0 && dz == 0) continue
+			positions.add(this.add(dx, 0, dz))
+		}
+	}
+	return positions.toTypedArray()
+}

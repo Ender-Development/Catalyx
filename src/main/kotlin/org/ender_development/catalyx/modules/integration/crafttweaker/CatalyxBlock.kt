@@ -6,7 +6,7 @@ import crafttweaker.api.minecraft.CraftTweakerMC
 import net.minecraft.block.Block
 import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.core.Reference
-import org.ender_development.catalyx.core.blocks.BaseBlock
+import org.ender_development.catalyx.core.common.blocks.base.CatBlock
 import stanhebben.zenscript.annotations.ZenClass
 import stanhebben.zenscript.annotations.ZenMethod
 
@@ -20,7 +20,7 @@ class CatalyxBlock(private val block: Block) {
 
 		@ZenMethod
 		fun createBlock(name: String, material: IMaterial): CatalyxBlock =
-			init(BaseBlock(Catalyx, name, CraftTweakerMC.getMaterial(material)), name)
+			init(CatBlock(Catalyx, name, CraftTweakerMC.getMaterial(material)), name)
 	}
 
 	@ZenMethod

@@ -2,9 +2,9 @@ package org.ender_development.catalyx.modules.test
 
 import net.minecraft.util.EnumFacing
 import org.ender_development.catalyx.Catalyx
-import org.ender_development.catalyx.core.blocks.helper.IOType
-import org.ender_development.catalyx.core.tiles.CenterTile
-import org.ender_development.catalyx.core.tiles.IOTile
+import org.ender_development.catalyx.core.common.blocks.IOType
+import org.ender_development.catalyx.core.common.tileentities.multiblock.CenterTile
+import org.ender_development.catalyx.core.common.tileentities.IOTile
 
 internal class DummyClass1 : CenterTile()
 internal class DummyClass2 : IOTile(Catalyx) {

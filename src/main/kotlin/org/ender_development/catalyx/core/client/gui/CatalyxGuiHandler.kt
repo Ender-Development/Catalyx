@@ -9,12 +9,12 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.fml.common.network.IGuiHandler
 import org.ender_development.catalyx.api.v1.utils.Utils
-import org.ender_development.catalyx.core.ICatalyxMod
+import org.ender_development.catalyx.api.v1.ICatalyxMod
 
 /**
  * A GUI handler you can use for your machines
  *
- * Use the return value of [registerId] in the [org.ender_development.catalyx.core.blocks.BaseTileBlock.guiId] field
+ * Use the return value of [registerId] in the [org.ender_development.catalyx.core.common.blocks.tile.TileBlock.guiId] field
  *
  * Remember to register it with [net.minecraftforge.fml.common.network.NetworkRegistry.registerGuiHandler]
  */

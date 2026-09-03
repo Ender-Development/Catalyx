@@ -4,8 +4,8 @@ import net.minecraft.block.Block
 import net.minecraft.block.material.Material
 import net.minecraft.util.ResourceLocation
 import org.ender_development.catalyx.api.v1.registry.IBlockProvider
-import org.ender_development.catalyx.core.ICatalyxMod
-import org.ender_development.catalyx.core.register
+import org.ender_development.catalyx.api.v1.ICatalyxMod
+import org.ender_development.catalyx.api.v1.register
 
 /**
  * The most minimal version of a block class utilizing features. We use this for the custom blocks that

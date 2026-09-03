@@ -6,9 +6,9 @@ import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import org.ender_development.catalyx.api.v1.common.extensions.getFacingFromEntity
 import org.ender_development.catalyx.api.v1.common.extensions.glRotate
-import org.ender_development.catalyx.core.tiles.BaseTile
-import org.ender_development.catalyx.core.tiles.helper.HudInfoLine
-import org.ender_development.catalyx.core.tiles.helper.IHudInfoProvider
+import org.ender_development.catalyx.core.common.tileentities.BaseTile
+import org.ender_development.catalyx.api.v1.common.tileentities.interfaces.HudInfoLine
+import org.ender_development.catalyx.api.v1.common.tileentities.interfaces.IHudInfoProvider
 import org.ender_development.catalyx.core.utils.RenderUtils.drawRectangle
 
 @SideOnly(Side.CLIENT)
@@ -71,7 +71,6 @@ object HudInfoRenderer : AbstractTESRenderer() {
 			val maxWidth = blockSize.toInt() - 2
 			val line = fontRenderer.trimStringToWidth(message.text, maxWidth)
 			val colour = message.color?.let { it.rgb and 0xFFFFFF } ?: 0xFFFFFF
-			println("colour=$colour; GlSM state={r=${GlStateManager.colorState.red}; g=${GlStateManager.colorState.green}; b=${GlStateManager.colorState.blue}; a=${GlStateManager.colorState.alpha}}")
 			if(message.alignment == HudInfoLine.TextAlign.LEFT)
 				fontRenderer.drawString(line, padding.toInt() + 1, y.toInt() + 2, colour)
 			else {

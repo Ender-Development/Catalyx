@@ -11,7 +11,7 @@ import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.api.v1.common.extensions.readString
 import org.ender_development.catalyx.api.v1.common.extensions.writeString
 import org.ender_development.catalyx.core.client.button.AbstractButtonWrapper
-import org.ender_development.catalyx.core.tiles.helper.IButtonTile
+import org.ender_development.catalyx.api.v1.common.tileentities.interfaces.IButtonTile
 
 class ButtonPacket() : IMessage {
 	private lateinit var blockPos: BlockPos
@@ -33,12 +33,13 @@ class ButtonPacket() : IMessage {
 			// this is needed to prevent potential security risks from people being able to send custom packets and potentially loading any class they want
 			val error = "Received illegal class name '$className' in ButtonPacket"
 			Catalyx.LOGGER.error(error)
-			// we'll crash from a lateinit not being initialised later anyways so might as well
+			// we'll crash from a late init not being initialized later anyway so might as well
 			throw IllegalArgumentException(error)
 		}
 		val `class` = Class.forName(className)
 		@Suppress("UNCHECKED_CAST")
-		if(AbstractButtonWrapper::class.java.isAssignableFrom(`class`)) // this should be guaranteed but check just in case
+		// sanity check
+		if(AbstractButtonWrapper::class.java.isAssignableFrom(`class`))
 			wrapperClass = `class` as Class<out AbstractButtonWrapper>
 		extraData = buf.readBytes(buf.readInt())
 	}
