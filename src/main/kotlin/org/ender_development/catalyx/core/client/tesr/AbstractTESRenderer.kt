@@ -1,7 +1,7 @@
 package org.ender_development.catalyx.core.client.tesr
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer
-import org.ender_development.catalyx.core.tiles.BaseTile
+import org.ender_development.catalyx.core.common.tileentities.BaseTile
 
 abstract class AbstractTESRenderer : TileEntitySpecialRenderer<BaseTile>() {
 	companion object {

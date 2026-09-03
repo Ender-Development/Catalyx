@@ -7,7 +7,7 @@ import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
-import org.ender_development.catalyx.core.ICatalyxMod
+import org.ender_development.catalyx.api.v1.ICatalyxMod
 
 /**
  * The base class for all other block implementation used in catalyx and its mods.

@@ -9,8 +9,6 @@ import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import org.ender_development.catalyx.api.v1.utils.Utils
 import org.ender_development.catalyx.core.Reference
-import org.ender_development.catalyx.core.client.button.AbstractButtonWrapper.Companion.getWrapper
-import org.ender_development.catalyx.core.client.button.AbstractButtonWrapper.Companion.registerWrapper
 
 /**
  * Wrapper class for stateful buttons sent from client-side to server-side
@@ -23,9 +21,9 @@ import org.ender_development.catalyx.core.client.button.AbstractButtonWrapper.Co
  * - add a button to the buttonList by instantiating this class and doing [net.minecraft.client.gui.GuiScreen.buttonList].add(instance.[button])
  * - override [net.minecraft.client.gui.GuiScreen.actionPerformed] and use [getWrapper] to identify/get buttons and their wrappers, if need be
  *
- * On server-side in TEs that extend [org.ender_development.catalyx.core.tiles.helper.IButtonTile]
- * - implement [org.ender_development.catalyx.core.tiles.helper.IButtonTile.handleButtonPress] and handle your button from there
- * - if you cannot guarantee this class will be instantiated before any button clicks are received, call [registerWrapper] (ideally in your TE init {} block, see [org.ender_development.catalyx.core.tiles.BaseTile] for an example)
+ * On server-side in TEs that extend [org.ender_development.catalyx.api.v1.common.tileentities.interfaces.IButtonTile]
+ * - implement [org.ender_development.catalyx.api.v1.common.tileentities.interfaces.IButtonTile.handleButtonPress] and handle your button from there
+ * - if you cannot guarantee this class will be instantiated before any button clicks are received, call [registerWrapper] (ideally in your TE init {} block, see [org.ender_development.catalyx.core.common.tileentities.BaseTile] for an example)
  */
 abstract class AbstractButtonWrapper(x: Int, y: Int, width: Int = 16, height: Int = 16) {
 	open val textureLocation = ResourceLocation(Reference.MODID, "textures/gui/container/gui.png")

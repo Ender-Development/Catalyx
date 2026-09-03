@@ -2,9 +2,9 @@ package org.ender_development.catalyx.api.v1.registry
 
 import net.minecraft.block.Block
 import net.minecraft.item.Item
-import org.ender_development.catalyx.core.registry.CatalyxBlockRegistry
-import org.ender_development.catalyx.core.registry.CatalyxItemRegistry
-import org.ender_development.catalyx.core.registry.CatalyxProviderRegistry
+import org.ender_development.catalyx.core.common.registry.CatalyxBlockRegistry
+import org.ender_development.catalyx.core.common.registry.CatalyxItemRegistry
+import org.ender_development.catalyx.core.common.registry.CatalyxProviderRegistry
 
 /**
  * API-Status: NOT-FROZEN

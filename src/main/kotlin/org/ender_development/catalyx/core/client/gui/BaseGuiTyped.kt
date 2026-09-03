@@ -16,9 +16,9 @@ import org.ender_development.catalyx.core.client.gui.wrappers.CapabilityEnergyDi
 import org.ender_development.catalyx.core.client.gui.wrappers.CapabilityFluidDisplayWrapper
 import org.ender_development.catalyx.core.network.ButtonPacket
 import org.ender_development.catalyx.core.network.PacketHandler
-import org.ender_development.catalyx.core.tiles.BaseMachineTile
-import org.ender_development.catalyx.core.tiles.BaseTile
-import org.ender_development.catalyx.core.tiles.helper.IGuiTile
+import org.ender_development.catalyx.core.common.tileentities.MachineTile
+import org.ender_development.catalyx.core.common.tileentities.BaseTile
+import org.ender_development.catalyx.api.v1.common.tileentities.interfaces.IGuiTile
 import org.ender_development.catalyx.core.utils.RenderAlignment
 import org.ender_development.catalyx.core.utils.RenderUtils
 
@@ -164,7 +164,7 @@ abstract class BaseGuiTyped<T>(container: Container, val tileEntity: T) : GuiCon
 	}
 }
 
-abstract class BaseGui(container: Container, tileEntity: BaseMachineTile<*>) : BaseGuiTyped<BaseMachineTile<*>>(container, tileEntity) {
+abstract class BaseGui(container: Container, tileEntity: MachineTile<*>) : BaseGuiTyped<MachineTile<*>>(container, tileEntity) {
 	fun drawProgressBar(x: Int, y: Int, u: Int, v: Int, w: Int, h: Int) {
 		mc.textureManager.bindTexture(textureLocation)
 		if(tileEntity.recipeTime == 0 && !tileEntity.input[0].isEmpty) {

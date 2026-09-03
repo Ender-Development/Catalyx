@@ -14,7 +14,7 @@ import org.ender_development.catalyx.api.v1.modules.interfaces.ICatalyxModule
 import org.ender_development.catalyx.core.Reference
 import org.ender_development.catalyx.core.client.AreaHighlighter
 import org.ender_development.catalyx.core.network.PacketHandler
-import org.ender_development.catalyx.core.utils.persistence.WorldPersistentData
+import org.ender_development.catalyx.core.common.persistence.WorldPersistentData
 
 @CatalyxModule(
 	moduleId = CatalyxInternalModuleContainer.MODULE_CORE,

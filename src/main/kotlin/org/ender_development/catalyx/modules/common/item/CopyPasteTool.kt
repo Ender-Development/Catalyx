@@ -21,11 +21,11 @@ import org.ender_development.catalyx.api.v1.utils.Utils
 import org.ender_development.catalyx.core.Reference
 import org.ender_development.catalyx.core.client.IAutoModel
 import org.ender_development.catalyx.core.client.gui.BaseGuiTyped
-import org.ender_development.catalyx.core.items.BaseItem
-import org.ender_development.catalyx.core.tiles.BaseTile
-import org.ender_development.catalyx.core.tiles.helper.ICopyPasteExtraDataTile
+import org.ender_development.catalyx.core.common.items.base.CatItem
+import org.ender_development.catalyx.core.common.tileentities.BaseTile
+import org.ender_development.catalyx.api.v1.common.tileentities.interfaces.ICopyPasteExtraDataTile
 
-class CopyPasteTool : BaseItem(Catalyx, "copy_paste_tool"), IAutoModel {
+class CopyPasteTool : CatItem(Catalyx, "copy_paste_tool"), IAutoModel {
 	companion object {
 		const val NBT_COPIED_BLOCK_KEY = "CopiedBlock"
 		const val NBT_COPIED_DATA_KEY = "CopiedData"

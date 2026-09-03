@@ -11,9 +11,9 @@ import org.ender_development.catalyx.api.v1.common.extensions.glOffsetZ
 import org.ender_development.catalyx.api.v1.common.extensions.glRotate
 import org.ender_development.catalyx.api.v1.common.extensions.glRotationAngle
 import org.ender_development.catalyx.core.Reference
-import org.ender_development.catalyx.core.blocks.helper.IOType
-import org.ender_development.catalyx.core.tiles.BaseTile
-import org.ender_development.catalyx.core.tiles.helper.IPortRenderer
+import org.ender_development.catalyx.core.common.blocks.IOType
+import org.ender_development.catalyx.core.common.tileentities.BaseTile
+import org.ender_development.catalyx.api.v1.common.tileentities.interfaces.IPortRenderer
 import org.ender_development.catalyx.core.utils.RenderUtils
 import org.ender_development.catalyx.core.utils.RenderUtils.drawScaledCustomSizeModalRect
 import org.lwjgl.opengl.GL11
