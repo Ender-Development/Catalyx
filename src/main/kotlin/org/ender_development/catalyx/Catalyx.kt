@@ -1,15 +1,13 @@
 package org.ender_development.catalyx
 
 import net.minecraft.creativetab.CreativeTabs
-import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.ForgeVersion
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.event.FMLConstructionEvent
 import org.apache.logging.log4j.LogManager
-import org.ender_development.catalyx.core.Reference
 import org.ender_development.catalyx.api.v1.ICatalyxMod
+import org.ender_development.catalyx.core.Reference
 import org.ender_development.catalyx.core.module.ModuleManager
-import org.ender_development.catalyx.core.common.persistence.ConfigPersistentData
 import kotlin.random.Random
 
 @Mod(
@@ -35,10 +33,10 @@ object Catalyx : ICatalyxMod {
 	internal val LOGGER = LogManager.getLogger(Reference.MOD_NAME)
 
 	override val creativeTab: CreativeTabs = CreativeTabs.MISC
-	internal val configPersistentData = ConfigPersistentData(ResourceLocation(Reference.MODID, "recipes"))
 
 	@Mod.EventHandler
 	fun construction(e: FMLConstructionEvent) {
+		LOGGER.debug("${Reference.MODID} starts hiding cats inside your log. :3")
 		ModuleManager.setup(e.asmHarvestedData)
 	}
 }
