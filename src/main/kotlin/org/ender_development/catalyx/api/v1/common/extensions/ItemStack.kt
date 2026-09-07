@@ -44,3 +44,9 @@ fun ItemStack.equalsIgnoreMeta(other: ItemStack) =
 		item === other.item
 	else
 		false
+
+/**
+ * Convert an item stack to an identifier string, respecting the NBT data
+ */
+inline fun ItemStack.nbtString() =
+	"${this.count}x${this.item.translationKey}@${this.metadata}" + (this.tagCompound?.toSortedString() ?: "")
