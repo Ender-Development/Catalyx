@@ -7,6 +7,7 @@ import org.ender_development.catalyx.api.v1.common.recipes.components.ResolvedOu
 import org.ender_development.catalyx.api.v1.common.recipes.components.RollMode
 import org.ender_development.catalyx.api.v1.common.recipes.components.impl.ItemRecipeInput
 import org.ender_development.catalyx.api.v1.common.recipes.components.impl.ItemRecipeOutput
+import org.ender_development.catalyx.api.v1.modules.annotations.CatalyxLoadClass
 
 /**
  * [StackHandler] implementation for item-type stacks.
@@ -14,6 +15,7 @@ import org.ender_development.catalyx.api.v1.common.recipes.components.impl.ItemR
  * Handles conversion between [ItemStack] and [ItemRecipeInput]/[ItemRecipeOutput].
  * Self-registers on first reference.
  */
+@CatalyxLoadClass
 object ItemStackHandler : StackHandler<ItemStack, ItemRecipeInput, ItemRecipeOutput>() {
 
 	override fun canHandle(stack: Any) = stack is ItemStack

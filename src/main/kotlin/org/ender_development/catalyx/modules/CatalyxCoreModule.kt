@@ -1,6 +1,7 @@
 package org.ender_development.catalyx.modules
 
 import net.minecraftforge.client.event.RenderWorldLastEvent
+import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent
@@ -8,13 +9,15 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import org.ender_development.catalyx.Catalyx
+import org.ender_development.catalyx.api.v1.common.extensions.plural
 import org.ender_development.catalyx.api.v1.common.extensions.subLogger
+import org.ender_development.catalyx.api.v1.common.recipes.handlers.StackHandler
 import org.ender_development.catalyx.api.v1.modules.annotations.CatalyxModule
 import org.ender_development.catalyx.api.v1.modules.interfaces.ICatalyxModule
 import org.ender_development.catalyx.core.Reference
 import org.ender_development.catalyx.core.client.AreaHighlighter
-import org.ender_development.catalyx.core.network.PacketHandler
 import org.ender_development.catalyx.core.common.persistence.WorldPersistentData
+import org.ender_development.catalyx.core.network.PacketHandler
 
 @CatalyxModule(
 	moduleId = CatalyxInternalModuleContainer.MODULE_CORE,
@@ -30,6 +33,11 @@ internal class CatalyxCoreModule : ICatalyxModule {
 
 	override fun preInit(event: FMLPreInitializationEvent) {
 		PacketHandler.init()
+	}
+
+	override fun loadComplete(event: FMLLoadCompleteEvent) {
+		val handlers = StackHandler.all().size
+		logger.debug("Initialized Recipe System with $handlers handler${handlers.plural}.")
 	}
 
 	override fun serverAboutToStart(event: FMLServerAboutToStartEvent) =

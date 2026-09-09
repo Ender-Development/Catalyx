@@ -2,11 +2,12 @@ package org.ender_development.catalyx.api.v1.common.recipes.handlers
 
 import net.minecraftforge.fluids.FluidStack
 import org.ender_development.catalyx.api.v1.common.recipes.components.RecipeComponent
-import org.ender_development.catalyx.api.v1.common.recipes.components.RollMode
 import org.ender_development.catalyx.api.v1.common.recipes.components.ResolvedInput
 import org.ender_development.catalyx.api.v1.common.recipes.components.ResolvedOutput
+import org.ender_development.catalyx.api.v1.common.recipes.components.RollMode
 import org.ender_development.catalyx.api.v1.common.recipes.components.impl.FluidRecipeInput
 import org.ender_development.catalyx.api.v1.common.recipes.components.impl.FluidRecipeOutput
+import org.ender_development.catalyx.api.v1.modules.annotations.CatalyxLoadClass
 
 /**
  * [StackHandler] implementation for fluid-type stacks.
@@ -14,6 +15,7 @@ import org.ender_development.catalyx.api.v1.common.recipes.components.impl.Fluid
  * Handles conversion between [FluidStack] and [FluidRecipeInput]/[FluidRecipeOutput].
  * Self-registers on first reference.
  */
+@CatalyxLoadClass
 object FluidStackHandler : StackHandler<FluidStack, FluidRecipeInput, FluidRecipeOutput>() {
 
 	override fun canHandle(stack: Any) = stack is FluidStack

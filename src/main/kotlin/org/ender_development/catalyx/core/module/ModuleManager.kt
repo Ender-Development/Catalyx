@@ -6,6 +6,7 @@ import it.unimi.dsi.fastutil.objects.ReferenceLinkedOpenHashSet
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.common.config.Configuration
 import net.minecraftforge.fml.common.Loader
+import net.minecraftforge.fml.common.LoaderState
 import net.minecraftforge.fml.common.ModClassLoader
 import net.minecraftforge.fml.common.ModContainer
 import net.minecraftforge.fml.common.discovery.ASMDataTable
@@ -13,6 +14,7 @@ import net.minecraftforge.fml.common.event.*
 import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.api.v1.common.extensions.modLoaded
 import org.ender_development.catalyx.api.v1.modules.Modules
+import org.ender_development.catalyx.api.v1.modules.annotations.CatalyxLoadClass
 import org.ender_development.catalyx.api.v1.modules.annotations.CatalyxModule
 import org.ender_development.catalyx.api.v1.modules.annotations.CatalyxModuleContainer
 import org.ender_development.catalyx.api.v1.modules.interfaces.ICatalyxModule
@@ -23,7 +25,6 @@ import org.ender_development.catalyx.core.Reference
 import org.ender_development.catalyx.core.module.ModuleManager.configuration
 import org.ender_development.catalyx.core.module.ModuleManager.discoveredContainers
 import org.ender_development.catalyx.core.module.ModuleManager.discoveredModules
-import org.ender_development.catalyx.core.module.ModuleManager.stateEvent
 import org.ender_development.catalyx.core.utils.Delegates
 import java.io.File
 import java.util.*
@@ -41,6 +42,9 @@ object ModuleManager : IModuleManager {
 	private val loadedContainers = Object2ReferenceLinkedOpenHashMap<ContainerId, Any>()
 
 	private val configDirectory = File(Loader.instance().configDir, Reference.MODID)
+
+	private val annotatedCatalyxLoadClass = hashMapOf<String, MutableList<ASMDataTable.ASMData>>()
+	private lateinit var modClassLoader: ModClassLoader // TODO remove this somehow
 
 	/**
 	 * The currently active Module Container
@@ -70,6 +74,7 @@ object ModuleManager : IModuleManager {
 	internal fun setup(asmDataTable: ASMDataTable) {
 		discoverContainers(asmDataTable)
 		discoverModules(asmDataTable)
+		discoverCatalyxLoadClass(asmDataTable)
 	}
 
 	private val discoveredContainers = hashMapOf<ModId, MutableList<ASMDataTable.ASMData>>()
@@ -193,13 +198,20 @@ object ModuleManager : IModuleManager {
 	 * Called by [LoadController#sendEventToModContainer][org.ender_development.catalyx.mixin.LoadControllerMixin.sendEventToModContainer]
 	 */
 	internal fun stateEvent(mod: ModContainer, stateEvent: FMLStateEvent) {
+		instantiateCatalyxLoadClass(mod,stateEvent)
 		// After a mod's construction, find and register any containers and modules
 		discoveredContainers.remove(mod.modId)?.let { discoveredContainers ->
 			if(discoveredContainers.isEmpty())
 				return@let
 
 			if(stateEvent !is FMLConstructionEvent)
-				error("Somehow we still found discovered module containers for mod ${mod.modId} during ${stateEvent.eventType}, containers: ${discoveredContainers.joinToString(", ", transform = { it.className })}. This shouldn't happen.")
+				error(
+					"Somehow we still found discovered module containers for mod ${mod.modId} during ${stateEvent.eventType}, containers: ${
+						discoveredContainers.joinToString(
+							", ",
+							transform = { it.className })
+					}. This shouldn't happen."
+				)
 
 			Catalyx.LOGGER.debug("Instantiating modules for mod ${mod.modId}")
 
@@ -290,7 +302,13 @@ object ModuleManager : IModuleManager {
 					}
 				} while(changed)
 
-				Catalyx.LOGGER.debug("> Module Container {}:{} has {} dependent modules, but will be instantiating {} of them", modId, containerId, willInstantiate.size + discoveredModules.size, willInstantiate.size)
+				Catalyx.LOGGER.debug(
+					"> Module Container {}:{} has {} dependent modules, but will be instantiating {} of them",
+					modId,
+					containerId,
+					willInstantiate.size + discoveredModules.size,
+					willInstantiate.size
+				)
 				willInstantiate.indexOfFirst { it.annotationInfo["coreModule"] as Boolean? ?: false }.let { idx ->
 					if(idx != -1 && idx != 0)
 						willInstantiate.add(0, willInstantiate.removeAt(idx))
@@ -420,5 +438,35 @@ object ModuleManager : IModuleManager {
 		Loader.instance().setActiveModContainer(Loader.instance().indexedModList[modId])
 		function()
 		Loader.instance().setActiveModContainer(currentModContainer)
+	}
+
+	/**
+	 * Discovers [org.ender_development.catalyx.api.v1.modules.annotations.CatalyxLoadClass].
+	 *
+	 * @param asmDataTable the ASM Data Table containing the module data
+	 */
+	private fun discoverCatalyxLoadClass(asmDataTable: ASMDataTable) {
+		asmDataTable.getAll(CatalyxLoadClass::class.java.canonicalName).forEach {
+			val modId = it.annotationInfo["modId"] as? String ?: Reference.MODID
+			annotatedCatalyxLoadClass.getOrPut(modId, ::mutableListOf).add(it)
+		}
+		Catalyx.LOGGER.debug("Found ${annotatedCatalyxLoadClass[Reference.MODID]?.size} classes annotated with `CatalyxLoadClass` for ${Reference.MODID}.")
+	}
+
+	/**
+	 * Instantiates annotated classes, when the specified [mod][ModContainer] reaches its [load state][LoaderState.ModState]
+	 */
+	private fun instantiateCatalyxLoadClass(mod: ModContainer, stateEvent: FMLStateEvent) {
+		if(stateEvent is FMLConstructionEvent)
+			modClassLoader = stateEvent.modClassLoader
+		annotatedCatalyxLoadClass[mod.modId]?.removeIf {
+			val loadingStage = it.annotationInfo["modStage"] as? LoaderState.ModState ?: LoaderState.ModState.INITIALIZED
+			if(loadingStage != stateEvent.modState)
+				return@removeIf false
+
+			modClassLoader.loadClass(it.className)
+			Catalyx.LOGGER.debug("{} reached {}! Loading class: {}", mod.modId, stateEvent.modState, it.className)
+			true
+		}
 	}
 }
