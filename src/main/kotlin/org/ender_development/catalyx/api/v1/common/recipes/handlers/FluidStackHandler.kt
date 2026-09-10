@@ -1,6 +1,7 @@
 package org.ender_development.catalyx.api.v1.common.recipes.handlers
 
 import net.minecraftforge.fluids.FluidStack
+import org.ender_development.catalyx.Catalyx
 import org.ender_development.catalyx.api.v1.common.recipes.components.RecipeComponent
 import org.ender_development.catalyx.api.v1.common.recipes.components.ResolvedInput
 import org.ender_development.catalyx.api.v1.common.recipes.components.ResolvedOutput
@@ -82,6 +83,10 @@ object FluidStackHandler : StackHandler<FluidStack, FluidRecipeInput, FluidRecip
 		if (resolved.amount == 0) return null
 		val output = resolved.component as? FluidRecipeOutput ?: return null
 		return output.fluid
+	}
+
+	init {
+		Catalyx.LOGGER.error("hi Catalyx, I'm ${this::class.java.simpleName}")
 	}
 }
 

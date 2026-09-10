@@ -198,7 +198,7 @@ object ModuleManager : IModuleManager {
 	 * Called by [LoadController#sendEventToModContainer][org.ender_development.catalyx.mixin.LoadControllerMixin.sendEventToModContainer]
 	 */
 	internal fun stateEvent(mod: ModContainer, stateEvent: FMLStateEvent) {
-		instantiateCatalyxLoadClass(mod,stateEvent)
+		instantiateCatalyxLoadClass(mod, stateEvent)
 		// After a mod's construction, find and register any containers and modules
 		discoveredContainers.remove(mod.modId)?.let { discoveredContainers ->
 			if(discoveredContainers.isEmpty())
@@ -446,11 +446,15 @@ object ModuleManager : IModuleManager {
 	 * @param asmDataTable the ASM Data Table containing the module data
 	 */
 	private fun discoverCatalyxLoadClass(asmDataTable: ASMDataTable) {
+		Catalyx.LOGGER.debug("Discovering CatalyxLoadClass-annotated classes...")
 		asmDataTable.getAll(CatalyxLoadClass::class.java.canonicalName).forEach {
-			val modId = it.annotationInfo["modId"] as? String ?: Reference.MODID
+			val modId = it.annotationInfo["modId"] as String? ?: Reference.MODID
 			annotatedCatalyxLoadClass.getOrPut(modId, ::mutableListOf).add(it)
 		}
-		Catalyx.LOGGER.debug("Found ${annotatedCatalyxLoadClass[Reference.MODID]?.size} classes annotated with `CatalyxLoadClass` for ${Reference.MODID}.")
+		Catalyx.LOGGER.debug("Found ${annotatedCatalyxLoadClass.values.sumOf(MutableList<ASMDataTable.ASMData>::size)} classes annotated with CatalyxLoadClass:")
+		annotatedCatalyxLoadClass.keys.forEach { modId ->
+			Catalyx.LOGGER.debug("- $modId - ${annotatedCatalyxLoadClass[modId]!!.joinToString { it.className.substringAfterLast('.') + "@" + (it.annotationInfo["modStage"] ?: LoaderState.ModState.INITIALIZED) }}")
+		}
 	}
 
 	/**
@@ -460,12 +464,15 @@ object ModuleManager : IModuleManager {
 		if(stateEvent is FMLConstructionEvent)
 			modClassLoader = stateEvent.modClassLoader
 		annotatedCatalyxLoadClass[mod.modId]?.removeIf {
-			val loadingStage = it.annotationInfo["modStage"] as? LoaderState.ModState ?: LoaderState.ModState.INITIALIZED
+			val loadingStage = it.annotationInfo["modStage"] as LoaderState.ModState? ?: LoaderState.ModState.INITIALIZED
 			if(loadingStage != stateEvent.modState)
 				return@removeIf false
 
-			modClassLoader.loadClass(it.className)
-			Catalyx.LOGGER.debug("{} reached {}! Loading class: {}", mod.modId, stateEvent.modState, it.className)
+			Catalyx.LOGGER.debug("{} reached {}, loading class: {}", mod.modId, stateEvent.modState, it.className)
+			val clazz = modClassLoader.loadClass(it.className)
+			// if it's an object, actually cause the JVM to instantiate it, thus causing the `init {}` blocks to run
+			// if it's a class, we can't really just instantiate it without any assumptions, so for now just do nothing except load it, maybe Ender will have better ideas
+			clazz.declaredFields.firstOrNull { it.name.equals("instance", true) }?.get(null)
 			true
 		}
 	}
