@@ -1,6 +1,7 @@
 package org.ender_development.catalyx.api.v1.common.recipes.components.impl
 
 import net.minecraft.item.ItemStack
+import org.ender_development.catalyx.api.v1.common.extensions.areStacksEqualIgnoreQuantity
 import org.ender_development.catalyx.api.v1.common.extensions.nbtString
 import org.ender_development.catalyx.api.v1.common.recipes.components.RecipeComponent
 import org.ender_development.catalyx.api.v1.common.recipes.components.RecipeInput
@@ -34,6 +35,7 @@ data class ItemRecipeInput(
 	override fun matches(provided: RecipeComponent): Boolean =
 		provided is ItemRecipeInput && validItems.any {
 			// TODO: This is totally winged, pls check if this works. :c
+			// roz - ^, you can use IS#areStacksEqualIgnoreQuantity, IS#canMergeWith and IS#areItem[...] functions instead of reinventing the wheel
 			provided.validItems.any { other ->
 				if (it.item != other.item) return false
 				if (it.itemDamage != other.itemDamage) return false
@@ -50,16 +52,12 @@ data class ItemRecipeInput(
 	 */
 	override operator fun plus(other: RecipeInput): ItemRecipeInput {
 		require(other is ItemRecipeInput) {
-			"Cannot add ItemRecipeInput and ${other::class.simpleName}"
+			"Cannot add ItemRecipeInput and ${other::class.java.simpleName}"
 		}
 		return copy(amount = amount + other.amount)
 	}
 
 	override fun toString(): String =
-		"ITEM:[${
-			validItems.map {
-				it.nbtString()
-			}.sorted().joinToString(",")
-		}]:$amount:$consumeChance:$rollMode"
+		"ITEM:[${validItems.map(ItemStack::nbtString).sorted().joinToString(",")}]:$amount:$consumeChance:$rollMode"
 }
 

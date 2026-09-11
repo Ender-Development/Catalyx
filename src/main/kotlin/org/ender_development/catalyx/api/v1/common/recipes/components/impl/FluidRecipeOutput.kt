@@ -33,7 +33,7 @@ data class FluidRecipeOutput(
 	 */
 	override operator fun plus(other: RecipeOutput): FluidRecipeOutput {
 		require(other is FluidRecipeOutput) {
-			"Cannot add FluidRecipeOutput and ${other::class.simpleName}"
+			"Cannot add FluidRecipeOutput and ${other::class.java.simpleName}"
 		}
 		return copy(amount = amount + other.amount)
 	}

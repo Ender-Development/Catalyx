@@ -59,7 +59,7 @@ class RecipeHandler(
 		}
 
 		val aggregated = components
-			.groupBy { it::class }
+			.groupBy { it::class.java }
 			.map { (_, group) -> group.reduce { acc, component -> acc + component } }
 
 		val map = registry.findMap(machineKey, aggregated, world, pos) ?: return null
@@ -76,7 +76,7 @@ class RecipeHandler(
 	 */
 	fun getTime(result: RecipeResult, modifiers: ModifierContext): Int {
 		val base = result.map.resolveTime(result.recipe).toDouble()
-		return (base * modifiers.resolve(ModifierTarget.TIME)).toLong().coerceAtLeast(1L).toInt()
+		return (base * modifiers.resolve(ModifierTarget.TIME)).toInt().coerceAtLeast(1)
 	}
 
 	/**
@@ -98,7 +98,7 @@ class RecipeHandler(
 	 * @param modifiers The machine's current [ModifierContext].
 	 * @return The absolute energy cost for the given recipe. Negative values indicate generation.
 	 */
-	fun getAbsolutEnergy(result: RecipeResult, modifiers: ModifierContext): Long =
+	fun getAbsoluteEnergy(result: RecipeResult, modifiers: ModifierContext): Long =
 		getEnergy(result, modifiers) * getTime(result, modifiers)
 
 	/**
@@ -126,7 +126,7 @@ class RecipeHandler(
 			(StackHandler.forComponent(resolved.component) as? StackHandler<Any, *, *>)
 				?.consumeFromStacks(updatedStacks, resolved)
 		}
-		return updatedStacks.toList()
+		return updatedStacks
 	}
 
 	/**
@@ -168,7 +168,7 @@ class RecipeHandler(
 		return result.recipe.inputs.map { input ->
 			val finalChance = (input.consumeChance * chanceModifier).coerceIn(0.0, 1.0)
 			val consumedAmount = when {
-				input.consumeChance == 0.0 -> 0
+				input.consumeChance < 1e-7 -> 0
 				else -> when (input.rollMode) {
 					RollMode.PER_STACK -> if (random.nextDouble() <= finalChance) input.amount else 0
 					RollMode.PER_ITEM  -> (0 until input.amount).count { random.nextDouble() <= finalChance }
@@ -196,7 +196,7 @@ class RecipeHandler(
 				}
 				ResolvedOutput(output, producedAmount)
 			}
-			.groupBy { it.component::class }
+			.groupBy { it.component::class.java }
 			.map { (_, group) ->
 				group.reduce { acc, resolved ->
 					ResolvedOutput(acc.component + resolved.component, acc.amount + resolved.amount)

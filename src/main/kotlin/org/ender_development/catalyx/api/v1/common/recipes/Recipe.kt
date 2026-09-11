@@ -24,7 +24,7 @@ class Recipe private constructor(
 	val baseEnergy: Long?
 ) {
 	fun canonicalString(): String {
-		val inputPart = inputs.map { it.toString() }.sorted().joinToString("|")
+		val inputPart = inputs.map(RecipeInput::toString).sorted().joinToString("|")
 		val conditionPart = conditionSet?.toString() ?: "NO_CONDITIONS"
 		return "$inputPart||$conditionPart"
 	}
@@ -94,7 +94,7 @@ class Recipe private constructor(
 		) = apply {
 			val handler = StackHandler.forStack(stack)
 			if (handler == null) {
-				LOGGER.error("[RecipeBuilder] Unable to add InputStack. No StackHandler found for: ${stack::class.simpleName}")
+				LOGGER.error("[RecipeBuilder] Unable to add InputStack. No StackHandler found for: ${stack::class.java.simpleName}")
 				return@apply
 			}
 			@Suppress("UNCHECKED_CAST")
@@ -122,7 +122,7 @@ class Recipe private constructor(
 			}
 			val handler = StackHandler.forStack(stacks.first())
 			if (handler == null) {
-				LOGGER.error("[RecipeBuilder] Unable to add InputStackGroup. No StackHandler found for: ${stacks.first()::class.simpleName}")
+				LOGGER.error("[RecipeBuilder] Unable to add InputStackGroup. No StackHandler found for: ${stacks.first()::class.java.simpleName}")
 				return@apply
 			}
 			@Suppress("UNCHECKED_CAST")
@@ -143,7 +143,7 @@ class Recipe private constructor(
 			stacks: Ingredient,
 			consumeChance: Double = 1.0,
 			rollMode: RollMode = RollMode.PER_STACK
-		) = addInput(stacks.matchingStacks.toList(), consumeChance, rollMode)
+		) = apply { addInput(stacks.matchingStacks.toList(), consumeChance, rollMode) }
 
 		/**
 		 * Adds a catalyst input for the given [stack].
@@ -182,13 +182,13 @@ class Recipe private constructor(
 		 */
 		fun addOutputStack(
 			stack: Any,
-			amount: Long = 1L,
+			amount: Long = 1L, // TODO ender - argument unused
 			produceChance: Double = 1.0,
 			rollMode: RollMode = RollMode.PER_STACK
 		) = apply {
 			val handler = StackHandler.forStack(stack)
 			if (handler == null) {
-				LOGGER.error("[RecipeBuilder] Unable to add OutputStack. No StackHandler found for: ${stack::class.simpleName}")
+				LOGGER.error("[RecipeBuilder] Unable to add OutputStack. No StackHandler found for: ${stack::class.java.simpleName}")
 				return@apply
 			}
 			@Suppress("UNCHECKED_CAST")
@@ -212,7 +212,7 @@ class Recipe private constructor(
 			}
 
 			val canonical = buildCanonicalString()
-			val resolvedId = id ?: Recipe.deriveId(canonical)
+			val resolvedId = id ?: deriveId(canonical)
 
 			return Recipe(
 				id = resolvedId,
@@ -225,7 +225,7 @@ class Recipe private constructor(
 		}
 
 		private fun buildCanonicalString(): String {
-			val inputPart = inputs.map { it.toString() }.sorted().joinToString("|")
+			val inputPart = inputs.map(RecipeInput::toString).sorted().joinToString("|")
 			val conditionPart = conditionSet?.toString() ?: "NO_CONDITIONS"
 			return "$inputPart||$conditionPart"
 		}

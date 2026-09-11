@@ -24,7 +24,7 @@ abstract class Condition {
 
 	/**
 	 * Returns a stable, deterministic canonical string representation.
-	 * Used as part of the recipe identity hash. Must be consistent across JVM restarts.
+	 * Used as part of the recipe identity hash. Must be consistent across game restarts.
 	 */
 	abstract override fun toString(): String
 }

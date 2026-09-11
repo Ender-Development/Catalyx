@@ -8,6 +8,9 @@ package org.ender_development.catalyx.api.v1.common.recipes.conditions
  * [XOR] requires an odd number of conditions across both sets to be satisfied.
  * [REPLACE] ignores the map's conditions entirely, only evaluating the recipe's own conditions.
  */
-enum class ConditionMode { AND, OR, XOR, REPLACE }
-
-
+enum class ConditionMode {
+	AND,
+	OR,
+	XOR,
+	REPLACE
+}

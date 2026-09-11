@@ -23,11 +23,11 @@ import org.ender_development.catalyx.api.v1.common.recipes.components.*
  * }
  * ```
  *
- * @param S The public stack type (e.g. [net.minecraft.item.ItemStack], [net.minecraftforge.fluids.FluidStack]).
- * @param I The internal [RecipeInput] subtype this handler produces.
- * @param O The internal [RecipeOutput] subtype this handler produces.
+ * @param STACK The public stack type (e.g. [net.minecraft.item.ItemStack], [net.minecraftforge.fluids.FluidStack]).
+ * @param IN The internal [RecipeInput] subtype this handler produces.
+ * @param OUT The internal [RecipeOutput] subtype this handler produces.
  */
-abstract class StackHandler<S : Any, I : RecipeInput, O : RecipeOutput> {
+abstract class StackHandler<STACK : Any, IN : RecipeInput, OUT : RecipeOutput> {
 
 	init {
 		registry.add(this)
@@ -53,7 +53,7 @@ abstract class StackHandler<S : Any, I : RecipeInput, O : RecipeOutput> {
 		/**
 		 * Returns all currently registered [StackHandler]s.
 		 */
-		fun all(): List<StackHandler<*, *, *>> = registry.toList()
+		fun all(): List<StackHandler<*, *, *>> = registry
 	}
 
 	/**
@@ -85,10 +85,10 @@ abstract class StackHandler<S : Any, I : RecipeInput, O : RecipeOutput> {
 	 * @param rollMode The roll mode. Defaults to [RollMode.PER_STACK].
 	 */
 	internal abstract fun stackToInput(
-		stack: S,
+		stack: STACK,
 		consumeChance: Double = 1.0,
 		rollMode: RollMode = RollMode.PER_STACK
-	): I
+	): IN
 
 	/**
 	 * Converts a list of equivalent stacks into a single internal [RecipeInput] that
@@ -100,10 +100,10 @@ abstract class StackHandler<S : Any, I : RecipeInput, O : RecipeOutput> {
 	 * @param rollMode The roll mode. Defaults to [RollMode.PER_STACK].
 	 */
 	internal abstract fun stackGroupToInput(
-		stacks: List<S>,
+		stacks: List<STACK>,
 		consumeChance: Double = 1.0,
 		rollMode: RollMode = RollMode.PER_STACK
-	): I
+	): IN
 
 	/**
 	 * Converts a public stack into an internal [RecipeOutput].
@@ -114,10 +114,10 @@ abstract class StackHandler<S : Any, I : RecipeInput, O : RecipeOutput> {
 	 * @param rollMode The roll mode. Defaults to [RollMode.PER_STACK].
 	 */
 	internal abstract fun stackToOutput(
-		stack: S,
+		stack: STACK,
 		produceChance: Double = 1.0,
 		rollMode: RollMode = RollMode.PER_STACK
-	): O
+	): OUT
 
 	/**
 	 * Applies the consumption described by [resolved] to the given mutable [stacks] list.
@@ -126,15 +126,15 @@ abstract class StackHandler<S : Any, I : RecipeInput, O : RecipeOutput> {
 	 * @param stacks The mutable list of stacks to consume from.
 	 * @param resolved The resolved input describing what and how much to consume.
 	 */
-	internal abstract fun consumeFromStacks(stacks: MutableList<S>, resolved: ResolvedInput)
+	internal abstract fun consumeFromStacks(stacks: MutableList<STACK>, resolved: ResolvedInput)
 
 	/**
-	 * Converts an internal [ResolvedOutput] into a public stack of type [S],
+	 * Converts an internal [ResolvedOutput] into a public stack of type [STACK],
 	 * or null if this handler cannot handle the output type or the amount is 0.
 	 *
 	 * @param resolved The resolved output to convert.
 	 */
-	internal abstract fun resolvedToStack(resolved: ResolvedOutput): S?
+	internal abstract fun resolvedToStack(resolved: ResolvedOutput): STACK?
 }
 
 

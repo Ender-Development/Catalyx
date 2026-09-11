@@ -22,19 +22,18 @@ fun NBTTagCompound.getLongArray(key: String): LongArray {
 }
 
 /**
- * Retrieves a consistend string representation of a [NBTTagCompound].
+ * Retrieves a consistent string representation of an [NBTTagCompound].
  * This is needed for [org.ender_development.catalyx.api.v1.common.recipes.components.impl.ItemRecipeInput] and we can't use
  * the [NBTTagCompound.toString] method, as is only sorts keys in debug mode.
  */
 fun NBTTagCompound.toSortedString(): String {
-	val sb = StringBuilder("{")
-	val sortedTags = tagMap.keys.toTypedArray().sorted()
-	if (sortedTags.isEmpty()) return ""
-	val pattern = Pattern.compile("[A-Za-z0-9._+-]+")
-	for (key in sortedTags) {
-		if (sb.isNotEmpty()) sb.append(", ")
-		val escaped_key = if (pattern.matcher(key).matches()) key else NBTTagString.quoteAndEscape(key)
-		sb.append(escaped_key).append(":").append(tagMap[key])
+	if(isEmpty)
+		return ""
+
+	return tagMap.keys.sorted().joinToString(prefix = "{", postfix = "}") { key ->
+		(if(key.any { !it.isLetterOrDigit() && it != '.' && it != '_' && it != '+' && it != '-' })
+			NBTTagString.quoteAndEscape(key)
+		else
+			key) + ": " + tagMap[key]
 	}
-	return sb.append("}").toString()
 }

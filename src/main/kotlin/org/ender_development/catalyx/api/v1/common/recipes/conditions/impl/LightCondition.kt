@@ -12,7 +12,7 @@ import org.ender_development.catalyx.api.v1.common.recipes.conditions.Condition
  */
 class BrightnessCondition(val value: Int) : Condition() {
 	override fun evaluate(world: World, pos: BlockPos) = world.getLightFromNeighbors(pos) > value
-	override fun toString() = "LIGHT:BrighterAs:$value"
+	override fun toString() = "LIGHT:BrighterThan:$value"
 }
 
 /**
@@ -23,7 +23,7 @@ class BrightnessCondition(val value: Int) : Condition() {
  */
 class DarknessCondition(val value: Int) : Condition() {
 	override fun evaluate(world: World, pos: BlockPos) = world.getLightFromNeighbors(pos) < value
-	override fun toString() = "LIGHT:DarkerAs:$value"
+	override fun toString() = "LIGHT:DarkerThan:$value"
 }
 
 /**

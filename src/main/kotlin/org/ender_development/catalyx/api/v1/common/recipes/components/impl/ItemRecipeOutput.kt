@@ -33,7 +33,7 @@ data class ItemRecipeOutput(
 	 */
 	override operator fun plus(other: RecipeOutput): ItemRecipeOutput {
 		require(other is ItemRecipeOutput) {
-			"Cannot add ItemRecipeOutput and ${other::class.simpleName}"
+			"Cannot add ItemRecipeOutput and ${other::class.java.simpleName}"
 		}
 		return copy(amount = amount + other.amount)
 	}

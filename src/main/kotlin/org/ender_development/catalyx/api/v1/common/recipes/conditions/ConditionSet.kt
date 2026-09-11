@@ -30,10 +30,10 @@ class ConditionSet(
 		if (world == null || pos == null) return false
 		if (conditions.isEmpty()) return true
 		return when (mode) {
+			ConditionMode.REPLACE,
 			ConditionMode.AND     -> conditions.all { it.evaluate(world, pos) }
 			ConditionMode.OR      -> conditions.any { it.evaluate(world, pos) }
-			ConditionMode.XOR     -> conditions.count { it.evaluate(world, pos) } % 2 != 0
-			ConditionMode.REPLACE -> conditions.all { it.evaluate(world, pos) }
+			ConditionMode.XOR     -> conditions.count { it.evaluate(world, pos) } and 1 == 1
 		}
 	}
 
@@ -52,7 +52,7 @@ class ConditionSet(
 	}
 
 	override fun toString() =
-		"CONDITIONS:$mode:[${conditions.sortedBy { it.toString() }.joinToString(",")}]"
+		"CONDITIONS:$mode:[${conditions.sortedBy(Condition::toString).joinToString(",")}]"
 }
 
 

@@ -26,7 +26,7 @@ class RecipeRegistry {
 	 * @param map The [RecipeMap] to register.
 	 */
 	fun addMap(key: String, map: RecipeMap) {
-		entries.getOrPut(key) { mutableListOf() }.add(map)
+		entries.getOrPut(key, ::mutableListOf).add(map)
 		LOGGER.info("[RecipeRegistry] Added RecipeMap '${map.key}' under key: '$key'")
 	}
 
@@ -51,7 +51,7 @@ class RecipeRegistry {
 	 * @return An immutable list of registered maps, or an empty list if none found.
 	 */
 	fun getMaps(key: String): List<RecipeMap> {
-		return entries[key]?.toList() ?: emptyList<RecipeMap>().also {
+		return entries[key] ?: emptyList<RecipeMap>().also {
 			LOGGER.warn("[RecipeRegistry] No RecipeMaps found under key: '$key'")
 		}
 	}
@@ -76,7 +76,7 @@ class RecipeRegistry {
 	 *
 	 * @return An immutable map of machine key to list of [RecipeMap]s.
 	 */
-	fun getAllMaps(): Map<String, List<RecipeMap>> = entries.mapValues { it.value.toList() }
+	fun getAllMaps(): Map<String, List<RecipeMap>> = entries
 
 	/**
 	 * Returns the number of [RecipeMap]s registered under the given machine [key].

@@ -9,6 +9,7 @@ import org.ender_development.catalyx.api.v1.common.recipes.components.RollMode
 import org.ender_development.catalyx.api.v1.common.recipes.components.impl.FluidRecipeInput
 import org.ender_development.catalyx.api.v1.common.recipes.components.impl.FluidRecipeOutput
 import org.ender_development.catalyx.api.v1.modules.annotations.CatalyxLoadClass
+import kotlin.jvm.java
 
 /**
  * [StackHandler] implementation for fluid-type stacks.
@@ -29,7 +30,7 @@ object FluidStackHandler : StackHandler<FluidStack, FluidRecipeInput, FluidRecip
 		consumeChance: Double,
 		rollMode: RollMode
 	) = FluidRecipeInput(
-		amount =  stack.amount,
+		amount = stack.amount,
 		validFluids = listOf(stack),
 		consumeChance = consumeChance,
 		rollMode = rollMode

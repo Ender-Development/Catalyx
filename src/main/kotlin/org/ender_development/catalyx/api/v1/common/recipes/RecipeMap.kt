@@ -29,10 +29,8 @@ class RecipeMap internal constructor(
 	val defaultEnergy: Long,
 	val sharedConditions: ConditionSet? = null
 ) {
-	private val _recipes = mutableListOf<Recipe>()
-
-	/** Returns an immutable snapshot of all currently registered recipes. */
-	val recipes: List<Recipe> get() = _recipes.toList()
+	val recipes: List<Recipe>
+		field = mutableListOf<Recipe>()
 
 	/**
 	 * Registers a recipe built via [Recipe.Builder].
@@ -43,12 +41,12 @@ class RecipeMap internal constructor(
 	 * @return True if added successfully, false if validation failed.
 	 */
 	fun addRecipe(recipe: Recipe): Boolean {
-		val duplicate = _recipes.any { it.canonicalString() == recipe.canonicalString() }
+		val duplicate = recipes.any { it.canonicalString() == recipe.canonicalString() }
 		if (duplicate) {
 			LOGGER.error("[RecipeMap:$key] Duplicate recipe detected for id: '${recipe.id}'")
 			return false
 		}
-		_recipes.add(recipe)
+		recipes.add(recipe)
 		LOGGER.info("[RecipeMap:$key] Added recipe with id: '${recipe.id}'")
 		return true
 	}
@@ -60,14 +58,14 @@ class RecipeMap internal constructor(
 	 * @return True if found and removed, false otherwise.
 	 */
 	fun removeRecipe(id: String): Boolean {
-		val removed = _recipes.removeIf { it.id == id }
+		val removed = recipes.removeIf { it.id == id }
 		if (!removed) LOGGER.warn("[RecipeMap:$key] No recipe found with id: '$id'")
 		else LOGGER.info("[RecipeMap:$key] Removed recipe with id: '$id'")
 		return removed
 	}
 
 	internal fun findRecipe(inputs: List<RecipeComponent>, world: World?, pos: BlockPos?): Recipe? {
-		return _recipes.firstOrNull { recipe ->
+		return recipes.firstOrNull { recipe ->
 			matchesConditions(recipe, world, pos) && matchesInputs(recipe, inputs)
 		}.also { recipe ->
 			if (recipe == null) LOGGER.debug("[RecipeMap:$key] No matching recipe found")
@@ -151,7 +149,7 @@ class RecipeMap internal constructor(
 				sharedConditions = sharedConditions
 			)
 
-			recipes.forEach { map.addRecipe(it) }
+			recipes.forEach(map::addRecipe)
 			return map
 		}
 	}

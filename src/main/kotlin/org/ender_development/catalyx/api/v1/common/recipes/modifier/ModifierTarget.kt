@@ -9,4 +9,15 @@ package org.ender_development.catalyx.api.v1.common.recipes.modifier
  * [OUTPUT_AMOUNT] affects the amount of each output produced. Floored at 0 after modifiers.
  * [OUTPUT_CHANCE] affects the chance each output is produced. Clamped to [0.01, 1.0].
  */
-enum class ModifierTarget { TIME, ENERGY, CONSUME_CHANCE, OUTPUT_AMOUNT, OUTPUT_CHANCE }
+enum class ModifierTarget {
+	/** Affects the number of ticks a recipe takes to process. Floored at 1 tick after modifiers. */
+	TIME,
+	/** Affects the energy cost per tick. Can be negative, resulting in energy generation. */
+	ENERGY,
+	/** Affects the chance each input is consumed. Clamped to [0.0, 1.0]. */
+	CONSUME_CHANCE,
+	/** Affects the amount of each output produced. Floored at 0 after modifiers. */
+	OUTPUT_AMOUNT,
+	/** Affects the chance each output is produced. Clamped to [0.01, 1.0]. */
+	OUTPUT_CHANCE
+}

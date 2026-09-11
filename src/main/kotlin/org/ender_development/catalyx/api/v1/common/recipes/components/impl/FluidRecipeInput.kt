@@ -34,6 +34,7 @@ data class FluidRecipeInput(
 	override fun matches(provided: RecipeComponent): Boolean =
 		provided is FluidRecipeInput && validFluids.any {
 			// TODO: This is totally winged, pls check if this works. :c
+			// roz - ^, you can use FS#areFluidStacksEqual, it.isFluidEqual or just get "heavily" inspired from them
 			provided.validFluids.any { other ->
 				if (it.fluid != other.fluid) return false
 				(it.tag == null || it.tag == other.tag)
@@ -48,17 +49,13 @@ data class FluidRecipeInput(
 	 */
 	override operator fun plus(other: RecipeInput): FluidRecipeInput {
 		require(other is FluidRecipeInput) {
-			"Cannot add FluidRecipeInput and ${other::class.simpleName}"
+			"Cannot add FluidRecipeInput and ${other::class.java.simpleName}"
 		}
 		return copy(amount = amount + other.amount)
 	}
 
 	override fun toString() =
-		"FLUID:[${
-			validFluids.map {
-				it.nbtString()
-			}.sorted().joinToString(",")
-		}]:$amount:$consumeChance:$rollMode"
+		"FLUID:[${validFluids.map(FluidStack::nbtString).sorted().joinToString(",")}]:$amount:$consumeChance:$rollMode"
 }
 
 
