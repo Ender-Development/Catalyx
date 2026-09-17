@@ -3,7 +3,6 @@ package org.ender_development.catalyx.api.v1.common.tileentities.interfaces
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.nbt.NBTTagCompound
 
-// TODO move somewhere into API
 /**
  * An interface for Tile Entities to implement if they want to copy/paste extra data with the Catalyx [CopyPasteTool][org.ender_development.catalyx.modules.common.item.CopyPasteTool]
  */

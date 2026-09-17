@@ -14,9 +14,12 @@ object Utils {
 
 	val environment: IEnvironmentUtils = EnvironmentUtils
 
-	// TODO find an abstraction
 	/**
 	 * [This can't be an extension as of right now there is no way to create a static extension of a JVM class.](https://youtrack.jetbrains.com/issue/KT-11968)
+	 *
+	 * Starting with Kotlin 2.5.0, we'll be able to make this an extension, see KT-11968 (the link above)
+	 *
+	 * TODO wait for stable Kotlin 2.5.0, enable -Xcompanion-blocks-and-extensions and turn these into `companion fun`s
 	 */
 	@Suppress("ClassName")
 	object fluidTank {
