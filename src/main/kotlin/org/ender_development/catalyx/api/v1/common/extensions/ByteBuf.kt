@@ -6,6 +6,7 @@ import io.netty.buffer.ByteBuf
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraftforge.fml.common.network.ByteBufUtils
+import java.util.UUID
 
 /**
  * Writes the length of the string as well as the string itself
@@ -30,3 +31,11 @@ inline fun ByteBuf.writeTagCompound(tag: NBTTagCompound) =
 
 inline fun ByteBuf.readTagCompound(): NBTTagCompound? =
 	ByteBufUtils.readTag(this)
+
+inline fun ByteBuf.writeUUID(uuid: UUID) {
+	writeLong(uuid.mostSignificantBits)
+	writeLong(uuid.leastSignificantBits)
+}
+
+inline fun ByteBuf.readUUID() =
+	UUID(readLong(), readLong())
