@@ -61,9 +61,6 @@ open class WorldPersistentData(override val id: ResourceLocation, val autoLoad: 
 
 		Catalyx.LOGGER.debug("Write persistent data to path {}", path)
 
-		if(data.isEmpty)
-			return
-
 		if(path.notExists())
 			try {
 				path.createParentDirectories()

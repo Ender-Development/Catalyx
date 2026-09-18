@@ -11,7 +11,7 @@ import java.io.IOException
 import kotlin.io.path.*
 
 /**
- * A persistent data implementation that saves its data inside of the Catalyx config directory.
+ * A persistent data implementation that saves its data inside the Catalyx config directory.
  */
 open class ConfigPersistentData(override val id: ResourceLocation) : IPersistentData {
 	private val path = Loader.instance().configDir.toPath() / Reference.MODID / "persistent_data_${id.namespace}-${id.path}.dat"
@@ -36,9 +36,6 @@ open class ConfigPersistentData(override val id: ResourceLocation) : IPersistent
 	@Synchronized
 	override fun save() {
 		Catalyx.LOGGER.debug("Write persistent data to path {}", path)
-
-		if(data.isEmpty)
-			return
 
 		if(path.notExists())
 			try {
